@@ -1,0 +1,70 @@
+{{/*
+Purpose: Open Graph and Twitter Card meta tags for social sharing
+
+Context Expected:
+- .IsPage - Whether this is a page (vs list/section)
+- .Title, .Site.Title - Page and site titles
+- .Description, .Site.Params.description - Page and site descriptions
+- .Permalink - Page URL
+- .Type - Content type (essays, notes, etc.)
+- .Date, .Lastmod - Article dates
+- .Params.topics, .Params.tags - Taxonomies
+- .Site.BaseURL - Site base URL
+- .Site.Params.twitter_handle - Twitter username
+*/}}
+
+<!-- Open Graph / Social Media -->
+<meta property="og:title" content="{{ if .Title }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}">
+<meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+{{- $ogImageURL := partial "functions/get-og-image.html" . -}}
+{{ if $ogImageURL }}
+<meta property="og:image" content="{{ $ogImageURL }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+{{ end }}
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+{{- if and .IsPage (or (eq .Type "essays") (eq .Type "notes")) -}}
+<!-- Article-specific Open Graph tags -->
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+<meta property="article:author" content="{{ .Site.BaseURL }}">
+{{- if .Params.topics -}}
+<meta property="article:section" content="{{ index .Params.topics 0 }}">
+{{- end -}}
+{{- range .Params.tags -}}
+<meta property="article:tag" content="{{ . }}">
+{{- end -}}
+{{- end -}}
+
+<!-- Twitter Card -->
+{{- $twitterImageURL := "" -}}
+{{- $twitterCardType := "summary_large_image" -}}
+{{- if .Params.image -}}
+  {{- $twitterImageURL = .Params.image | absURL -}}
+{{- else if eq .Type "essays" -}}
+  {{- $slug := .Params.slug -}}
+  {{- $squareOGPath := printf "/images/og-essays/%s-square.png" $slug -}}
+  {{- $twitterImageURL = $squareOGPath | absURL -}}
+  {{- $twitterCardType = "summary" -}}
+{{- else if eq .Type "notes" -}}
+  {{- $slug := .Params.slug -}}
+  {{- $squareOGPath := printf "/images/og-notes/%s-square.png" $slug -}}
+  {{- $twitterImageURL = $squareOGPath | absURL -}}
+  {{- $twitterCardType = "summary" -}}
+{{- else if $ogImageURL -}}
+  {{- $twitterImageURL = $ogImageURL -}}
+{{- end -}}
+<meta name="twitter:card" content="{{ $twitterCardType }}">
+<meta name="twitter:title" content="{{ if .Title }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}">
+<meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{ if $twitterImageURL }}
+<meta name="twitter:image" content="{{ $twitterImageURL }}">
+<meta name="twitter:image:alt" content="{{ if .Title }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}">
+{{ end }}
+{{- if .Site.Params.twitter_handle -}}
+<meta name="twitter:site" content="@{{ .Site.Params.twitter_handle }}">
+<meta name="twitter:creator" content="@{{ .Site.Params.twitter_handle }}">
+{{- end -}}
