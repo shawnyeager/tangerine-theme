@@ -23,9 +23,8 @@ Finished essays and professional content site.
 **Location:** `shawnyeager-notes/CLAUDE.md`
 
 Work-in-progress notes and thinking in public.
-- Site configuration (noindex, no newsletter)
+- Site configuration and content guidelines
 - Note frontmatter structure
-- Search engine blocking verification
 - Deployment checklist
 
 ### tangerine-theme (Shared Theme Module)
@@ -80,7 +79,7 @@ cd ~/Work/shawnyeager/shawnyeager-com
 hugo server -D -p 1313
 ```
 
-**The Workshop (.notes):**
+**The Workshop (notes.shawnyeager.com):**
 ```bash
 cd ~/Work/shawnyeager/shawnyeager-notes
 hugo server -D -p 1316
@@ -102,7 +101,7 @@ cd ~/Work/shawnyeager/tangerine-theme
 
 Start Hugo servers for both sites:
 - **Gallery (.com):** `hugo server -D -p 1313` → http://localhost:1313
-- **Workshop (.notes):** `hugo server -D -p 1316` → http://localhost:1316
+- **Workshop (notes.shawnyeager.com):** `hugo server -D -p 1316` → http://localhost:1316
 
 Then: Edit theme files → refresh browser → see changes instantly.
 
@@ -154,7 +153,7 @@ GitHub Actions will handle everything automatically. Manual intervention creates
 
 ### Two-Domain Strategy
 - **shawnyeager.com** = The Gallery (finished work, SEO indexed)
-- **notes.shawnyeager.com** = The Workshop (WIP, search blocked via noindex)
+- **notes.shawnyeager.com** = The Workshop (WIP, SEO indexed)
 
 ### Automated Workflows
 Theme changes trigger automatic site updates via GitHub Actions:
@@ -169,7 +168,7 @@ Theme changes trigger automatic site updates via GitHub Actions:
 
 **The Gallery (.com):** Finished, polished work. Public-facing professional content.
 
-**The Workshop (.notes):** Work in progress, thinking in public. No perfection required. Intentionally not indexed by search engines.
+**The Workshop (notes.shawnyeager.com):** Work in progress, thinking in public. No perfection required.
 
 Ideas graduate from The Workshop to The Gallery.
 
@@ -179,10 +178,9 @@ Ideas graduate from The Workshop to The Gallery.
 
 1. Never commit `public/` directory (build artifact)
 2. Preserve essay permalinks on .com (changing breaks existing URLs)
-3. .notes MUST remain noindex (verify after every deployment)
-4. Design tokens only (never hardcode values)
-5. Never push without permission
-6. Match theme module path in both sites (GitHub URL)
+3. Design tokens only (never hardcode values)
+4. Never push without permission
+5. Match theme module path in both sites (GitHub URL)
 
 ---
 
