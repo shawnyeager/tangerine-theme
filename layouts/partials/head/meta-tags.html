@@ -1,0 +1,24 @@
+{{/*
+Purpose: Basic HTML meta tags (charset, viewport, description, author, canonical)
+
+Context Expected:
+- .IsHome - Whether this is the homepage
+- .Title, .Site.Title - Page and site titles
+- .Description, .Site.Params.description - Page and site descriptions
+- .Site.Params.author.name - Author name
+- .Permalink - Canonical URL
+- .Site.Params.noindex - Whether to block search engines
+*/}}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="author" content="{{ .Site.Params.author.name }}">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="{{ .Permalink }}">
+
+<!-- Robots meta tag -->
+<meta name="robots" content="{{ if .Site.Params.noindex }}noindex, nofollow{{ else }}index, follow{{ end }}">
