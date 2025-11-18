@@ -1,0 +1,59 @@
+{{/*
+Purpose: Generates JSON-LD structured data for WebSite schema
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .IsHome - Only runs on homepage
+- .Site.Title, .Site.BaseURL - Website metadata
+- .Site.Params.description - Site description
+- .Site.Params.author.* - Author information
+- .Site.Params.nostr, .github - Social profile URLs
+
+Features:
+- WebSite schema for homepage
+- Author as Person with optional jobTitle and sameAs links
+- Copyright holder and year
+- Social media profiles (if Nostr URL present)
+
+Important Notes:
+- Only generates on homepage (.IsHome check)
+- Copyright year uses current year (now.Format "2006")
+- Social links only included if Nostr URL configured
+*/}}
+
+{{- if .IsHome -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ .Site.Title }}",
+  "url": "{{ .Site.BaseURL }}",
+  "description": "{{ .Site.Params.description }}",
+  "inLanguage": "en-US",
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author.name }}",
+    "email": "{{ .Site.Params.author.email }}",
+    "url": "{{ .Site.BaseURL }}",
+    "description": "{{ .Site.Params.description }}"
+    {{- if .Site.Params.author.jobTitle -}}
+    ,"jobTitle": "{{ .Site.Params.author.jobTitle }}"
+    {{- end -}}
+    {{- if .Site.Params.nostr -}}
+    ,"sameAs": [
+      "{{ .Site.Params.nostr }}"
+      {{- if .Site.Params.github -}}
+      ,"{{ .Site.Params.github }}"
+      {{- end -}}
+    ]
+    {{- end -}}
+  },
+  "copyrightYear": "{{ now.Format "2006" }}",
+  "copyrightHolder": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author.name }}"
+  }
+}
+</script>
+{{- end -}}

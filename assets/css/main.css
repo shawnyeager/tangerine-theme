@@ -1,0 +1,1857 @@
+/* ==========================================================================
+   Main Stylesheet for shawnyeager.com
+   Complete design system implementation
+   Version 1.65.0 - November 2025 - Tightened download link spacing
+   ========================================================================== */
+
+/* ==========================================================================
+   Web Font Loading
+
+   Strategy: font-display: optional for fastest perceived load
+   - If Inter loads quickly (within 100ms block period): use it
+   - If Inter is delayed: use fallback system font, don't swap later
+   - Prevents layout shift and "flash of web font" (FOUT)
+   - System fallback: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto
+
+   Font file: 35KB Inter variable (weights 100-900)
+   ========================================================================== */
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: optional;
+    src: url('/fonts/inter-variable.woff2') format('woff2-variations');
+}
+
+/* ==========================================================================
+   CSS Custom Properties (Design Tokens)
+   ========================================================================== */
+
+:root {
+    /* Color Scheme - Signals browser to adapt UI elements (scrollbars, form controls) */
+    color-scheme: dark light;
+
+    /* Brand Colors - Trust Revolution Orange
+       Visual brand: #F84200 (used in brand bar, podcast art)
+       Text implementation: #d63900 light / #FF5733 dark (WCAG AA compliant) */
+    --brand-orange: light-dark(#d63900, #FF5733);
+    --brand-orange-hover: light-dark(#bf3300, #FF6B47);
+
+    /* Text Colors - WCAG AA compliant */
+    --text-primary: light-dark(#1a1a1a, #f0f0f0);
+    --text-secondary: light-dark(#444, #c8c8c8);
+    --text-meta: light-dark(#666, #a8a8a8);
+    --text-subtle: light-dark(#767676, #b0b0b0);
+    --text-bold: light-dark(#1a1a1a, #ffffff);
+    --highlight-bg: light-dark(#fef3cd, #443818);  /* soft yellow / amber */
+    --border-color: light-dark(#d5d5d5, #505050);
+    --background-body: light-dark(#ffffff, #1e1e1e);
+    --background-card: light-dark(#f5f5f5, #2a2a2a);
+
+    /* Typography */
+    --font-system: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    --line-height-body: 1.6;
+    --line-height-essay: 1.7;
+    --line-height-title: 1.15;  /* Tight line-height for large display titles */
+
+    /* Font Weights */
+    --font-weight-light: 360;     /* Lighter weight for dark mode */
+    --font-weight-normal: 400;
+    --font-weight-body: 450;      /* Body text - heavier than normal for Inter */
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Letter Spacing */
+    --letter-spacing-tight-xl: -0.03em;
+    --letter-spacing-tight-lg: -0.025em;
+    --letter-spacing-tight-md: -0.02em;
+    --letter-spacing-tight-sm: -0.015em;
+    --letter-spacing-normal: normal;
+    --letter-spacing-wide: 0.05em;
+    --letter-spacing-body: -0.01em;
+
+    /* =======================================================================
+       VERTICAL RHYTHM SYSTEM
+
+       Base unit: 8px grid
+       Philosophy: Balanced hierarchy without excessive whitespace
+       Design goal: Content > structure. Clear visual hierarchy that serves
+                    readability without feeling cramped or airy.
+
+       TOKEN HIERARCHY (Semantic Meaning):
+       --space-xs (8px):   Tight grouping within elements
+       --space-sm (12px):  Related elements (CTAs, internal spacing)
+       --space-md (16px):  Default spacing (paragraphs, list items, small headings)
+       --space-lg (24px):  Section internal spacing (meta groups, subsection headers)
+       --space-xl (32px):  Section breaks (page titles, content footers, back links)
+       --space-2xl (48px): Major separations (header→main, main→footer, homepage sections)
+       --space-3xl (64px): Page header element stacks (meta+title+first heading)
+
+       USAGE RULES:
+       1. Header-to-main gap: Always 2xl (48px) via header margin-bottom
+       2. Main-to-footer gap: Always 2xl (48px) via footer margin-top
+       3. Sections use margin-bottom: 0 (footer controls final gap)
+       4. Content headings: H2 (xl/32px top), H3 (lg/24px top), H4 (md/16px top)
+       5. First heading after page header: margin-top: 0 (header provides spacing)
+       6. Never stack margins - one element controls the gap
+       ======================================================================= */
+
+    /* Spacing Tokens */
+    --space-label-gap: 0.25rem;  /* 4px - Label-to-value gap in info pairs */
+    --arrow-gap: 0.125rem;       /* 2px - Arrow spacing in links */
+    --space-xs: 0.5rem;          /* 8px - Tight grouping within elements */
+    --space-sm: 0.75rem;         /* 12px - Related elements (CTAs, internal spacing) */
+    --space-md: 1rem;            /* 16px - Default spacing (paragraphs, list items, small headings) */
+    --space-lg: 1.5rem;          /* 24px - Section internal spacing (meta groups, subsection headers) */
+    --space-xl: 2rem;            /* 32px - Section breaks (page titles, content footers, back links) */
+    --space-2xl: 3rem;           /* 48px - Major separations (header→main, main→footer, homepage sections) */
+    --space-3xl: 4rem;           /* 64px - Page header element stacks (meta+title+first heading sequences) */
+
+    /* Component Sizing */
+    --content-max-width: 700px;
+    --card-padding: 2rem;
+    --border-radius-interactive: 4px;
+    --border-radius-code: 4px;
+    --brand-bar-height: 3px;
+    --checkbox-size: 1.1em;
+
+    /* Z-index Scale */
+    --z-brand-bar: 9999;
+    --z-skip-link: 10000;
+
+    /* Opacity */
+    --opacity-subdued: 0.5;
+
+    /* Transitions */
+    --transition-fast: 0.3s ease;
+
+    /* Content Elevation */
+    --shadow-content-light: light-dark(0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.4));
+
+    /* Syntax Highlighting */
+    --syntax-keyword: light-dark(#0066aa, #6cb6ff);
+    --syntax-function: light-dark(#6f42c1, #d2a8ff);
+    --syntax-string: light-dark(#aa5d00, #e9b872);
+    --syntax-operator: light-dark(#555555, #b0b0b0);
+    --syntax-default: light-dark(#1a1a1a, #d0d0d0);
+
+    /* Typography - Heading colors (enhanced contrast in dark mode) */
+    --text-heading-h2: light-dark(#1a1a1a, #ffffff);
+    --text-heading-h3: light-dark(#1a1a1a, #ebebeb);
+    --text-heading-h4: light-dark(#1a1a1a, #e0e0e0);
+    --text-heading-h5: light-dark(#1a1a1a, #d8d8d8);
+    --code-background: light-dark(#f5f5f5, #1e1e1e);
+
+    /* Breakpoints - Note: CSS variables in @media queries have limited browser support.
+       Use literal values in media queries for maximum compatibility. */
+    --breakpoint-mobile: 600px;
+
+    /* Typography Scale (Perfect Fourth: 1.333) */
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-code: 0.9rem;          /* Monospace code */
+    --font-base: 1rem;
+    --font-lg: 1.125rem;
+    --font-lg-plus: 1.0625rem;    /* Bio/intro text (17px) */
+    --font-xl: 1.333rem;
+    --font-2xl: 1.777rem;
+    --font-3xl: 2.369rem;
+    --font-4xl: 3.157rem;
+
+    /* Custom Typography Sizes */
+    --font-custom-32: 2rem;
+    --font-custom-24: 1.5rem;
+
+    /* Border Width */
+    --border-width: 1px;
+    --border-height-thin: 1px;
+
+    /* Component Sizing */
+    --podcast-art-size: 150px;
+    --button-min-width-lg: 85px;
+    --button-min-width-sm: 80px;
+    --skip-link-max-width: 260px;
+    --image-size-sm: 100px;
+    --image-size-md: 150px;
+    --image-size-lg: 200px;
+    --image-size-xl: 300px;
+}
+
+/* Manual Theme Override - User can force light or dark mode via 'd' keyboard toggle
+   The light-dark() function automatically selects values based on color-scheme */
+html[data-theme="light"] { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+
+/* ==========================================================================
+   Base Styles & Resets
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    overflow-y: scroll; /* Prevent horizontal shift when scrollbar appears/disappears */
+}
+
+body {
+    font-family: var(--font-system);
+    line-height: var(--line-height-body);
+    color: var(--text-primary);
+    background: var(--background-body);
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    letter-spacing: var(--letter-spacing-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code,
+pre,
+.code-block,
+.info-pair code {
+    letter-spacing: normal;
+}
+
+/* ==========================================================================
+   Brand Bar (Fixed Top)
+   ========================================================================== */
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--brand-bar-height);
+    background: var(--brand-orange);
+    z-index: var(--z-brand-bar);
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: var(--letter-spacing-tight-md);
+    color: var(--text-primary);
+}
+
+h1 {
+    font-size: var(--font-custom-32);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-xl);
+    letter-spacing: var(--letter-spacing-tight-lg);
+}
+
+/* Site name - unified styling across homepage (h1) and other pages (div) */
+header .site-title,
+header h1.site-title {
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-md);
+    margin-top: 0;
+    letter-spacing: normal; /* Override global h1 tight letter-spacing */
+}
+
+/* Site name in header should use text color, not brand color */
+header .site-title a {
+    color: var(--text-primary);
+}
+
+/* Global headings */
+h2 {
+    font-size: var(--font-custom-24);
+    font-weight: var(--font-weight-bold);
+    margin-top: var(--space-xl);  /* 32px - unified with content H2 */
+    margin-bottom: var(--space-md);
+}
+
+h3 {
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-bold);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+}
+
+h4 {
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-bold);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-xs);
+}
+
+h5, h6 {
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-bold);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-xs);
+}
+
+/* Reduce H3 spacing when preceded by CTA links */
+.cta-link + h3,
+.download-link + h3 {
+    margin-top: var(--space-lg);
+}
+
+.podcast-content h3 {
+    margin-top: var(--space-2xl);
+}
+
+p {
+    margin-bottom: var(--space-lg);
+    color: var(--text-secondary);
+    font-weight: var(--font-weight-body);
+}
+
+/* Reduce gap before action links */
+p:has(+ .cta-link),
+p:has(+ .download-link),
+p:has(+ .read-more),
+p:has(+ .back-link) {
+    margin-bottom: var(--space-sm);
+}
+
+ul {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-lg);
+}
+
+li {
+    margin-bottom: var(--space-xs);
+    line-height: var(--line-height-essay);
+    color: var(--text-secondary);
+    font-weight: var(--font-weight-body);
+}
+
+/* Bold text in page-body content - enhanced visibility */
+.page-body strong,
+.page-body b {
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-bold);
+}
+
+/* Highlighted text (markdown ==text==) */
+mark {
+    background-color: var(--highlight-bg);
+    color: var(--text-primary);
+    padding: 0.2em 0.4em;
+    border-radius: var(--border-radius-code);
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+a {
+    color: var(--brand-orange);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--brand-orange-hover);
+}
+
+/* Arrow alignment in links */
+a span[aria-hidden="true"] {
+    display: inline-block;
+    vertical-align: middle;
+    transform: translateY(-0.1em);
+}
+
+/* ==========================================================================
+   Focus Indicators - Keyboard Navigation Accessibility
+   ========================================================================== */
+
+/* Remove default outline, replace with custom focus-visible styles */
+a:focus {
+    outline: none;
+}
+
+/* Visible focus indicators for keyboard navigation only */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--brand-orange);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Skip link maintains its existing transform behavior */
+.skip-link:focus-visible {
+    outline: 2px solid var(--brand-orange);
+    outline-offset: 2px;
+}
+
+/* Email form input focus - enhance existing focus state */
+.email-form input[type="email"]:focus-visible {
+    outline: 2px solid var(--brand-orange);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Skip link should still appear for accessibility */
+    .skip-link:focus {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   Link Hierarchy System
+   1. PRIMARY CTAs: Orange, arrows (.cta-link, .read-more, .all-essays)
+   2. SECONDARY DOWNLOADS: Gray, no arrows (.download-link)
+   3. CONTACT LINKS: Orange, underline on hover (.info-value, .contact-item a)
+   ========================================================================== */
+
+/* ==========================================================================
+   Link Hierarchy - Consolidated Transition
+   ========================================================================== */
+
+/* All brand-colored links share transition for consistent hover behavior */
+.cta-link,
+.read-more,
+.all-essays,
+.all-notes,
+.podcast-links a,
+.essay-footer a,
+.pagination-prev,
+.pagination-next,
+.download-link,
+.contact-item a,
+.link-grid a {
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+/* CTA Links - Primary action links WITH arrows (→)
+   Usage: "Read more →", "All essays →", "Subscribe to newsletter →" */
+.cta-link,
+.read-more,
+.all-essays,
+.all-notes,
+.podcast-links a,
+.essay-footer a,
+.pagination-prev,
+.pagination-next {
+    color: var(--brand-orange);
+    font-weight: var(--font-weight-medium);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--arrow-gap);
+}
+
+/* Block-level CTAs get bottom margin */
+.cta-link {
+    margin-bottom: var(--space-sm);
+}
+
+/* CTAs inside paragraphs override to inline */
+p .cta-link {
+    margin-bottom: 0;
+    white-space: nowrap;  /* Prevent link text + arrow from wrapping */
+}
+
+/* Hover state for all primary CTAs */
+.cta-link:hover,
+.read-more:hover,
+.all-essays:hover,
+.all-notes:hover,
+.podcast-links a:hover,
+.essay-footer a:hover,
+.pagination-prev:hover,
+.pagination-next:hover {
+    color: var(--brand-orange-hover);
+}
+
+/* Download Links - Secondary utility style for downloads
+   Usage: "Download contact card", "Download ASCII key"
+   Gray, no arrow, less prominent than CTAs */
+.download-link {
+    color: var(--text-meta);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-normal);
+    display: block;
+    width: fit-content;
+    margin-top: var(--space-sm);
+}
+
+/* First download link after info-pair needs spacing */
+.info-pair + .download-link {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-xs);
+}
+
+/* Additional download links get tight spacing */
+.download-link + .download-link {
+    margin-bottom: var(--space-xs);
+}
+
+/* Download link after CTA needs spacing */
+.cta-link + .download-link {
+    margin-top: var(--space-md);
+}
+
+/* Info-pair followed by download link - minimal spacing (download link has its own margin-top) */
+.info-pair:has(+ .download-link) {
+    margin-bottom: 0;
+}
+
+/* Info-pair following download link needs section spacing */
+.download-link + .info-pair {
+    margin-top: var(--space-2xl);
+}
+
+/* Section spacing when info-pair follows CTA */
+.cta-link + .info-pair {
+    margin-top: var(--space-xl);
+}
+
+/* Download link following contact section - tighten spacing */
+.contact-section + .download-link {
+    margin-top: var(--space-sm);
+}
+
+/* Contact & Service Links - Orange, no arrows
+   Usage: Contact methods, podcast platforms, social links */
+.contact-item a,
+.link-grid a {
+    color: var(--brand-orange);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Consolidated hover states for download, contact, and service links */
+.download-link:hover,
+.contact-item a:hover,
+.link-grid a:hover {
+    color: var(--brand-orange-hover);
+}
+
+/* ==========================================================================
+   Layout Container
+   ========================================================================== */
+
+.container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-md) 0 var(--space-md);
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+
+body > .container:first-of-type {
+    padding-bottom: 0;
+}
+
+/* Page-level site header spacing (not article headers) */
+body > .container > header {
+    margin-bottom: var(--space-2xl);
+}
+
+nav {
+    display: flex;
+    gap: var(--space-lg);
+    margin-bottom: 0;
+    padding-bottom: var(--space-md);
+    border-bottom: var(--border-width) solid var(--border-color);
+}
+
+main .container {
+    padding-top: 0;
+}
+
+nav a {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+
+    &:hover,
+    &.active {
+        color: var(--brand-orange);
+    }
+}
+
+/* ==========================================================================
+   Site Footer (Unified Footer Zone)
+   ========================================================================== */
+
+.site-footer {
+    margin-top: var(--space-2xl);
+}
+
+.site-footer-inner {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--space-lg) 1rem var(--space-xl) 1rem;
+    position: relative;
+}
+
+.site-footer-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--space-md);
+    right: var(--space-md);
+    height: 1px;
+    background: var(--border-color);
+    transition: background-color var(--transition-fast);
+}
+
+.email-signup-intro {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    line-height: var(--line-height-body);
+    margin-bottom: var(--space-md);
+}
+
+.email-form {
+    display: flex;
+    gap: var(--space-xs);
+    align-items: stretch;
+    margin-bottom: var(--space-lg);
+    flex-wrap: nowrap;
+}
+
+.email-form input[type="email"] {
+    padding: 0.4rem 0;
+    border: none;
+    border-bottom: var(--border-width) solid var(--border-color);
+    border-radius: 0;
+    font-size: var(--font-sm);
+    font-family: var(--font-system);
+    background: var(--background-body);
+    color: var(--text-primary);
+    flex: 1;
+    max-width: var(--skip-link-max-width);
+    transition: border-color var(--transition-fast);
+}
+
+.email-form input[type="email"]:focus {
+    outline: none;
+    border-bottom-color: var(--brand-orange);
+}
+
+/* Show validation hint only after user has typed something */
+.email-form input[type="email"]:invalid:not(:placeholder-shown) {
+    border-bottom-color: var(--brand-orange);
+}
+
+.email-form input[type="email"]::placeholder {
+    color: var(--text-meta);
+    opacity: 0.5;
+}
+
+.email-form button {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--text-meta);
+    border: var(--border-width) solid var(--text-meta);
+    border-radius: var(--border-radius-interactive);
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-medium);
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.email-form button:hover {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.footer-links {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--text-meta);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-size: var(--font-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--arrow-gap);
+
+    &:hover {
+        color: var(--brand-orange);
+    }
+}
+
+/* ==========================================================================
+   Homepage Sections
+   ========================================================================== */
+
+.bio,
+.notes-homepage-intro {
+    margin-bottom: var(--space-2xl);
+    color: var(--text-secondary);
+    font-size: var(--font-lg-plus);  /* 17px - slightly larger than base for prominence */
+    line-height: var(--line-height-essay);
+}
+
+/* Unified section header style - applied to divs and non-semantic elements */
+.section-header,
+.essay-section-header,
+.section-label-small,
+.topics h4 {
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    margin-bottom: var(--space-lg);  /* 24px - connects header to content */
+
+    /* Override margin-top for semantic headings (h1/h2/h3) */
+    &:is(h1, h2, h3) {
+        margin-top: 0;
+    }
+}
+
+/* Reduce spacing between section label and topic tags in topics section */
+.topics .section-label-small {
+    margin-bottom: var(--space-sm);  /* 12px - tighter grouping with topic tags */
+}
+
+.latest-essay {
+    margin-bottom: var(--space-2xl);
+
+    /* Semantic heading: essay title (h3 under h2 section header) */
+    h3 {
+        font-size: var(--font-2xl);
+        font-weight: var(--font-weight-semibold);
+        margin-top: 0;
+        margin-bottom: var(--space-md);  /* 16px - title to description */
+        line-height: 1.3;
+
+        a {
+            color: var(--text-primary);
+
+            &:hover {
+                color: var(--brand-orange);
+            }
+        }
+    }
+
+    p {
+        margin-bottom: var(--space-md);
+        font-size: var(--font-base);
+        line-height: var(--line-height-body);
+    }
+}
+
+/* ==========================================================================
+   Card Components - Base Styles
+   ========================================================================== */
+
+/* Base card styling shared by podcast, services, and RSS cards */
+.podcast,
+.link-grid-card,
+.rss-feed-card {
+    padding: var(--card-padding);
+    background: var(--background-card);
+    transition: background-color var(--transition-fast);
+    contain: layout style paint; /* Isolate rendering for better performance */
+}
+
+.podcast {
+    margin-bottom: var(--space-2xl);
+
+    /* Prevent double spacing at card bottom edge */
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Link grid and RSS cards share spacing */
+.link-grid-card,
+.rss-feed-card {
+    margin-bottom: var(--space-xl);
+}
+
+/* RSS Feed Card - relative positioning for absolute copy button */
+.rss-feed-card {
+    position: relative;
+}
+
+.rss-url {
+    font-family: var(--font-monospace);
+    font-size: var(--font-code);
+    color: var(--text-primary);
+    display: block;
+    padding-right: 4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rss-copy-btn {
+    position: absolute;
+    right: var(--space-lg);
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    color: var(--text-secondary);
+    border: var(--border-width) solid var(--border-color);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--border-radius-interactive);
+    cursor: pointer;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-xs);
+    transition: all var(--transition-fast);
+    font-family: var(--font-system);
+}
+
+.rss-copy-btn:hover {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.podcast-header {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: flex-start;
+}
+
+/* Content images - systematic elevation */
+.media-section img,
+.page-body img {
+    box-shadow: var(--shadow-content-light);
+    transition: box-shadow var(--transition-fast);
+}
+
+.podcast-art {
+    width: var(--podcast-art-size);
+    height: var(--podcast-art-size);
+    flex-shrink: 0;
+    display: block;
+}
+
+.podcast img,
+.media-section .podcast-art {
+    box-shadow: none;
+    border: none;
+    outline: none;
+}
+
+.podcast-info h2 {
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-top: 0;
+    margin-bottom: var(--space-xs);
+}
+
+.podcast-info p {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+}
+
+/* Tagline - Reusable subtitle/description text */
+.tagline {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    margin-bottom: var(--space-lg);
+}
+
+.podcast-links {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+    align-items: center;
+}
+
+.link-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+}
+
+.link-grid.single-column {
+    grid-template-columns: 1fr;
+}
+
+.link-grid a {
+    font-size: var(--font-base);
+}
+
+/* ==========================================================================
+   Topic Tags Section
+   ========================================================================== */
+
+.topics {
+    margin-bottom: var(--space-lg);  /* Connect tags to content below */
+}
+
+/* Keep section-label-medium different (year headers in notes) */
+.recent-notes h3,
+.section-label-medium {
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+    margin-top: var(--space-xl);
+}
+
+.recent-notes h3:first-child,
+.section-label-medium:first-child {
+    margin-top: 0;
+}
+
+.topics {
+    margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
+}
+
+.topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: 0;  /* Parent .topics controls spacing */
+
+    a {
+        color: var(--text-meta);
+        text-decoration: none;
+        font-size: var(--font-sm);
+
+        &:hover {
+            color: var(--brand-orange);
+        }
+    }
+}
+
+/* ==========================================================================
+   Essay Listings
+   ========================================================================== */
+
+/* Section lists have no bottom margin - footer/next section provides spacing */
+.recent-essays,
+.recent-notes,
+.essay-list,
+.note-list {
+    margin-bottom: 0;
+}
+
+.page-title {
+    font-size: var(--font-custom-32);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-title);
+    margin-top: 0;
+    margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
+    letter-spacing: var(--letter-spacing-tight-xl);
+}
+
+.page-title:has(+ .page-subtitle) {
+    margin-bottom: var(--space-xs);
+}
+
+.page-subtitle {
+    font-size: var(--font-lg);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+}
+
+.essay-item,
+.note-item {
+    margin-bottom: var(--space-md);
+    contain: layout style paint; /* Isolate list items for better performance */
+
+    a {
+        color: var(--text-primary);
+        text-decoration: none;
+        display: flex;
+        gap: var(--space-xs);
+        line-height: 1.5;
+        align-items: baseline;
+
+        &:hover {
+            color: var(--brand-orange);
+        }
+    }
+}
+
+time.essay-date,
+time.note-date,
+.essay-date,
+.note-date {
+    color: var(--text-meta);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-normal);  /* Override body weight (450→400) */
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-width: var(--button-min-width-lg);
+    letter-spacing: normal;  /* Override body tight spacing */
+}
+
+.essay-title,
+.note-title-link {
+    flex: 1;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-base);
+}
+
+
+.all-essays,
+.all-notes {
+    margin-top: var(--space-lg);  /* 24px - gives CTA breathing room */
+}
+
+.topic-count {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
+}
+
+/* ==========================================================================
+   Single Essay Page
+   ========================================================================== */
+
+.essay-content,
+.note-content {
+    max-width: var(--content-max-width);
+}
+
+.page-meta {
+    margin-bottom: var(--space-xl);  /* Normal spacing before content */
+    color: var(--text-meta);
+    font-size: var(--font-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.page-meta-separator {
+    opacity: 0.5;
+}
+
+/* Page titles - bold weight for hierarchy consistency */
+.essay-title-single,
+.note-title-single {
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-title);
+    margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
+    letter-spacing: var(--letter-spacing-tight-lg);
+}
+
+.essay-title-single {
+    font-size: var(--font-custom-32);  /* Pragmatic size between scale steps */
+}
+
+.note-title-single {
+    font-size: var(--font-custom-32);  /* Pragmatic size between scale steps */
+}
+
+.essay-body,
+.note-body {
+    font-size: var(--font-lg);
+    line-height: var(--line-height-essay);
+
+    /* Paragraphs */
+    p {
+        margin-bottom: var(--space-lg);
+        font-weight: var(--font-weight-normal);
+        color: var(--text-primary);
+    }
+
+    /* Unordered lists */
+    ul {
+        margin: var(--space-md) 0;
+        padding-left: var(--space-lg);
+    }
+
+    /* List items */
+    li {
+        margin-bottom: var(--space-xs);
+        font-weight: var(--font-weight-normal);
+        color: var(--text-primary);
+    }
+
+    /* Bold text - enhanced visibility */
+    strong,
+    b {
+        font-weight: var(--font-weight-semibold);
+        color: var(--text-bold);
+    }
+
+    /* Images - systematic elevation */
+    img {
+        box-shadow: var(--shadow-content-light);
+        transition: box-shadow var(--transition-fast);
+    }
+
+    /* Content body link styles */
+    a {
+        color: var(--brand-orange);
+        text-decoration: underline;
+
+        &:hover {
+            color: var(--brand-orange-hover);
+        }
+    }
+}
+
+/* Reading content uses primary color for optimal contrast */
+.page-body p,
+.page-body li,
+.latest-essay p,
+.podcast p {
+    color: var(--text-primary);
+}
+
+/* Content heading spacing - unified hierarchy across essay/note/page bodies
+   Philosophy: Clear visual hierarchy without excessive gaps
+   H2 (32px top): Major section breaks
+   H3 (24px top): Subsection breaks
+   H4 (16px top): Minor heading breaks */
+.essay-body,
+.note-body,
+.page-body {
+    h2 {
+        margin-top: var(--space-xl);     /* 32px - major section break */
+        margin-bottom: var(--space-md);  /* 16px */
+    }
+
+    h3 {
+        margin-top: var(--space-lg);     /* 24px - subsection break */
+        margin-bottom: var(--space-sm);  /* 12px */
+    }
+
+    h4 {
+        margin-top: var(--space-md);     /* 16px - minor heading break */
+        margin-bottom: var(--space-sm);  /* 12px */
+    }
+}
+
+/* First heading after page header elements - reduce top margin to avoid excessive stacking
+   Applies when meta/title/subtitle elements precede the first content heading */
+.essay-content > header + .essay-body > h2:first-child,
+.note-content > header + .note-body > h2:first-child,
+.page-body > h2:first-child,
+.page-body > h3:first-child {
+    margin-top: 0;  /* No top margin - header elements provide spacing */
+}
+
+.podcast-content > h3:first-child {
+    margin-top: var(--space-md);  /* 16px - tighter spacing for podcast layout */
+}
+
+/* ==========================================================================
+   Markdown Elements - Shared Content Body Styles (CSS Nesting)
+   Applied to both .essay-body and .note-body
+   ========================================================================== */
+
+.essay-body,
+.note-body {
+    /* Ordered Lists */
+    ol {
+        margin: var(--space-lg) 0;
+        padding-left: var(--space-lg);
+
+        li {
+            margin-bottom: var(--space-xs);
+        }
+    }
+
+    /* Nested Lists */
+    li > ul,
+    li > ol {
+        margin: var(--space-xs) 0 0 0;
+    }
+
+    /* H6 special styling */
+    h6 {
+        margin-top: var(--space-md);
+        text-transform: uppercase;
+        letter-spacing: var(--letter-spacing-wide);
+    }
+
+    /* Blockquotes */
+    blockquote {
+        margin: var(--space-xl) 0;
+        padding: var(--space-md) var(--space-lg);
+        border-left: 4px solid var(--brand-orange);
+        background: var(--background-card);
+        font-style: italic;
+        color: var(--text-secondary);
+
+        p {
+            margin-bottom: var(--space-md);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        /* Nested blockquotes */
+        blockquote {
+            margin: var(--space-md) 0;
+            border-left-color: var(--text-meta);
+        }
+    }
+
+    /* Inline Code */
+    code {
+        font-family: var(--font-monospace);
+        font-size: 0.9em;
+        background: var(--background-card);
+        padding: 0.2em 0.4em;
+        border-radius: var(--border-radius-code);
+        border: var(--border-width) solid var(--border-color);
+        white-space: nowrap;
+    }
+
+    /* Code Blocks */
+    pre {
+        margin: var(--space-xl) 0;
+        padding: var(--space-lg);
+        background: var(--background-card);
+        border: var(--border-width) solid var(--border-color);
+        border-radius: var(--border-radius-code);
+        overflow-x: auto;
+        line-height: 1.5;
+
+        code {
+            background: none;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+            font-size: 0.875rem;
+        }
+    }
+
+    /* Syntax highlighted code (Hugo default) */
+    .highlight {
+        margin: var(--space-xl) 0;
+
+        pre {
+            margin: 0;
+        }
+
+        /* Syntax highlight color overrides - match code highlighter output colors */
+        span[style*="color:#00a8c8"] {
+            color: var(--syntax-keyword) !important;
+        }
+
+        span[style*="color:#75af00"] {
+            color: var(--syntax-function) !important;
+        }
+
+        span[style*="color:#d88200"] {
+            color: var(--syntax-string) !important;
+        }
+
+        span[style*="color:#f92672"] {
+            color: var(--syntax-operator) !important;
+        }
+
+        span[style*="color:#111"] {
+            color: var(--syntax-default) !important;
+        }
+    }
+
+    /* Horizontal Rules */
+    hr {
+        margin: var(--space-2xl) 0;
+        border-top: var(--border-width) solid var(--border-color);
+    }
+
+    /* Tables */
+    table {
+        width: 100%;
+        margin: var(--space-xl) 0;
+        border-collapse: collapse;
+        font-size: var(--font-base);
+
+        th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: var(--font-weight-semibold);
+            background: var(--background-card);
+            border: var(--border-width) solid var(--border-color);
+
+            &:last-child {
+                text-align: right;
+            }
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border: var(--border-width) solid var(--border-color);
+
+            &:last-child {
+                text-align: right;
+            }
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--background-card);
+        }
+    }
+
+    /* Task Lists */
+    input[type="checkbox"] {
+        margin-right: 0.5rem;
+        vertical-align: middle;
+        appearance: none;
+        width: 1.1em;
+        height: 1.1em;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius-code);
+        background: var(--background-card);
+        cursor: default;
+        position: relative;
+        flex-shrink: 0;
+
+        &:checked {
+            background: var(--text-meta);
+            border-color: var(--text-meta);
+
+            &::after {
+                content: '✓';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-size: 0.9em;
+                font-weight: bold;
+                line-height: 1;
+            }
+        }
+    }
+
+    li:has(input[type="checkbox"]) {
+        list-style: none;
+
+        &::marker {
+            content: '';
+            display: none;
+        }
+
+        input[type="checkbox"] {
+            margin-left: -1.5rem;
+            margin-right: 0.75rem;
+        }
+    }
+
+    /* Definition Lists */
+    dl {
+        margin: var(--space-lg) 0;
+    }
+
+    dt {
+        font-weight: var(--font-weight-semibold);
+        margin-top: var(--space-md);
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    dd {
+        margin-left: var(--space-xl);
+        margin-top: var(--space-xs);
+        color: var(--text-secondary);
+    }
+
+    /* Footnotes */
+    .footnotes {
+        margin-top: var(--space-3xl);  /* 64px - major content break */
+        padding-top: var(--space-xl);
+        border-top: var(--border-width) solid var(--border-color);
+        font-size: var(--font-sm);
+        color: var(--text-meta);
+
+        ol {
+            padding-left: var(--space-lg);
+        }
+    }
+
+    .footnote-ref {
+        text-decoration: none;
+        font-weight: var(--font-weight-semibold);
+    }
+
+    .footnote-backref {
+        text-decoration: none;
+        margin-left: 0.25rem;
+    }
+
+    /* Images */
+    img {
+        max-width: 100%;
+        height: auto;
+        margin: var(--space-xl) 0;
+        display: block;
+    }
+
+    /* Strikethrough */
+    del {
+        color: var(--text-meta);
+        text-decoration: line-through;
+    }
+
+    /* Superscript & Subscript */
+    sup,
+    sub {
+        font-size: 0.75em;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+    }
+
+    sup {
+        top: -0.5em;
+    }
+
+    sub {
+        bottom: -0.25em;
+    }
+
+    /* Emphasis */
+    em {
+        font-style: italic;
+    }
+}
+
+.essay-footer {
+    margin-top: var(--space-xl);
+    padding-top: 0;
+    border-top: none;
+    font-style: italic;
+}
+
+.essay-footer p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2xl);
+}
+
+.essay-footer a {
+    color: var(--brand-orange);
+    text-decoration: none;
+}
+
+.essay-footer a:hover {
+    color: var(--brand-orange-hover);
+    text-decoration: underline;
+}
+
+.essay-acknowledgement {
+    color: var(--text-meta);
+    font-style: italic;
+    font-size: var(--font-base);
+}
+
+/* Back links - unified styling for all back links */
+.essay-back-link,
+.note-back-link,
+.back-link,
+.back-link-wrapper {
+    margin-top: var(--space-xl);
+
+    a,
+    &.page-body a {
+        color: var(--text-meta);
+        text-decoration: none;
+        font-size: var(--font-base);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--arrow-gap);
+
+        &:hover {
+            color: var(--brand-orange);
+            text-decoration: none;
+        }
+    }
+}
+
+/* Standalone back-link anchor elements */
+a.back-link {
+    color: var(--text-meta);
+    text-decoration: none;
+    font-size: var(--font-base);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--arrow-gap);
+
+    &:hover {
+        color: var(--brand-orange);
+        text-decoration: none;
+    }
+}
+
+/* ==========================================================================
+   Page-Specific Layout
+   ========================================================================== */
+
+/* Bio boxes on /media page */
+.bio-text {
+    background: var(--background-card);
+    padding: var(--space-lg);
+    color: var(--text-primary);
+    margin-bottom: var(--space-lg);
+    line-height: var(--line-height-essay);
+    font-size: var(--font-base);
+}
+
+.bio-text p:last-child {
+    margin-bottom: 0;
+}
+
+.bio-text .info-pair:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Page Content Wrappers
+   ========================================================================== */
+
+.page-content {
+    max-width: var(--content-max-width);
+}
+
+/* Podcast page images */
+.podcast-content img {
+    margin: 0 0 var(--space-md) 0;
+    display: block;
+}
+
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+
+.pagination {
+    margin-top: var(--space-2xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+/* Pagination styles consolidated with CTA links above */
+
+/* ==========================================================================
+   Contact Display Patterns
+   A: Utility Pages - Vertical stack (.info-pair, .info-label, .info-value)
+   B: Media Contact - Horizontal table-like (.contact-info, .contact-item)
+   ========================================================================== */
+
+.info-pair {
+    margin-bottom: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-label-gap);
+
+    /* Tighter spacing when followed by related download links */
+    &:has(+ .download-link) {
+        margin-bottom: var(--space-md);
+    }
+
+    /* Monospace code elements for fingerprints and keys - plain text, not links */
+    code {
+        font-family: var(--font-monospace);
+        font-size: 0.9em;
+        word-break: break-all;
+        color: var(--text-primary);
+        cursor: text;
+    }
+}
+
+/* Media page contact section - tighter grouping for multiple contact methods */
+#contact + .info-pair {
+    margin-bottom: var(--space-lg);
+
+    ~ .info-pair {
+        margin-bottom: var(--space-lg);
+    }
+}
+
+.info-label {
+    font-weight: var(--font-weight-normal);
+    color: var(--text-meta);
+    font-size: var(--font-sm);
+}
+
+.info-value {
+    color: var(--brand-orange);
+    text-decoration: none;
+    font-size: var(--font-base);
+    transition: color var(--transition-fast);
+
+    &:hover {
+        color: var(--brand-orange-hover);
+    }
+}
+
+/* ==========================================================================
+   Skip Links (Keyboard Navigation)
+   ========================================================================== */
+
+.skip-link {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--brand-orange);
+    color: white;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    z-index: var(--z-skip-link);
+    font-weight: var(--font-weight-medium);
+    border-radius: 0 0 var(--border-radius-interactive) 0;
+    transform: translateY(-100%);
+    transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Image Size Variants - Composable sizing classes
+   Note: Higher specificity required to override Hugo figure img default width */
+
+/* All image size utilities are block-level */
+.img-sm,
+.img-md,
+.img-lg,
+.img-xl {
+    display: block;
+}
+
+.img-sm {
+    width: var(--image-size-sm) !important;
+    height: var(--image-size-sm) !important;
+}
+
+.img-md {
+    width: var(--image-size-md) !important;
+    height: var(--image-size-md) !important;
+}
+
+.img-lg {
+    width: var(--image-size-lg) !important;
+    height: var(--image-size-lg) !important;
+    margin-bottom: var(--space-lg);
+}
+
+.img-xl {
+    width: var(--image-size-xl) !important;
+    height: var(--image-size-xl) !important;
+}
+
+/* Image Treatment Variants - Composable styling classes */
+.circular-image {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.framed-image {
+    border: 4px solid var(--background-card);
+}
+
+/* Code Block - Styled code strings for fingerprints, keys, technical data */
+.code-block {
+    font-family: var(--font-monospace);
+    font-size: 0.9em;
+    background: var(--background-card);
+    padding: 0.2em 0.4em;
+    border-radius: var(--border-radius-code);
+    border: var(--border-width) solid var(--border-color);
+    color: var(--text-primary);
+    word-break: break-all;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   Dark Mode Overrides
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    /* Typography - Enhanced heading contrast in dark mode */
+    h2,
+    .essay-body h2,
+    .note-body h2,
+    .page-body h2 {
+        color: var(--text-heading-h2);
+    }
+
+    h3,
+    .essay-body h3,
+    .note-body h3,
+    .page-body h3 {
+        color: var(--text-heading-h3);
+    }
+
+    .essay-body h4,
+    .note-body h4 {
+        color: var(--text-heading-h4);
+    }
+
+    .essay-body h5,
+    .essay-body h6,
+    .note-body h5,
+    .note-body h6 {
+        color: var(--text-heading-h5);
+    }
+
+    /* All headings - increased weight for better hierarchy in dark mode */
+    h1, h2, h3, h4, h5, h6,
+    .essay-title-single,
+    .note-title-single,
+    .page-title,
+    .essay-body h2,
+    .essay-body h3,
+    .essay-body h4,
+    .essay-body h5,
+    .essay-body h6,
+    .note-body h2,
+    .note-body h3,
+    .note-body h4,
+    .note-body h5,
+    .note-body h6,
+    .page-body h2,
+    .page-body h3 {
+        font-weight: var(--font-weight-bold);
+    }
+
+    /* Body text - lighter weight in dark mode */
+    p, li {
+        font-weight: var(--font-weight-normal);
+    }
+
+    /* Long-form reading */
+    .essay-body p,
+    .essay-body li,
+    .note-body p,
+    .note-body li,
+    .page-body p,
+    .page-body li {
+        font-weight: var(--font-weight-light);
+    }
+
+    /* Bold text - increased weight for better differentiation in dark mode */
+    .essay-body strong,
+    .essay-body b,
+    .note-body strong,
+    .note-body b,
+    .page-body strong,
+    .page-body b {
+        font-weight: var(--font-weight-bold);
+    }
+
+    /* Syntax Highlighting - Code blocks */
+    .essay-body .highlight pre,
+    .note-body .highlight pre {
+        background: var(--code-background) !important;
+        border-color: var(--border-color);
+    }
+
+    .essay-body .highlight pre[style],
+    .note-body .highlight pre[style] {
+        background: var(--code-background) !important;
+        color: #d0d0d0 !important;
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    body::before, nav, footer, .podcast, .topic-tags {
+        display: none;
+    }
+    body { background: white; color: black; }
+    a { color: black; text-decoration: underline; }
+}
+
+/* ==========================================================================
+   Mobile Responsive Styles
+   ========================================================================== */
+
+/* Mobile breakpoint - hardcoded value because CSS variables don't work in media queries */
+/* ==========================================================================
+   YouTube Embeds and Captions
+   ========================================================================== */
+
+/* Add extra spacing after "Recent speaking" heading */
+#recent-speaking {
+    margin-bottom: var(--space-lg);
+}
+
+/* Add spacing after YouTube embeds (both standard and preview versions) */
+div[style*="padding-bottom: 56.25%"],
+.youtube-preview-container {
+    margin-bottom: var(--space-xl);
+}
+
+/* Style paragraphs that follow YouTube embeds as captions */
+div[style*="padding-bottom: 56.25%"] + p,
+.youtube-preview-container + p {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    margin-top: calc(var(--space-xl) * -0.5);  /* Pull caption closer to video */
+    margin-bottom: var(--space-xl);
+}
+
+/* Strong text within captions (event/panel titles) */
+div[style*="padding-bottom: 56.25%"] + p strong,
+.youtube-preview-container + p strong {
+    font-weight: var(--font-weight-semibold);
+    font-style: normal;
+    color: var(--text-primary);
+}
+
+@media (max-width: 600px) {
+    html { font-size: 16px; }
+    .container { padding: var(--space-lg) var(--space-md) 0 var(--space-md); }
+    .page-meta { margin-bottom: var(--space-lg); }  /* Reduced breathing room on mobile */
+    .email-form input[type="email"] { max-width: none; }
+    .footer-links { gap: var(--space-sm); }
+    .podcast-header { flex-direction: column; }
+    .podcast-art { width: 130px; height: 130px; }
+    .podcast-links { margin-top: 0; }
+    .pagination { flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{{/*
+URL Helper Standards:
+- Use {{ "path" | relURL }} for internal links (ensures portability if site moves to subdirectory)
+- Use {{ .RelPermalink }} for current page URL
+- Use {{ .Permalink }} for canonical/absolute URLs
+- Never hardcode paths like "/essays/" or "/"
+*/}}
+<html lang="{{ .Site.LanguageCode }}">
+{{ partial "head.html" . }}
+<body{{ with .File }} class="{{ .TranslationBaseName }}-page"{{ end }}>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="container">
+        {{ partial "header.html" . }}
+        <main id="main-content">
+            {{ block "main" . }}{{ end }}
+        </main>
+    </div>
+    {{ partial "footer.html" . }}
+
+    <!-- Theme Toggle Script - Keyboard shortcuts: 'd' (toggle), 'a' (auto/system) -->
+    <script src="{{ "js/theme-toggle.js" | relURL }}" defer></script>
+</body>
+</html>

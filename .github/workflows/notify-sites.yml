@@ -1,0 +1,29 @@
+name: Notify Sites of Theme Update
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'assets/**'
+      - 'layouts/**'
+      - 'static/**'
+      - 'theme.toml'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger .com site update
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.SITES_UPDATE_TOKEN }}
+          repository: shawnyeager/shawnyeager-com
+          event-type: theme-updated
+
+      - name: Trigger .notes site update
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.SITES_UPDATE_TOKEN }}
+          repository: shawnyeager/shawnyeager-notes
+          event-type: theme-updated

@@ -1,0 +1,36 @@
+{{/*
+Purpose: Renders a content card with optional heading
+
+Parameters:
+- heading (string, optional): Card heading (rendered as H3)
+- class (string, optional): CSS class (default: "card")
+
+Inner Content:
+- Markdown content between opening and closing tags
+- Processed with markdownify
+
+Usage:
+{{< card heading="Key Points" >}}
+- Point one
+- Point two
+{{< /card >}}
+
+{{< card class="highlight-box" >}}
+Custom styled content here.
+{{< /card >}}
+
+Important Notes:
+- Inner content supports full Markdown syntax
+- Heading rendered as H3 element if provided
+- Class parameter allows custom styling variants
+*/}}
+
+{{- $heading := .Get "heading" -}}
+{{- $class := .Get "class" | default "card" -}}
+
+<div class="{{ $class }}">
+    {{- if $heading -}}
+        <h3>{{ $heading }}</h3>
+    {{- end -}}
+    {{- .Inner | markdownify -}}
+</div>

@@ -1,0 +1,27 @@
+{{/*
+Purpose: Renders site header with title and main navigation
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .IsHome - Determines if site title should be H1 (homepage) or div (other pages)
+- .Site.Title - Site title text
+
+Features:
+- Semantic HTML: H1 on homepage, div on other pages (page content gets H1)
+- Includes main navigation via navigation.html partial
+- Accessibility: role="banner", aria-label
+
+Important Notes:
+- Only homepage uses H1 for site title; other pages reserve H1 for page content
+- Ensures proper heading hierarchy for SEO and accessibility
+*/}}
+
+<header role="banner" aria-label="Site header">
+    {{ if .IsHome }}
+    <h1 class="site-title"><a href="{{ "/" | relURL }}">{{ .Site.Title }}</a></h1>
+    {{ else }}
+    <div class="site-title"><a href="{{ "/" | relURL }}">{{ .Site.Title }}</a></div>
+    {{ end }}
+    {{ partial "navigation.html" . }}
+</header>

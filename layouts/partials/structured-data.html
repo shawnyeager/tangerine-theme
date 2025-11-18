@@ -1,0 +1,83 @@
+{{/*
+Purpose: Generates JSON-LD structured data for BlogPosting schema
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .IsPage, .Type - Page type detection (only runs for essays/notes pages)
+- .Title, .Description - Article metadata
+- .Permalink - Canonical URL
+- .Date, .Lastmod - Publication and modification dates
+- .WordCount - For reading time calculation
+- .Params.topics, .Params.tags - Taxonomy data for keywords
+- .Site.Params.author.* - Author information
+- .Site.Params.og_image - Publisher logo
+- .Site.Params.nostr, .github - Social profile URLs
+
+Features:
+- BlogPosting schema with rich metadata
+- Reading time calculation (200 words/minute, minimum 1 minute)
+- Author as Person with sameAs social links
+- Publisher as Organization
+- Keywords from topics + tags
+- ArticleSection from first topic
+- Image from get-og-image.html helper
+
+Important Notes:
+- Only generates for essays and notes pages (.IsPage check)
+- Reading time formatted as ISO 8601 duration (PT5M = 5 minutes)
+- Falls back to site description if page description missing
+- Social profile links (sameAs) only added if Nostr URL present
+*/}}
+
+{{- if and .IsPage (or (eq .Type "essays") (eq .Type "notes")) -}}
+{{- /* Calculate reading time based on 200 words per minute */ -}}
+{{- $readingTimeMinutes := div .WordCount 200 -}}
+{{- if lt $readingTimeMinutes 1 -}}
+  {{- $readingTimeMinutes = 1 -}}
+{{- end -}}
+{{- $timeRequired := printf "PT%dM" $readingTimeMinutes -}}
+{{- $structuredData := dict "@context" "https://schema.org" "@type" "BlogPosting" "headline" .Title "description" (cond .Description .Description .Site.Params.description) "url" .Permalink "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00") "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00") "wordCount" .WordCount "timeRequired" $timeRequired "inLanguage" "en-US" "isAccessibleForFree" true "copyrightYear" (.Date.Format "2006") -}}
+{{- /* Add articleSection from first topic */ -}}
+{{- if .Params.topics -}}
+  {{- $structuredData = merge $structuredData (dict "articleSection" (index .Params.topics 0)) -}}
+{{- end -}}
+{{- /* Add keywords from topics and tags */ -}}
+{{- $keywords := slice -}}
+{{- if .Params.topics -}}
+  {{- $keywords = $keywords | append .Params.topics -}}
+{{- end -}}
+{{- if .Params.tags -}}
+  {{- $keywords = $keywords | append .Params.tags -}}
+{{- end -}}
+{{- if gt (len $keywords) 0 -}}
+  {{- $structuredData = merge $structuredData (dict "keywords" (delimit $keywords ", ")) -}}
+{{- end -}}
+{{- /* Enhanced author with URL, description, and jobTitle */ -}}
+{{- $author := dict "@type" "Person" "name" .Site.Params.author.name "email" .Site.Params.author.email "url" .Site.BaseURL "description" .Site.Params.description -}}
+{{- if .Site.Params.author.jobTitle -}}
+  {{- $author = merge $author (dict "jobTitle" .Site.Params.author.jobTitle) -}}
+{{- end -}}
+{{- if .Site.Params.nostr -}}
+  {{- $sameAs := slice .Site.Params.nostr -}}
+  {{- if .Site.Params.github -}}
+    {{- $sameAs = $sameAs | append .Site.Params.github -}}
+  {{- end -}}
+  {{- $author = merge $author (dict "sameAs" $sameAs) -}}
+{{- end -}}
+{{- $structuredData = merge $structuredData (dict "author" $author) -}}
+{{- /* Publisher as Organization with logo */ -}}
+{{- $publisherLogo := dict "@type" "ImageObject" "url" (.Site.Params.og_image | absURL) -}}
+{{- $publisher := dict "@type" "Organization" "name" .Site.Params.author.name "logo" $publisherLogo -}}
+{{- $structuredData = merge $structuredData (dict "publisher" $publisher) -}}
+{{- $mainEntity := dict "@type" "WebPage" "@id" .Permalink -}}
+{{- $structuredData = merge $structuredData (dict "mainEntityOfPage" $mainEntity) -}}
+{{- $imageURL := partial "functions/get-og-image.html" . -}}
+{{- if $imageURL -}}
+  {{- $image := dict "@type" "ImageObject" "url" $imageURL "contentUrl" $imageURL "width" 1200 "height" 630 -}}
+  {{- $structuredData = merge $structuredData (dict "image" $image) -}}
+{{- end -}}
+<script type="application/ld+json">
+{{ $structuredData | jsonify | safeJS }}
+</script>
+{{- end -}}

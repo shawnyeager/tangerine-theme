@@ -1,0 +1,21 @@
+{{/*
+Semantic page title helper - handles visibility based on content type and frontmatter
+
+Individual content (essays/notes): Always visible (content needs prominent titles)
+Section listings: Hidden (utility page, no visual noise)
+Pages: Conditional visibility via show_title frontmatter flag
+  - Default: sr-only (screen-reader only, no visual noise)
+  - show_title: true → visible (for feature pages like /now, /podcast, /about)
+
+Parameterized via .Site.Params.content_type ("essays" or "notes")
+*/}}
+{{ if and (eq .Type .Site.Params.content_type) (ne .Kind "section") }}
+    {{/* Individual content pages (essays or notes) */}}
+    <h1 class="page-title">{{ .Title }}</h1>
+{{ else if .Params.show_title }}
+    {{/* Pages explicitly flagged to show title */}}
+    <h1 class="page-title">{{ .Title }}</h1>
+{{ else }}
+    {{/* Default: hide title (section listings, utility pages, etc) */}}
+    <h1 class="sr-only">{{ .Title }}</h1>
+{{ end }}

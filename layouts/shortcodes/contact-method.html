@@ -1,0 +1,64 @@
+{{/*
+Purpose: Renders a contact method with label and clickable link
+
+Parameters:
+- type (string, required): Contact method type ("email", "signal", "calendar", "vcard", or custom)
+- value (string, required): Contact value/URL
+- label (string, optional): Display label (auto-generated from type if not provided)
+- display (string, optional): Display value (defaults to value parameter)
+
+Context Expected:
+- .Site.Params.plausible_events.contact_{type} - Analytics event name
+
+Features:
+- Auto-generates labels based on type: email→"Email", signal→"Signal", etc.
+- Auto-prefixes mailto: for email type
+- Plausible analytics event tracking
+- Flexible display value (e.g., show "+1..." instead of full tel: URL)
+
+Usage:
+{{< contact-method type="email" value="hello@example.com" >}}
+{{< contact-method type="signal" value="https://signal.me/#..." label="Signal" >}}
+{{< contact-method type="calendar" value="https://cal.com/..." display="Schedule a call" >}}
+
+Important Notes:
+- Email type automatically adds mailto: prefix
+- Event key constructed as contact_{type} (e.g., contact_email, contact_signal)
+- If label not provided, defaults based on type
+- Renders as info-pair div with label and clickable link
+*/}}
+
+{{- $type := .Get "type" -}}
+{{- $value := .Get "value" -}}
+{{- $label := .Get "label" -}}
+{{- $displayValue := .Get "display" | default $value -}}
+
+{{- /* Build event key from type */ -}}
+{{- $eventKey := printf "contact_%s" $type -}}
+{{- $event := index .Site.Params.plausible_events $eventKey -}}
+
+{{- /* Determine label */ -}}
+{{- if not $label -}}
+    {{- if eq $type "email" -}}
+        {{- $label = "Email" -}}
+    {{- else if eq $type "signal" -}}
+        {{- $label = "Signal" -}}
+    {{- else if eq $type "calendar" -}}
+        {{- $label = "Calendar" -}}
+    {{- else if eq $type "vcard" -}}
+        {{- $label = "Contact Card" -}}
+    {{- else -}}
+        {{- $label = $type -}}
+    {{- end -}}
+{{- end -}}
+
+{{- /* Build URL based on type */ -}}
+{{- $url := $value -}}
+{{- if eq $type "email" -}}
+    {{- $url = printf "mailto:%s" $value -}}
+{{- end -}}
+
+<div class="info-pair">
+    <span class="info-label">{{ $label }}:</span>
+    <a href="{{ $url }}" class="info-value{{ if $event }} plausible-event-name={{ $event }}{{ end }}">{{ $displayValue }}</a>
+</div>
