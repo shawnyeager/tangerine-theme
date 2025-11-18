@@ -1,0 +1,40 @@
+{{/*
+Purpose: Renders a styled link with optional analytics tracking
+
+Parameters:
+- url (string, required): Link destination
+- text (string, required): Link text
+- style (string, optional): Link style - "plain" (default), "cta", or "back"
+- event (string, optional): Plausible analytics event name
+
+Features:
+- Three style variants:
+  - "plain": Standard link (no class)
+  - "cta": Call-to-action with → arrow
+  - "back": Back link with ← arrow
+- Optional analytics event tracking
+
+Usage:
+{{< link url="/about" text="Learn more" >}}
+{{< link url="/subscribe" text="Get Started" style="cta" >}}
+{{< link url="/essays" text="Back to Essays" style="back" >}}
+{{< link url="/download" text="Download" event="download_click" >}}
+
+Important Notes:
+- Arrows use aria-hidden for accessibility
+- Analytics event added via plausible-event-name class
+- Default style is "plain" (basic link)
+*/}}
+
+{{- $url := .Get "url" -}}
+{{- $text := .Get "text" -}}
+{{- $style := .Get "style" | default "plain" -}}
+{{- $event := .Get "event" -}}
+
+{{- if eq $style "cta" -}}
+    <a href="{{ $url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}">{{ $text }} <span aria-hidden="true">→</span></a>
+{{- else if eq $style "back" -}}
+    <a href="{{ $url }}" class="back-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span aria-hidden="true">←</span> {{ $text }}</a>
+{{- else -}}
+    <a href="{{ $url }}"{{ if $event }} class="plausible-event-name={{ $event }}"{{ end }}>{{ $text }}</a>
+{{- end -}}

@@ -1,0 +1,83 @@
+{{/*
+Purpose: Renders taxonomy pages (topics, tags) with parameterized content type support
+
+Parameters: None (uses page and site context)
+
+Context Expected:
+- .Site.Params.content_type - "essays" or "notes" (default: "essays")
+- .Title - Taxonomy term name (e.g., "Bitcoin", "Sales")
+- .Pages - Pages tagged with this taxonomy term
+- .Draft - Draft status for filtering (production only)
+
+Features:
+- Parameterized for both essays and notes sites
+- Dynamic class names based on content type
+- Draft filtering in production (not in hugo server)
+- Item count with singular/plural handling
+- Back link to content section
+- Different heading styles for essays vs notes
+
+Content Type Variations:
+- Essays: section-label-small heading, shows count
+- Notes: page-title heading with "Notes tagged:" prefix
+
+Important Notes:
+- Filters out drafts in production builds
+- CSS classes generated dynamically from content type
+- Date format: "2006 · 01" (year · month)
+- Back link URLs differ: essays→/essays/, notes→/
+*/}}
+
+{{ define "main" }}
+    {{/* Parameterized taxonomy template for topics/tags */}}
+    {{ $contentType := .Site.Params.content_type | default "essays" }}
+    {{ $singular := cond (eq $contentType "notes") "note" "essay" }}
+    {{ $sectionClass := printf "%s-list" $singular }}
+    {{ $itemClass := printf "%s-item" $singular }}
+    {{ $titleClass := cond (eq $contentType "notes") "note-title-link" (printf "%s-title" $singular) }}
+    {{ $dateClass := printf "%s-date" $singular }}
+    {{ $backLinkURL := cond (eq $contentType "notes") "/" (printf "/%s/" $contentType) }}
+    {{ $backLinkClass := cond (eq $contentType "notes") "note-back-link" "" }}
+
+    {{/* Page title */}}
+    {{ if eq $contentType "notes" }}
+    <h1 class="page-title">Notes tagged: {{ .Title }}</h1>
+    {{ else }}
+    <h1 class="section-label-small">{{ .Title }}</h1>
+    {{ $pages := .Pages }}
+    {{ if not hugo.IsServer }}
+    {{ $pages = where $pages "Draft" false }}
+    {{ end }}
+    <div class="topic-count">{{ len $pages }} {{ if eq (len $pages) 1 }}{{ $singular }}{{ else }}{{ $contentType }}{{ end }} on this topic</div>
+    {{ end }}
+
+    <section class="{{ $sectionClass }}">
+        {{ $pages := .Pages }}
+        {{ if not hugo.IsServer }}
+        {{ $pages = where $pages "Draft" false }}
+        {{ end }}
+        {{ range $pages }}
+        <article class="{{ $itemClass }}">
+            <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}">
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="{{ $dateClass }}">{{ .Date.Format "2006 · 01" }}</time>
+                <span class="{{ $titleClass }}">{{ .Title }}</span>
+            </a>
+        </article>
+        {{ end }}
+    </section>
+
+    {{/* Back link */}}
+    {{ if eq $contentType "notes" }}
+    <div class="back-link-wrapper">
+        <a href="{{ $backLinkURL | relURL }}" class="{{ $backLinkClass }}">
+            <span aria-hidden="true">←</span> All {{ $contentType }}
+        </a>
+    </div>
+    {{ else }}
+    <div class="back-link">
+        <a href="{{ $backLinkURL | relURL }}">
+            <span aria-hidden="true">←</span> All {{ $contentType }}
+        </a>
+    </div>
+    {{ end }}
+{{ end }}

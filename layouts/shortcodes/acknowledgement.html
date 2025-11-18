@@ -1,0 +1,22 @@
+{{/*
+Purpose: Wraps acknowledgement text in styled span
+
+Parameters: None
+
+Inner Content:
+- Plain text acknowledgement message
+
+Features:
+- Simple wrapper for essay-acknowledgement styling
+- No Markdown processing (use plain text)
+
+Usage:
+{{< acknowledgement >}}Thanks to Alice and Bob for feedback.{{< /acknowledgement >}}
+
+Important Notes:
+- Inner content not processed with markdownify
+- Styled via essay-acknowledgement class
+- Typically used at end of essays for attribution/thanks
+*/}}
+
+<span class="essay-acknowledgement">{{ .Inner }}</span>

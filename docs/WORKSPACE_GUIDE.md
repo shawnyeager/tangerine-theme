@@ -1,0 +1,190 @@
+# CLAUDE.md - Workspace Guide
+
+This workspace contains 4 integrated repositories for shawnyeager.com and notes.shawnyeager.com.
+
+**⚠️ PRIVATE WORKSPACE:** This is a private workspace directory. Public repositories have their own CLAUDE.md files with public-safe information only.
+
+---
+
+## Repositories
+
+Each repository has its own detailed CLAUDE.md file with complete documentation:
+
+### shawnyeager-com (The Gallery)
+**Location:** `shawnyeager-com/CLAUDE.md`
+
+Finished essays and professional content site.
+- Site configuration and content guidelines
+- Essay frontmatter requirements
+- Image requirements and validation
+- Deployment and verification
+
+### shawnyeager-notes (The Workshop)
+**Location:** `shawnyeager-notes/CLAUDE.md`
+
+Work-in-progress notes and thinking in public.
+- Site configuration (noindex, no newsletter)
+- Note frontmatter structure
+- Search engine blocking verification
+- Deployment checklist
+
+### tangerine-theme (Shared Theme Module)
+**Location:** `tangerine-theme/CLAUDE.md`
+
+Hugo theme module providing shared layouts, design system, and components.
+- Theme architecture and module workflow
+- Design system tokens and guidelines
+- Template documentation
+- Publishing workflow (automated via GitHub Actions)
+
+**Complete documentation:** `tangerine-theme/docs/`
+- `DESIGN_SYSTEM_SPECIFICATION.md` - Colors, typography, spacing, WCAG compliance
+- `PLAUSIBLE_SETUP.md` - Analytics setup and event tracking
+
+### shared-workflows (GitHub Actions)
+**Location:** `shared-workflows/README.md`
+
+Reusable GitHub Actions workflows for content quality and validation.
+- Link checking
+- Markdown linting
+- Frontmatter validation
+- Image alt text validation
+- Hugo module validation
+
+---
+
+## ⚠️ CRITICAL RULES (All Repos)
+
+### Never Push Without Permission
+- Do NOT run `git push` without explicit permission
+- User must say "push" or "ship it"
+- Commits and tags are fine, but never push automatically
+
+### Always Use Design Tokens
+- NEVER hardcode pixel values, hex colors, or font weights
+- ALWAYS use CSS custom properties from tangerine-theme
+- Check `tangerine-theme/assets/css/main.css` for available tokens
+- Examples:
+  - ✅ `font-size: var(--font-lg);` ❌ `font-size: 18px;`
+  - ✅ `color: var(--text-primary);` ❌ `color: #1a1a1a;`
+
+---
+
+## Quick Start
+
+### Local Development
+
+**The Gallery (.com):**
+```bash
+cd ~/Work/shawnyeager/shawnyeager-com
+hugo server -D -p 1313
+```
+
+**The Workshop (.notes):**
+```bash
+cd ~/Work/shawnyeager/shawnyeager-notes
+hugo server -D -p 1316
+```
+
+### Testing Theme Changes Locally (BEFORE Publishing)
+
+**With replace directives, testing is automatic:**
+
+```bash
+# Make changes to theme
+cd ~/Work/shawnyeager/tangerine-theme
+# Edit files (layouts, CSS, templates)
+
+# Changes are IMMEDIATELY visible in both sites
+# Just refresh your browser - no hugo mod get needed!
+# The replace directive makes Hugo use ../tangerine-theme automatically
+```
+
+Start Hugo servers for both sites:
+- **Gallery (.com):** `hugo server -D -p 1313` → http://localhost:1313
+- **Workshop (.notes):** `hugo server -D -p 1316` → http://localhost:1316
+
+Then: Edit theme files → refresh browser → see changes instantly.
+
+**Important:** Once you push theme changes to GitHub, DO NOT manually update sites - GitHub Actions handles that automatically.
+
+### Publishing Theme Changes
+
+Theme publishing is **automated via GitHub Actions**:
+
+1. Commit and push theme to master branch:
+   ```bash
+   cd ~/Work/shawnyeager/tangerine-theme
+   git add -A
+   git commit -m "Description of changes"
+   git push origin master
+   ```
+2. GitHub Actions automatically updates both sites' `go.mod` files and deploys
+
+**Important:** Sites track master branch - no version tagging needed.
+
+**⚠️ CRITICAL: DO NOT MANUALLY UPDATE SITES AFTER THEME PUSH**
+
+After pushing theme changes:
+- ❌ DO NOT run `hugo mod get` in site repos
+- ❌ DO NOT commit `go.mod` changes in site repos
+- ❌ DO NOT push to site repos
+- ✅ WAIT for GitHub Actions to auto-update sites (2-3 minutes)
+- ✅ VERIFY automation worked via `gh run list`
+
+GitHub Actions will handle everything automatically. Manual intervention creates duplicate commits and race conditions.
+
+**Exception:** Manual override only if automation fails (verify first with `gh run list`).
+
+---
+
+## Architecture Overview
+
+### Hugo Modules Pattern
+- Both sites import `tangerine-theme` via Hugo Modules
+- Theme provides layouts, CSS, and shared components
+- Sites can override any template by creating the same file locally
+- **Local dev:** Both sites have `replace` directive in go.mod pointing to `../tangerine-theme`
+  - This makes Hugo use the local theme directory automatically
+  - No need to run `hugo mod get` - changes are immediately visible
+- **Production:** GitHub Actions automatically removes replace directive when deploying
+  - Netlify fetches theme from GitHub master branch (theme is public)
+  - Sites track latest master branch commit in go.mod
+  - Replace directive is auto-managed - don't add/remove it manually
+
+### Two-Domain Strategy
+- **shawnyeager.com** = The Gallery (finished work, SEO indexed)
+- **notes.shawnyeager.com** = The Workshop (WIP, search blocked via noindex)
+
+### Automated Workflows
+Theme changes trigger automatic site updates via GitHub Actions:
+1. Push to `tangerine-theme` triggers notification workflow
+2. Both site repos receive `repository_dispatch` events
+3. Sites auto-run `hugo mod get -u` and commit `go.mod` updates
+4. Netlify auto-deploys updated sites
+
+---
+
+## Philosophy
+
+**The Gallery (.com):** Finished, polished work. Public-facing professional content.
+
+**The Workshop (.notes):** Work in progress, thinking in public. No perfection required. Intentionally not indexed by search engines.
+
+Ideas graduate from The Workshop to The Gallery.
+
+---
+
+## Key Constraints
+
+1. Never commit `public/` directory (build artifact)
+2. Preserve essay permalinks on .com (changing breaks existing URLs)
+3. .notes MUST remain noindex (verify after every deployment)
+4. Design tokens only (never hardcode values)
+5. Never push without permission
+6. Match theme module path in both sites (GitHub URL)
+
+---
+
+**For detailed documentation, see each repository's CLAUDE.md file.**
+- You are forbidden from blaming your mistakes on browser caching or Netlify build processes. You will take full responsibility for your mistakes and fix them.

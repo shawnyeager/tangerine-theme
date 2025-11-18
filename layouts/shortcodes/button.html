@@ -1,0 +1,38 @@
+{{/*
+Purpose: Renders a button or call-to-action link
+
+Parameters:
+- url (string, required): Link destination
+- text (string, required): Button/link text
+- variant (string, optional): Style variant - "cta" (default), "download", or "button"
+- event (string, optional): Plausible analytics event name
+
+Features:
+- Three variants: CTA link with arrow, download link, or submit button
+- Optional analytics tracking
+- Semantic HTML based on variant
+
+Usage:
+{{< button url="/subscribe" text="Subscribe" >}}
+{{< button url="/file.pdf" text="Download PDF" variant="download" >}}
+{{< button text="Submit" variant="button" >}}
+{{< button url="/signup" text="Get Started" event="cta_signup" >}}
+
+Important Notes:
+- Default variant is "cta" (link with → arrow)
+- "button" variant renders <button> (no URL)
+- Analytics event added via plausible-event-name class
+*/}}
+
+{{- $url := .Get "url" -}}
+{{- $text := .Get "text" -}}
+{{- $variant := .Get "variant" | default "cta" -}}
+{{- $event := .Get "event" -}}
+
+{{- if eq $variant "download" -}}
+    <a href="{{ $url }}" class="download-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}">{{ $text }}</a>
+{{- else if eq $variant "button" -}}
+    <button type="submit">{{ $text }}</button>
+{{- else -}}
+    <a href="{{ $url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}">{{ $text }} <span aria-hidden="true">→</span></a>
+{{- end -}}

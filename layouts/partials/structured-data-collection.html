@@ -1,0 +1,47 @@
+{{/*
+Purpose: Generates JSON-LD structured data for CollectionPage schema
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .IsHome, .Kind - Page type detection
+- .Title, .Description - Page metadata
+- .Permalink - Page URL
+- .Site.Title, .Site.BaseURL - Website metadata
+- .Site.Params.description - Fallback description
+- .Site.Params.author.name - Author name
+
+Features:
+- CollectionPage schema for listing pages
+- Runs on sections (e.g., /essays/), taxonomy pages (e.g., /topics/), and term pages
+- Links page to parent WebSite via isPartOf
+- Falls back to site description if page description missing
+
+Important Notes:
+- Only runs on non-homepage collection pages
+- Covers section (.Kind "section"), taxonomy (.Kind "taxonomy"), and term (.Kind "term") pages
+- Does NOT run on individual content pages or homepage
+*/}}
+
+{{- if and (not .IsHome) (or (eq .Kind "section") (eq .Kind "taxonomy") (eq .Kind "term")) -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{{ .Title }}",
+  "url": "{{ .Permalink }}",
+  "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}",
+  "inLanguage": "en-US",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "{{ .Site.Title }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author.name }}",
+    "url": "{{ .Site.BaseURL }}"
+  }
+}
+</script>
+{{- end -}}

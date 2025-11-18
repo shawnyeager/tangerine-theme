@@ -1,0 +1,42 @@
+{{/*
+Purpose: Renders a label-value pair with optional link or code formatting
+
+Parameters:
+- label (string, required): Label text
+- value (string, required): Value text
+- url (string, optional): Makes value a clickable link
+- code (string, optional): If "true", renders value in monospace code element
+
+Features:
+- Three display modes based on parameters:
+  1. Code: Renders value in <code> element (colon omitted from label)
+  2. Link: Renders value as clickable <a> element
+  3. Plain: Renders value as <span> element
+- Consistent info-pair styling
+
+Usage:
+{{< detail-pair label="Email" value="hello@example.com" url="mailto:hello@example.com" >}}
+{{< detail-pair label="API Key" value="sk_test_..." code="true" >}}
+{{< detail-pair label="Status" value="Active" >}}
+
+Important Notes:
+- Colon automatically added to label unless code="true"
+- Code mode useful for displaying keys, hashes, or technical values
+- Link mode adds clickable functionality
+*/}}
+
+{{- $label := .Get "label" -}}
+{{- $url := .Get "url" -}}
+{{- $value := .Get "value" -}}
+{{- $code := .Get "code" -}}
+
+<div class="info-pair">
+    <span class="info-label">{{ $label }}{{ if not (eq $code "true") }}:{{ end }}</span>
+    {{- if eq $code "true" -}}
+        <code>{{ $value }}</code>
+    {{- else if $url -}}
+        <a href="{{ $url }}" class="info-value">{{ $value }}</a>
+    {{- else -}}
+        <span class="info-value">{{ $value }}</span>
+    {{- end -}}
+</div>

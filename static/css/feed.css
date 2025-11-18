@@ -1,0 +1,44 @@
+/* ==========================================================================
+   RSS Feed Styles - Branded message using site design system
+   RSS readers ignore this CSS and parse the feed normally
+
+   Note: Values copied from main.css design system
+   ========================================================================== */
+
+:root {
+  background: light-dark(#ffffff, #1e1e1e);
+  color-scheme: dark light;
+}
+
+/* Hide all RSS feed content */
+:root > * {
+  display: none;
+}
+
+/* Orange brand bar at top (3px) */
+:root::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background: light-dark(#d63900, #FF5733);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+/* Branded message box */
+:root::after {
+  content: "This is an RSS feed. Copy the URL into your RSS reader to subscribe.";
+  display: block;
+  max-width: min(90vw, 604px);
+  margin: 8vw auto;
+  padding: 5vw;
+  background: light-dark(#f5f5f5, #2a2a2a);
+  color: light-dark(#1a1a1a, #f0f0f0);
+  border-radius: 4px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 20px;
+  line-height: 1.6;
+}
