@@ -372,6 +372,43 @@ This theme tracks the master branch rather than using version tags:
 - **No Tagging Required:** Commits to master automatically propagate to consuming sites
 - **Simplicity:** No need to manage version numbers or git tags for routine changes
 
+### Reverting Theme Changes
+
+**CRITICAL:** Force-pushing theme reverts does NOT trigger automation workflows due to path filters.
+
+When you need to revert theme changes that have already been pushed:
+
+```bash
+# 1. Revert theme repo to desired commit
+cd ~/Work/shawnyeager/tangerine-theme
+git reset --hard <commit-hash>
+git push --force origin master
+
+# 2. Get the reverted commit hash from GitHub
+REVERTED_HASH=$(git ls-remote https://github.com/shawnyeager/tangerine-theme.git HEAD | cut -f1)
+PSEUDO_VERSION="v0.0.0-$(git show -s --format=%cd --date=format:%Y%m%d%H%M%S $REVERTED_HASH)-${REVERTED_HASH:0:12}"
+
+# 3. Manually update both sites' go.mod (automation won't trigger)
+# Edit go.mod directly - don't rely on `hugo mod get -u` as it may fetch stale cached versions
+
+# For shawnyeager-com:
+cd ~/Work/shawnyeager/shawnyeager-com
+# Edit go.mod: require github.com/shawnyeager/tangerine-theme $PSEUDO_VERSION
+hugo mod tidy
+git add go.mod go.sum && git commit -m "fix: revert theme to <reason>" && git push
+
+# For shawnyeager-notes:
+cd ~/Work/shawnyeager/shawnyeager-notes
+# Edit go.mod: require github.com/shawnyeager/tangerine-theme $PSEUDO_VERSION
+hugo mod tidy
+git add go.mod go.sum && git commit -m "fix: revert theme to <reason>" && git push
+```
+
+**Why manual go.mod editing is required:**
+- `hugo mod get -u` fetches from Go proxy cache which can be stale (10-15 minute TTL)
+- Force push doesn't trigger workflow path filters (`layouts/**`, `static/**`, `theme.toml`)
+- Manually specifying the exact commit hash bypasses proxy cache issues
+
 ### Testing Checklist
 
 When making CSS or layout changes:
