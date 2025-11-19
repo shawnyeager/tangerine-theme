@@ -73,6 +73,7 @@ Templates use Hugo parameters to adapt behavior (e.g., `content_type` switches b
 tangerine-theme/
 ├── CLAUDE.md                    # This file
 ├── README.md                    # Quick reference guide
+├── hugo.toml                    # Shared params (merged into sites)
 ├── docs/                        # Documentation
 │   ├── BRAND_MESSAGING_BIBLE.md        # Brand voice, messaging, positioning
 │   ├── DESIGN_SYSTEM_SPECIFICATION.md  # Complete design system specs
@@ -142,6 +143,37 @@ Complete CSS implementing the design system:
 - Perfect fourth typography scale (1.333 ratio)
 
 **For complete specifications:** See `docs/DESIGN_SYSTEM_SPECIFICATION.md`
+
+## Shared Configuration (hugo.toml)
+
+**File:** `hugo.toml` (23 lines)
+
+The theme provides shared parameters that are automatically merged into consuming sites:
+
+```toml
+[params]
+  copyright = "Copyright © 2025, Shawn Yeager"
+  nostr = "https://primal.net/shawn"
+  github = "https://github.com/shawnyeager"
+  twitter_handle = "shawnyeager"
+
+  [params.author]
+    name = "Shawn Yeager"
+    email = "hello@shawnyeager.com"
+    jobTitle = "Bitcoin Go-to-Market Leader"
+```
+
+**Hugo's Module Config Merge Behavior:**
+
+- **Merged automatically**: `[params]` and `[[menu.*]]` sections
+- **NOT merged**: Top-level config like `[markup]`, `[imaging]`, `[taxonomies]`, etc.
+- Sites can override any theme param by defining the same key in their hugo.toml
+- Merge strategy: Deep merge for params (site values take precedence)
+
+**Why this split?**
+- Hugo's module system only merges params and menus from theme configs
+- All other configuration (markup, imaging, security, etc.) must be in site files
+- This centralizes shared values (copyright, social links, author info) while keeping site-specific config separate
 
 ## How Sites Use This Theme
 
