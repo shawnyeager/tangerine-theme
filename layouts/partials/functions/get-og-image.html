@@ -41,11 +41,7 @@ Important Notes:
     {{- $ogImageURL = .Site.Params.og_image | absURL -}}
   {{- end -}}
 {{- else if eq .Type "notes" -}}
-  {{- if .Params.slug -}}
-    {{- $slug := .Params.slug -}}
-    {{- $customOGPath := printf "/images/og-notes/%s.png" $slug -}}
-    {{- $ogImageURL = $customOGPath | absURL -}}
-  {{- else if .Site.Params.og_image -}}
+  {{- if .Site.Params.og_image -}}
     {{- $ogImageURL = .Site.Params.og_image | absURL -}}
   {{- end -}}
 {{- else if .Site.Params.og_image -}}
