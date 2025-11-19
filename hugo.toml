@@ -1,0 +1,22 @@
+# Hugo Configuration for Tangerine Theme
+# Shared params for all sites using this theme
+#
+# NOTE: Hugo only merges [params] and [[menu.*]] from theme modules
+# Top-level config (markup, imaging, taxonomies, etc.) must be in site configs
+# Sites automatically inherit these params via Hugo's module merge system
+# Site-specific hugo.toml files override these defaults as needed
+
+# Shared theme parameters
+[params]
+  copyright = "Copyright © 2025, Shawn Yeager"
+
+  # Social/contact links (shared across all sites)
+  nostr = "https://primal.net/shawn"
+  github = "https://github.com/shawnyeager"
+  twitter_handle = "shawnyeager"  # Without @ symbol, used for Twitter Card attribution
+
+  # Author information (used in RSS feeds and structured data)
+  [params.author]
+    name = "Shawn Yeager"
+    email = "hello@shawnyeager.com"
+    jobTitle = "Bitcoin Go-to-Market Leader"
