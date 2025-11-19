@@ -9,6 +9,7 @@ on:
       - 'layouts/**'
       - 'static/**'
       - 'theme.toml'
+      - 'hugo.toml'
 
 jobs:
   notify:
