@@ -1019,7 +1019,7 @@ time.note-date,
 
 .all-essays,
 .all-notes {
-    margin-top: var(--space-lg);  /* 24px - gives CTA breathing room */
+    margin-top: var(--space-xs);  /* 8px - tighter, feels part of list */
 }
 
 .topic-count {
