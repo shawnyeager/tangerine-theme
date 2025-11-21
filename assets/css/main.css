@@ -217,6 +217,11 @@ pre,
     letter-spacing: normal;
 }
 
+.info-pair code {
+    display: inline-block;
+    max-width: 100%;
+}
+
 /* ==========================================================================
    Brand Bar (Fixed Top)
    ========================================================================== */
@@ -1853,4 +1858,5 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .podcast-art { width: 130px; height: 130px; }
     .podcast-links { margin-top: 0; }
     .pagination { flex-direction: column; align-items: flex-start; }
+    .info-pair code { word-break: break-word; }
 }
