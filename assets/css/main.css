@@ -1582,7 +1582,6 @@ a.back-link {
     code {
         font-family: var(--font-monospace);
         font-size: 0.9em;
-        word-break: break-all;
         color: var(--text-primary);
         cursor: text;
     }
@@ -1858,5 +1857,8 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .podcast-art { width: 130px; height: 130px; }
     .podcast-links { margin-top: 0; }
     .pagination { flex-direction: column; align-items: flex-start; }
-    .info-pair code { word-break: break-word; }
+    .info-pair code {
+        white-space: normal;       /* Allow wrapping at spaces (fingerprints) */
+        overflow-wrap: break-word; /* Break long words if needed (npubs, keys) */
+    }
 }
