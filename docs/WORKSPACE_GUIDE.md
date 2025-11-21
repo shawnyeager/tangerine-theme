@@ -67,6 +67,25 @@ Reusable GitHub Actions workflows for content quality and validation.
   - ✅ `font-size: var(--font-lg);` ❌ `font-size: 18px;`
   - ✅ `color: var(--text-primary);` ❌ `color: #1a1a1a;`
 
+### Never Commit Replace Directives
+**Replace directives are for LOCAL testing ONLY. NEVER commit them to site repos.**
+
+When testing theme changes locally:
+- ✅ Add `replace` to go.mod (NOT committed)
+- ✅ Test changes with Hugo server
+- ❌ **NEVER** run `git add go.mod` if it contains replace directive
+- ✅ Use `git restore go.mod` before committing
+
+**Pre-commit check before ANY site repo commit:**
+```bash
+# Verify go.mod has no replace directive:
+git diff go.mod | grep "replace"  # Should return nothing
+```
+
+**Why this matters:** Netlify can't access `../tangerine-theme` (outside repo), builds fail with module download errors.
+
+**If you accidentally commit it:** Immediately fix with `git restore go.mod`, commit removal, and push.
+
 ---
 
 ## Quick Start
