@@ -33,7 +33,7 @@ Important Notes:
 <div class="info-pair">
     <span class="info-label">{{ $label }}{{ if not (eq $code "true") }}:{{ end }}</span>
     {{- if eq $code "true" -}}
-        <code>{{ $value }}</code>
+        <code>{{ $value | safeHTML }}</code>
     {{- else if $url -}}
         <a href="{{ $url }}" class="info-value">{{ $value }}</a>
     {{- else -}}
