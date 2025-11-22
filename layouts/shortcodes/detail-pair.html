@@ -29,14 +29,22 @@ Important Notes:
 {{- $url := .Get "url" -}}
 {{- $value := .Get "value" -}}
 {{- $code := .Get "code" -}}
+{{- $multiline := .Get "multiline" -}}
+{{- $inner := .Inner | strings.TrimLeft "\n" | strings.TrimRight "\n" -}}
+{{- $content := cond (ne $inner "") $inner $value -}}
 
 <div class="info-pair">
     <span class="info-label">{{ $label }}{{ if not (eq $code "true") }}:{{ end }}</span>
     {{- if eq $code "true" -}}
-        <code>{{ $value | safeHTML }}</code>
+        {{- if eq $multiline "true" -}}
+        {{- $lines := split $content "|" -}}
+        <code>{{ index $lines 0 }}<br>{{ index $lines 1 }}</code>
+        {{- else -}}
+        <code>{{ $content }}</code>
+        {{- end -}}
     {{- else if $url -}}
-        <a href="{{ $url }}" class="info-value">{{ $value }}</a>
+        <a href="{{ $url }}" class="info-value">{{ $content }}</a>
     {{- else -}}
-        <span class="info-value">{{ $value }}</span>
+        <span class="info-value">{{ $content }}</span>
     {{- end -}}
 </div>
