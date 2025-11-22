@@ -1,0 +1,23 @@
+{{/*
+Purpose: Wraps content in a div with bio-text styling
+
+Features:
+- Provides .bio-text CSS class for styling contact methods in bio sections
+- Used on media page to style contact information display
+- Paired shortcode that wraps inner content
+
+Usage:
+{{< bio-section >}}
+{{< contact-method type="email" value="hello@example.com" >}}
+{{< contact-method type="signal" value="signal-link" display="signal-display" >}}
+{{< /bio-section >}}
+
+Important Notes:
+- Inner content is rendered with Hugo's standard processing (no safeHTML)
+- CSS class .bio-text defined in theme CSS
+- Replaced raw HTML <div class="bio-text"> for security
+*/}}
+
+<div class="bio-text">
+{{ .Inner }}
+</div>

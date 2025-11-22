@@ -220,6 +220,7 @@ pre,
 .info-pair code {
     display: inline-block;
     max-width: 100%;
+    white-space: pre-line;
 }
 
 /* ==========================================================================
@@ -1858,7 +1859,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .podcast-links { margin-top: 0; }
     .pagination { flex-direction: column; align-items: flex-start; }
     .info-pair code {
-        white-space: normal;       /* Allow wrapping at spaces (fingerprints) */
+        white-space: pre-line;     /* Preserve newlines, wrap at spaces (fingerprints) */
         overflow-wrap: break-word; /* Break long words if needed (npubs, keys) */
     }
 }
