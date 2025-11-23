@@ -13,7 +13,15 @@ Context Expected:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark light">
-<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+{{- if .IsHome -}}
+  <title>{{ .Site.Title }}</title>
+{{- else if eq .Kind "section" -}}
+  {{- /* List pages: Use short site name to avoid redundancy */ -}}
+  <title>{{ .Title }} - {{ default .Site.Title .Site.Params.site_display_name }}</title>
+{{- else -}}
+  {{- /* Individual pages: Use short site name */ -}}
+  <title>{{ .Title }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
+{{- end -}}
 <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <meta name="author" content="{{ .Site.Params.author.name }}">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
