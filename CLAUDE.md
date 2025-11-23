@@ -309,6 +309,8 @@ hugo server -D -p 1316
 
 #### Publishing Theme Changes
 
+**Sites now use PR-based workflow for theme updates.**
+
 When local testing is complete, push to master:
 
 ```bash
@@ -316,53 +318,44 @@ cd ~/Work/shawnyeager/tangerine-theme
 git push origin master
 ```
 
-**GitHub Actions automatically:**
-- Detects the theme push (`.github/workflows/notify-sites.yml`)
-- Sends `repository_dispatch` events to both site repos
-- Triggers auto-update workflows in each site (`.github/workflows/auto-theme-update.yml`)
-- Runs `hugo mod get -u` to fetch latest theme from master branch
-- Commits and pushes `go.mod`/`go.sum` updates with message: `"chore: auto-update tangerine-theme module"`
-- Netlify deploys updated sites automatically
+**Then trigger site updates manually:**
 
-**How it works:**
+```bash
+# Trigger in both sites (or wait for daily cron at 9am UTC)
+gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
+gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
+```
 
-1. **Theme repo** (`tangerine-theme/.github/workflows/notify-sites.yml`):
-   - Triggers on push to master when `layouts/**`, `static/**`, or `theme.toml` changes
-   - Sends repository_dispatch events to both shawnyeager-com and shawnyeager-notes
+**GitHub Actions workflow:**
+1. Detects theme updates in go.mod
+2. Creates Pull Request (not direct commit to master)
+3. Netlify builds FREE deploy preview
+4. You review preview URL in PR
+5. Manually merge PR when satisfied
+6. Netlify builds production (15 credits per site)
 
-2. **Site repos** (`shawnyeager-{com,notes}/.github/workflows/auto-theme-update.yml`):
-   - Listen for `theme-updated` repository_dispatch events
-   - Run `hugo mod get -u` to update theme to latest master branch version
-   - Auto-commit go.mod/go.sum changes if detected
-   - Push to master (triggers Netlify deployment)
+**Cost savings:**
+- Deploy previews: FREE (0 credits)
+- Multiple theme commits accumulate in one PR
+- Only pay for final production build
 
 **Verification:**
-```bash
-# Check workflow runs
-gh run list --repo shawnyeager/tangerine-theme --limit 1
-gh run list --repo shawnyeager/shawnyeager-com --limit 1
-gh run list --repo shawnyeager/shawnyeager-notes --limit 1
 
-# Verify sites updated to latest master branch commit
+```bash
+# Check workflow created PRs
+gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
+gh pr list --repo shawnyeager/shawnyeager-notes --label theme-update
+
+# After merging PRs, verify production updated
 cd ~/Work/shawnyeager/shawnyeager-com && git pull && grep tangerine-theme go.mod
 cd ~/Work/shawnyeager/shawnyeager-notes && git pull && grep tangerine-theme go.mod
 ```
 
-**Manual override ONLY if automation fails:**
-1. First verify automation actually failed:
-   ```bash
-   gh run list --repo shawnyeager/shawnyeager-com --limit 1
-   gh run list --repo shawnyeager/shawnyeager-notes --limit 1
-   ```
-2. Check for failed runs or missing `auto-theme-update` workflow
-3. If and ONLY if automation failed, manually update:
-   ```bash
-   cd ~/Work/shawnyeager/shawnyeager-com
-   hugo mod get -u github.com/shawnyeager/tangerine-theme
-   git add go.mod go.sum && git commit -m "chore: update theme to latest master" && git push
-   ```
+**Manual override ONLY if workflow fails:**
 
-This should be RARE. If automation regularly fails, investigate the workflow issue instead.
+If workflow doesn't create PR:
+1. Check workflow status: `gh run list --repo shawnyeager/shawnyeager-com`
+2. If failed, manually update and commit go.mod in site repos
 
 ### Version Management
 
@@ -374,40 +367,27 @@ This theme tracks the master branch rather than using version tags:
 
 ### Reverting Theme Changes
 
-**CRITICAL:** Force-pushing theme reverts does NOT trigger automation workflows due to path filters.
-
 When you need to revert theme changes that have already been pushed:
 
 ```bash
-# 1. Revert theme repo to desired commit
+# 1. Revert theme repo
 cd ~/Work/shawnyeager/tangerine-theme
 git reset --hard <commit-hash>
 git push --force origin master
 
-# 2. Get the reverted commit hash from GitHub
-REVERTED_HASH=$(git ls-remote https://github.com/shawnyeager/tangerine-theme.git HEAD | cut -f1)
-PSEUDO_VERSION="v0.0.0-$(git show -s --format=%cd --date=format:%Y%m%d%H%M%S $REVERTED_HASH)-${REVERTED_HASH:0:12}"
+# 2. Trigger PR workflows to update sites
+gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
+gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
 
-# 3. Manually update both sites' go.mod (automation won't trigger)
-# Edit go.mod directly - don't rely on `hugo mod get -u` as it may fetch stale cached versions
-
-# For shawnyeager-com:
-cd ~/Work/shawnyeager/shawnyeager-com
-# Edit go.mod: require github.com/shawnyeager/tangerine-theme $PSEUDO_VERSION
-hugo mod tidy
-git add go.mod go.sum && git commit -m "fix: revert theme to <reason>" && git push
-
-# For shawnyeager-notes:
-cd ~/Work/shawnyeager/shawnyeager-notes
-# Edit go.mod: require github.com/shawnyeager/tangerine-theme $PSEUDO_VERSION
-hugo mod tidy
-git add go.mod go.sum && git commit -m "fix: revert theme to <reason>" && git push
+# 3. Review PRs with reverted theme
+# 4. Merge when satisfied
 ```
 
-**Why manual go.mod editing is required:**
-- `hugo mod get -u` fetches from Go proxy cache which can be stale (10-15 minute TTL)
-- Force push doesn't trigger workflow path filters (`layouts/**`, `static/**`, `theme.toml`)
-- Manually specifying the exact commit hash bypasses proxy cache issues
+**Why this works:**
+- Workflow detects go.mod changes (theme commit hash changed)
+- Creates PR with reverted theme version
+- Deploy preview shows reverted state
+- Merge to deploy revert to production
 
 ### Testing Checklist
 
