@@ -1,0 +1,50 @@
+{{/*
+Purpose: Generates JSON-LD structured data for PodcastSeries schema
+
+Parameters: None (uses page and site context)
+
+Context Expected:
+- .Layout - Page layout (only runs on layout="podcast")
+- .Site.Params.podcast_name - Podcast name
+- .Site.Params.podcast_description - Podcast description
+- .Site.Params.podcast_url - Podcast page URL
+- .Site.Params.podcast_rss - RSS feed URL
+- .Site.Params.podcast_image - Podcast cover art path
+- .Site.Params.author.* - Author information
+
+Features:
+- PodcastSeries schema for podcast discovery
+- Links podcast to author (Person entity)
+- Includes webFeed (RSS) for podcast directories
+- Only renders on podcast pages
+
+Important Notes:
+- Only generates on podcast layout pages (layout="podcast" check)
+- Requires podcast_* params to be configured in site hugo.toml
+- Image is converted to absolute URL
+- Helps Google Podcasts and other directories discover podcast
+*/}}
+
+{{- if and (eq .Layout "podcast") .Site.Params.podcast_name -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "PodcastSeries",
+  "name": "{{ .Site.Params.podcast_name }}",
+  "description": "{{ .Site.Params.podcast_description }}",
+  "webFeed": "{{ .Site.Params.podcast_rss }}",
+  "url": "{{ .Site.Params.podcast_url }}",
+  {{- with .Site.Params.podcast_image }}
+  "image": "{{ . | absURL }}",
+  {{- end }}
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author.name }}",
+    "url": "{{ .Site.BaseURL }}"
+    {{- with .Site.Params.author.email -}}
+    ,"email": "{{ . }}"
+    {{- end -}}
+  }
+}
+</script>
+{{- end -}}

@@ -5,23 +5,28 @@ Parameters: None (uses page context)
 
 Context Expected:
 - .IsHome - Determines if site title should be H1 (homepage) or div (other pages)
-- .Site.Title - Site title text
+- .Site.Title - Site title text (used for SEO in <title> tag)
+- .Site.Params.site_display_name - Optional shorter display name for visual header
 
 Features:
 - Semantic HTML: H1 on homepage, div on other pages (page content gets H1)
+- Separate SEO title from display title (site_display_name param)
 - Includes main navigation via navigation.html partial
 - Accessibility: role="banner", aria-label
 
 Important Notes:
 - Only homepage uses H1 for site title; other pages reserve H1 for page content
 - Ensures proper heading hierarchy for SEO and accessibility
+- Uses site_display_name if set, otherwise falls back to .Site.Title
 */}}
+
+{{- $displayTitle := default .Site.Title .Site.Params.site_display_name -}}
 
 <header role="banner" aria-label="Site header">
     {{ if .IsHome }}
-    <h1 class="site-title"><a href="{{ "/" | relURL }}">{{ .Site.Title }}</a></h1>
+    <h1 class="site-title"><a href="{{ "/" | relURL }}">{{ $displayTitle }}</a></h1>
     {{ else }}
-    <div class="site-title"><a href="{{ "/" | relURL }}">{{ .Site.Title }}</a></div>
+    <div class="site-title"><a href="{{ "/" | relURL }}">{{ $displayTitle }}</a></div>
     {{ end }}
     {{ partial "navigation.html" . }}
 </header>
