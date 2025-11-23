@@ -1455,7 +1455,7 @@ time.note-date,
 
 .essay-footer p {
     color: var(--text-secondary);
-    margin-bottom: var(--space-2xl);
+    margin-bottom: 0;
 }
 
 .essay-footer a {
