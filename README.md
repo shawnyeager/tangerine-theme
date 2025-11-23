@@ -234,7 +234,7 @@ This theme uses Hugo Modules imported from GitHub:
 
 ### Making Theme Changes
 
-**Sites use PR-based workflow for cost savings!**
+**Sites use PR-based workflow: preview builds for testing, production builds at merge.**
 
 1. **Edit and test theme files**:
    ```bash
