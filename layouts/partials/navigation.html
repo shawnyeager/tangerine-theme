@@ -15,14 +15,15 @@ Features:
   1. Direct match: current page URL equals menu item URL
   2. Section match for /essays/: highlights when viewing essays, topic pages, or tag pages
   3. Section match for /notes/: highlights when viewing notes or taxonomy pages
-- Accessibility: role="navigation", aria-label
+- Accessibility: aria-label for context
 
 Important Notes:
 - Active state logic accounts for taxonomy pages (topics, tags) to highlight parent section
 - Example: /topics/bitcoin/ page highlights "Essays" nav item if on .com site
+- role="navigation" removed (redundant - HTML5 nav has implicit navigation role)
 */}}
 
-<nav role="navigation" aria-label="Main navigation">
+<nav aria-label="Main navigation">
     {{ $currentPage := . }}
     {{ range .Site.Menus.main }}
     <a href="{{ .URL | relURL }}"{{ if or (eq $currentPage.RelPermalink .URL) (and (eq .URL "/essays/") (or (eq $currentPage.Section "essays") (eq $currentPage.Type "topics") (eq $currentPage.Type "tags"))) (and (eq .URL "/notes/") (or (eq $currentPage.Section "notes") (eq $currentPage.Type "topics") (eq $currentPage.Type "tags"))) }} class="active"{{ end }}>{{ .Name }}</a>

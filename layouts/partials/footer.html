@@ -25,9 +25,10 @@ Important Notes:
 - Email form hidden on 404 pages and pages with hide_footer_signup: true
 - Plausible event tracking via class="plausible-event-name=EventName"
 - Form targets "popupwindow" for Buttondown compatibility
+- role="contentinfo" removed (redundant - HTML5 footer has implicit contentinfo role)
 */}}
 
-<footer class="site-footer" role="contentinfo" aria-label="Site footer">
+<footer class="site-footer" aria-label="Site footer">
     <div class="site-footer-inner">
         {{/* Email subscription form (parameterized) */}}
         {{ if and .Site.Params.show_email_signup (not (eq .Kind "404")) (not .Params.hide_footer_signup) }}
