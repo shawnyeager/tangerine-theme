@@ -7,19 +7,19 @@ Context Expected:
 - .IsHome - Only runs on homepage
 - .Site.Title, .Site.BaseURL - Website metadata
 - .Site.Params.description - Site description
-- .Site.Params.author.* - Author information
-- .Site.Params.nostr, .github - Social profile URLs
+- .Site.Params.author.* - Author information (name, email, description, jobTitle, image)
+- .Site.Params.author.sameAs.* - Social profile URLs (linkedin, github, nostr, podcast)
 
 Features:
 - WebSite schema for homepage
-- Author as Person with optional jobTitle and sameAs links
+- Author as Person with description, jobTitle, image, and sameAs links
 - Copyright holder and year
-- Social media profiles (if Nostr URL present)
+- Social media profiles from author.sameAs config
 
 Important Notes:
 - Only generates on homepage (.IsHome check)
 - Copyright year uses current year (now.Format "2006")
-- Social links only included if Nostr URL configured
+- Social links built from author.sameAs config (linkedin, github, nostr, podcast)
 */}}
 
 {{- if .IsHome -}}
@@ -35,17 +35,24 @@ Important Notes:
     "@type": "Person",
     "name": "{{ .Site.Params.author.name }}",
     "email": "{{ .Site.Params.author.email }}",
-    "url": "{{ .Site.BaseURL }}",
-    "description": "{{ .Site.Params.description }}"
-    {{- if .Site.Params.author.jobTitle -}}
-    ,"jobTitle": "{{ .Site.Params.author.jobTitle }}"
+    "url": "{{ .Site.BaseURL }}"
+    {{- with .Site.Params.author.description -}}
+    ,"description": "{{ . }}"
     {{- end -}}
-    {{- if .Site.Params.nostr -}}
+    {{- with .Site.Params.author.jobTitle -}}
+    ,"jobTitle": "{{ . }}"
+    {{- end -}}
+    {{- with .Site.Params.author.image -}}
+    ,"image": "{{ . | absURL }}"
+    {{- end -}}
+    {{- with .Site.Params.author.sameAs -}}
     ,"sameAs": [
-      "{{ .Site.Params.nostr }}"
-      {{- if .Site.Params.github -}}
-      ,"{{ .Site.Params.github }}"
-      {{- end -}}
+      {{- $links := slice -}}
+      {{- with .linkedin -}}{{ $links = $links | append . }}{{- end -}}
+      {{- with .github -}}{{ $links = $links | append . }}{{- end -}}
+      {{- with .nostr -}}{{ $links = $links | append . }}{{- end -}}
+      {{- with .podcast -}}{{ $links = $links | append . }}{{- end -}}
+      {{- delimit $links "\",\n      \"" | printf "\"%s\"" | safeJS }}
     ]
     {{- end -}}
   },

@@ -10,14 +10,14 @@ Context Expected:
 - .Date, .Lastmod - Publication and modification dates
 - .WordCount - For reading time calculation
 - .Params.topics, .Params.tags - Taxonomy data for keywords
-- .Site.Params.author.* - Author information
+- .Site.Params.author.* - Author information (name, email, description, jobTitle, image)
+- .Site.Params.author.sameAs.* - Social profile URLs (linkedin, github, nostr, podcast)
 - .Site.Params.og_image - Publisher logo
-- .Site.Params.nostr, .github - Social profile URLs
 
 Features:
 - BlogPosting schema with rich metadata
 - Reading time calculation (200 words/minute, minimum 1 minute)
-- Author as Person with sameAs social links
+- Author as Person with description, jobTitle, image, and sameAs social links
 - Publisher as Organization
 - Keywords from topics + tags
 - ArticleSection from first topic
@@ -27,7 +27,7 @@ Important Notes:
 - Only generates for essays and notes pages (.IsPage check)
 - Reading time formatted as ISO 8601 duration (PT5M = 5 minutes)
 - Falls back to site description if page description missing
-- Social profile links (sameAs) only added if Nostr URL present
+- Social profile links (sameAs) built from author.sameAs config (linkedin, github, nostr, podcast)
 */}}
 
 {{- if and .IsPage (or (eq .Type "essays") (eq .Type "notes")) -}}
@@ -53,17 +53,27 @@ Important Notes:
 {{- if gt (len $keywords) 0 -}}
   {{- $structuredData = merge $structuredData (dict "keywords" (delimit $keywords ", ")) -}}
 {{- end -}}
-{{- /* Enhanced author with URL, description, and jobTitle */ -}}
-{{- $author := dict "@type" "Person" "name" .Site.Params.author.name "email" .Site.Params.author.email "url" .Site.BaseURL "description" .Site.Params.description -}}
-{{- if .Site.Params.author.jobTitle -}}
-  {{- $author = merge $author (dict "jobTitle" .Site.Params.author.jobTitle) -}}
+{{- /* Enhanced author with URL, description, jobTitle, image, and sameAs */ -}}
+{{- $author := dict "@type" "Person" "name" .Site.Params.author.name "email" .Site.Params.author.email "url" .Site.BaseURL -}}
+{{- with .Site.Params.author.description -}}
+  {{- $author = merge $author (dict "description" .) -}}
 {{- end -}}
-{{- if .Site.Params.nostr -}}
-  {{- $sameAs := slice .Site.Params.nostr -}}
-  {{- if .Site.Params.github -}}
-    {{- $sameAs = $sameAs | append .Site.Params.github -}}
+{{- with .Site.Params.author.jobTitle -}}
+  {{- $author = merge $author (dict "jobTitle" .) -}}
+{{- end -}}
+{{- with .Site.Params.author.image -}}
+  {{- $author = merge $author (dict "image" (. | absURL)) -}}
+{{- end -}}
+{{- /* Build sameAs array from structured config */ -}}
+{{- with .Site.Params.author.sameAs -}}
+  {{- $sameAs := slice -}}
+  {{- with .linkedin -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- with .github -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- with .nostr -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- with .podcast -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- if gt (len $sameAs) 0 -}}
+    {{- $author = merge $author (dict "sameAs" $sameAs) -}}
   {{- end -}}
-  {{- $author = merge $author (dict "sameAs" $sameAs) -}}
 {{- end -}}
 {{- $structuredData = merge $structuredData (dict "author" $author) -}}
 {{- /* Publisher as Organization with logo */ -}}
