@@ -17,7 +17,7 @@ Context Expected:
   <title>{{ .Site.Title }}</title>
 {{- else if eq .Kind "section" -}}
   {{- /* List pages: Use short site name to avoid redundancy */ -}}
-  <title>{{ .Title }} - {{ default .Site.Title .Site.Params.site_display_name }}</title>
+  <title>{{ .Title }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- else -}}
   {{- /* Individual pages: Use short site name */ -}}
   <title>{{ .Title }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
