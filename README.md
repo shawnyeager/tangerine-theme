@@ -234,7 +234,7 @@ This theme uses Hugo Modules imported from GitHub:
 
 ### Making Theme Changes
 
-**Publishing is now automated via GitHub Actions!** Only 2 steps required:
+**Sites use PR-based workflow for cost savings!**
 
 1. **Edit and test theme files**:
    ```bash
@@ -259,26 +259,31 @@ This theme uses Hugo Modules imported from GitHub:
    git push origin master
    ```
 
-**That's it!** GitHub Actions automatically:
-- Detects the theme push
-- Triggers auto-update workflows in both site repos
-- Runs `hugo mod get -u` to fetch latest theme
-- Commits go.mod updates: `"chore: auto-update tangerine-theme module"`
-- Deploys updated sites via Netlify
+3. **Trigger PR workflows**:
+   ```bash
+   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
+   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
+   ```
+
+4. **Review and merge PRs**:
+   - GitHub Actions creates PR in each site
+   - Netlify builds FREE deploy preview
+   - Review preview URL
+   - Merge PR when satisfied
+   - Production deploys (15 credits per site)
 
 **Verification:**
 ```bash
-# Check workflow status
-gh run list --repo shawnyeager/tangerine-theme --limit 1
-gh run list --repo shawnyeager/shawnyeager-com --limit 1
-gh run list --repo shawnyeager/shawnyeager-notes --limit 1
+# Check PRs created
+gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
+gh pr list --repo shawnyeager/shawnyeager-notes --label theme-update
 
-# Verify sites updated
+# After merging, verify sites updated
 cd ~/Work/shawnyeager-com && git pull && grep tangerine-theme go.mod
 cd ~/Work/shawnyeager-notes && git pull && grep tangerine-theme go.mod
 ```
 
-See `.github/workflows/notify-sites.yml` in this repo and `.github/workflows/auto-theme-update.yml` in site repos for implementation details.
+See `.github/workflows/auto-theme-update-pr.yml` in site repos for implementation details.
 
 ## Sites Using This Theme
 
