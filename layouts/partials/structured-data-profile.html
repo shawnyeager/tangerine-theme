@@ -1,45 +1,38 @@
 {{/*
-Purpose: Generates JSON-LD structured data for CollectionPage schema
+Purpose: Generates JSON-LD structured data for ProfilePage schema
 
 Parameters: None (uses page context)
 
 Context Expected:
-- .IsHome, .Kind - Page type detection
 - .Title, .Description - Page metadata
 - .Permalink - Page URL
-- .Site.Title, .Site.BaseURL - Website metadata
 - .Site.Params.description - Fallback description
 - .Site.Params.author.* - Author information (name, email, description, jobTitle, image)
 - .Site.Params.author.sameAs.* - Social profile URLs (linkedin, github, nostr, podcast)
+- .Site.BaseURL - Site base URL
 
 Features:
-- CollectionPage schema for listing pages
-- Runs on sections (e.g., /essays/), taxonomy pages (e.g., /topics/), and term pages
-- Links page to parent WebSite via isPartOf
-- Author as Person with description, jobTitle, image, and sameAs links
-- Falls back to site description if page description missing
+- ProfilePage schema for personal/about pages
+- mainEntity as Person with full author details
+- Applied to pages with layout="now", layout="podcast", or type="page"
+- Includes author image, jobTitle, description, and social profiles
 
 Important Notes:
-- Only runs on non-homepage collection pages
-- Covers section (.Kind "section"), taxonomy (.Kind "taxonomy"), and term (.Kind "term") pages
-- Does NOT run on individual content pages or homepage
+- Only runs on specific personal pages (not homepage, not content pages)
+- mainEntity is the author (Person) that the page is about
+- Helps search engines understand profile-related pages
 */}}
 
-{{- if and (not .IsHome) (or (eq .Kind "section") (eq .Kind "taxonomy") (eq .Kind "term")) -}}
+{{- if or (eq .Layout "now") (eq .Layout "podcast") (and (eq .Type "page") (ne .Layout "")) -}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "CollectionPage",
+  "@type": "ProfilePage",
   "name": "{{ .Title }}",
   "url": "{{ .Permalink }}",
   "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}",
   "inLanguage": "en-US",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "{{ .Site.Title }}",
-    "url": "{{ .Site.BaseURL }}"
-  },
-  "author": {
+  "mainEntity": {
     "@type": "Person",
     "name": "{{ .Site.Params.author.name }}",
     "email": "{{ .Site.Params.author.email }}",
