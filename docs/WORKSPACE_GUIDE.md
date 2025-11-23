@@ -128,7 +128,9 @@ Then: Edit theme files → refresh browser → see changes instantly.
 
 ### Publishing Theme Changes
 
-Theme publishing is **automated via GitHub Actions**:
+Theme publishing uses **PR-based workflow via GitHub Actions**:
+
+**When you push theme changes:**
 
 1. Commit and push theme to master branch:
    ```bash
@@ -137,22 +139,28 @@ Theme publishing is **automated via GitHub Actions**:
    git commit -m "Description of changes"
    git push origin master
    ```
-2. GitHub Actions automatically updates both sites' `go.mod` files and deploys
 
-**Important:** Sites track master branch - no version tagging needed.
+2. Manually trigger update workflows in both sites:
+   ```bash
+   # Trigger in shawnyeager-com
+   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
 
-**⚠️ CRITICAL: DO NOT MANUALLY UPDATE SITES AFTER THEME PUSH**
+   # Trigger in shawnyeager-notes
+   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
+   ```
 
-After pushing theme changes:
-- ❌ DO NOT run `hugo mod get` in site repos
-- ❌ DO NOT commit `go.mod` changes in site repos
-- ❌ DO NOT push to site repos
-- ✅ WAIT for GitHub Actions to auto-update sites (2-3 minutes)
-- ✅ VERIFY automation worked via `gh run list`
+3. Wait 2-3 minutes for GitHub Actions to create PRs
 
-GitHub Actions will handle everything automatically. Manual intervention creates duplicate commits and race conditions.
+4. Review deploy previews (FREE - 0 credits)
 
-**Exception:** Manual override only if automation fails (verify first with `gh run list`).
+5. Merge PRs when satisfied (triggers production builds - 15 credits each)
+
+**Cost savings:**
+- Deploy previews: FREE (0 credits)
+- Only pay when merging PR to production
+- Multiple theme commits accumulate in one PR
+
+**Sites track master branch - no version tagging needed.**
 
 ---
 
@@ -174,12 +182,15 @@ GitHub Actions will handle everything automatically. Manual intervention creates
 - **shawnyeager.com** = The Gallery (finished work, SEO indexed)
 - **notes.shawnyeager.com** = The Workshop (WIP, SEO indexed)
 
-### Automated Workflows
-Theme changes trigger automatic site updates via GitHub Actions:
-1. Push to `tangerine-theme` triggers notification workflow
-2. Both site repos receive `repository_dispatch` events
-3. Sites auto-run `hugo mod get -u` and commit `go.mod` updates
-4. Netlify auto-deploys updated sites
+### PR-Based Theme Update Workflow
+
+Theme changes trigger manual PR creation via GitHub Actions:
+1. Push to `tangerine-theme` master branch
+2. Manually trigger workflows in both site repos (or wait for daily cron)
+3. GitHub Actions creates PR with theme updates
+4. Netlify builds FREE deploy preview for the PR
+5. Review preview, then manually merge PR
+6. Netlify builds production (15 credits × 2 sites = 30 credits)
 
 ---
 
