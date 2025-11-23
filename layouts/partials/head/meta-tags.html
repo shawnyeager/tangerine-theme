@@ -17,10 +17,10 @@ Context Expected:
   <title>{{ .Site.Title }}</title>
 {{- else if eq .Kind "section" -}}
   {{- /* List pages: Use short site name to avoid redundancy */ -}}
-  <title>{{ .Title }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
+  <title>{{ .Title }} - {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- else -}}
   {{- /* Individual pages: Use short site name */ -}}
-  <title>{{ .Title }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
+  <title>{{ .Title }} - {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- end -}}
 <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <meta name="author" content="{{ .Site.Params.author.name }}">
