@@ -51,6 +51,23 @@ Add these parameters to your site's `hugo.toml`:
   favicon_style = "solid"           # "solid" or "outlined"
   noindex = false                   # true to block search engines
 
+  # Author information (REQUIRED - used in RSS, structured data, social cards)
+  copyright = "Copyright © 2025, Your Name"
+  twitter_handle = "yourhandle"     # Without @ symbol
+
+  [params.author]
+    name = "Your Name"
+    email = "hello@example.com"
+    description = "Your professional description"
+    jobTitle = "Your Job Title"
+    image = "/images/author.jpg"
+
+  [params.author.sameAs]
+    linkedin = "https://www.linkedin.com/in/username"
+    github = "https://github.com/username"
+    nostr = "https://nostr.profile.url"
+    podcast = "https://podcast.url"  # optional
+
   # Email signup (optional)
   show_email_signup = true          # Show email form in footer
   email_signup_text = "I send new essays and updates via email."
@@ -75,6 +92,22 @@ Add these parameters to your site's `hugo.toml`:
 | `content_type` | string | Content type: "essays" or "notes". Affects terminology in templates. |
 | `favicon_style` | string | Favicon: "solid" (filled square) or "outlined" (outlined square). |
 | `noindex` | boolean | Block search engines. Set `true` for workshop/notes sites. |
+
+### Author Information (Required)
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `copyright` | string | Copyright notice. Used in structured data. |
+| `twitter_handle` | string | Twitter handle without @ symbol. Used for Twitter Card attribution. |
+| `params.author.name` | string | Author full name. Used in RSS, structured data, meta tags. |
+| `params.author.email` | string | Author email. Used in RSS feed. |
+| `params.author.description` | string | Short professional description. Used in structured data. |
+| `params.author.jobTitle` | string | Professional job title. Used in structured data. |
+| `params.author.image` | string | Path to author image. Used in structured data. |
+| `params.author.sameAs.linkedin` | string | LinkedIn profile URL. Used in structured data. |
+| `params.author.sameAs.github` | string | GitHub profile URL. Used in structured data and footer. |
+| `params.author.sameAs.nostr` | string | Nostr profile URL. Used in structured data and footer. |
+| `params.author.sameAs.podcast` | string | Podcast URL (optional). Used in structured data. |
 
 ### Email Signup (Optional)
 
@@ -168,6 +201,10 @@ your-site/
   content_type = "essays"
   favicon_style = "solid"
   noindex = false
+
+  copyright = "Copyright © 2025, Your Name"
+  twitter_handle = "yourhandle"
+
   show_email_signup = true
   email_signup_action = "https://buttondown.com/api/emails/embed-subscribe/username"
   nostr = "https://nostr.example.com"
@@ -175,6 +212,19 @@ your-site/
   email = "hello@example.com"
   secondary_site_url = "https://notes.example.com"
   secondary_site_name = "Notes"
+
+[params.author]
+  name = "Your Name"
+  email = "hello@example.com"
+  description = "Your professional description"
+  jobTitle = "Your Job Title"
+  image = "/images/author.jpg"
+
+[params.author.sameAs]
+  linkedin = "https://www.linkedin.com/in/username"
+  github = "https://github.com/username"
+  nostr = "https://nostr.example.com"
+  podcast = "https://podcast.url"
 ```
 
 ### Notes Site (notes. subdomain)
@@ -183,12 +233,28 @@ your-site/
 [params]
   content_type = "notes"
   favicon_style = "outlined"
-  noindex = true
+  noindex = false
+
+  copyright = "Copyright © 2025, Your Name"
+  twitter_handle = "yourhandle"
+
   show_email_signup = false
   nostr = "https://nostr.example.com"
   github = "https://github.com/username"
   secondary_site_url = "https://www.example.com"
   secondary_site_name = "Essays"
+
+[params.author]
+  name = "Your Name"
+  email = "hello@example.com"
+  description = "Your professional description"
+  jobTitle = "Your Job Title"
+  image = "/images/author.jpg"
+
+[params.author.sameAs]
+  linkedin = "https://www.linkedin.com/in/username"
+  github = "https://github.com/username"
+  nostr = "https://nostr.example.com"
 ```
 
 ## Design System
