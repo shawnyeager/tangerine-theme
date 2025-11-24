@@ -1,7 +1,7 @@
 name = "Tangerine Theme"
-license = "Private"
+license = "MIT"
 licenselink = ""
-description = "Shared design system for shawnyeager.com and notes.shawnyeager.com"
+description = "Minimal Hugo theme for essays and notes with clean typography, dark mode, and semantic HTML"
 homepage = "https://github.com/shawnyeager/tangerine-theme"
 demosite = ""
 tags = ["personal", "blog", "minimal"]

@@ -6,26 +6,5 @@
 # Sites automatically inherit these params via Hugo's module merge system
 # Site-specific hugo.toml files override these defaults as needed
 
-# Shared theme parameters
-[params]
-  copyright = "Copyright © 2025, Shawn Yeager"
-
-  # Social/contact links (shared across all sites)
-  nostr = "https://primal.net/shawn"
-  github = "https://github.com/shawnyeager"
-  twitter_handle = "shawnyeager"  # Without @ symbol, used for Twitter Card attribution
-
-  # Author information (used in RSS feeds and structured data)
-
-[params.author]
-  name = "Shawn Yeager"
-  email = "hello@shawnyeager.com"
-  description = "Bitcoin go-to-market and revenue leader"
-  jobTitle = "Bitcoin Go-to-Market & Revenue Leadership"
-  image = "/images/shawn-media.jpg"
-
-[params.author.sameAs]
-  linkedin = "https://www.linkedin.com/in/shawnyeager"
-  github = "https://github.com/shawnyeager"
-  nostr = "https://primal.net/shawn"
-  podcast = "https://fountain.fm/show/Mk0fJte5vrfiDQ5RyCZd"
+# Theme is now fully reusable - no personal information
+# Sites must define all [params] in their own hugo.toml files
