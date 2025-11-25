@@ -433,7 +433,7 @@ select:focus-visible,
    Link Hierarchy System
    1. PRIMARY CTAs: Orange, underline on hover (.cta-link, .read-more, .all-essays)
    2. SECONDARY LINKS: Gray, underline at rest, none on hover (.download-link)
-   3. CONTACT LINKS: Orange, color change on hover (.info-value, .contact-item a)
+   3. CONTACT LINKS: Orange, underline on hover (.info-value, .contact-item a)
    ========================================================================== */
 
 /* ==========================================================================
@@ -568,6 +568,16 @@ p .cta-link {
     color: var(--brand-orange-hover);
 }
 
+/* Contact and service links gain underline on hover */
+.contact-item a:hover,
+.link-grid a:hover {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+}
+
+/* Download links lose underline on hover */
 .download-link:hover {
     text-decoration: none;
 }
@@ -1630,6 +1640,10 @@ a.back-link {
 
     &:hover {
         color: var(--brand-orange-hover);
+        text-decoration: underline;
+        text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+        text-decoration-thickness: var(--underline-thickness);
+        text-underline-offset: var(--underline-offset);
     }
 }
 
