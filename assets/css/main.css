@@ -431,7 +431,7 @@ select:focus-visible,
 
 /* ==========================================================================
    Link Hierarchy System
-   1. PRIMARY CTAs: Orange, color change on hover (.cta-link, .read-more, .all-essays)
+   1. PRIMARY CTAs: Orange, underline on hover (.cta-link, .read-more, .all-essays)
    2. SECONDARY LINKS: Gray, underline at rest, none on hover (.download-link)
    3. CONTACT LINKS: Orange, color change on hover (.info-value, .contact-item a)
    ========================================================================== */
