@@ -366,6 +366,18 @@ a {
 
 a:hover {
     color: var(--brand-orange-hover);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+}
+
+/* Navigation links - no underline on hover (clear navigation zones) */
+header a:hover,
+nav a:hover,
+.footer-links a:hover,
+.skip-link:hover {
+    text-decoration: none;
 }
 
 /* Arrow alignment in links */
