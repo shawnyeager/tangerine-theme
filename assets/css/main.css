@@ -127,6 +127,9 @@
     /* Transitions */
     --transition-fast: 0.3s ease;
 
+    /* Link Styling */
+    --underline-offset: 0.2em;
+
     /* Content Elevation */
     --shadow-content-light: light-dark(0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.4));
 
@@ -426,7 +429,7 @@ select:focus-visible,
 /* ==========================================================================
    Link Hierarchy System
    1. PRIMARY CTAs: Orange, arrows (.cta-link, .read-more, .all-essays)
-   2. SECONDARY DOWNLOADS: Gray, no arrows (.download-link)
+   2. SECONDARY LINKS: Gray, underlined (.download-link, .footer-links a)
    3. CONTACT LINKS: Orange, underline on hover (.info-value, .contact-item a)
    ========================================================================== */
 
@@ -492,11 +495,13 @@ p .cta-link {
 
 /* Download Links - Secondary utility style for downloads
    Usage: "Download contact card", "Download ASCII key"
-   Gray, no arrow, less prominent than CTAs */
+   Gray, underlined, less prominent than CTAs */
 .download-link {
     color: var(--text-meta);
     font-size: var(--font-base);
     font-weight: var(--font-weight-normal);
+    text-decoration: underline;
+    text-underline-offset: var(--underline-offset);
     display: block;
     width: fit-content;
     margin-top: var(--space-sm);
@@ -697,7 +702,8 @@ nav a {
 
 .footer-links a {
     color: var(--text-meta);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: var(--underline-offset);
     transition: color var(--transition-fast);
     font-size: var(--font-sm);
     display: inline-flex;
