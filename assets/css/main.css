@@ -494,6 +494,10 @@ p .cta-link {
 .pagination-prev:hover,
 .pagination-next:hover {
     color: var(--brand-orange-hover);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
 }
 
 /* Download Links - Secondary utility style for downloads
