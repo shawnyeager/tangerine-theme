@@ -565,7 +565,7 @@ p .cta-link {
 }
 
 .download-link:hover {
-    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration: none;
 }
 
 /* ==========================================================================
@@ -723,7 +723,7 @@ nav a {
         color: var(--brand-orange);
 
         .link-text {
-            text-decoration-color: color-mix(in srgb, var(--brand-orange) var(--underline-opacity), transparent);
+            text-decoration: none;
         }
     }
 
