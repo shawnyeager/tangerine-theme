@@ -47,7 +47,7 @@ Important Notes:
             {{ with .Site.Params.nostr }}<a href="{{ . }}">Nostr</a>{{ end }}
             {{ with .Site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
             {{ with .Site.Params.secondary_site_url }}
-                <a href="{{ . }}"{{ with $.Site.Params.plausible_events.cross_site_nav }} class="plausible-event-name={{ . }}"{{ end }}>{{ $.Site.Params.secondary_site_name }} <span aria-hidden="true">→</span></a>
+                <a href="{{ . }}"{{ with $.Site.Params.plausible_events.cross_site_nav }} class="plausible-event-name={{ . }}"{{ end }}><span class="link-text">{{ $.Site.Params.secondary_site_name }}</span> <span aria-hidden="true">→</span></a>
             {{ end }}
             {{ with .Site.Params.author.email }}
                 <a href="mailto:{{ . }}"{{ with $.Site.Params.plausible_events.contact_email }} class="plausible-event-name={{ . }}"{{ end }}>Email</a>
