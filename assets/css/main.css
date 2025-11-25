@@ -443,9 +443,9 @@ select:focus-visible,
 
 /* ==========================================================================
    Link Hierarchy System
-   1. PRIMARY CTAs: Orange, underline on hover (.cta-link, .read-more, .all-essays)
+   1. PRIMARY CTAs: Orange with arrows, color only on hover (.cta-link, .read-more)
    2. SECONDARY LINKS: Gray, underline at rest, none on hover (.download-link)
-   3. CONTACT LINKS: Orange, underline on hover (.info-value, .contact-item a)
+   3. CONTACT/INLINE LINKS: Orange, underline on hover (.info-value, inline content links)
    ========================================================================== */
 
 /* ==========================================================================
@@ -496,7 +496,7 @@ p .cta-link {
     white-space: nowrap;  /* Prevent link text + arrow from wrapping */
 }
 
-/* Hover state for all primary CTAs */
+/* Hover state for all primary CTAs - no underline (arrows would be underlined) */
 .cta-link:hover,
 .read-more:hover,
 .all-essays:hover,
@@ -506,10 +506,7 @@ p .cta-link {
 .pagination-prev:hover,
 .pagination-next:hover {
     color: var(--brand-orange-hover);
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
+    text-decoration: none;
 }
 
 /* Download Links - Secondary utility style for downloads
