@@ -507,7 +507,7 @@ p .cta-link {
     text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
-    transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+    transition: color var(--transition-fast);
     display: block;
     width: fit-content;
     margin-top: var(--space-sm);
@@ -732,7 +732,6 @@ nav a {
         text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
         text-decoration-thickness: var(--underline-thickness);
         text-underline-offset: var(--underline-offset);
-        transition: text-decoration-color var(--transition-fast);
     }
 }
 
