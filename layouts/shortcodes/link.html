@@ -32,9 +32,9 @@ Important Notes:
 {{- $event := .Get "event" -}}
 
 {{- if eq $style "cta" -}}
-    <a href="{{ $url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}">{{ $text }} <span aria-hidden="true">→</span></a>
+    <a href="{{ $url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span class="link-text">{{ $text }}</span> <span aria-hidden="true">→</span></a>
 {{- else if eq $style "back" -}}
-    <a href="{{ $url }}" class="back-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span aria-hidden="true">←</span> {{ $text }}</a>
+    <a href="{{ $url }}" class="back-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span aria-hidden="true">←</span> <span class="link-text">{{ $text }}</span></a>
 {{- else -}}
     <a href="{{ $url }}"{{ if $event }} class="plausible-event-name={{ $event }}"{{ end }}>{{ $text }}</a>
 {{- end -}}
