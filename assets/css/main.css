@@ -129,6 +129,8 @@
 
     /* Link Styling */
     --underline-offset: 0.2em;
+    --underline-thickness: 1px;
+    --underline-opacity: 50%;
 
     /* Content Elevation */
     --shadow-content-light: light-dark(0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.4));
@@ -371,6 +373,7 @@ a span[aria-hidden="true"] {
     display: inline-block;
     vertical-align: middle;
     transform: translateY(-0.1em);
+    text-decoration: none;
 }
 
 /* ==========================================================================
@@ -501,6 +504,8 @@ p .cta-link {
     font-size: var(--font-base);
     font-weight: var(--font-weight-normal);
     text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, currentColor var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
     display: block;
     width: fit-content;
@@ -703,6 +708,8 @@ nav a {
 .footer-links a {
     color: var(--text-meta);
     text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, currentColor var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
     transition: color var(--transition-fast);
     font-size: var(--font-sm);
