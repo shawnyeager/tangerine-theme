@@ -127,6 +127,11 @@
     /* Transitions */
     --transition-fast: 0.3s ease;
 
+    /* Link Styling */
+    --underline-offset: 0.2em;
+    --underline-thickness: 1px;
+    --underline-opacity: 50%;
+
     /* Content Elevation */
     --shadow-content-light: light-dark(0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.4));
 
@@ -361,6 +366,18 @@ a {
 
 a:hover {
     color: var(--brand-orange-hover);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+}
+
+/* Navigation links - no underline on hover (clear navigation zones) */
+header a:hover,
+nav a:hover,
+.footer-links a:hover,
+.skip-link:hover {
+    text-decoration: none;
 }
 
 /* Arrow alignment in links */
@@ -368,6 +385,7 @@ a span[aria-hidden="true"] {
     display: inline-block;
     vertical-align: middle;
     transform: translateY(-0.1em);
+    text-decoration: none;
 }
 
 /* ==========================================================================
@@ -425,9 +443,9 @@ select:focus-visible,
 
 /* ==========================================================================
    Link Hierarchy System
-   1. PRIMARY CTAs: Orange, arrows (.cta-link, .read-more, .all-essays)
-   2. SECONDARY DOWNLOADS: Gray, no arrows (.download-link)
-   3. CONTACT LINKS: Orange, underline on hover (.info-value, .contact-item a)
+   1. PRIMARY CTAs: Orange with arrows, color only on hover (.cta-link, .read-more)
+   2. SECONDARY LINKS: Gray, underline at rest, none on hover (.download-link)
+   3. CONTACT/INLINE LINKS: Orange, underline on hover (.info-value, inline content links)
    ========================================================================== */
 
 /* ==========================================================================
@@ -478,7 +496,7 @@ p .cta-link {
     white-space: nowrap;  /* Prevent link text + arrow from wrapping */
 }
 
-/* Hover state for all primary CTAs */
+/* Hover state for all primary CTAs - no underline (arrows would be underlined) */
 .cta-link:hover,
 .read-more:hover,
 .all-essays:hover,
@@ -488,15 +506,21 @@ p .cta-link {
 .pagination-prev:hover,
 .pagination-next:hover {
     color: var(--brand-orange-hover);
+    text-decoration: none;
 }
 
 /* Download Links - Secondary utility style for downloads
    Usage: "Download contact card", "Download ASCII key"
-   Gray, no arrow, less prominent than CTAs */
+   Gray, underlined, less prominent than CTAs */
 .download-link {
     color: var(--text-meta);
     font-size: var(--font-base);
     font-weight: var(--font-weight-normal);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    transition: color var(--transition-fast);
     display: block;
     width: fit-content;
     margin-top: var(--space-sm);
@@ -551,6 +575,20 @@ p .cta-link {
 .contact-item a:hover,
 .link-grid a:hover {
     color: var(--brand-orange-hover);
+}
+
+/* Contact and service links gain underline on hover */
+.contact-item a:hover,
+.link-grid a:hover {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+}
+
+/* Download links lose underline on hover */
+.download-link:hover {
+    text-decoration: none;
 }
 
 /* ==========================================================================
@@ -705,7 +743,7 @@ nav a {
     gap: var(--arrow-gap);
 
     &:hover {
-        color: var(--brand-orange);
+        color: var(--brand-orange-hover);
     }
 }
 
@@ -1611,6 +1649,10 @@ a.back-link {
 
     &:hover {
         color: var(--brand-orange-hover);
+        text-decoration: underline;
+        text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+        text-decoration-thickness: var(--underline-thickness);
+        text-underline-offset: var(--underline-offset);
     }
 }
 
