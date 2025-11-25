@@ -720,7 +720,7 @@ nav a {
     gap: var(--arrow-gap);
 
     &:hover {
-        color: var(--brand-orange);
+        color: var(--brand-orange-hover);
 
         .link-text {
             text-decoration: none;
