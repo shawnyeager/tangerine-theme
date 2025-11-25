@@ -707,10 +707,7 @@ nav a {
 
 .footer-links a {
     color: var(--text-meta);
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, currentColor var(--underline-opacity), transparent);
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
+    text-decoration: none;
     transition: color var(--transition-fast);
     font-size: var(--font-sm);
     display: inline-flex;
@@ -719,6 +716,13 @@ nav a {
 
     &:hover {
         color: var(--brand-orange);
+    }
+
+    .link-text {
+        text-decoration: underline;
+        text-decoration-color: color-mix(in srgb, currentColor var(--underline-opacity), transparent);
+        text-decoration-thickness: var(--underline-thickness);
+        text-underline-offset: var(--underline-offset);
     }
 }
 
