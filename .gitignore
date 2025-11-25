@@ -3,3 +3,13 @@ public/
 .hugo_build.lock
 resources/
 *.backup
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
