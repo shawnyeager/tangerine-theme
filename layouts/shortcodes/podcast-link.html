@@ -27,4 +27,4 @@ Important Notes:
 {{- $event := .Get "event" -}}
 {{- $text := .Get "text" | default "Listen on Fountain" -}}
 
-<a href="{{ .Site.Params.podcast_url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}">{{ $text }} <span aria-hidden="true">→</span></a>
+<a href="{{ .Site.Params.podcast_url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span class="link-text">{{ $text }}</span> <span aria-hidden="true">→</span></a>
