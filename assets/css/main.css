@@ -509,6 +509,22 @@ p .cta-link {
     text-decoration: none;
 }
 
+/* Underline link text (not arrow) on hover */
+.cta-link:hover .link-text,
+.read-more:hover .link-text,
+.all-essays:hover .link-text,
+.all-notes:hover .link-text,
+.podcast-links a:hover .link-text,
+.essay-footer a:hover .link-text,
+.pagination-prev:hover .link-text,
+.pagination-next:hover .link-text,
+.footer-links a:hover .link-text {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+}
+
 /* Download Links - Secondary utility style for downloads
    Usage: "Download contact card", "Download ASCII key"
    Gray, underlined, less prominent than CTAs */
