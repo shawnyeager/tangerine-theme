@@ -504,9 +504,10 @@ p .cta-link {
     font-size: var(--font-base);
     font-weight: var(--font-weight-normal);
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, currentColor var(--underline-opacity), transparent);
+    text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
+    transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
     display: block;
     width: fit-content;
     margin-top: var(--space-sm);
@@ -561,6 +562,10 @@ p .cta-link {
 .contact-item a:hover,
 .link-grid a:hover {
     color: var(--brand-orange-hover);
+}
+
+.download-link:hover {
+    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
 }
 
 /* ==========================================================================
@@ -716,13 +721,18 @@ nav a {
 
     &:hover {
         color: var(--brand-orange);
+
+        .link-text {
+            text-decoration-color: color-mix(in srgb, var(--brand-orange) var(--underline-opacity), transparent);
+        }
     }
 
     .link-text {
         text-decoration: underline;
-        text-decoration-color: color-mix(in srgb, currentColor var(--underline-opacity), transparent);
+        text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
         text-decoration-thickness: var(--underline-thickness);
         text-underline-offset: var(--underline-offset);
+        transition: text-decoration-color var(--transition-fast);
     }
 }
 
