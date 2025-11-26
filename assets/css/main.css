@@ -116,6 +116,7 @@
     --border-radius-code: 4px;
     --brand-bar-height: 3px;
     --checkbox-size: 1.1em;
+    --qr-size: 250px;
 
     /* Z-index Scale */
     --z-brand-bar: 9999;
@@ -890,6 +891,27 @@ nav a {
 .rss-copy-btn:hover {
     border-color: var(--brand-orange);
     color: var(--brand-orange);
+}
+
+/* QR Code Container */
+.qr-container {
+    margin: var(--space-xl) 0;
+}
+
+.qr-container img {
+    display: block;
+    width: var(--qr-size);
+    height: var(--qr-size);
+}
+
+/* Essay context - shown via JS when ?essay= URL param present */
+.essay-context {
+    display: none;
+    margin-bottom: var(--space-lg);
+}
+
+.essay-context p {
+    margin: 0;
 }
 
 .podcast-header {
