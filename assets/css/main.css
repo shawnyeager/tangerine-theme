@@ -893,15 +893,37 @@ nav a {
     color: var(--brand-orange);
 }
 
+/* Copy Inline - inline variant without card wrapper */
+.copy-inline {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-2xl);
+}
+
+.copy-inline .rss-url {
+    display: inline;
+    padding-right: 0;
+}
+
+.copy-inline .rss-copy-btn {
+    position: static;
+    transform: none;
+    top: auto;
+    right: auto;
+}
+
 /* QR Code Container */
 .qr-container {
-    margin: var(--space-xl) 0;
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-lg);
 }
 
 .qr-container img {
     display: block;
     width: var(--qr-size);
     height: var(--qr-size);
+    border: 2px solid var(--brand-orange);
 }
 
 /* Essay context - shown via JS when ?essay= URL param present */
