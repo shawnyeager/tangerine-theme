@@ -1,0 +1,44 @@
+{{/*
+Purpose: Dynamic intro for v4v page based on essay referral
+
+Shows:
+- "Found value? Give as much as you think it's worth." (no referral)
+- "Thanks for reading [Essay Title]. Give as much as you think it's worth—or share it." (with ?essay= param)
+
+Usage:
+{{< v4v-intro >}}
+*/}}
+
+{{- $id := printf "v4v_intro_%s" (md5 (now.UnixNano | string)) -}}
+
+<p id="{{ $id }}">Found value? Give as much as you think it's worth.</p>
+<script>
+(function() {
+    const essay = new URLSearchParams(window.location.search).get('essay');
+    if (essay) {
+        fetch('/' + essay + '/')
+            .then(r => r.text())
+            .then(html => {
+                const match = html.match(/<title>([^<]+)<\/title>/);
+                if (match) {
+                    const title = match[1].replace(/ \| .+$/, '');
+                    const essayLink = '<a href="/' + essay + '/">' + title + '</a>';
+                    const shareLink = '<a href="#" id="{{ $id }}_share">share it</a>';
+                    document.getElementById('{{ $id }}').innerHTML = 'Thanks for reading ' + essayLink + '.</p><p>Give as much as you think it\'s worth—or ' + shareLink + '.';
+
+                    const url = 'https://shawnyeager.com/' + essay + '/';
+                    document.getElementById('{{ $id }}_share').addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        if (navigator.share) {
+                            await navigator.share({ title: title, url: url });
+                        } else {
+                            await navigator.clipboard.writeText(url);
+                            e.target.textContent = 'copied';
+                            setTimeout(() => e.target.textContent = 'share it', 2000);
+                        }
+                    });
+                }
+            });
+    }
+})();
+</script>
