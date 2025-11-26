@@ -1,0 +1,34 @@
+{{/*
+Purpose: Renders an inline copy-to-clipboard widget (no card wrapper)
+
+Parameters:
+- value (string, required): Text value to copy
+- label (string, optional): Button label (default: "Copy")
+*/}}
+
+{{- $value := .Get "value" -}}
+{{- $label := .Get "label" | default "Copy" -}}
+{{- $id := printf "copy_inline_%s" (md5 $value | replaceRE "[^a-zA-Z0-9]" "_") -}}
+{{- $funcName := printf "%s_copy" $id -}}
+
+{{- $html := printf `<div class="copy-inline"><code id="%s_url" class="rss-url">%s</code> <button onclick="%s()" id="%s_btn" class="rss-copy-btn">%s</button></div>
+
+<script>
+function %s() {
+    const url = document.getElementById('%s_url').textContent;
+    const btn = document.getElementById('%s_btn');
+
+    navigator.clipboard.writeText(url).then(() => {
+        btn.textContent = 'Copied';
+        btn.style.color = 'var(--brand-orange)';
+        btn.style.borderColor = 'var(--brand-orange)';
+
+        setTimeout(() => {
+            btn.textContent = '%s';
+            btn.style.color = '';
+            btn.style.borderColor = '';
+        }, 2000);
+    });
+}
+</script>` $id $value $funcName $id $label $funcName $id $id $label -}}
+{{ $html | safeHTML }}

@@ -14,6 +14,7 @@ Usage:
 <p id="{{ $id }}">Found value? Give as much as you think it's worth.</p>
 <script>
 (function() {
+    const el = document.getElementById('{{ $id }}');
     const essay = new URLSearchParams(window.location.search).get('essay');
     if (essay) {
         fetch('/' + essay + '/')
@@ -22,9 +23,7 @@ Usage:
                 const match = html.match(/<title>([^<]+)<\/title>/);
                 if (match) {
                     const title = match[1].replace(/ \| .+$/, '');
-                    const essayLink = '<a href="/' + essay + '/">' + title + '</a>';
-                    const shareLink = '<a href="#" id="{{ $id }}_share">share it</a>';
-                    document.getElementById('{{ $id }}').innerHTML = 'Thanks for reading ' + essayLink + '.</p><p>Give as much as you think it\'s worth—or ' + shareLink + '.';
+                    el.innerHTML = 'Thanks for reading <a href="/' + essay + '/">' + title + '</a>.<br>Give as much as you think it\'s worth—or <a href="#" id="{{ $id }}_share">share it</a>.';
 
                     const url = 'https://shawnyeager.com/' + essay + '/';
                     document.getElementById('{{ $id }}_share').addEventListener('click', async (e) => {
