@@ -754,7 +754,7 @@ nav a {
 
 .footer-links {
     display: flex;
-    gap: var(--space-md);
+    gap: var(--space-lg);
     flex-wrap: wrap;
 }
 
