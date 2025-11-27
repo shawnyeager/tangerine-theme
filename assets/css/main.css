@@ -772,11 +772,15 @@ nav a {
     }
 }
 
-/* V4V icon link - accessible tap target (44x44px minimum for mobile) */
+/* V4V icon link - accessible tap target via pseudo-element */
 .footer-links a[aria-label="Value for value"] {
-    min-width: 44px;
-    min-height: 44px;
-    justify-content: center;
+    position: relative;
+}
+
+.footer-links a[aria-label="Value for value"]::before {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--space-md));
 }
 
 /* ==========================================================================
