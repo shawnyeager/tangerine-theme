@@ -43,6 +43,7 @@
     --text-meta: light-dark(#666, #a8a8a8);
     --text-subtle: light-dark(#767676, #b0b0b0);
     --text-bold: light-dark(#1a1a1a, #ffffff);
+    --text-on-brand: #1a1a1a;  /* Dark text for brand-color backgrounds (skip-link, buttons on orange) */
     --highlight-bg: light-dark(#fef3cd, #443818);  /* soft yellow / amber */
     --border-color: light-dark(#d5d5d5, #505050);
     --background-body: light-dark(#ffffff, #1e1e1e);
@@ -754,8 +755,9 @@ nav a {
 
 .footer-links {
     display: flex;
-    gap: var(--space-lg);
+    gap: var(--space-md);
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .footer-links a {
@@ -765,14 +767,31 @@ nav a {
     font-size: var(--font-sm);
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: var(--arrow-gap);
-    min-width: 48px;
-    min-height: 48px;
 
     &:hover {
         color: var(--brand-orange-hover);
     }
+}
+
+/* V4V icon tap target - pseudo-element creates 48x48 clickable area without affecting layout */
+.footer-links a[aria-label="Value for value"] {
+    position: relative;
+}
+
+/* Optical alignment - nudge SVG up to align with text x-height */
+.footer-links a[aria-label="Value for value"] svg {
+    vertical-align: middle;
+}
+
+.footer-links a[aria-label="Value for value"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
 }
 
 /* ==========================================================================
@@ -1756,7 +1775,7 @@ a.back-link {
     top: 0;
     left: 0;
     background: var(--brand-orange);
-    color: white;
+    color: var(--text-on-brand);
     padding: 0.5rem 1rem;
     text-decoration: none;
     z-index: var(--z-skip-link);
@@ -2000,6 +2019,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .page-meta { margin-bottom: var(--space-lg); }  /* Reduced breathing room on mobile */
     .email-form input[type="email"] { max-width: none; }
     .footer-links { gap: var(--space-sm); }
+    .footer-links a { min-height: 48px; }
     .podcast-header { flex-direction: column; }
     .podcast-art { width: 130px; height: 130px; }
     .podcast-links { margin-top: 0; }
