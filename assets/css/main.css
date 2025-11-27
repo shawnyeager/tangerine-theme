@@ -765,18 +765,18 @@ nav a {
     font-size: var(--font-sm);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--arrow-gap);
+    min-height: 48px;
 
     &:hover {
         color: var(--brand-orange-hover);
     }
 }
 
-/* V4V icon link - accessible tap target (44×48px) */
+/* V4V icon link needs min-width since it has no text */
 .footer-links a[aria-label="Value for value"] {
-    position: relative;
-    padding: var(--space-md);
-    margin: calc(-1 * var(--space-md));
+    min-width: 48px;
 }
 
 /* ==========================================================================
