@@ -33,6 +33,14 @@ Important Notes:
 {{- $label := .Get "label" -}}
 {{- $displayValue := .Get "display" | default $value -}}
 
+{{- /* Validate required parameters */ -}}
+{{- if not $type -}}
+    {{- errorf "contact-method shortcode: 'type' parameter is required in %s" .Position -}}
+{{- end -}}
+{{- if not $value -}}
+    {{- errorf "contact-method shortcode: 'value' parameter is required in %s" .Position -}}
+{{- end -}}
+
 {{- /* Build event key from type */ -}}
 {{- $eventKey := printf "contact_%s" $type -}}
 {{- $event := index .Site.Params.plausible_events $eventKey -}}

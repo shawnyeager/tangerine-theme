@@ -1,30 +1,34 @@
 {{/*
-Purpose: Renders a CTA link to the site's podcast
+Purpose: Renders a CTA link to a podcast platform
 
 Parameters:
+- url (string, optional): Custom URL (default: .Site.Params.podcast_url)
 - text (string, optional): Link text (default: "Listen on Fountain")
 - event (string, optional): Plausible analytics event name
 
 Context Expected:
-- .Site.Params.podcast_url - Podcast URL from site config
+- .Site.Params.podcast_url - Fallback podcast URL from site config
 
 Features:
-- Pulls podcast URL from site configuration
+- Custom URL parameter for platform-specific links
+- Fallback to site-wide podcast URL
 - Styled as CTA link with → arrow
 - Optional analytics tracking
 
 Usage:
 {{< podcast-link >}}
-{{< podcast-link text="Listen Now" >}}
-{{< podcast-link event="podcast_cta_click" >}}
+{{< podcast-link url="https://fountain.fm/show/..." text="Fountain" >}}
+{{< podcast-link url="https://podcasts.apple.com/..." text="Apple Podcasts" >}}
+{{< podcast-link text="Listen Now" event="podcast_cta_click" >}}
 
 Important Notes:
-- Requires podcast_url in site params
+- If url parameter provided, uses that; otherwise falls back to podcast_url site param
 - Default text assumes Fountain app but can be customized
 - Renders with cta-link class and arrow
 */}}
 
-{{- $event := .Get "event" -}}
+{{- $url := .Get "url" | default .Site.Params.podcast_url -}}
 {{- $text := .Get "text" | default "Listen on Fountain" -}}
+{{- $event := .Get "event" -}}
 
-<a href="{{ .Site.Params.podcast_url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span class="link-text">{{ $text }}</span> <span aria-hidden="true">→</span></a>
+<a href="{{ $url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span class="link-text">{{ $text }}</span> <span aria-hidden="true">→</span></a>

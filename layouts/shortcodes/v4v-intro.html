@@ -15,22 +15,38 @@ Usage:
 <script>
 (function() {
     const el = document.getElementById('{{ $id }}');
+
+    // Check for essay referral via ?essay=slug query parameter
+    // This is set when users click "Zap" from an essay footer
     const essay = new URLSearchParams(window.location.search).get('essay');
+
     if (essay) {
+        // Fetch the essay page to extract its title dynamically
+        // This avoids hardcoding titles and handles future essays automatically
         fetch('/' + essay + '/')
             .then(r => r.text())
             .then(html => {
+                // Extract title from <title> tag using regex
                 const match = html.match(/<title>([^<]+)<\/title>/);
                 if (match) {
+                    // Strip site suffix (e.g., " | Shawn Yeager") from title
                     const title = match[1].replace(/ \| .+$/, '');
+
+                    // Update intro with essay reference and share option
                     el.innerHTML = 'Thanks for reading <a href="/' + essay + '/">' + title + '</a>.<br>Give as much as you think it\'s worth—or <a href="#" id="{{ $id }}_share">share it</a>.';
 
+                    // Build canonical URL for sharing
+                    // Note: Hardcoded domain ensures correct URL regardless of dev/prod environment
                     const url = 'https://shawnyeager.com/' + essay + '/';
+
+                    // Share button: Web Share API with clipboard fallback
                     document.getElementById('{{ $id }}_share').addEventListener('click', async (e) => {
                         e.preventDefault();
                         if (navigator.share) {
+                            // Mobile/native share sheet (iOS, Android, some desktop browsers)
                             await navigator.share({ title: title, url: url });
                         } else {
+                            // Fallback: copy URL to clipboard with visual feedback
                             await navigator.clipboard.writeText(url);
                             e.target.textContent = 'copied';
                             setTimeout(() => e.target.textContent = 'share it', 2000);

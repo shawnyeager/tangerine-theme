@@ -27,7 +27,7 @@ Important Notes:
 - Respects Hugo privacy config for enhanced privacy mode
 - Thumbnail loaded from YouTube's maxresdefault.jpg
 - Iframe created dynamically on click to avoid early loading
-- Uses inline styles for complete visual control
+- Styles defined in main.css (.youtube-preview-container, .play-button-overlay)
 - Autoplay enabled on click for better UX
 */}}
 
@@ -42,10 +42,10 @@ Important Notes:
 
 {{- $embedUrl := printf "https://%s/embed/%s?autoplay=1" $host $id -}}
 
-<div class="youtube-preview-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; cursor: pointer;" data-embed-url="{{ $embedUrl }}" data-title="{{ $title }}" onclick="(function(el){var iframe=document.createElement('iframe');iframe.src=el.dataset.embedUrl;iframe.title=el.dataset.title;iframe.loading='eager';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allowFullscreen=true;iframe.style.cssText='position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;';el.innerHTML='';el.appendChild(iframe);el.style.cursor='default';})(this)">
-  <img src="{{ $thumbnail }}" alt="{{ $title }}" loading="lazy" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-  <div class="play-button-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(255, 0, 0, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none;">
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="white" style="margin-left: 4px;">
+<div class="youtube-preview-container" data-embed-url="{{ $embedUrl }}" data-title="{{ $title }}" onclick="(function(el){var iframe=document.createElement('iframe');iframe.src=el.dataset.embedUrl;iframe.title=el.dataset.title;iframe.loading='eager';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allowFullscreen=true;el.innerHTML='';el.appendChild(iframe);el.style.cursor='default';})(this)">
+  <img src="{{ $thumbnail }}" alt="{{ $title }}" loading="lazy">
+  <div class="play-button-overlay">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
       <path d="M8 5v14l11-7z"/>
     </svg>
   </div>
