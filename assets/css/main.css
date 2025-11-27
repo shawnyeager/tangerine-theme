@@ -772,6 +772,11 @@ nav a {
     }
 }
 
+/* V4V icon - compensate for SVG's built-in 18px padding */
+.footer-links a[aria-label="Value for value"] {
+    margin-left: -18px;
+}
+
 /* ==========================================================================
    Homepage Sections
    ========================================================================== */
