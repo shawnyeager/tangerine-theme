@@ -13,6 +13,7 @@ Context Expected:
 - .Site.Params.plausible_events.* - Event names for link tracking
 - .Site.Params.nostr, .github, .author.email - Social/contact links
 - .Site.Params.secondary_site_url/name - Cross-site navigation (.com ↔ .notes)
+- .Site.Params.v4v_url - V4V page URL (defaults to /v4v/, can be external)
 
 Features:
 - Conditionally displays email subscription form
@@ -52,7 +53,7 @@ Important Notes:
             {{ with .Site.Params.author.email }}
                 <a href="mailto:{{ . }}"{{ with $.Site.Params.plausible_events.contact_email }} class="plausible-event-name={{ . }}"{{ end }}>Email</a>
             {{ end }}
-            <a href="/v4v/"{{ with .Site.Params.plausible_events.v4v_footer }} class="plausible-event-name={{ . }}"{{ end }} aria-label="Value for value"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg></a>
+            <a href="{{ .Site.Params.v4v_url | default "/v4v/" }}"{{ with .Site.Params.plausible_events.v4v_footer }} class="plausible-event-name={{ . }}"{{ end }} aria-label="Value for value"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg></a>
         </div>
     </div>
 </footer>
