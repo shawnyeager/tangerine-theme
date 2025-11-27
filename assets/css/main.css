@@ -2020,6 +2020,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .email-form input[type="email"] { max-width: none; }
     .footer-links { gap: var(--space-sm); }
     .footer-links a { min-height: 48px; }
+    .footer-links a[aria-label="Value for value"] { min-width: 48px; justify-content: center; }
     .podcast-header { flex-direction: column; }
     .podcast-art { width: 130px; height: 130px; }
     .podcast-links { margin-top: 0; }
