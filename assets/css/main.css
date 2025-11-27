@@ -772,6 +772,13 @@ nav a {
     }
 }
 
+/* V4V icon link - accessible tap target (44x44px minimum for mobile) */
+.footer-links a[aria-label="Value for value"] {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+}
+
 /* ==========================================================================
    Homepage Sections
    ========================================================================== */
