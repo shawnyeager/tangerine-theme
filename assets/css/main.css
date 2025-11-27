@@ -765,16 +765,14 @@ nav a {
     font-size: var(--font-sm);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--arrow-gap);
+    min-width: 48px;
+    min-height: 48px;
 
     &:hover {
         color: var(--brand-orange-hover);
     }
-}
-
-/* V4V icon - compensate for SVG's built-in 18px padding */
-.footer-links a[aria-label="Value for value"] {
-    margin-left: -18px;
 }
 
 /* ==========================================================================
