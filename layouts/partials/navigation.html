@@ -24,8 +24,13 @@ Important Notes:
 */}}
 
 <nav aria-label="Main navigation">
-    {{ $currentPage := . }}
-    {{ range .Site.Menus.main }}
-    <a href="{{ .URL | relURL }}"{{ if or (eq $currentPage.RelPermalink .URL) (and (eq .URL "/essays/") (or (eq $currentPage.Section "essays") (eq $currentPage.Type "topics") (eq $currentPage.Type "tags"))) (and (eq .URL "/notes/") (or (eq $currentPage.Section "notes") (eq $currentPage.Type "topics") (eq $currentPage.Type "tags"))) }} class="active"{{ end }}>{{ .Name }}</a>
-    {{ end }}
+    {{- $currentPage := . -}}
+    {{- range .Site.Menus.main -}}
+        {{- $isCurrentURL := eq $currentPage.RelPermalink .URL -}}
+        {{- $isTaxonomyPage := or (eq $currentPage.Type "topics") (eq $currentPage.Type "tags") -}}
+        {{- $isEssaysActive := and (eq .URL "/essays/") (or (eq $currentPage.Section "essays") $isTaxonomyPage) -}}
+        {{- $isNotesActive := and (eq .URL "/notes/") (or (eq $currentPage.Section "notes") $isTaxonomyPage) -}}
+        {{- $isActive := or $isCurrentURL $isEssaysActive $isNotesActive -}}
+    <a href="{{ .URL | relURL }}"{{ if $isActive }} class="active"{{ end }}>{{ .Name }}</a>
+    {{- end }}
 </nav>

@@ -37,25 +37,22 @@ Important Notes:
     {{ $titleClass := cond (eq $contentType "notes") "note-title-link" (printf "%s-title" $singular) }}
     {{ $dateClass := printf "%s-date" $singular }}
     {{ $backLinkURL := cond (eq $contentType "notes") "/" (printf "/%s/" $contentType) }}
-    {{ $backLinkClass := cond (eq $contentType "notes") "note-back-link" "" }}
+
+    {{/* Filter drafts in production (defined once, used throughout) */}}
+    {{ $pages := .Pages }}
+    {{ if not hugo.IsServer }}
+        {{ $pages = where $pages "Draft" false }}
+    {{ end }}
 
     {{/* Page title */}}
     {{ if eq $contentType "notes" }}
     <h1 class="page-title">Notes tagged: {{ .Title }}</h1>
     {{ else }}
     <h1 class="section-label-small">{{ .Title }}</h1>
-    {{ $pages := .Pages }}
-    {{ if not hugo.IsServer }}
-    {{ $pages = where $pages "Draft" false }}
-    {{ end }}
     <div class="topic-count">{{ len $pages }} {{ if eq (len $pages) 1 }}{{ $singular }}{{ else }}{{ $contentType }}{{ end }} on this topic</div>
     {{ end }}
 
     <section class="{{ $sectionClass }}">
-        {{ $pages := .Pages }}
-        {{ if not hugo.IsServer }}
-        {{ $pages = where $pages "Draft" false }}
-        {{ end }}
         {{ range $pages }}
         <article class="{{ $itemClass }}">
             <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}">
@@ -67,17 +64,7 @@ Important Notes:
     </section>
 
     {{/* Back link */}}
-    {{ if eq $contentType "notes" }}
-    <div class="back-link-wrapper">
-        <a href="{{ $backLinkURL | relURL }}" class="{{ $backLinkClass }}">
-            <span aria-hidden="true">←</span> All {{ $contentType }}
-        </a>
-    </div>
-    {{ else }}
-    <div class="back-link">
-        <a href="{{ $backLinkURL | relURL }}">
-            <span aria-hidden="true">←</span> All {{ $contentType }}
-        </a>
-    </div>
-    {{ end }}
+    <nav class="back-link">
+        <a href="{{ $backLinkURL | relURL }}"><span aria-hidden="true">←</span> All {{ $contentType }}</a>
+    </nav>
 {{ end }}

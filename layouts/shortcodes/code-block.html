@@ -1,25 +1,28 @@
 {{/*
-Purpose: Renders inline code snippet
+Purpose: Renders inline code snippet with monospace styling
 
 Parameters:
 - text (string, required): Code text to display
-- mono (string, optional): Use monospace font (default: "true")
-- breakable (string, optional): Allow word breaking (default: "true", currently unused)
+
+Features:
+- Renders text in code-block styled <code> element
+- Monospace font with background color
+- Word breaking enabled for long strings
 
 Usage:
 {{< code-block text="npm install" >}}
 {{< code-block text="const x = 42;" >}}
 
 Important Notes:
-- Always renders with class="code-block"
-- Mono and breakable parameters exist but are not currently used in class logic
 - For multi-line code, use Hugo's built-in code fence syntax instead
+- CSS class "code-block" provides all styling via design tokens
 */}}
 
 {{- $text := .Get "text" -}}
-{{- $mono := .Get "mono" | default "true" -}}
-{{- $breakable := .Get "breakable" | default "true" -}}
 
-{{- $class := "code-block" -}}
+{{- /* Validate required parameter */ -}}
+{{- if not $text -}}
+    {{- errorf "code-block shortcode: 'text' parameter is required in %s" .Position -}}
+{{- end -}}
 
-<code class="{{ $class }}">{{ $text }}</code>
+<code class="code-block">{{ $text }}</code>
