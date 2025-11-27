@@ -1,5 +1,5 @@
 {{/*
-Purpose: Wraps acknowledgement text in styled span
+Purpose: Wraps acknowledgement text in styled paragraph
 
 Parameters: None
 
@@ -7,7 +7,8 @@ Inner Content:
 - Plain text acknowledgement message
 
 Features:
-- Simple wrapper for essay-acknowledgement styling
+- Block-level element for proper spacing
+- Styled via essay-acknowledgement class
 - No Markdown processing (use plain text)
 
 Usage:
@@ -15,8 +16,8 @@ Usage:
 
 Important Notes:
 - Inner content not processed with markdownify
-- Styled via essay-acknowledgement class
+- Styled via essay-acknowledgement class (italic, meta color)
 - Typically used at end of essays for attribution/thanks
 */}}
 
-<span class="essay-acknowledgement">{{ .Inner }}</span>
+<p class="essay-acknowledgement">{{ .Inner }}</p>

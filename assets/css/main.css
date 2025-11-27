@@ -916,7 +916,11 @@ nav a {
 /* QR Code Container */
 .qr-container {
     margin-top: var(--space-2xl);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
+}
+
+.qr-container a {
+    display: inline-block;
 }
 
 .qr-container img {
@@ -1265,6 +1269,12 @@ time.note-date,
     margin-top: var(--space-md);  /* 16px - tighter spacing for podcast layout */
 }
 
+/* Footer CTA spacing after essay/note content */
+.essay-body + footer,
+.note-body + footer {
+    margin-top: var(--space-sm);  /* 8px - tight spacing like p:has(+ .cta-link) */
+}
+
 /* ==========================================================================
    Markdown Elements - Shared Content Body Styles (CSS Nesting)
    Applied to both .essay-body and .note-body
@@ -1548,7 +1558,6 @@ time.note-date,
     margin-top: var(--space-xl);
     padding-top: 0;
     border-top: none;
-    font-style: italic;
 }
 
 .essay-footer p {
@@ -1563,13 +1572,32 @@ time.note-date,
 
 .essay-footer a:hover {
     color: var(--brand-orange-hover);
+}
+
+.essay-footer a:hover .link-text {
     text-decoration: underline;
+}
+
+.essay-nav {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: var(--space-lg);
+    gap: 0;
+}
+
+.essay-nav .all-essays {
+    color: var(--text-meta);
+}
+
+.essay-nav .all-essays:hover {
+    color: var(--brand-orange);
 }
 
 .essay-acknowledgement {
     color: var(--text-meta);
     font-style: italic;
     font-size: var(--font-base);
+    margin-bottom: 0;
 }
 
 /* Back links - unified styling for all back links */
