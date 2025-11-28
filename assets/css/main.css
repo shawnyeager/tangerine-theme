@@ -2018,9 +2018,14 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .container { padding: var(--space-lg) var(--space-md) 0 var(--space-md); }
     .page-meta { margin-bottom: var(--space-lg); }  /* Reduced breathing room on mobile */
     .email-form input[type="email"] { max-width: none; }
-    .footer-links { gap: var(--space-sm); }
-    .footer-links a { min-height: 48px; }
-    .footer-links a[aria-label="Value for value"] { min-width: 48px; justify-content: center; }
+    .footer-links a[aria-label="Value for value"] {
+        position: relative;
+    }
+    .footer-links a[aria-label="Value for value"]::after {
+        content: "";
+        position: absolute;
+        inset: -16px -18px;
+    }
     .podcast-header { flex-direction: column; }
     .podcast-art { width: 130px; height: 130px; }
     .podcast-links { margin-top: 0; }
