@@ -1603,7 +1603,7 @@ time.note-date,
 .essay-nav {
     border-bottom: none;
     padding-bottom: 0;
-    margin-top: var(--space-lg);
+    margin-top: var(--space-md);
     gap: 0;
 }
 
@@ -1627,7 +1627,7 @@ time.note-date,
 .note-back-link,
 .back-link,
 .back-link-wrapper {
-    margin-top: var(--space-xl);
+    margin-top: var(--space-lg);
 
     a,
     &.page-body a {
