@@ -1524,6 +1524,7 @@ time.note-date,
     .footnotes {
         margin-top: var(--space-3xl);  /* 64px - major content break */
         padding-top: var(--space-xl);
+        margin-bottom: var(--space-xl);
         border-top: var(--border-width) solid var(--border-color);
         font-size: var(--font-sm);
         color: var(--text-meta);
@@ -1531,16 +1532,48 @@ time.note-date,
         ol {
             padding-left: var(--space-lg);
         }
+
+        li {
+            margin-bottom: var(--space-md);
+            line-height: var(--line-height-essay);
+        }
+
+        p {
+            margin-bottom: var(--space-xs);
+        }
+
+        a:not(.footnote-backref) {
+            color: var(--brand-orange);
+            text-decoration: underline;
+        }
+
+        a:not(.footnote-backref):hover {
+            color: var(--brand-orange-hover);
+        }
     }
 
     .footnote-ref {
         text-decoration: none;
-        font-weight: var(--font-weight-semibold);
+        font-weight: var(--font-weight-medium);
+        font-size: 0.8em;
+        color: var(--brand-orange);
+        padding: 0 0.1em;
+    }
+
+    .footnote-ref:hover {
+        color: var(--brand-orange-hover);
     }
 
     .footnote-backref {
         text-decoration: none;
-        margin-left: 0.25rem;
+        margin-left: var(--space-xs);
+        font-size: 0.8em;
+        opacity: 0.6;
+        transition: opacity var(--transition-fast);
+    }
+
+    .footnote-backref:hover {
+        opacity: 1;
     }
 
     /* Images */
