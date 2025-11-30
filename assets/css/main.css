@@ -1418,7 +1418,9 @@ time.note-date,
     /* Horizontal Rules */
     hr {
         margin: var(--space-2xl) 0;
-        border-top: var(--border-width) solid var(--border-color);
+        border: none;
+        height: 1px;
+        background: var(--border-color);
     }
 
     /* Tables */
@@ -1522,12 +1524,9 @@ time.note-date,
 
     /* Footnotes */
     .footnotes {
-        margin-top: var(--space-3xl);  /* 64px - major content break */
-        padding-top: var(--space-xl);
+        margin-top: var(--space-lg);
         margin-bottom: var(--space-xl);
-        border-top: var(--border-width) solid var(--border-color);
         font-size: var(--font-sm);
-        color: var(--text-meta);
 
         ol {
             padding-left: var(--space-lg);
@@ -1536,44 +1535,37 @@ time.note-date,
         li {
             margin-bottom: var(--space-md);
             line-height: var(--line-height-essay);
+            color: var(--text-meta);
         }
 
         p {
             margin-bottom: var(--space-xs);
+            color: var(--text-meta);
         }
 
-        a:not(.footnote-backref) {
-            color: var(--brand-orange);
-            text-decoration: underline;
-        }
+        /* Reset to base link styles (like .page-body) */
+        a {
+            text-decoration: none;
 
-        a:not(.footnote-backref):hover {
-            color: var(--brand-orange-hover);
+            &:hover {
+                text-decoration: underline;
+                text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+                text-decoration-thickness: var(--underline-thickness);
+                text-underline-offset: var(--underline-offset);
+            }
         }
     }
 
-    .footnote-ref {
-        text-decoration: none;
-        font-weight: var(--font-weight-medium);
-        font-size: 0.8em;
-        color: var(--brand-orange);
-        padding: 0 0.1em;
-    }
-
-    .footnote-ref:hover {
-        color: var(--brand-orange-hover);
-    }
-
+    /* Footnote back-references - subtle return arrows */
     .footnote-backref {
-        text-decoration: none;
         margin-left: var(--space-xs);
         font-size: 0.8em;
         opacity: 0.6;
-        transition: opacity var(--transition-fast);
     }
 
     .footnote-backref:hover {
         opacity: 1;
+        text-decoration: none;
     }
 
     /* Images */
