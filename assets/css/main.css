@@ -1538,15 +1538,17 @@ time.note-date,
             color: var(--text-meta);
         }
 
-        /* Reset to base link styles (like .page-body) */
+        /* Subdued links - blend with footnote text, underline for affordance */
         a {
-            text-decoration: none;
+            color: var(--text-meta);
+            text-decoration: underline;
+            text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
+            text-decoration-thickness: var(--underline-thickness);
+            text-underline-offset: var(--underline-offset);
 
             &:hover {
-                text-decoration: underline;
+                color: var(--brand-orange-hover);
                 text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
-                text-decoration-thickness: var(--underline-thickness);
-                text-underline-offset: var(--underline-offset);
             }
         }
     }
