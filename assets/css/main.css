@@ -1554,6 +1554,7 @@ time.note-date,
     /* Footnote back-references - subtle return arrows */
     .footnote-backref {
         margin-left: var(--space-xs);
+        font-size: var(--font-base);
         opacity: 0.6;
     }
 
