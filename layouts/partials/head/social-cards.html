@@ -44,15 +44,6 @@ Context Expected:
 {{- $twitterCardType := "summary_large_image" -}}
 {{- if .Params.image -}}
   {{- $twitterImageURL = .Params.image | absURL -}}
-{{- else if eq .Type "essays" -}}
-  {{- $slug := .Params.slug -}}
-  {{- $squareOGPath := printf "/images/og-essays/%s-square.png" $slug -}}
-  {{- $twitterImageURL = $squareOGPath | absURL -}}
-  {{- $twitterCardType = "summary" -}}
-{{- else if eq .Type "notes" -}}
-  {{- if $ogImageURL -}}
-    {{- $twitterImageURL = $ogImageURL -}}
-  {{- end -}}
 {{- else if $ogImageURL -}}
   {{- $twitterImageURL = $ogImageURL -}}
 {{- end -}}
