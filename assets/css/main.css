@@ -1518,6 +1518,11 @@ time.note-date,
         margin-bottom: var(--space-xl);
         font-size: var(--font-sm);
 
+        hr {
+            margin: var(--space-lg) 0 var(--space-md) 0;
+            opacity: var(--opacity-subdued);
+        }
+
         ol {
             padding-left: var(--space-lg);
         }

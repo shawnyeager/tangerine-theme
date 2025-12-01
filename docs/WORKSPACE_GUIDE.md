@@ -67,6 +67,17 @@ Reusable GitHub Actions workflows for content quality and validation.
   - ✅ `font-size: var(--font-lg);` ❌ `font-size: 18px;`
   - ✅ `color: var(--text-primary);` ❌ `color: #1a1a1a;`
 
+### Essay Commits: Squash and No AI Attribution
+**ALWAYS squash essay commits before pushing to origin.** Single clean commit only.
+
+**NEVER include AI attribution in commits:**
+- No "Generated with Claude Code"
+- No "Co-Authored-By: Claude"
+- No robot emojis
+- Commit messages must look human-written
+
+Essay commits become permanent public record.
+
 ### Never Commit Replace Directives
 **Replace directives are for LOCAL testing ONLY. NEVER commit them to site repos.**
 
