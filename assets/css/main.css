@@ -1238,16 +1238,6 @@ time.note-date,
         box-shadow: var(--shadow-content-light);
         transition: box-shadow var(--transition-fast);
     }
-
-    /* Content body link styles */
-    a {
-        color: var(--brand-orange);
-        text-decoration: underline;
-
-        &:hover {
-            color: var(--brand-orange-hover);
-        }
-    }
 }
 
 /* Reading content uses primary color for optimal contrast */
@@ -1559,7 +1549,6 @@ time.note-date,
     /* Footnote back-references - subtle return arrows */
     .footnote-backref {
         margin-left: var(--space-xs);
-        font-size: 0.8em;
         opacity: 0.6;
     }
 
