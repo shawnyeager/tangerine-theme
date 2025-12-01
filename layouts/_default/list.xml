@@ -1,0 +1,47 @@
+{{- $pctx := . -}}
+{{- if .IsHome -}}{{ $pctx = .Site }}{{- end -}}
+{{- /* Get pages based on context */ -}}
+{{- $pages := .Pages -}}
+{{- if not hugo.IsServer -}}
+{{- $pages = where $pages "Draft" false -}}
+{{- end -}}
+{{- $limit := .Site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}
+{{- $pages = $pages | first $limit -}}
+{{- end -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+{{ printf "<?xml-stylesheet href=\"/css/feed.css\" type=\"text/css\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ if eq .Title .Site.Title }}{{ .Site.Params.description }}{{ else }}{{ .Site.Params.content_type | default "Content" | title }} about {{ .Title | lower }} on {{ .Site.Title }}{{ end }}</description>
+    <generator>Hugo -- gohugo.io</generator>{{ with .Site.LanguageCode }}
+    <language>{{.}}</language>{{end}}{{ with .Site.Params.author.email }}
+    <managingEditor>{{.}}{{ with $.Site.Params.author.name }} ({{.}}){{end}}</managingEditor>{{end}}{{ with .Site.Params.author.email }}
+    <webMaster>{{.}}{{ with $.Site.Params.author.name }} ({{.}}){{end}}</webMaster>{{end}}{{ with .Site.Params.copyright }}
+    <copyright>{{.}}</copyright>{{end}}{{ with index $pages 0 }}
+    <lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{- with .OutputFormats.Get "RSS" -}}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end -}}
+    <ttl>1440</ttl>{{ with .Site.Params.og_image }}
+    <image>
+      <url>{{ . | absURL }}</url>
+      <title>{{ $.Site.Title }}</title>
+      <link>{{ $.Site.BaseURL }}</link>
+    </image>{{ end }}
+    {{ range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{ with .Site.Params.author.email }}<author>{{.}}{{ with $.Site.Params.author.name }} ({{.}}){{end}}</author>{{end}}
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ .Summary | html }}</description>
+      {{- range .Params.topics }}<category>{{ . }}</category>{{ end -}}
+      {{- range .Params.tags }}<category>{{ . }}</category>{{ end -}}
+    </item>
+    {{ end }}
+  </channel>
+</rss>
