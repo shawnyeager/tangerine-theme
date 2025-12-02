@@ -57,7 +57,7 @@
     --line-height-title: 1.15;  /* Tight line-height for large display titles */
 
     /* Font Weights */
-    --font-weight-light: 360;     /* Lighter weight for dark mode */
+    --font-weight-light: 300;     /* Lighter weight for dark mode */
     --font-weight-normal: 400;
     --font-weight-body: 450;      /* Body text - heavier than normal for Inter */
     --font-weight-medium: 500;
@@ -954,7 +954,13 @@ nav a {
 .podcast-header {
     display: flex;
     gap: var(--space-lg);
-    align-items: flex-start;
+    align-items: center;
+}
+
+.podcast-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
 }
 
 /* Content images - systematic elevation */
@@ -976,11 +982,66 @@ nav a {
     outline: none;
 }
 
-.podcast-info h2 {
+.episode-tag {
+    display: block;
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+}
+
+.episode-hook {
     font-size: var(--font-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+}
+
+.episode-guest {
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-body);
+    color: var(--text-primary);
+}
+
+.podcast-info .episode-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.podcast-info .podcast-links {
+    margin-top: var(--space-sm);
+}
+
+/* Latest Episode - standalone section below podcast card */
+.latest-episode {
+    margin-bottom: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.episode-label {
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-subtle);
+}
+
+.episode-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.episode-title {
+    font-size: var(--font-base);
     font-weight: var(--font-weight-semibold);
-    margin-top: 0;
-    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+    line-height: var(--line-height-body);
+}
+
+.episode-subtitle {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
 }
 
 .podcast-info p {
@@ -998,7 +1059,6 @@ nav a {
 .podcast-links {
     display: flex;
     gap: var(--space-md);
-    margin-top: var(--space-lg);
     align-items: center;
 }
 
@@ -1868,6 +1928,11 @@ a.back-link {
         font-weight: var(--font-weight-normal);
     }
 
+    /* Episode tag - lighter weight in dark mode */
+    .episode-tag {
+        font-weight: var(--font-weight-light);
+    }
+
     /* Long-form reading */
     .essay-body p,
     .essay-body li,
@@ -2010,7 +2075,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         position: absolute;
         inset: -16px -18px;
     }
-    .podcast-header { flex-direction: column; }
+    .podcast-header { flex-direction: column; align-items: flex-start; }
     .podcast-art { width: 130px; height: 130px; }
     .podcast-links { margin-top: 0; }
     .pagination { flex-direction: column; align-items: flex-start; }
