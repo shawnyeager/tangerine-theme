@@ -333,7 +333,6 @@ p {
 /* Reduce gap before action links */
 p:has(+ .cta-link),
 p:has(+ .download-link),
-p:has(+ .read-more),
 p:has(+ .back-link) {
     margin-bottom: var(--space-sm);
 }
@@ -454,7 +453,7 @@ select:focus-visible,
 
 /* ==========================================================================
    Link Hierarchy System
-   1. PRIMARY CTAs: Orange with arrows, color only on hover (.cta-link, .read-more)
+   1. PRIMARY CTAs: Orange with arrows, color only on hover (.cta-link)
    2. SECONDARY LINKS: Gray, underline at rest, none on hover (.download-link)
    3. CONTACT/INLINE LINKS: Orange, underline on hover (.info-value, inline content links)
    ========================================================================== */
@@ -465,7 +464,6 @@ select:focus-visible,
 
 /* All brand-colored links share transition for consistent hover behavior */
 .cta-link,
-.read-more,
 .all-essays,
 .all-notes,
 .podcast-links a,
@@ -473,7 +471,6 @@ select:focus-visible,
 .pagination-prev,
 .pagination-next,
 .download-link,
-.contact-item a,
 .link-grid a {
     text-decoration: none;
     transition: color var(--transition-fast);
@@ -482,7 +479,6 @@ select:focus-visible,
 /* CTA Links - Primary action links WITH arrows (→)
    Usage: "Read more →", "All essays →", "Subscribe to newsletter →" */
 .cta-link,
-.read-more,
 .all-essays,
 .all-notes,
 .podcast-links a,
@@ -509,7 +505,6 @@ p .cta-link {
 
 /* Hover state for all primary CTAs - no underline (arrows would be underlined) */
 .cta-link:hover,
-.read-more:hover,
 .all-essays:hover,
 .all-notes:hover,
 .podcast-links a:hover,
@@ -522,7 +517,6 @@ p .cta-link {
 
 /* Underline link text (not arrow) on hover */
 .cta-link:hover .link-text,
-.read-more:hover .link-text,
 .all-essays:hover .link-text,
 .all-notes:hover .link-text,
 .podcast-links a:hover .link-text,
@@ -588,23 +582,20 @@ p .cta-link {
     margin-top: var(--space-sm);
 }
 
-/* Contact & Service Links - Orange, no arrows
-   Usage: Contact methods, podcast platforms, social links */
-.contact-item a,
+/* Service Links - Orange, no arrows
+   Usage: Podcast platforms, social links */
 .link-grid a {
     color: var(--brand-orange);
     font-weight: var(--font-weight-medium);
 }
 
-/* Consolidated hover states for download, contact, and service links */
+/* Consolidated hover states for download and service links */
 .download-link:hover,
-.contact-item a:hover,
 .link-grid a:hover {
     color: var(--brand-orange-hover);
 }
 
-/* Contact and service links gain underline on hover */
-.contact-item a:hover,
+/* Service links gain underline on hover */
 .link-grid a:hover {
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
@@ -960,16 +951,6 @@ nav a {
     border: var(--border-width-emphasis) solid var(--brand-orange);
 }
 
-/* Essay context - shown via JS when ?essay= URL param present */
-.essay-context {
-    display: none;
-    margin-bottom: var(--space-lg);
-}
-
-.essay-context p {
-    margin: 0;
-}
-
 .podcast-header {
     display: flex;
     gap: var(--space-lg);
@@ -977,7 +958,6 @@ nav a {
 }
 
 /* Content images - systematic elevation */
-.media-section img,
 .page-body img {
     box-shadow: var(--shadow-content-light);
     transition: box-shadow var(--transition-fast);
@@ -990,8 +970,7 @@ nav a {
     display: block;
 }
 
-.podcast img,
-.media-section .podcast-art {
+.podcast img {
     box-shadow: none;
     border: none;
     outline: none;
@@ -1646,7 +1625,6 @@ time.note-date,
 }
 
 /* Back links - unified styling for all back links */
-.essay-back-link,
 .note-back-link,
 .back-link,
 .back-link-wrapper {
@@ -1735,8 +1713,7 @@ a.back-link {
 
 /* ==========================================================================
    Contact Display Patterns
-   A: Utility Pages - Vertical stack (.info-pair, .info-label, .info-value)
-   B: Media Contact - Horizontal table-like (.contact-info, .contact-item)
+   Utility Pages - Vertical stack (.info-pair, .info-label, .info-value)
    ========================================================================== */
 
 .info-pair {
@@ -1832,16 +1809,9 @@ a.back-link {
    Note: Higher specificity required to override Hugo figure img default width */
 
 /* All image size utilities are block-level */
-.img-sm,
 .img-md,
-.img-lg,
-.img-xl {
+.img-lg {
     display: block;
-}
-
-.img-sm {
-    width: var(--image-size-sm) !important;
-    height: var(--image-size-sm) !important;
 }
 
 .img-md {
@@ -1855,19 +1825,10 @@ a.back-link {
     margin-bottom: var(--space-lg);
 }
 
-.img-xl {
-    width: var(--image-size-xl) !important;
-    height: var(--image-size-xl) !important;
-}
-
 /* Image Treatment Variants - Composable styling classes */
 .circular-image {
     border-radius: 50%;
     object-fit: cover;
-}
-
-.framed-image {
-    border: var(--border-width-accent) solid var(--background-card);
 }
 
 /* Code Block - Styled code strings for fingerprints, keys, technical data */
