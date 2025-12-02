@@ -797,6 +797,12 @@ nav a {
     line-height: var(--line-height-essay);
 }
 
+/* Reset CTA links inside intro sections to base size for consistency */
+.bio .cta-link,
+.notes-homepage-intro .cta-link {
+    font-size: var(--font-base);
+}
+
 /* Unified section header style - applied to divs and non-semantic elements */
 .section-header,
 .essay-section-header,
