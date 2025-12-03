@@ -1,9 +1,9 @@
 {{/*
-Purpose: Renders a button or call-to-action link
+Purpose: Renders a call-to-action link
 
 Parameters:
 - url (string, required): Link destination
-- text (string, required): Button/link text
+- text (string, required): Link text
 - variant (string, optional): Style variant - "cta" (default), "download", or "button"
 - event (string, optional): Plausible analytics event name
 
@@ -13,10 +13,10 @@ Features:
 - Semantic HTML based on variant
 
 Usage:
-{{< button url="/subscribe" text="Subscribe" >}}
-{{< button url="/file.pdf" text="Download PDF" variant="download" >}}
-{{< button text="Submit" variant="button" >}}
-{{< button url="/signup" text="Get Started" event="cta_signup" >}}
+{{< cta url="/subscribe" text="Subscribe" >}}
+{{< cta url="/file.pdf" text="Download PDF" variant="download" >}}
+{{< cta text="Submit" variant="button" >}}
+{{< cta url="/signup" text="Get Started" event="cta_signup" >}}
 
 Important Notes:
 - Default variant is "cta" (link with → arrow)
