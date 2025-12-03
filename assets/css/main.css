@@ -222,7 +222,6 @@ body {
 
 code,
 pre,
-.code-block,
 .info-pair code {
     letter-spacing: normal;
 }
@@ -384,7 +383,6 @@ a:hover {
 
 /* Navigation links - no underline on hover (clear navigation zones) */
 header a:hover,
-nav a:hover,
 .footer-links a:hover,
 .skip-link:hover {
     text-decoration: none;
@@ -587,25 +585,21 @@ p .cta-link {
 .link-grid a {
     color: var(--brand-orange);
     font-weight: var(--font-weight-medium);
+    font-size: var(--font-base);
 }
 
-/* Consolidated hover states for download and service links */
-.download-link:hover,
+/* Hover states */
+.download-link:hover {
+    color: var(--brand-orange-hover);
+    text-decoration: none;
+}
+
 .link-grid a:hover {
     color: var(--brand-orange-hover);
-}
-
-/* Service links gain underline on hover */
-.link-grid a:hover {
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
-}
-
-/* Download links lose underline on hover */
-.download-link:hover {
-    text-decoration: none;
 }
 
 /* ==========================================================================
@@ -803,8 +797,7 @@ nav a {
     font-size: var(--font-base);
 }
 
-/* Unified section header style - applied to divs and non-semantic elements */
-.section-header,
+/* Unified section header style */
 .essay-section-header,
 .section-label-small,
 .topics h4 {
@@ -920,43 +913,6 @@ nav a {
     color: var(--brand-orange);
 }
 
-/* Copy Inline - inline variant without card wrapper */
-.copy-inline {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-2xl);
-}
-
-.copy-inline .rss-url {
-    display: inline;
-    padding-right: 0;
-}
-
-.copy-inline .rss-copy-btn {
-    position: static;
-    transform: none;
-    top: auto;
-    right: auto;
-}
-
-/* QR Code Container */
-.qr-container {
-    margin-top: var(--space-2xl);
-    margin-bottom: var(--space-md);
-}
-
-.qr-container a {
-    display: inline-block;
-}
-
-.qr-container img {
-    display: block;
-    width: var(--qr-size);
-    height: var(--qr-size);
-    border: var(--border-width-emphasis) solid var(--brand-orange);
-}
-
 .podcast-header {
     display: flex;
     gap: var(--space-lg);
@@ -991,8 +947,9 @@ nav a {
 .episode-tag {
     display: block;
     font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-normal);
     letter-spacing: var(--letter-spacing-wide);
+    color: var(--text-meta);
 }
 
 .episode-hook {
@@ -1016,50 +973,14 @@ nav a {
     margin-top: var(--space-sm);
 }
 
-/* Latest Episode - standalone section below podcast card */
-.latest-episode {
-    margin-bottom: var(--space-2xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-}
-
-.episode-label {
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
-    color: var(--text-subtle);
-}
-
 .episode-info {
     display: flex;
     flex-direction: column;
 }
 
-.episode-title {
-    font-size: var(--font-base);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    line-height: var(--line-height-body);
-}
-
-.episode-subtitle {
-    font-size: var(--font-base);
-    color: var(--text-secondary);
-    line-height: var(--line-height-body);
-}
-
 .podcast-info p {
     color: var(--text-secondary);
     font-size: var(--font-base);
-}
-
-/* Tagline - Reusable subtitle/description text */
-.tagline {
-    color: var(--text-secondary);
-    font-size: var(--font-base);
-    margin-bottom: var(--space-lg);
 }
 
 .podcast-links {
@@ -1078,12 +999,6 @@ nav a {
     display: inline;
 }
 
-.episode-tag {
-    color: var(--text-meta);
-    font-weight: var(--font-weight-normal);
-    font-size: var(--font-sm);
-}
-
 .separator {
     color: var(--text-meta);
     padding: 0 var(--space-xs);
@@ -1097,10 +1012,6 @@ nav a {
 
 .link-grid.single-column {
     grid-template-columns: 1fr;
-}
-
-.link-grid a {
-    font-size: var(--font-base);
 }
 
 /* ==========================================================================
@@ -1151,9 +1062,7 @@ nav a {
 
 /* Section lists have no bottom margin - footer/next section provides spacing */
 .recent-essays,
-.recent-notes,
-.essay-list,
-.note-list {
+.recent-notes {
     margin-bottom: 0;
 }
 
@@ -1784,6 +1693,31 @@ a.back-link {
     display: block;
 }
 
+.podcast-content > img:first-of-type {
+    width: var(--podcast-art-size);
+    height: var(--podcast-art-size);
+}
+
+/* Image size utilities
+   Note: Higher specificity required to override Hugo figure img default width */
+
+/* All image size utilities are block-level */
+.img-md,
+.img-lg {
+    display: block;
+}
+
+.img-md {
+    width: var(--image-size-md) !important;
+    height: var(--image-size-md) !important;
+}
+
+.img-lg {
+    width: var(--image-size-lg) !important;
+    height: var(--image-size-lg) !important;
+    margin-bottom: var(--space-lg);
+}
+
 /* ==========================================================================
    Pagination
    ========================================================================== */
@@ -1890,45 +1824,6 @@ a.back-link {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
-}
-
-/* Image Size Variants - Composable sizing classes
-   Note: Higher specificity required to override Hugo figure img default width */
-
-/* All image size utilities are block-level */
-.img-md,
-.img-lg {
-    display: block;
-}
-
-.img-md {
-    width: var(--image-size-md) !important;
-    height: var(--image-size-md) !important;
-}
-
-.img-lg {
-    width: var(--image-size-lg) !important;
-    height: var(--image-size-lg) !important;
-    margin-bottom: var(--space-lg);
-}
-
-/* Image Treatment Variants - Composable styling classes */
-.circular-image {
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* Code Block - Styled code strings for fingerprints, keys, technical data */
-.code-block {
-    font-family: var(--font-monospace);
-    font-size: 0.9em;
-    background: var(--background-card);
-    padding: 0.2em 0.4em;
-    border-radius: var(--border-radius-code);
-    border: var(--border-width) solid var(--border-color);
-    color: var(--text-primary);
-    word-break: break-all;
-    display: inline-block;
 }
 
 /* ==========================================================================
