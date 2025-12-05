@@ -182,10 +182,7 @@
     --button-min-width-lg: 85px;
     --button-min-width-sm: 80px;
     --skip-link-max-width: 260px;
-    --image-size-sm: 100px;
-    --image-size-md: 150px;
     --image-size-lg: 200px;
-    --image-size-xl: 300px;
 }
 
 /* Manual Theme Override - User can force light or dark mode via 'd' keyboard toggle
@@ -1002,11 +999,6 @@ nav a {
     margin-top: var(--space-xs);
 }
 
-.episode-info {
-    display: flex;
-    flex-direction: column;
-}
-
 .podcast-info p {
     color: var(--text-secondary);
     font-size: var(--font-base);
@@ -1196,18 +1188,11 @@ time.note-date,
 /* Page titles - bold weight for hierarchy consistency */
 .essay-title-single,
 .note-title-single {
+    font-size: var(--font-custom-32);
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-title);
     margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
     letter-spacing: var(--letter-spacing-tight-lg);
-}
-
-.essay-title-single {
-    font-size: var(--font-custom-32);  /* Pragmatic size between scale steps */
-}
-
-.note-title-single {
-    font-size: var(--font-custom-32);  /* Pragmatic size between scale steps */
 }
 
 .essay-body,
@@ -1732,21 +1717,9 @@ a.back-link {
     height: var(--podcast-art-size);
 }
 
-/* Image size utilities
-   Note: Higher specificity required to override Hugo figure img default width */
-
-/* All image size utilities are block-level */
-.img-md,
+/* Image size utility - used via shortcode variant param */
 .img-lg {
     display: block;
-}
-
-.img-md {
-    width: var(--image-size-md) !important;
-    height: var(--image-size-md) !important;
-}
-
-.img-lg {
     width: var(--image-size-lg) !important;
     height: var(--image-size-lg) !important;
     margin-bottom: var(--space-lg);
@@ -1937,11 +1910,6 @@ a.back-link {
 }
 
 /* ==========================================================================
-   Mobile Responsive Styles
-   ========================================================================== */
-
-/* Mobile breakpoint - hardcoded value because CSS variables don't work in media queries */
-/* ==========================================================================
    YouTube Embeds and Captions
    ========================================================================== */
 
@@ -2018,6 +1986,11 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     font-style: normal;
     color: var(--text-primary);
 }
+
+/* ==========================================================================
+   Mobile Responsive Styles
+   Mobile breakpoint: 600px - hardcoded because CSS variables don't work in media queries
+   ========================================================================== */
 
 @media (max-width: 600px) {
     html { font-size: 16px; }
