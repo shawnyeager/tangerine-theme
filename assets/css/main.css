@@ -797,6 +797,12 @@ nav a {
     font-size: var(--font-base);
 }
 
+/* Override tight CTA spacing in bio - match paragraph spacing */
+.bio p:has(+ .cta-link),
+.notes-homepage-intro p:has(+ .cta-link) {
+    margin-bottom: var(--space-lg);
+}
+
 /* Unified section header style */
 .essay-section-header,
 .section-label-small,
