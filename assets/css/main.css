@@ -151,10 +151,6 @@
     --text-heading-h5: light-dark(#1a1a1a, #d8d8d8);
     --code-background: light-dark(#f5f5f5, #1e1e1e);
 
-    /* Breakpoints - Note: CSS variables in @media queries have limited browser support.
-       Use literal values in media queries for maximum compatibility. */
-    --breakpoint-mobile: 600px;
-
     /* Typography Scale (Perfect Fourth: 1.333) */
     --font-xs: 0.75rem;
     --font-sm: 0.875rem;
@@ -180,7 +176,6 @@
     /* Component Sizing */
     --podcast-art-size: 150px;
     --button-min-width-lg: 85px;
-    --button-min-width-sm: 80px;
     --skip-link-max-width: 260px;
     --image-size-lg: 200px;
 }
