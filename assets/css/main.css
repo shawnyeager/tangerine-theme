@@ -1035,7 +1035,7 @@ nav a {
    ========================================================================== */
 
 .topics {
-    margin-bottom: var(--space-xl);  /* Space before essay list */
+    margin-bottom: var(--space-lg);  /* Connected to essay list below */
 }
 
 /* Keep section-label-medium different (year headers in notes) */
