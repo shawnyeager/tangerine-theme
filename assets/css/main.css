@@ -1598,7 +1598,7 @@ time.note-date,
 }
 
 .essay-footer {
-    margin-top: var(--space-xl);
+    margin-top: var(--space-md);
     padding-top: 0;
     border-top: none;
 }
@@ -1620,7 +1620,7 @@ time.note-date,
 .essay-nav {
     border-bottom: none;
     padding-bottom: 0;
-    margin-top: var(--space-md);
+    margin-top: var(--space-sm);
     gap: 0;
 }
 
@@ -1834,7 +1834,42 @@ a.back-link {
 }
 
 /* ==========================================================================
-   Dark Mode Overrides
+   FONT-WEIGHT & DARK MODE ARCHITECTURE
+
+   PROBLEM: Theme toggle and CSS dark mode work differently:
+   - Theme toggle: Sets data-theme="light|dark" attribute on <html>
+   - Colors: Use light-dark() function which respects color-scheme property
+   - CSS rules: html[data-theme="light|dark"] { color-scheme: light|dark; }
+     makes light-dark() work correctly with the toggle
+
+   BUT: @media (prefers-color-scheme: dark) checks SYSTEM preference,
+   NOT the data-theme attribute! So font-weight rules inside the media
+   query would apply based on system setting, ignoring user's toggle.
+
+   SOLUTION:
+   1. Base rules set light mode font-weight (450)
+   2. Media query rules use html:not([data-theme="light"]) to skip when
+      user explicitly chose light mode despite dark system
+   3. Explicit html[data-theme="dark"] rules handle user toggling to dark
+      when their system is in light mode
+   ========================================================================== */
+
+/* Base font-weight: light mode default (400) */
+.essay-body p,
+.essay-body li,
+.note-body p,
+.note-body li,
+.page-body p,
+.page-body li,
+.latest-essay p {
+    font-weight: var(--font-weight-normal);
+}
+
+/* ==========================================================================
+   Dark Mode Overrides (System Preference)
+
+   These rules apply when SYSTEM prefers dark AND user hasn't explicitly
+   toggled to light mode via data-theme="light"
    ========================================================================== */
 
 @media (prefers-color-scheme: dark) {
@@ -1852,8 +1887,9 @@ a.back-link {
         font-weight: var(--font-weight-bold);
     }
 
-    /* Body text - lighter weight in dark mode */
-    p, li {
+    /* Body text - lighter weight in dark mode (only when user hasn't chosen light) */
+    html:not([data-theme="light"]) p,
+    html:not([data-theme="light"]) li {
         font-weight: var(--font-weight-normal);
     }
 
@@ -1862,14 +1898,14 @@ a.back-link {
         font-weight: var(--font-weight-light);
     }
 
-    /* Long-form reading */
-    .essay-body p,
-    .essay-body li,
-    .note-body p,
-    .note-body li,
-    .page-body p,
-    .page-body li,
-    .latest-essay p {
+    /* Long-form reading - only when user hasn't explicitly chosen light mode */
+    html:not([data-theme="light"]) .essay-body p,
+    html:not([data-theme="light"]) .essay-body li,
+    html:not([data-theme="light"]) .note-body p,
+    html:not([data-theme="light"]) .note-body li,
+    html:not([data-theme="light"]) .page-body p,
+    html:not([data-theme="light"]) .page-body li,
+    html:not([data-theme="light"]) .latest-essay p {
         font-weight: var(--font-weight-light);
     }
 
@@ -1895,6 +1931,29 @@ a.back-link {
         background: var(--code-background) !important;
         color: #d0d0d0 !important;
     }
+}
+
+/* ==========================================================================
+   Dark Mode Overrides (Explicit Toggle)
+
+   These rules apply when user explicitly toggled to dark mode via the
+   theme toggle (data-theme="dark"), regardless of system preference.
+   Needed for when system is light but user wants dark mode.
+   ========================================================================== */
+
+html[data-theme="dark"] p,
+html[data-theme="dark"] li {
+    font-weight: var(--font-weight-normal);
+}
+
+html[data-theme="dark"] .essay-body p,
+html[data-theme="dark"] .essay-body li,
+html[data-theme="dark"] .note-body p,
+html[data-theme="dark"] .note-body li,
+html[data-theme="dark"] .page-body p,
+html[data-theme="dark"] .page-body li,
+html[data-theme="dark"] .latest-essay p {
+    font-weight: var(--font-weight-light);
 }
 
 /* ==========================================================================
