@@ -1504,7 +1504,7 @@ time.note-date,
     /* Footnotes */
     .footnotes {
         margin-top: var(--space-lg);
-        margin-bottom: var(--space-xl);
+        margin-bottom: 0;  /* hr + li margins provide separation; avoid double-spacing before footer CTA */
         font-size: var(--font-sm);
 
         hr {
