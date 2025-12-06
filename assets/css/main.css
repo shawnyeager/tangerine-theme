@@ -631,15 +631,32 @@ body > .container:first-of-type {
 
 /* Page-level site header spacing (not article headers) */
 body > .container > header {
-    margin-bottom: var(--space-2xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: last baseline;
+    margin-bottom: var(--space-xl);
+}
+
+.site-title {
+    margin: 0;
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.site-title a {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.site-title a:hover {
+    color: var(--brand-orange);
 }
 
 nav {
     display: flex;
     gap: var(--space-lg);
     margin-bottom: 0;
-    padding-bottom: var(--space-md);
-    border-bottom: var(--border-width) solid var(--border-color);
+    /* border-bottom: var(--border-width) solid var(--border-color); */
 }
 
 main .container {
@@ -680,6 +697,7 @@ nav a {
     right: var(--space-md);
     height: 1px;
     background: var(--border-color);
+    opacity: 0.5;
     transition: background-color var(--transition-fast);
 }
 
@@ -701,7 +719,7 @@ nav a {
 .email-form input[type="email"] {
     padding: 0.4rem 0;
     border: none;
-    border-bottom: var(--border-width) solid var(--border-color);
+    border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
     border-radius: 0;
     font-size: var(--font-sm);
     font-family: var(--font-system);
@@ -1509,7 +1527,7 @@ time.note-date,
 
         hr {
             margin: var(--space-lg) 0 var(--space-md) 0;
-            opacity: var(--opacity-subdued);
+            opacity: 0.5;
         }
 
         ol {
@@ -2049,6 +2067,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 @media (max-width: 600px) {
     html { font-size: 16px; }
     .container { padding: var(--space-lg) var(--space-md) 0 var(--space-md); }
+    body > .container > header { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
     .email-form input[type="email"] { max-width: none; }
     .footer-links a[aria-label="Value for value"] {
         position: relative;
