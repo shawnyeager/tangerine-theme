@@ -505,6 +505,12 @@ p .cta-link {
     margin-bottom: 0;
 }
 
+/* Last CTA in section (before footer) - remove bottom margin to prevent stacking */
+.all-essays .cta-link,
+.all-notes .cta-link {
+    margin-bottom: 0;
+}
+
 /* Hover state for all primary CTAs - no underline (arrows would be underlined) */
 .cta-link:hover,
 .all-essays:hover,
@@ -634,7 +640,9 @@ body > .container > header {
     display: flex;
     justify-content: space-between;
     align-items: last baseline;
-    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    margin-bottom: var(--space-2xl);
+    border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
 
 .site-title {
@@ -678,27 +686,12 @@ nav a {
    Site Footer (Unified Footer Zone)
    ========================================================================== */
 
-.site-footer {
-    margin-top: var(--space-2xl);  /* Match header gap for symmetry */
-}
-
-.site-footer-inner {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: var(--space-lg) 1rem var(--space-xl) 1rem;
-    position: relative;
-}
-
-.site-footer-inner::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: var(--space-md);
-    right: var(--space-md);
-    height: 1px;
-    background: var(--border-color);
-    opacity: 0.5;
-    transition: background-color var(--transition-fast);
+/* Footer mirrors header structure */
+body > .container > footer {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-xl);
+    border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
 
 .email-signup-intro {

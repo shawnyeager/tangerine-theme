@@ -1,7 +1,8 @@
 {{/*
 Purpose: Renders site footer with optional email signup form and navigation links
 
-Parameters: None (uses site and page context)
+Layout: Footer sits inside .container (matching header structure), so it inherits
+the container's max-width and padding. CSS targets `body > .container > footer`.
 
 Context Expected:
 - .Kind - Page kind (hides signup on 404 pages)
@@ -26,34 +27,31 @@ Important Notes:
 - Email form hidden on 404 pages and pages with hide_footer_signup: true
 - Plausible event tracking via class="plausible-event-name=EventName"
 - Form targets "popupwindow" for Buttondown compatibility
-- role="contentinfo" removed (redundant - HTML5 footer has implicit contentinfo role)
 */}}
 
-<footer class="site-footer" aria-label="Site footer">
-    <div class="site-footer-inner">
-        {{/* Email subscription form (parameterized) */}}
-        {{ if and .Site.Params.show_email_signup (not (eq .Kind "404")) (not .Params.hide_footer_signup) }}
-        <div class="email-subscription">
-            <p id="email-intro" class="email-signup-intro">{{ .Site.Params.email_signup_text | default "I send new essays and updates via email." }}</p>
-            <form class="email-form" action="{{ .Site.Params.email_signup_action }}" method="post" target="popupwindow">
-                <label for="email-subscribe" class="sr-only">Email address</label>
-                <input type="email" id="email-subscribe" name="email" placeholder="you@example.com" required aria-describedby="email-intro" autocomplete="email" inputmode="email" title="Please enter a valid email address" spellcheck="false">
-                <button type="submit"{{ with .Site.Params.plausible_form_event }} class="plausible-event-name={{ . }}"{{ end }}>Subscribe</button>
-            </form>
-        </div>
-        {{ end }}
+<footer aria-label="Site footer">
+    {{/* Email subscription form (parameterized) */}}
+    {{ if and .Site.Params.show_email_signup (not (eq .Kind "404")) (not .Params.hide_footer_signup) }}
+    <div class="email-subscription">
+        <p id="email-intro" class="email-signup-intro">{{ .Site.Params.email_signup_text | default "I send new essays and updates via email." }}</p>
+        <form class="email-form" action="{{ .Site.Params.email_signup_action }}" method="post" target="popupwindow">
+            <label for="email-subscribe" class="sr-only">Email address</label>
+            <input type="email" id="email-subscribe" name="email" placeholder="you@example.com" required aria-describedby="email-intro" autocomplete="email" inputmode="email" title="Please enter a valid email address" spellcheck="false">
+            <button type="submit"{{ with .Site.Params.plausible_form_event }} class="plausible-event-name={{ . }}"{{ end }}>Subscribe</button>
+        </form>
+    </div>
+    {{ end }}
 
-        {{/* Footer links (supports both primary_site and secondary_site params) */}}
-        <div class="footer-links">
-            {{ with .Site.Params.nostr }}<a href="{{ . }}">Nostr</a>{{ end }}
-            {{ with .Site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
-            {{ with .Site.Params.secondary_site_url }}
-                <a href="{{ . }}"{{ with $.Site.Params.plausible_events.cross_site_nav }} class="plausible-event-name={{ . }}"{{ end }}><span class="link-text">{{ $.Site.Params.secondary_site_name }}</span> <span aria-hidden="true">→</span></a>
-            {{ end }}
-            {{ with .Site.Params.author.email }}
-                <a href="mailto:{{ . }}"{{ with $.Site.Params.plausible_events.contact_email }} class="plausible-event-name={{ . }}"{{ end }}>Email</a>
-            {{ end }}
-            <a href="{{ .Site.Params.v4v_url | default "/v4v/" }}"{{ with .Site.Params.plausible_events.v4v_footer }} class="plausible-event-name={{ . }}"{{ end }} aria-label="Value for value"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg></a>
-        </div>
+    {{/* Footer links (supports both primary_site and secondary_site params) */}}
+    <div class="footer-links">
+        {{ with .Site.Params.nostr }}<a href="{{ . }}">Nostr</a>{{ end }}
+        {{ with .Site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
+        {{ with .Site.Params.secondary_site_url }}
+            <a href="{{ . }}"{{ with $.Site.Params.plausible_events.cross_site_nav }} class="plausible-event-name={{ . }}"{{ end }}><span class="link-text">{{ $.Site.Params.secondary_site_name }}</span> <span aria-hidden="true">→</span></a>
+        {{ end }}
+        {{ with .Site.Params.author.email }}
+            <a href="mailto:{{ . }}"{{ with $.Site.Params.plausible_events.contact_email }} class="plausible-event-name={{ . }}"{{ end }}>Email</a>
+        {{ end }}
+        <a href="{{ .Site.Params.v4v_url | default "/v4v/" }}"{{ with .Site.Params.plausible_events.v4v_footer }} class="plausible-event-name={{ . }}"{{ end }} aria-label="Value for value"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg></a>
     </div>
 </footer>
