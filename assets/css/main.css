@@ -644,7 +644,7 @@ body > .container:first-of-type {
 :root {
     --header-gap-below: var(--space-xl);      /* 32px - Space between header and main content */
     --footer-gap-above: var(--space-2xl);     /* 48px - Space between main content and footer HR */
-    --footer-gap-tight: var(--space-lg);      /* 24px - Space between footer HR and footer content */
+    --footer-gap-tight: var(--space-md);      /* 16px - Space between footer HR and footer content */
     --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
 }
 
@@ -2070,7 +2070,8 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 @media (max-width: 600px) {
     html { font-size: 16px; }
     .container { padding: var(--space-lg) var(--space-md) 0 var(--space-md); }
-    body > .container > header { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
+    body > .container > header { flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
+    header .site-title, header h1.site-title { margin-bottom: 0; }
     .email-form input[type="email"] { max-width: none; }
     .footer-links a[aria-label="Value for value"] {
         position: relative;
