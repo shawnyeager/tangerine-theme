@@ -173,7 +173,7 @@
     --border-width-emphasis: 2px;
     --border-height-thin: 1px;
 
-    /* Component Sizing */
+    /* Content Element Sizing */
     --podcast-art-size: 150px;
     --button-min-width-lg: 85px;
     --skip-link-max-width: 260px;
@@ -486,9 +486,9 @@ select:focus-visible,
     gap: var(--arrow-gap);
 }
 
-/* Block-level CTAs get bottom margin */
+/* Block-level CTAs: negative margin to reduce 48px footer gap to 32px section spacing */
 .cta-link {
-    margin-bottom: var(--space-sm);
+    margin-bottom: calc(-1 * var(--space-md));
 }
 
 /* CTAs inside paragraphs override to inline */
@@ -675,7 +675,6 @@ nav {
     display: flex;
     gap: var(--space-lg);
     margin-bottom: 0;
-    /* border-bottom: var(--border-width) solid var(--border-color); */
 }
 
 main .container {
@@ -1110,10 +1109,6 @@ body > .container > footer {
     margin-top: 0;
     margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
     letter-spacing: var(--letter-spacing-tight-xl);
-}
-
-.page-title:has(+ .page-subtitle) {
-    margin-bottom: var(--space-xs);
 }
 
 .page-subtitle {
@@ -2073,9 +2068,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     body > .container > header { flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
     header .site-title, header h1.site-title { margin-bottom: 0; }
     .email-form input[type="email"] { max-width: none; }
-    .footer-links a[aria-label="Value for value"] {
-        position: relative;
-    }
     .footer-links a[aria-label="Value for value"]::after {
         content: "";
         position: absolute;
