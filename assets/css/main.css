@@ -635,13 +635,30 @@ body > .container:first-of-type {
     padding-bottom: 0;
 }
 
+/* ==========================================================================
+   Header/Footer HR Spacing Tokens
+
+   IMPORTANT: Header and footer tight gaps use DIFFERENT values because:
+   - Header: Line-height extends BELOW text baseline, providing natural visual gap
+   - Footer: Line-height extends ABOVE text, so explicit padding is needed
+
+   These tokens control spacing around the header and footer HRs.
+   ========================================================================== */
+:root {
+    --hr-gap-header-above: 0;                 /* Header: line-height provides ~24px visual gap */
+    --hr-gap-header-below: var(--space-2xl);  /* 48px - Space between header HR and main content */
+    --hr-gap-footer-above: var(--space-2xl);  /* 48px - Space between main content and footer HR */
+    --hr-gap-footer-tight: var(--space-lg);   /* 24px - Space between footer HR and footer content */
+    --hr-gap-footer-below: var(--space-xl);   /* 32px - Space between footer content and page bottom */
+}
+
 /* Page-level site header spacing (not article headers) */
 body > .container > header {
     display: flex;
     justify-content: space-between;
     align-items: last baseline;
-    padding-bottom: var(--space-lg);
-    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--hr-gap-header-above);
+    margin-bottom: var(--hr-gap-header-below);
     border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
 
@@ -688,9 +705,9 @@ nav a {
 
 /* Footer mirrors header structure */
 body > .container > footer {
-    margin-top: var(--space-2xl);
-    padding-top: var(--space-2xl);
-    padding-bottom: var(--space-xl);
+    margin-top: var(--hr-gap-footer-above);
+    padding-top: var(--hr-gap-footer-tight);
+    padding-bottom: var(--hr-gap-footer-below);
     border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
 
