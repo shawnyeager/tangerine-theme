@@ -436,18 +436,6 @@ select:focus-visible,
     border-radius: 2px;
 }
 
-/* Skip link maintains its existing transform behavior */
-.skip-link:focus-visible {
-    outline: 2px solid var(--brand-orange);
-    outline-offset: 2px;
-}
-
-/* Email form input focus - enhance existing focus state */
-.email-form input[type="email"]:focus-visible {
-    outline: 2px solid var(--brand-orange);
-    outline-offset: 2px;
-}
-
 /* ==========================================================================
    Reduced Motion Support
    ========================================================================== */
@@ -470,16 +458,20 @@ select:focus-visible,
 
 /* ==========================================================================
    Link Hierarchy System
-   1. PRIMARY CTAs: Orange with arrows, color only on hover (.cta-link)
-   2. SECONDARY LINKS: Gray, underline at rest, none on hover (.download-link)
-   3. CONTACT/INLINE LINKS: Orange, underline on hover (.info-value, inline content links)
+
+   PRIMARY CTAs (.cta-link, .all-essays, .all-notes, .podcast-links a)
+   - Orange with arrows (→), color lightens on hover
+   - Display: inline-flex with gap for arrow spacing
+
+   SECONDARY/DOWNLOAD LINKS (.download-link, .link-grid a)
+   - Gray/secondary color, orange on hover
+   - No underline at rest, none on hover
+
+   INLINE CONTENT LINKS (.info-value, body links)
+   - Orange, underline appears on hover
    ========================================================================== */
 
-/* ==========================================================================
-   Link Hierarchy - Consolidated Transition
-   ========================================================================== */
-
-/* All brand-colored links share transition for consistent hover behavior */
+/* Shared transition for all branded links */
 .cta-link,
 .all-essays,
 .all-notes,
@@ -722,7 +714,7 @@ body > .container > footer {
 }
 
 .email-form input[type="email"] {
-    padding: 0.4rem 0;
+    padding: 0.4rem 0;  /* Compact vertical padding for inline form */
     border: none;
     border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
     border-radius: 0;
@@ -751,7 +743,7 @@ body > .container > footer {
 }
 
 .email-form button {
-    padding: 0.5rem 1rem;
+    padding: var(--space-xs) var(--space-md);
     background: transparent;
     color: var(--text-meta);
     border: var(--border-width) solid var(--text-meta);
@@ -937,7 +929,7 @@ body > .container > footer {
     background: transparent;
     color: var(--text-secondary);
     border: var(--border-width) solid var(--border-color);
-    padding: 0.4rem 0.75rem;
+    padding: 0.4rem var(--space-sm);  /* Compact button */
     border-radius: var(--border-radius-interactive);
     cursor: pointer;
     font-weight: var(--font-weight-medium);
@@ -1041,10 +1033,6 @@ body > .container > footer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-md);
-}
-
-.link-grid.single-column {
-    grid-template-columns: 1fr;
 }
 
 /* ==========================================================================
@@ -1469,7 +1457,7 @@ time.note-date,
 
     /* Task Lists */
     input[type="checkbox"] {
-        margin-right: 0.5rem;
+        margin-right: var(--space-xs);
         vertical-align: middle;
         appearance: none;
         width: 1.1em;
@@ -1504,12 +1492,11 @@ time.note-date,
 
         &::marker {
             content: '';
-            display: none;
         }
 
         input[type="checkbox"] {
             margin-left: -1.5rem;
-            margin-right: 0.75rem;
+            margin-right: var(--space-sm);
         }
     }
 
@@ -1666,29 +1653,16 @@ time.note-date,
     margin-bottom: 0;
 }
 
-/* Back links - unified styling for all back links */
+/* Back links - unified styling for wrappers and standalone anchors */
 .note-back-link,
 .back-link,
 .back-link-wrapper {
     margin-top: var(--space-lg);
-
-    a,
-    &.page-body a {
-        color: var(--text-meta);
-        text-decoration: none;
-        font-size: var(--font-base);
-        display: inline-flex;
-        align-items: center;
-        gap: var(--arrow-gap);
-
-        &:hover {
-            color: var(--brand-orange);
-            text-decoration: none;
-        }
-    }
 }
 
-/* Standalone back-link anchor elements */
+.note-back-link a,
+.back-link a,
+.back-link-wrapper a,
 a.back-link {
     color: var(--text-meta);
     text-decoration: none;
@@ -1831,13 +1805,13 @@ a.back-link {
     left: 0;
     background: var(--brand-orange);
     color: var(--text-on-brand);
-    padding: 0.5rem 1rem;
+    padding: var(--space-xs) var(--space-md);
     text-decoration: none;
     z-index: var(--z-skip-link);
     font-weight: var(--font-weight-medium);
     border-radius: 0 0 var(--border-radius-interactive) 0;
     transform: translateY(-100%);
-    transition: transform 0.2s ease;
+    transition: transform var(--transition-fast);
 }
 
 .skip-link:focus {
