@@ -69,6 +69,7 @@
     --font-weight-light: 300;     /* Lighter weight for dark mode */
     --font-weight-normal: 400;
     --font-weight-body: light-dark(350, 300);  /* Body text - lighter in dark mode */
+    --font-weight-list-title: 450;  /* List titles - overridden to 300 in dark mode */
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
@@ -1124,7 +1125,7 @@ body > .container > footer {
 
 .essay-item,
 .note-item {
-    margin-bottom: var(--space-xs);  /* 8px - tight scannable list */
+    margin-bottom: var(--space-xs);
     contain: layout style paint; /* Isolate list items for better performance */
 
     a {
@@ -1157,8 +1158,14 @@ time.note-date,
 .essay-title,
 .note-title {
     flex: 1;
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-list-title);
     font-size: var(--font-base);
+}
+
+/* Full listing pages (/essays/, /notes/) - wider row spacing */
+.full-list .essay-item,
+.full-list .note-item {
+    margin-bottom: var(--space-md);
 }
 
 
@@ -1877,6 +1884,12 @@ a.back-link {
         font-weight: var(--font-weight-light);
     }
 
+    /* List titles - lighter weight in dark mode (only when user hasn't chosen light) */
+    html:not([data-theme="light"]) .essay-title,
+    html:not([data-theme="light"]) .note-title {
+        font-weight: var(--font-weight-light);
+    }
+
     /* Long-form reading - only when user hasn't explicitly chosen light mode */
     html:not([data-theme="light"]) .essay-body p,
     html:not([data-theme="light"]) .essay-body li,
@@ -1934,6 +1947,12 @@ html[data-theme="dark"] .page-body li,
 html[data-theme="dark"] .latest-essay p {
     font-weight: var(--font-weight-light);
 }
+
+html[data-theme="dark"] .essay-title,
+html[data-theme="dark"] .note-title {
+    font-weight: var(--font-weight-light);
+}
+
 
 /* ==========================================================================
    Print Styles
