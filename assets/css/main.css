@@ -260,20 +260,33 @@ h1 {
     letter-spacing: var(--letter-spacing-tight-lg);
 }
 
-/* Site name - unified styling across homepage (h1) and other pages (div) */
-header .site-title,
-header h1.site-title {
+/* Homepage display title - large, prominent headline */
+h1.display-title {
     font-size: var(--font-2xl);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--space-md);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-title);
     margin-top: 0;
-    letter-spacing: normal; /* Override global h1 tight letter-spacing */
+    margin-bottom: var(--space-md);
+    letter-spacing: var(--letter-spacing-tight-lg);
 }
 
-/* Site name in header should use text color, not brand color */
-header .site-title a {
-    color: var(--text-primary);
+/* Home link square - 24x24px solid orange square */
+.home-link {
+    display: flex;
+    align-items: center;
 }
+
+.home-square {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-color: var(--brand-orange);
+}
+
+.home-link:hover .home-square {
+    opacity: 0.8;
+}
+
 
 /* Global headings */
 h2 {
@@ -642,8 +655,9 @@ body > .container:first-of-type {
    text, not between the HR and content.
    ========================================================================== */
 :root {
-    --header-gap-below: var(--space-xl);      /* 32px - Space between header and main content */
-    --footer-gap-above: var(--space-2xl);     /* 48px - Space between main content and footer HR */
+    --section-gap: var(--space-2xl);          /* 48px - Master section rhythm (change here to update all) */
+    --header-gap-below: var(--section-gap);   /* Space between header and main content */
+    --footer-gap-above: var(--section-gap);   /* Space between main content and footer HR */
     --footer-gap-tight: var(--space-md);      /* 16px - Space between footer HR and footer content */
     --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
 }
@@ -682,7 +696,7 @@ main .container {
 }
 
 nav a {
-    color: var(--text-primary);
+    color: var(--text-secondary);
     font-weight: var(--font-weight-medium);
     text-decoration: none;
 
@@ -693,12 +707,22 @@ nav a {
 }
 
 /* ==========================================================================
+   Homepage Sections
+   ========================================================================== */
+
+.latest-essay,
+.latest-essay + h2.essay-section-header,
+.recent-essays {
+    margin-top: var(--section-gap);
+}
+
+/* ==========================================================================
    Site Footer (Unified Footer Zone)
    ========================================================================== */
 
 body > .container > footer {
-    margin-top: var(--footer-gap-above);
-    padding-top: var(--footer-gap-tight);
+    margin-top: var(--section-gap);
+    padding-top: var(--space-lg);
     padding-bottom: var(--footer-gap-below);
     border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
@@ -1055,7 +1079,12 @@ body > .container > footer {
    ========================================================================== */
 
 .topics {
-    margin-bottom: var(--space-lg);  /* Connected to essay list below */
+    margin-bottom: var(--space-md);  /* Tight coupling to essay list below */
+}
+
+/* When essays directly follow topics, remove essay list margin-top */
+.topics + .recent-essays {
+    margin-top: 0;
 }
 
 /* Keep section-label-medium different (year headers in notes) */
@@ -1107,7 +1136,7 @@ body > .container > footer {
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-title);
     margin-top: 0;
-    margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
+    margin-bottom: var(--space-lg);  /* Breathing room to first content element */
     letter-spacing: var(--letter-spacing-tight-xl);
 }
 
