@@ -298,26 +298,26 @@ h1.display-title {
 }
 
 
-/* Global headings */
+/* Global headings - use typography tokens for tight, consistent spacing */
 h2 {
     font-size: var(--font-custom-24);
     font-weight: var(--font-weight-semibold);
-    margin-top: var(--space-xl);  /* 32px */
-    margin-bottom: var(--space-md);
+    margin-top: var(--heading-above-lg);
+    margin-bottom: var(--heading-below-lg);
 }
 
 h3 {
     font-size: var(--font-lg);
     font-weight: var(--font-weight-semibold);
-    margin-top: var(--space-lg);
-    margin-bottom: var(--space-sm);
+    margin-top: var(--heading-above-md);
+    margin-bottom: var(--heading-below-md);
 }
 
 h4 {
     font-size: var(--font-lg);
     font-weight: var(--font-weight-semibold);
-    margin-top: var(--space-lg);
-    margin-bottom: var(--space-xs);
+    margin-top: var(--heading-above-sm);
+    margin-bottom: var(--heading-below-sm);
 }
 
 h5, h6 {
@@ -327,16 +327,7 @@ h5, h6 {
     margin-bottom: var(--space-xs);
 }
 
-/* Reduce heading spacing when preceded by CTA links (compensate for no margin collapse) */
-.cta-link + h2,
-.download-link + h2 {
-    margin-top: var(--space-sm);
-}
-
-.cta-link + h3,
-.download-link + h3 {
-    margin-top: var(--space-sm);
-}
+/* CTA + heading: let heading's natural margin provide spacing (no adjustment needed) */
 
 .podcast-content h3 {
     margin-top: var(--space-2xl);
@@ -348,12 +339,8 @@ p {
     font-weight: var(--font-weight-body);
 }
 
-/* Reduce gap before action links */
-p:has(+ .cta-link),
-p:has(+ .download-link),
-p:has(+ .back-link) {
-    margin-bottom: var(--space-sm);
-}
+/* Action link spacing now controlled by shortcode classes (.cta-link, .download-link, .back-link)
+   via negative margin-top - see Link Hierarchy section */
 
 ul {
     margin: var(--space-md) 0;
@@ -501,13 +488,18 @@ select:focus-visible,
     gap: var(--arrow-gap);
 }
 
-/* Action links: consistent margins (content controls gap via :has() rules) */
+/* Action links: block display for margin control, tight spacing above */
 .cta-link {
-    margin-bottom: 0;
+    display: flex;  /* Block-level flex for margin-top to work */
+    width: fit-content;
+    margin-top: calc(-1 * var(--space-label-gap));  /* Pull up 4px: 16px para - 4px = 12px gap */
+    margin-bottom: 0;  /* Following element's margin-top provides spacing */
 }
 
-/* CTAs inside paragraphs: inline, no wrapping */
+/* CTAs inside paragraphs: inline, no margins */
 p .cta-link {
+    display: inline-flex;
+    margin-top: 0;
     white-space: nowrap;
 }
 
@@ -812,7 +804,7 @@ body > .container > footer {
     margin-bottom: var(--space-xl);
     color: var(--text-secondary);
     font-size: var(--font-lg-plus);  /* 17px - slightly larger than base for prominence */
-    line-height: 1.45;  /* Match reading content */
+    line-height: 1.45;  /* Match long-form content */
 }
 
 .bio p,
@@ -854,7 +846,7 @@ body > .container > footer {
 
     /* Semantic heading: essay title (h3 under h2 section header) */
     h3 {
-        font-size: var(--font-xl);
+        font-size: var(--font-custom-24);
         font-weight: var(--font-weight-medium);
         margin-top: 0;
         margin-bottom: var(--space-sm);  /* 16px - title to description */
@@ -1142,6 +1134,7 @@ time.note-date,
     font-size: var(--font-sm);
     font-weight: var(--font-weight-normal);  /* Override body weight (450→400) */
     font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;  /* Tighten date spacing */
     flex-shrink: 0;
     white-space: nowrap;
 }
@@ -1205,7 +1198,7 @@ time.note-date,
 
 .essay-body,
 .note-body,
-.reading-content {
+.long-form {
     font-size: var(--font-lg);
     line-height: 1.45;  /* Tighter than body default (1.5) for optimal reading */
 
@@ -1214,12 +1207,6 @@ time.note-date,
         margin-bottom: var(--space-md);
         font-weight: var(--font-weight-normal);
         color: var(--text-primary);
-    }
-
-    /* Tighter gap before action links */
-    p:has(+ .cta-link),
-    p:has(+ .download-link) {
-        margin-bottom: var(--space-sm);
     }
 
     /* Unordered lists */
@@ -1250,43 +1237,18 @@ time.note-date,
 }
 
 /* Reading content uses primary color for optimal contrast */
+.page-body p,
 .latest-essay p,
 .podcast p {
     color: var(--text-primary);
-}
-
-/* Content heading spacing - unified hierarchy across essay/note/page bodies
-   Uses typography tokens (fixed ratios) not layout tokens (scale on mobile)
-   H2: 1.5:1 ratio (24px above / 16px below)
-   H3: 1.33:1 ratio (16px above / 12px below)
-   H4: 1.5:1 ratio (12px above / 8px below) */
-.essay-body h2,
-.note-body h2,
-.reading-content h2 {
-    margin-top: var(--heading-above-lg);
-    margin-bottom: var(--heading-below-lg);
-}
-
-.essay-body h3,
-.note-body h3,
-.reading-content h3 {
-    margin-top: var(--heading-above-md);
-    margin-bottom: var(--heading-below-md);
-}
-
-.essay-body h4,
-.note-body h4,
-.reading-content h4 {
-    margin-top: var(--heading-above-sm);
-    margin-bottom: var(--heading-below-sm);
 }
 
 /* First heading after page header elements - reduce top margin to avoid excessive stacking
    Applies when meta/title/subtitle elements precede the first content heading */
 .essay-content > header + .essay-body > h2:first-child,
 .note-content > header + .note-body > h2:first-child,
-.reading-content > h2:first-child,
-.reading-content > h3:first-child {
+.long-form > h2:first-child,
+.long-form > h3:first-child {
     margin-top: 0;  /* No top margin - header elements provide spacing */
 }
 
