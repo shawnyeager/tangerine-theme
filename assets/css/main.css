@@ -499,29 +499,14 @@ select:focus-visible,
     gap: var(--arrow-gap);
 }
 
-/* Block-level CTAs: negative margin to reduce 48px footer gap to 32px section spacing */
+/* Action links: consistent margins (content controls gap via :has() rules) */
 .cta-link {
-    margin-bottom: calc(-1 * var(--space-md));
+    margin-bottom: 0;
 }
 
-/* CTAs inside paragraphs override to inline */
+/* CTAs inside paragraphs: inline, no wrapping */
 p .cta-link {
-    margin-bottom: 0;
-    white-space: nowrap;  /* Prevent link text + arrow from wrapping */
-}
-
-/* CTAs before headings need less margin (heading provides spacing) */
-.cta-link:has(+ h2),
-.cta-link:has(+ h3),
-.download-link:has(+ h2),
-.download-link:has(+ h3) {
-    margin-bottom: 0;
-}
-
-/* Last CTA in section (before footer) - remove bottom margin to prevent stacking */
-.all-essays .cta-link,
-.all-notes .cta-link {
-    margin-bottom: 0;
+    white-space: nowrap;
 }
 
 /* Hover state for all primary CTAs - no underline (arrows would be underlined) */
@@ -567,45 +552,29 @@ p .cta-link {
     margin-top: var(--space-sm);
 }
 
-/* First download link after info-pair needs spacing */
-.info-pair + .download-link {
-    margin-top: var(--space-sm);
-    margin-bottom: var(--space-xs);
-}
-
-/* Additional download links get tight spacing */
+/* Stacked action links: peers get equal spacing */
+.cta-link + .cta-link,
+.cta-link + .download-link,
+.download-link + .cta-link,
 .download-link + .download-link {
-    margin-bottom: var(--space-xs);
+    margin-top: var(--space-lg);
 }
 
-/* Download link after CTA needs spacing */
-.cta-link + .download-link {
-    margin-top: var(--space-md);
-}
-
-/* Info-pair followed by download link - minimal spacing (download link has its own margin-top) */
+/* Freestanding action links after info blocks: breathing room */
+.info-pair:has(+ .cta-link),
 .info-pair:has(+ .download-link) {
-    margin-bottom: 0;
+    margin-bottom: var(--space-lg);
 }
 
-/* Info-pair following download link needs section spacing */
+/* New section after action links */
+.cta-link + .info-pair,
 .download-link + .info-pair {
-    margin-top: var(--space-2xl);
-}
-
-/* Section spacing when info-pair follows CTA */
-.cta-link + .info-pair {
     margin-top: var(--space-xl);
 }
 
 /* Contact section spacing from intro text */
 .contact-section {
     margin-top: var(--space-lg);
-}
-
-/* Download link following contact section - tighten spacing */
-.contact-section + .download-link {
-    margin-top: var(--space-sm);
 }
 
 /* Service Links - Orange, no arrows
