@@ -109,6 +109,15 @@
     --space-2xl: 3rem;           /* 48px - Major separations (header→main, main→footer, homepage sections) */
     --space-3xl: 4rem;           /* 64px - Page header element stacks (meta+title+first heading sequences) */
 
+    /* Typography spacing - heading proximity ratios (don't scale with viewport)
+       Headings need more space above to associate with content below */
+    --heading-above-lg: 1.5rem;   /* 24px - h2 section breaks */
+    --heading-below-lg: 1rem;     /* 16px - maintains 1.5:1 ratio */
+    --heading-above-md: 1rem;     /* 16px - h3 subsection breaks */
+    --heading-below-md: 0.75rem;  /* 12px - maintains 1.33:1 ratio */
+    --heading-above-sm: 0.75rem;  /* 12px - h4 minor breaks */
+    --heading-below-sm: 0.5rem;   /* 8px - maintains 1.5:1 ratio */
+
     /* Component Sizing */
     --content-max-width: 700px;
     --card-padding: var(--space-xl);
@@ -1261,26 +1270,26 @@ time.note-date,
 }
 
 /* Content heading spacing - unified hierarchy across essay/note/page bodies
-   Philosophy: Clear visual hierarchy without excessive gaps
-   H2 (24px top): Section breaks
-   H3 (16px top): Subsection breaks
-   H4 (12px top): Minor heading breaks */
+   Uses typography tokens (fixed ratios) not layout tokens (scale on mobile)
+   H2: 1.5:1 ratio (24px above / 16px below)
+   H3: 1.33:1 ratio (16px above / 12px below)
+   H4: 1.5:1 ratio (12px above / 8px below) */
 .essay-body,
 .note-body,
 .page-body {
     h2 {
-        margin-top: var(--space-lg);     /* 24px - section break */
-        margin-bottom: var(--space-md);  /* 16px */
+        margin-top: var(--heading-above-lg);
+        margin-bottom: var(--heading-below-lg);
     }
 
     h3 {
-        margin-top: var(--space-md);     /* 16px - subsection break */
-        margin-bottom: var(--space-sm);  /* 12px */
+        margin-top: var(--heading-above-md);
+        margin-bottom: var(--heading-below-md);
     }
 
     h4 {
-        margin-top: var(--space-sm);     /* 12px - minor heading break */
-        margin-bottom: var(--space-xs);  /* 8px */
+        margin-top: var(--heading-above-sm);
+        margin-bottom: var(--heading-below-sm);
     }
 }
 
