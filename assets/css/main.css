@@ -820,12 +820,11 @@ body > .container > footer {
     margin-bottom: var(--space-xl);
     color: var(--text-secondary);
     font-size: var(--font-lg-plus);  /* 17px - slightly larger than base for prominence */
-    line-height: var(--line-height-body);
+    line-height: 1.45;  /* Match reading content */
 }
 
 .bio p,
-.notes-homepage-intro p,
-.page-body p {
+.notes-homepage-intro p {
     margin-bottom: var(--space-sm);
 }
 
@@ -1202,11 +1201,6 @@ time.note-date,
     gap: var(--space-xs);
 }
 
-/* First heading in page-body needs reduced margin for tight title block */
-.page-body > h2:first-child {
-    margin-top: var(--space-sm);
-}
-
 .page-meta-separator {
     opacity: 0.5;
 }
@@ -1222,15 +1216,22 @@ time.note-date,
 }
 
 .essay-body,
-.note-body {
+.note-body,
+.reading-content {
     font-size: var(--font-lg);
-    line-height: var(--line-height-body);
+    line-height: 1.45;  /* Tighter than body default (1.5) for optimal reading */
 
     /* Paragraphs */
     p {
         margin-bottom: var(--space-md);
         font-weight: var(--font-weight-normal);
         color: var(--text-primary);
+    }
+
+    /* Tighter gap before action links */
+    p:has(+ .cta-link),
+    p:has(+ .download-link) {
+        margin-bottom: var(--space-sm);
     }
 
     /* Unordered lists */
@@ -1261,8 +1262,6 @@ time.note-date,
 }
 
 /* Reading content uses primary color for optimal contrast */
-.page-body p,
-.page-body li,
 .latest-essay p,
 .podcast p {
     color: var(--text-primary);
@@ -1273,31 +1272,33 @@ time.note-date,
    H2: 1.5:1 ratio (24px above / 16px below)
    H3: 1.33:1 ratio (16px above / 12px below)
    H4: 1.5:1 ratio (12px above / 8px below) */
-.essay-body,
-.note-body,
-.page-body {
-    h2 {
-        margin-top: var(--heading-above-lg);
-        margin-bottom: var(--heading-below-lg);
-    }
+.essay-body h2,
+.note-body h2,
+.reading-content h2 {
+    margin-top: var(--heading-above-lg);
+    margin-bottom: var(--heading-below-lg);
+}
 
-    h3 {
-        margin-top: var(--heading-above-md);
-        margin-bottom: var(--heading-below-md);
-    }
+.essay-body h3,
+.note-body h3,
+.reading-content h3 {
+    margin-top: var(--heading-above-md);
+    margin-bottom: var(--heading-below-md);
+}
 
-    h4 {
-        margin-top: var(--heading-above-sm);
-        margin-bottom: var(--heading-below-sm);
-    }
+.essay-body h4,
+.note-body h4,
+.reading-content h4 {
+    margin-top: var(--heading-above-sm);
+    margin-bottom: var(--heading-below-sm);
 }
 
 /* First heading after page header elements - reduce top margin to avoid excessive stacking
    Applies when meta/title/subtitle elements precede the first content heading */
 .essay-content > header + .essay-body > h2:first-child,
 .note-content > header + .note-body > h2:first-child,
-.page-body > h2:first-child,
-.page-body > h3:first-child {
+.reading-content > h2:first-child,
+.reading-content > h3:first-child {
     margin-top: 0;  /* No top margin - header elements provide spacing */
 }
 
