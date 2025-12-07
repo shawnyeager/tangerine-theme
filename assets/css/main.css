@@ -1136,14 +1136,22 @@ body > .container > footer {
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-title);
     margin-top: 0;
-    margin-bottom: var(--space-lg);  /* Breathing room to first content element */
+    margin-bottom: var(--space-xs);  /* Tight coupling to meta/subtitle; body controls gap via margin-top */
     letter-spacing: var(--letter-spacing-tight-xl);
 }
 
 .page-subtitle {
     font-size: var(--font-lg);
     color: var(--text-secondary);
+    margin-top: 0;
     margin-bottom: var(--space-lg);
+}
+
+/* Content containers: margin-top collapses with meta/subtitle margin-bottom when present */
+.page-body,
+.podcast-content,
+.topics {
+    margin-top: var(--space-lg);
 }
 
 .essay-item,
