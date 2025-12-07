@@ -7,12 +7,13 @@
    Web Font Loading
 
    Strategy: font-display: optional for fastest perceived load
-   - If Satoshi loads quickly (within 100ms block period): use it
-   - If Satoshi is delayed: use fallback system font, don't swap later
+   - If fonts load quickly (within 100ms block period): use them
+   - If delayed: use fallback system font, don't swap later
    - Prevents layout shift and "flash of web font" (FOUT)
-   - System fallback: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto
 
-   Font file: 43KB Satoshi variable (weights 300-900)
+   Dual-font system:
+   - Satoshi (43KB): Headings, nav, section labels - clear weight hierarchy
+   - Inter (352KB): Body text, lists, blockquotes - optimal readability
    ========================================================================== */
 
 @font-face {
@@ -21,6 +22,14 @@
     font-style: normal;
     font-display: optional;
     src: url('/fonts/Satoshi-Variable.woff2') format('woff2-variations');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: optional;
+    src: url('/fonts/Inter-Variable.woff2') format('woff2-variations');
 }
 
 /* ==========================================================================
@@ -49,8 +58,9 @@
     --background-body: light-dark(#ffffff, #1e1e1e);
     --background-card: light-dark(#f5f5f5, #2a2a2a);
 
-    /* Typography */
-    --font-system: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    /* Typography - Dual font system */
+    --font-heading: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
     --line-height-body: 1.5;
     --line-height-title: 1.15;  /* Tight line-height for large display titles */
@@ -205,16 +215,15 @@ html[data-theme="dark"] { color-scheme: dark; }
 }
 
 html {
-    font-size: 106.25%; /* 17px base - Satoshi has smaller x-height than Inter */
     overflow-y: scroll; /* Prevent horizontal shift when scrollbar appears/disappears */
 }
 
 body {
-    font-family: var(--font-system);
+    font-family: var(--font-body);
+    font-size: 16px;
     line-height: var(--line-height-body);
     color: var(--text-primary);
     background: var(--background-body);
-    font-size: 17px;
     transition: background-color 0.3s ease, color 0.3s ease;
     letter-spacing: var(--letter-spacing-body);
     -webkit-font-smoothing: antialiased;
@@ -259,6 +268,7 @@ body::before {
  * - .site-title: Override to normal (0) for brand name readability
  */
 h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
     letter-spacing: var(--letter-spacing-tight-md);
     color: var(--text-primary);
 }
@@ -272,7 +282,7 @@ h1 {
 
 /* Homepage display title - large, prominent headline */
 h1.display-title {
-    font-size: var(--font-2xl);
+    font-size: var(--font-3xl);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
     margin-top: 0;
@@ -649,6 +659,7 @@ body > .container > header {
 }
 
 nav {
+    font-family: var(--font-heading);
     display: flex;
     gap: var(--space-lg);
     margin-bottom: 0;
@@ -711,7 +722,7 @@ body > .container > footer {
     border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
     border-radius: 0;
     font-size: var(--font-sm);
-    font-family: var(--font-system);
+    font-family: var(--font-body);
     background: var(--background-body);
     color: var(--text-primary);
     flex: 1;
@@ -823,6 +834,7 @@ body > .container > footer {
 .essay-section-header,
 .section-label-small,
 .topics h4 {
+    font-family: var(--font-heading);
     font-size: var(--font-sm);
     font-weight: var(--font-weight-medium);
     letter-spacing: var(--letter-spacing-wide);
@@ -846,7 +858,7 @@ body > .container > footer {
 
     /* Semantic heading: essay title (h3 under h2 section header) */
     h3 {
-        font-size: var(--font-custom-24);
+        font-size: var(--font-2xl);
         font-weight: var(--font-weight-medium);
         margin-top: 0;
         margin-bottom: var(--space-sm);  /* 16px - title to description */
@@ -927,7 +939,7 @@ body > .container > footer {
     font-weight: var(--font-weight-medium);
     font-size: var(--font-xs);
     transition: all var(--transition-fast);
-    font-family: var(--font-system);
+    font-family: var(--font-heading);
 }
 
 .rss-copy-btn:hover {
@@ -1043,6 +1055,7 @@ body > .container > footer {
 /* Keep section-label-medium different (year headers in notes) */
 .recent-notes h3,
 .section-label-medium {
+    font-family: var(--font-heading);
     font-size: var(--font-base);
     font-weight: var(--font-weight-medium);
     letter-spacing: var(--letter-spacing-wide);
@@ -1117,7 +1130,7 @@ body > .container > footer {
         color: var(--text-primary);
         text-decoration: none;
         display: flex;
-        gap: var(--space-md);
+        gap: var(--space-lg);
         line-height: 1.5;
         align-items: baseline;
 
@@ -1156,7 +1169,7 @@ time.note-date,
 
 .all-essays,
 .all-notes {
-    margin-top: var(--space-sm);  /* 12px - matches header to first item gap */
+    margin-top: var(--space-md);  /* 16px - breathing room after list */
 }
 
 .topic-count {
