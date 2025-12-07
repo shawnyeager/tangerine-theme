@@ -655,10 +655,10 @@ body > .container:first-of-type {
    text, not between the HR and content.
    ========================================================================== */
 :root {
-    --section-gap: var(--space-2xl);          /* 48px - Master section rhythm (change here to update all) */
-    --header-gap-below: var(--section-gap);   /* Space between header and main content */
-    --footer-gap-above: var(--section-gap);   /* Space between main content and footer HR */
-    --footer-gap-tight: var(--space-md);      /* 16px - Space between footer HR and footer content */
+    --section-gap: var(--space-2xl);          /* 48px - Interior section breaks */
+    --header-gap-below: var(--space-xl);      /* 32px - Frame edge: header to content */
+    --footer-gap-above: var(--space-xl);      /* 32px - Frame edge: content to footer HR */
+    --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
     --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
 }
 
@@ -721,8 +721,8 @@ nav a {
    ========================================================================== */
 
 body > .container > footer {
-    margin-top: var(--section-gap);
-    padding-top: var(--space-lg);
+    margin-top: var(--footer-gap-above);
+    padding-top: var(--footer-gap-tight);
     padding-bottom: var(--footer-gap-below);
     border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
@@ -738,7 +738,7 @@ body > .container > footer {
     display: flex;
     gap: var(--space-xs);
     align-items: stretch;
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-lg);  /* Internal zone spacing to footer links */
     flex-wrap: nowrap;
 }
 
