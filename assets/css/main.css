@@ -7,20 +7,20 @@
    Web Font Loading
 
    Strategy: font-display: optional for fastest perceived load
-   - If Inter loads quickly (within 100ms block period): use it
-   - If Inter is delayed: use fallback system font, don't swap later
+   - If Satoshi loads quickly (within 100ms block period): use it
+   - If Satoshi is delayed: use fallback system font, don't swap later
    - Prevents layout shift and "flash of web font" (FOUT)
    - System fallback: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto
 
-   Font file: 35KB Inter variable (weights 100-900)
+   Font file: 43KB Satoshi variable (weights 300-900)
    ========================================================================== */
 
 @font-face {
-    font-family: 'Inter';
-    font-weight: 100 900;
+    font-family: 'Satoshi';
+    font-weight: 300 900;
     font-style: normal;
     font-display: optional;
-    src: url('/fonts/inter-variable.woff2') format('woff2-variations');
+    src: url('/fonts/Satoshi-Variable.woff2') format('woff2-variations');
 }
 
 /* ==========================================================================
@@ -50,9 +50,9 @@
     --background-card: light-dark(#f5f5f5, #2a2a2a);
 
     /* Typography */
-    --font-system: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-system: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     --font-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-    --line-height-body: 1.6;
+    --line-height-body: 1.5;
     --line-height-title: 1.15;  /* Tight line-height for large display titles */
 
     /* Font Weights */
@@ -196,6 +196,7 @@ html[data-theme="dark"] { color-scheme: dark; }
 }
 
 html {
+    font-size: 106.25%; /* 17px base - Satoshi has smaller x-height than Inter */
     overflow-y: scroll; /* Prevent horizontal shift when scrollbar appears/disappears */
 }
 
@@ -291,8 +292,8 @@ h1.display-title {
 /* Global headings */
 h2 {
     font-size: var(--font-custom-24);
-    font-weight: var(--font-weight-medium);
-    margin-top: var(--space-xl);  /* 32px - unified with content H2 */
+    font-weight: var(--font-weight-semibold);
+    margin-top: var(--space-xl);  /* 32px */
     margin-bottom: var(--space-md);
 }
 
@@ -333,7 +334,7 @@ h5, h6 {
 }
 
 p {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
     color: var(--text-secondary);
     font-weight: var(--font-weight-body);
 }
@@ -403,6 +404,8 @@ a span[aria-hidden="true"] {
     vertical-align: middle;
     transform: translateY(-0.1em);
     text-decoration: none;
+    font-size: 0.85em;
+    opacity: 0.7;
 }
 
 /* ==========================================================================
@@ -1102,7 +1105,7 @@ body > .container > footer {
 
 .page-title {
     font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-title);
     margin-top: 0;
     margin-bottom: var(--space-xs);  /* Tight coupling to meta/subtitle; body controls gap via margin-top */
@@ -1219,7 +1222,7 @@ time.note-date,
 
     /* Paragraphs */
     p {
-        margin-bottom: var(--space-lg);
+        margin-bottom: var(--space-md);
         font-weight: var(--font-weight-normal);
         color: var(--text-primary);
     }
@@ -1261,25 +1264,25 @@ time.note-date,
 
 /* Content heading spacing - unified hierarchy across essay/note/page bodies
    Philosophy: Clear visual hierarchy without excessive gaps
-   H2 (32px top): Major section breaks
-   H3 (24px top): Subsection breaks
-   H4 (16px top): Minor heading breaks */
+   H2 (24px top): Section breaks
+   H3 (16px top): Subsection breaks
+   H4 (12px top): Minor heading breaks */
 .essay-body,
 .note-body,
 .page-body {
     h2 {
-        margin-top: var(--space-xl);     /* 32px - major section break */
+        margin-top: var(--space-lg);     /* 24px - section break */
         margin-bottom: var(--space-md);  /* 16px */
     }
 
     h3 {
-        margin-top: var(--space-lg);     /* 24px - subsection break */
+        margin-top: var(--space-md);     /* 16px - subsection break */
         margin-bottom: var(--space-sm);  /* 12px */
     }
 
     h4 {
-        margin-top: var(--space-md);     /* 16px - minor heading break */
-        margin-bottom: var(--space-sm);  /* 12px */
+        margin-top: var(--space-sm);     /* 12px - minor heading break */
+        margin-bottom: var(--space-xs);  /* 8px */
     }
 }
 
@@ -1637,7 +1640,7 @@ time.note-date,
 .essay-nav {
     border-bottom: none;
     padding-bottom: 0;
-    margin-top: var(--space-sm);
+    margin-top: var(--space-lg);
     gap: 0;
 }
 
@@ -1898,15 +1901,8 @@ a.back-link {
 
     /* Headings - maintain weight hierarchy in dark mode */
     h1,
-    .page-title {
-        font-weight: var(--font-weight-medium);
-    }
-
-    h2 {
-        font-weight: var(--font-weight-medium);
-    }
-
-    h3, h4, h5, h6,
+    .page-title,
+    h2, h3, h4, h5, h6,
     .essay-title-single,
     .note-title-single {
         font-weight: var(--font-weight-semibold);
