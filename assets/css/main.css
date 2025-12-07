@@ -1103,7 +1103,8 @@ body > .container > footer {
 /* Content containers: margin-top collapses with meta/subtitle margin-bottom when present */
 .page-body,
 .podcast-content,
-.topics {
+.topics,
+.recent-notes {
     margin-top: var(--space-lg);
 }
 
@@ -1140,7 +1141,7 @@ time.note-date,
 }
 
 .essay-title,
-.note-title-link {
+.note-title {
     flex: 1;
     font-weight: var(--font-weight-medium);
     font-size: var(--font-base);
