@@ -111,7 +111,7 @@
 
     /* Component Sizing */
     --content-max-width: 700px;
-    --card-padding: 2rem;
+    --card-padding: var(--space-xl);
     --border-radius-interactive: 4px;
     --border-radius-code: 4px;
     --brand-bar-height: 3px;
@@ -402,10 +402,8 @@ header a:hover,
 a span[aria-hidden="true"] {
     display: inline-block;
     vertical-align: middle;
-    transform: translateY(-0.1em);
     text-decoration: none;
-    font-size: 0.85em;
-    opacity: 0.7;
+    font-size: 0.8em;
 }
 
 /* ==========================================================================
@@ -560,7 +558,7 @@ p .cta-link {
 .cta-link + .download-link,
 .download-link + .cta-link,
 .download-link + .download-link {
-    margin-top: var(--space-lg);
+    margin-top: var(--space-sm);
 }
 
 /* Freestanding action links after info blocks: breathing room */
@@ -822,11 +820,6 @@ body > .container > footer {
     margin-bottom: var(--space-sm);
 }
 
-/* Reset CTA links inside intro sections to base size for consistency */
-.bio .cta-link,
-.notes-homepage-intro .cta-link {
-    font-size: var(--font-base);
-}
 
 /* Override tight CTA spacing in bio - match paragraph spacing */
 .bio p:has(+ .cta-link),
@@ -1135,7 +1128,7 @@ body > .container > footer {
         color: var(--text-primary);
         text-decoration: none;
         display: flex;
-        gap: var(--space-xs);
+        gap: var(--space-md);
         line-height: 1.5;
         align-items: baseline;
 
@@ -1155,7 +1148,6 @@ time.note-date,
     font-variant-numeric: tabular-nums;
     flex-shrink: 0;
     white-space: nowrap;
-    min-width: var(--button-min-width-lg);
     letter-spacing: normal;  /* Override body tight spacing */
 }
 
@@ -1646,7 +1638,7 @@ time.note-date,
 .essay-nav {
     border-bottom: none;
     padding-bottom: 0;
-    margin-top: var(--space-lg);
+    margin-top: var(--space-sm);
     gap: 0;
 }
 
@@ -2080,9 +2072,17 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
 @media (max-width: 600px) {
     html { font-size: 16px; }
-    .container { padding: var(--space-lg) var(--space-md) 0 var(--space-md); }
-    body > .container > header { flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
-    header .site-title, header h1.site-title { margin-bottom: 0; }
+
+    /* Proportionally tighter spacing on mobile - step down the scale */
+    :root {
+        --space-2xl: 2rem;    /* 32px (was 48px) */
+        --space-xl: 1.5rem;   /* 24px (was 32px) */
+        --space-lg: 1rem;     /* 16px (was 24px) */
+    }
+
+    .container { padding: var(--space-lg) 1.25rem 0 1.25rem; }
+    /* Keep header row layout, just tighten nav gap */
+    nav { gap: var(--space-md); }
     .email-form input[type="email"] { max-width: none; }
     .footer-links a[aria-label="Value for value"]::after {
         content: "";
