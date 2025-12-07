@@ -255,7 +255,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-medium);
     margin-bottom: var(--space-xl);
     letter-spacing: var(--letter-spacing-tight-lg);
 }
@@ -291,28 +291,28 @@ h1.display-title {
 /* Global headings */
 h2 {
     font-size: var(--font-custom-24);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-medium);
     margin-top: var(--space-xl);  /* 32px - unified with content H2 */
     margin-bottom: var(--space-md);
 }
 
 h3 {
     font-size: var(--font-lg);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     margin-top: var(--space-lg);
     margin-bottom: var(--space-sm);
 }
 
 h4 {
     font-size: var(--font-lg);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     margin-top: var(--space-lg);
     margin-bottom: var(--space-xs);
 }
 
 h5, h6 {
     font-size: var(--font-base);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     margin-top: var(--space-lg);
     margin-bottom: var(--space-xs);
 }
@@ -988,7 +988,7 @@ body > .container > footer {
 
 .episode-hook {
     font-size: var(--font-lg);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
 }
 
@@ -1102,7 +1102,7 @@ body > .container > footer {
 
 .page-title {
     font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
     margin-top: 0;
     margin-bottom: var(--space-xs);  /* Tight coupling to meta/subtitle; body controls gap via margin-top */
@@ -1202,11 +1202,11 @@ time.note-date,
     opacity: 0.5;
 }
 
-/* Page titles - bold weight for hierarchy consistency */
+/* Essay/note titles - medium weight, size provides hierarchy */
 .essay-title-single,
 .note-title-single {
     font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
     margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
     letter-spacing: var(--letter-spacing-tight-lg);
@@ -1483,7 +1483,7 @@ time.note-date,
                 transform: translate(-50%, -50%);
                 color: white;
                 font-size: 0.9em;
-                font-weight: bold;
+                font-weight: var(--font-weight-bold);
                 line-height: 1;
             }
         }
@@ -1896,12 +1896,20 @@ a.back-link {
     h4 { color: var(--text-heading-h4); }
     h5, h6 { color: var(--text-heading-h5); }
 
-    /* All headings - increased weight for better hierarchy in dark mode */
-    h1, h2, h3, h4, h5, h6,
-    .essay-title-single,
-    .note-title-single,
+    /* Headings - maintain weight hierarchy in dark mode */
+    h1,
     .page-title {
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-medium);
+    }
+
+    h2 {
+        font-weight: var(--font-weight-medium);
+    }
+
+    h3, h4, h5, h6,
+    .essay-title-single,
+    .note-title-single {
+        font-weight: var(--font-weight-semibold);
     }
 
     /* Body text - lighter weight in dark mode (only when user hasn't chosen light) */
@@ -1926,14 +1934,14 @@ a.back-link {
         font-weight: var(--font-weight-light);
     }
 
-    /* Bold text - increased weight for better differentiation in dark mode */
+    /* Bold text - semibold for emphasis, size/context separates from headings */
     .essay-body strong,
     .essay-body b,
     .note-body strong,
     .note-body b,
     .page-body strong,
     .page-body b {
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-semibold);
     }
 
     /* Syntax Highlighting - Code blocks */
