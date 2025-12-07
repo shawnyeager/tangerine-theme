@@ -1,33 +1,23 @@
 {{/*
-Purpose: Renders site header with title and main navigation
+Purpose: Renders site header with home link square and main navigation
 
 Parameters: None (uses page context)
 
 Context Expected:
-- .IsHome - Determines if site title should be H1 (homepage) or div (other pages)
-- .Site.Title - Site title text (used for SEO in <title> tag)
-- .Site.Params.site_display_name - Optional shorter display name for visual header
+- .Site.Title - Site title (used in aria-label for accessibility)
 
 Features:
-- Semantic HTML: H1 on homepage, div on other pages (page content gets H1)
-- Separate SEO title from display title (site_display_name param)
-- Includes main navigation via navigation.html partial
-- Accessibility: aria-label for context
+- 24x24px solid orange square as home link
+- Accessible via aria-label="Home"
+- Hover state: opacity 0.8
+- Flexbox layout with space-between
 
 Important Notes:
-- Only homepage uses H1 for site title; other pages reserve H1 for page content
-- Ensures proper heading hierarchy for SEO and accessibility
-- Uses site_display_name if set, otherwise falls back to .Site.Title
-- role="banner" removed (redundant - HTML5 header has implicit banner role)
+- Square uses brand orange color
+- Navigation partial unchanged
 */}}
 
-{{- $displayTitle := default .Site.Title .Site.Params.site_display_name -}}
-
 <header aria-label="Site header">
-    {{ if .IsHome }}
-    <h1 class="site-title"><a href="{{ "/" | relURL }}">{{ $displayTitle }}</a></h1>
-    {{ else }}
-    <div class="site-title"><a href="{{ "/" | relURL }}">{{ $displayTitle }}</a></div>
-    {{ end }}
+    <a href="{{ "/" | relURL }}" class="home-link" aria-label="Home"><span class="home-square"></span></a>
     {{ partial "navigation.html" . }}
 </header>
