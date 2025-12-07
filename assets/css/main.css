@@ -6,10 +6,10 @@
 /* ==========================================================================
    Web Font Loading
 
-   Strategy: font-display: optional for fastest perceived load
-   - If fonts load quickly (within 100ms block period): use them
-   - If delayed: use fallback system font, don't swap later
-   - Prevents layout shift and "flash of web font" (FOUT)
+   Strategy: font-display: swap for consistent rendering
+   - Shows fallback immediately, swaps to web font when loaded
+   - Ensures web fonts always display (no random fallback-only renders)
+   - Small FOUT tradeoff for guaranteed consistent typography
 
    Dual-font system:
    - Satoshi (43KB): Headings, nav, section labels - clear weight hierarchy
@@ -20,7 +20,7 @@
     font-family: 'Satoshi';
     font-weight: 300 900;
     font-style: normal;
-    font-display: optional;
+    font-display: swap;
     src: url('/fonts/Satoshi-Variable.woff2') format('woff2-variations');
 }
 
@@ -28,7 +28,7 @@
     font-family: 'Inter';
     font-weight: 100 900;
     font-style: normal;
-    font-display: optional;
+    font-display: swap;
     src: url('/fonts/Inter-Variable.woff2') format('woff2-variations');
 }
 
@@ -68,7 +68,7 @@
     /* Font Weights */
     --font-weight-light: 300;     /* Lighter weight for dark mode */
     --font-weight-normal: 400;
-    --font-weight-body: 450;      /* Body text - heavier than normal for Inter */
+    --font-weight-body: light-dark(350, 300);  /* Body text - lighter in dark mode */
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
@@ -282,7 +282,7 @@ h1 {
 
 /* Homepage display title - large, prominent headline */
 h1.display-title {
-    font-size: var(--font-3xl);
+    font-size: var(--font-2xl);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
     margin-top: 0;
@@ -660,6 +660,7 @@ body > .container > header {
 
 nav {
     font-family: var(--font-heading);
+    font-size: var(--font-lg);  /* Match site-title size */
     display: flex;
     gap: var(--space-lg);
     margin-bottom: 0;
