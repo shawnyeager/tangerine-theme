@@ -710,7 +710,7 @@ body > .container > footer {
     display: flex;
     gap: var(--space-xs);
     align-items: stretch;
-    margin-bottom: var(--space-lg);  /* Internal zone spacing to footer links */
+    margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
 }
 
@@ -1128,7 +1128,7 @@ body > .container > footer {
 
 .essay-item,
 .note-item {
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-xs);  /* 8px - tight scannable list */
     contain: layout style paint; /* Isolate list items for better performance */
 
     a {
@@ -1167,9 +1167,15 @@ time.note-date,
 }
 
 
+/* Last item before CTA link doesn't need margin - CTA provides the gap */
+.essay-item:last-of-type,
+.note-item:last-of-type {
+    margin-bottom: 0;
+}
+
 .all-essays,
 .all-notes {
-    margin-top: 0;  /* No extra gap - just uses last item's margin */
+    margin-top: var(--space-sm);  /* 12px - matches header to first item gap */
 }
 
 .topic-count {
