@@ -40,9 +40,9 @@ Important Notes:
 {{- end -}}
 
 {{- if eq $style "cta" -}}
-    <a href="{{ $url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span class="link-text">{{ $text }}</span> <span aria-hidden="true">→</span></a>
+    {{- partial "links/cta.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- else if eq $style "back" -}}
-    <a href="{{ $url }}" class="back-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span aria-hidden="true">←</span> <span class="link-text">{{ $text }}</span></a>
+    {{- partial "links/back.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- else -}}
     <a href="{{ $url }}"{{ if $event }} class="plausible-event-name={{ $event }}"{{ end }}>{{ $text }}</a>
 {{- end -}}

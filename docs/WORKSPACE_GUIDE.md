@@ -97,6 +97,28 @@ git diff go.mod | grep "replace"  # Should return nothing
 
 **If you accidentally commit it:** Immediately fix with `git restore go.mod`, commit removal, and push.
 
+### Theme Deployment: NEVER Skip the Workflow
+
+**When user says "go", "ship it", or "push" after theme work:**
+
+1. Push theme: `git -C tangerine-theme push origin master`
+2. Trigger workflows (MANDATORY - DO NOT SKIP):
+   ```bash
+   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
+   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
+   ```
+3. Wait for PRs (~2-3 min)
+4. User reviews deploy previews
+5. User merges PRs
+
+**FORBIDDEN:**
+- DO NOT push existing local branches to site repos
+- DO NOT create PRs manually from local branches
+- DO NOT run `hugo mod get` in site repos
+- Local branches have STALE go.mod - the workflow creates FRESH go.mod
+
+**Why this matters:** The workflow runs `hugo mod get -u` to fetch the LATEST theme commit. Manual branches contain OLD theme references. Pushing stale branches deploys OLD code.
+
 ---
 
 ## Quick Start

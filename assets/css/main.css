@@ -547,6 +547,21 @@ p .cta-link {
     white-space: nowrap;
 }
 
+/* CTAs inside container contexts: reset block-level properties */
+.podcast-links .cta-link,
+.footer-links .cta-link {
+    display: inline-flex;
+    width: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Adjacent CTAs in horizontal containers: no stacking margin */
+.podcast-links .cta-link + .cta-link,
+.footer-links .cta-link + .cta-link {
+    margin-top: 0;
+}
+
 /* Hover state for all primary CTAs - no underline (arrows would be underlined) */
 .cta-link:hover,
 .all-essays:hover,
@@ -820,7 +835,7 @@ body > .container > footer {
     text-decoration: none;
     transition: color var(--transition-fast);
     font-size: var(--font-sm);
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     display: inline-flex;
     align-items: center;
     gap: 0.125rem;

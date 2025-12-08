@@ -30,9 +30,9 @@ Important Notes:
 {{- $event := .Get "event" -}}
 
 {{- if eq $variant "download" -}}
-    <a href="{{ $url }}" class="download-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}">{{ $text }}</a>
+    {{- partial "links/download.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- else if eq $variant "button" -}}
     <button type="submit">{{ $text }}</button>
 {{- else -}}
-    <a href="{{ $url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span class="link-text">{{ $text }}</span> <span aria-hidden="true">→</span></a>
+    {{- partial "links/cta.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- end -}}

@@ -64,7 +64,7 @@ Important Notes:
     </section>
 
     {{/* Back link */}}
-    <nav class="back-link">
-        <a href="{{ $backLinkURL | relURL }}"><span aria-hidden="true">←</span> All {{ $contentType }}</a>
+    <nav class="back-link-wrapper">
+        {{- partial "links/back.html" (dict "url" ($backLinkURL | relURL) "text" (printf "All %s" $contentType)) -}}
     </nav>
 {{ end }}
