@@ -16,11 +16,12 @@
  * 10. ESSAYS         (line ~1118)      - Essay listings, single essay pages
  * 11. MARKDOWN       (line ~1315)      - Content body styles (nested CSS)
  * 12. PAGE-SPECIFIC  (line ~1699)      - Page layouts, pagination, contact, skip links
- * 13. UTILITIES      (line ~1838)      - Helper classes (sr-only, etc)
- * 14. DARK MODE      (line ~1856)      - Theme toggle & system preference overrides
- * 15. PRINT          (line ~1986)      - Print styles
- * 16. MEDIA EMBEDS   (line ~2000)      - YouTube, video captions
- * 17. MOBILE         (line ~2081)      - Responsive breakpoints
+ * 13. UTILITIES      (line ~1838)      - Helper classes (sr-only, hidden, etc)
+ * 14. DARK MODE      (line ~1860)      - Theme toggle & system preference overrides
+ * 15. PRINT          (line ~1990)      - Print styles
+ * 16. MEDIA EMBEDS   (line ~2004)      - YouTube, video captions
+ * 17. MOBILE         (line ~2085)      - Responsive breakpoints
+ * 18. V4V PAGE       (line ~2136)      - Value for Value payment page
  *
  * Line numbers are approximate. Update when making significant structural changes.
  */
@@ -589,12 +590,12 @@ p .cta-link {
     margin-top: var(--space-sm);
 }
 
-/* Stacked action links: peers get equal spacing */
+/* Stacked action links: match back-link spacing */
 .cta-link + .cta-link,
 .cta-link + .download-link,
 .download-link + .cta-link,
 .download-link + .download-link {
-    margin-top: var(--space-sm);
+    margin-top: var(--space-lg);
 }
 
 /* Freestanding action links after info blocks: breathing room */
@@ -1875,6 +1876,10 @@ a.back-link {
     border-width: 0;
 }
 
+.hidden {
+    display: none;
+}
+
 /* ==========================================================================
    14. DARK MODE - Theme Toggle & System Preference Overrides
 
@@ -2126,5 +2131,425 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .info-pair code {
         white-space: pre-line;     /* Preserve newlines, wrap at spaces (fingerprints) */
         overflow-wrap: break-word; /* Break long words if needed (npubs, keys) */
+    }
+}
+
+/* ==========================================================================
+   18. V4V PAGE - Value for Value Payment Page
+
+   Bitcoin Lightning payment page with amount selection, QR generation,
+   and payment status tracking.
+   ========================================================================== */
+
+.v4v-page {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+}
+
+.v4v-content {
+    margin-top: var(--space-md);
+}
+
+.v4v-intro {
+    font-size: var(--font-lg);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+    line-height: var(--line-height-body);
+}
+
+#share-essay {
+    color: var(--brand-orange);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#share-essay:hover {
+    text-decoration: underline;
+}
+
+.amount-selection {
+    margin-bottom: var(--space-md);
+}
+
+.amount-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.amount-btn {
+    padding: var(--space-lg);
+    background: transparent;
+    border: var(--border-width-emphasis) solid var(--border-color);
+    border-radius: var(--border-radius-interactive);
+    cursor: pointer;
+    font-family: var(--font-system);
+    font-size: var(--font-xl);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.amount-btn:hover {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.amount-btn:active {
+    transform: translateY(1px);
+}
+
+.amount-btn--suggested {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.amount-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.amount-btn:disabled:hover {
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.amount-btn--suggested:disabled {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.custom-amount-label {
+    display: block;
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    margin-bottom: var(--space-sm);
+    font-weight: var(--font-weight-normal);
+}
+
+.custom-amount-field {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: stretch;
+}
+
+.custom-amount-input {
+    padding: var(--space-xs) 0;
+    border: none;
+    border-bottom: var(--border-width) solid var(--border-color);
+    border-radius: 0;
+    font-family: var(--font-system);
+    font-size: var(--font-base);
+    background: var(--background-body);
+    color: var(--text-primary);
+    width: calc((100% - 3 * var(--space-sm)) / 4);
+    text-align: right;
+    transition: border-color var(--transition-fast);
+}
+
+.custom-amount-input:focus {
+    outline: none;
+    border-bottom-color: var(--brand-orange);
+}
+
+.custom-amount-input::placeholder {
+    color: var(--text-meta);
+    opacity: 0.5;
+}
+
+.custom-amount-btn {
+    padding: var(--space-sm) var(--space-md);
+    background: transparent;
+    color: var(--text-meta);
+    border: var(--border-width) solid var(--text-meta);
+    border-radius: var(--border-radius-interactive);
+    font-family: var(--font-system);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.custom-amount-btn:hover {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.custom-amount-btn:active {
+    transform: translateY(1px);
+}
+
+.custom-amount-input:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.custom-amount-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.custom-amount-btn:disabled:hover {
+    border-color: var(--text-meta);
+    color: var(--text-meta);
+}
+
+.validation-error {
+    color: var(--brand-orange);
+    font-size: var(--font-sm);
+    margin-top: var(--space-sm);
+    margin-bottom: 0;
+}
+
+.error-display {
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--background-card);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--space-lg);
+    animation: v4v-fadeIn var(--transition-base) ease-out;
+}
+
+.error-display .error-message {
+    color: var(--brand-orange);
+    font-size: var(--font-base);
+    margin-bottom: var(--space-lg);
+}
+
+.error-dismiss-btn {
+    background: none;
+    border: var(--border-width) solid var(--text-meta);
+    border-radius: var(--border-radius-interactive);
+    color: var(--text-meta);
+    cursor: pointer;
+    font-family: var(--font-system);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-xs) var(--space-md);
+    transition: all var(--transition-fast);
+}
+
+.error-dismiss-btn:hover {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.qr-display {
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--background-card);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--space-lg);
+    transition: background-color var(--transition-fast);
+    animation: v4v-fadeIn var(--transition-base) ease-out;
+}
+
+@keyframes v4v-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.qr-code {
+    min-height: var(--qr-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-code:has(canvas) {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.qr-loading {
+    color: var(--text-meta);
+    font-size: var(--font-base);
+    margin: 0;
+    text-decoration: none;
+}
+
+.qr-loading.polling {
+    animation: v4v-pulse 2s ease-in-out infinite;
+}
+
+@keyframes v4v-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.polling-status {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    margin-bottom: var(--space-md);
+    animation: v4v-pulse 2s ease-in-out infinite;
+}
+
+.qr-code canvas {
+    display: block;
+    margin: 0 auto;
+    box-shadow: var(--shadow-content-light);
+    transition: box-shadow var(--transition-fast);
+}
+
+a.qr-link,
+a.qr-link:hover {
+    display: block;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.qr-link:hover .qr-code canvas {
+    box-shadow: 0 0 0 3px var(--brand-orange);
+}
+
+.qr-hint {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    margin-bottom: var(--space-md);
+}
+
+.qr-hint--mobile {
+    display: inline;
+}
+
+.qr-hint--desktop {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .qr-hint--mobile {
+        display: none;
+    }
+    .qr-hint--desktop {
+        display: inline;
+    }
+}
+
+.qr-amount {
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+    letter-spacing: var(--letter-spacing-tight-md);
+}
+
+.qr-amount-value {
+    font-variant-numeric: tabular-nums;
+}
+
+.qr-copy-link {
+    background: none;
+    border: none;
+    color: var(--text-meta);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: var(--font-weight-normal);
+    text-decoration: underline;
+    padding: 0;
+    transition: color var(--transition-fast);
+}
+
+.qr-copy-link:hover {
+    color: var(--brand-orange);
+}
+
+.qr-cancel-btn {
+    background: none;
+    border: var(--border-width) solid var(--text-meta);
+    border-radius: var(--border-radius-interactive);
+    color: var(--text-meta);
+    cursor: pointer;
+    font-family: var(--font-system);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-md);
+    transition: all var(--transition-fast);
+}
+
+.qr-cancel-btn:hover {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.payment-status {
+    text-align: center;
+    padding: var(--space-2xl);
+    background: var(--background-card);
+    margin-bottom: var(--space-xl);
+    transition: background-color var(--transition-fast);
+}
+
+.payment-check {
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-orange);
+    margin-bottom: var(--space-sm);
+    letter-spacing: var(--letter-spacing-tight-md);
+}
+
+.payment-thanks {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    margin-bottom: 0;
+}
+
+.v4v-page .essay-nav {
+    margin-top: 0;  /* amount-selection margin-bottom provides spacing */
+}
+
+.v4v-details {
+    margin-top: var(--space-lg);
+}
+
+.v4v-details summary {
+    cursor: pointer;
+    font-size: var(--font-base);
+    color: var(--text-meta);
+    font-weight: var(--font-weight-medium);
+    transition: color var(--transition-fast);
+    list-style-position: outside;
+    list-style: none;
+}
+
+.v4v-details summary::marker {
+    display: none;
+}
+
+.v4v-details summary:hover {
+    color: var(--brand-orange);
+}
+
+.v4v-details p {
+    margin-top: var(--space-md);
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+}
+
+.v4v-details p:last-child {
+    margin-bottom: 0;
+}
+
+/* V4V mobile adjustments */
+@media (max-width: 600px) {
+    .custom-amount-input {
+        max-width: none;
+    }
+
+    .qr-display,
+    .payment-status {
+        padding: var(--space-xl);
+    }
+
+    /* !important required to override inline styles from QR library */
+    .qr-code canvas {
+        width: var(--qr-size) !important;
+        height: var(--qr-size) !important;
     }
 }
