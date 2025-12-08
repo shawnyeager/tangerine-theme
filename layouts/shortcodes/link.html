@@ -2,7 +2,7 @@
 Purpose: Renders a styled link with optional analytics tracking
 
 Parameters:
-- url (string, required): Link destination
+- url (string, required): Link destination, or "podcast" to use site.Params.podcast_url
 - text (string, required): Link text
 - style (string, optional): Link style - "plain" (default), "cta", or "back"
 - event (string, optional): Plausible analytics event name
@@ -13,12 +13,14 @@ Features:
   - "cta": Call-to-action with → arrow
   - "back": Back link with ← arrow
 - Optional analytics event tracking
+- Special URL value "podcast" resolves to site.Params.podcast_url
 
 Usage:
 {{< link url="/about" text="Learn more" >}}
 {{< link url="/subscribe" text="Get Started" style="cta" >}}
 {{< link url="/essays" text="Back to Essays" style="back" >}}
 {{< link url="/download" text="Download" event="download_click" >}}
+{{< link url="podcast" text="Listen" style="cta" >}}
 
 Important Notes:
 - Arrows use aria-hidden for accessibility
@@ -26,10 +28,16 @@ Important Notes:
 - Default style is "plain" (basic link)
 */}}
 
-{{- $url := .Get "url" -}}
+{{- $urlParam := .Get "url" -}}
 {{- $text := .Get "text" -}}
 {{- $style := .Get "style" | default "plain" -}}
 {{- $event := .Get "event" -}}
+
+{{/* Resolve special URL values to site params */}}
+{{- $url := $urlParam -}}
+{{- if eq $urlParam "podcast" -}}
+    {{- $url = site.Params.podcast_url -}}
+{{- end -}}
 
 {{- if eq $style "cta" -}}
     <a href="{{ $url }}" class="cta-link{{ if $event }} plausible-event-name={{ $event }}{{ end }}"><span class="link-text">{{ $text }}</span> <span aria-hidden="true">→</span></a>
