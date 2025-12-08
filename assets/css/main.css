@@ -78,7 +78,6 @@
     --letter-spacing-tight-xl: -0.03em;
     --letter-spacing-tight-lg: -0.025em;
     --letter-spacing-tight-md: -0.02em;
-    --letter-spacing-tight-sm: -0.015em;
     --letter-spacing-normal: normal;
     --letter-spacing-wide: 0.05em;
     --letter-spacing-body: -0.01em;
@@ -136,16 +135,11 @@
     --border-radius-interactive: 4px;
     --border-radius-code: 4px;
     --brand-bar-height: 3px;
-    --checkbox-size: 1.1em;
-    --qr-size: 250px;
     --table-cell-padding: 0.75rem 1rem;
 
     /* Z-index Scale */
     --z-brand-bar: 9999;
     --z-skip-link: 10000;
-
-    /* Opacity */
-    --opacity-subdued: 0.5;
 
     /* Transitions */
     --transition-fast: 0.3s ease;
@@ -181,8 +175,6 @@
     --font-lg-plus: 1.0625rem;    /* Bio/intro text (17px) */
     --font-xl: 1.333rem;
     --font-2xl: 1.777rem;
-    --font-3xl: 2.369rem;
-    --font-4xl: 3.157rem;
 
     /* Custom Typography Sizes */
     --font-custom-32: 2rem;
@@ -191,7 +183,6 @@
     /* Border Width */
     --border-width: 1px;
     --border-width-accent: 4px;
-    --border-width-emphasis: 2px;
     --border-height-thin: 1px;
 
     /* Content Element Sizing */
@@ -222,15 +213,13 @@ html {
 
 body {
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: var(--font-base);
     font-weight: var(--font-weight-body);
     line-height: var(--line-height-body);
     color: var(--text-primary);
     background: var(--background-body);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
     letter-spacing: var(--letter-spacing-body);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 code,
