@@ -1,19 +1,38 @@
-/* ==========================================================================
-   Main Stylesheet for Tangerine Theme
-   Shared design system for Hugo sites
-   ========================================================================== */
+/*
+ * TANGERINE THEME - Main Stylesheet
+ * Shared design system for shawnyeager.com and notes.shawnyeager.com
+ *
+ * TABLE OF CONTENTS
+ * -----------------
+ * 1. FONTS           (line ~28)        - Web font loading (Satoshi, Inter)
+ * 2. TOKENS          (line ~54)        - CSS custom properties, spacing system
+ * 3. RESET           (line ~239)       - Base styles, brand bar
+ * 4. TYPOGRAPHY      (line ~291)       - Heading hierarchy, body text
+ * 5. LINKS           (line ~418)       - Link styles, focus states, link hierarchy
+ * 6. LAYOUT          (line ~639)       - Container, header/footer spacing
+ * 7. FOOTER          (line ~714)       - Site footer, newsletter signup
+ * 8. HOMEPAGE        (line ~832)       - Homepage sections (bio, latest essay, podcast)
+ * 9. COMPONENTS      (line ~909)       - Cards, link-grid, topic tags
+ * 10. ESSAYS         (line ~1118)      - Essay listings, single essay pages
+ * 11. MARKDOWN       (line ~1315)      - Content body styles (nested CSS)
+ * 12. PAGE-SPECIFIC  (line ~1699)      - Page layouts, pagination, contact, skip links
+ * 13. UTILITIES      (line ~1838)      - Helper classes (sr-only, etc)
+ * 14. DARK MODE      (line ~1856)      - Theme toggle & system preference overrides
+ * 15. PRINT          (line ~1986)      - Print styles
+ * 16. MEDIA EMBEDS   (line ~2000)      - YouTube, video captions
+ * 17. MOBILE         (line ~2081)      - Responsive breakpoints
+ *
+ * Line numbers are approximate. Update when making significant structural changes.
+ */
 
 /* ==========================================================================
-   Web Font Loading
+   1. FONTS - Web Font Loading
 
-   Strategy: font-display: swap for consistent rendering
-   - Shows fallback immediately, swaps to web font when loaded
-   - Ensures web fonts always display (no random fallback-only renders)
-   - Small FOUT tradeoff for guaranteed consistent typography
-
-   Dual-font system:
+   Dual-font system for visual hierarchy:
    - Satoshi (43KB): Headings, nav, section labels - clear weight hierarchy
    - Inter (352KB): Body text, lists, blockquotes - optimal readability
+
+   Strategy: font-display: swap ensures web fonts always render
    ========================================================================== */
 
 @font-face {
@@ -33,7 +52,25 @@
 }
 
 /* ==========================================================================
-   CSS Custom Properties (Design Tokens)
+   2. TOKENS - CSS Custom Properties (Design Tokens)
+
+   All design decisions tokenized for consistency and theming.
+   Uses CSS light-dark() for automatic dark mode support.
+
+   SPACING SCALE (8px base grid):
+   --space-xs:  8px  - Tight grouping within elements
+   --space-sm:  12px - Related elements (CTAs, internal spacing)
+   --space-md:  16px - Default spacing (paragraphs, list items)
+   --space-lg:  24px - Section internal spacing
+   --space-xl:  32px - Section breaks
+   --space-2xl: 48px - Major separations (header→main, main→footer)
+   --space-3xl: 64px - Page header element stacks
+
+   SPACING PHILOSOPHY:
+   - Frame edges (header/footer padding): --space-xl (32px)
+   - Section gaps: --space-2xl (48px)
+   - Interior spacing: varies by component semantics
+   - Mobile: interior scales down, frame/sections stay generous
    ========================================================================== */
 
 :root {
@@ -200,7 +237,7 @@ html[data-theme="light"] { color-scheme: light; }
 html[data-theme="dark"] { color-scheme: dark; }
 
 /* ==========================================================================
-   Base Styles & Resets
+   3. RESET - Base Styles & Browser Normalization
    ========================================================================== */
 
 * {
@@ -236,9 +273,9 @@ pre,
     white-space: pre-line;
 }
 
-/* ==========================================================================
-   Brand Bar (Fixed Top)
-   ========================================================================== */
+/* Brand Bar - Fixed orange strip at top of viewport
+   Visual brand element, not functional navigation
+   -------------------------------------------------- */
 
 body::before {
     content: '';
@@ -252,7 +289,7 @@ body::before {
 }
 
 /* ==========================================================================
-   Typography
+   4. TYPOGRAPHY - Heading Hierarchy & Body Text
    ========================================================================== */
 
 /*
@@ -379,7 +416,7 @@ mark {
 }
 
 /* ==========================================================================
-   Links
+   5. LINKS - Link Styles, Focus States, Link Hierarchy
    ========================================================================== */
 
 a {
@@ -412,9 +449,8 @@ a span[aria-hidden="true"] {
     transform: translateY(-0.1em);
 }
 
-/* ==========================================================================
-   Focus Indicators - Keyboard Navigation Accessibility
-   ========================================================================== */
+/* Focus Indicators - Keyboard Navigation Accessibility
+   -------------------------------------------------- */
 
 /* Remove default outline, replace with custom focus-visible styles */
 a:focus {
@@ -433,9 +469,8 @@ select:focus-visible,
     border-radius: 2px;
 }
 
-/* ==========================================================================
-   Reduced Motion Support
-   ========================================================================== */
+/* Reduced Motion Support - Accessibility
+   -------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -453,8 +488,7 @@ select:focus-visible,
     }
 }
 
-/* ==========================================================================
-   Link Hierarchy System
+/* Link Hierarchy System - Intent-based link categories
 
    PRIMARY CTAs (.cta-link, .all-essays, .all-notes, .podcast-links a)
    - Orange with arrows (→), color lightens on hover
@@ -603,7 +637,7 @@ p .cta-link {
 }
 
 /* ==========================================================================
-   Layout Container
+   6. LAYOUT - Container, Header/Footer Spacing
    ========================================================================== */
 
 .container {
@@ -612,20 +646,17 @@ p .cta-link {
     padding: var(--space-xl) var(--space-md) 0 var(--space-md);
 }
 
-/* ==========================================================================
-   Header & Navigation
-   ========================================================================== */
+/* Header & Navigation
+   -------------------------------------------------- */
 
 body > .container:first-of-type {
     padding-bottom: 0;
 }
 
-/* ==========================================================================
-   Header/Footer Spacing Tokens
-
+/* Header/Footer Spacing Tokens - Frame edge spacing
    Footer tight gap uses explicit padding because line-height extends ABOVE
    text, not between the HR and content.
-   ========================================================================== */
+   -------------------------------------------------- */
 :root {
     --section-gap: var(--space-2xl);          /* 48px - Interior section breaks */
     --header-gap-below: var(--space-xl);      /* 32px - Frame edge: header to content */
@@ -681,13 +712,10 @@ nav a {
 }
 
 /* ==========================================================================
-   Homepage Sections
-   ========================================================================== */
+   7. FOOTER - Site Footer & Newsletter Signup
 
-/* Section spacing: bottom-margin only (no top margins to avoid stacking) */
-
-/* ==========================================================================
-   Site Footer (Unified Footer Zone)
+   Unified footer zone: email signup form + site links.
+   Uses frame-edge spacing (footer-gap-above/below tokens).
    ========================================================================== */
 
 body > .container > footer {
@@ -802,7 +830,10 @@ body > .container > footer {
 }
 
 /* ==========================================================================
-   Homepage Sections
+   8. HOMEPAGE - Homepage Sections (Bio, Latest Essay, Podcast Card)
+
+   Section spacing uses bottom-margin only (no top margins to avoid stacking).
+   Sections connect to footer via margin-bottom: 0 on last section.
    ========================================================================== */
 
 .bio,
@@ -876,7 +907,10 @@ body > .container > footer {
 }
 
 /* ==========================================================================
-   Card Components - Base Styles
+   9. COMPONENTS - Cards, Link-Grid, Topic Tags
+
+   Reusable UI components: podcast card, link-grid, RSS card, topic tags.
+   Cards share base styling (padding, background, transitions).
    ========================================================================== */
 
 /* Base card styling shared by podcast, services, and RSS cards */
@@ -1034,9 +1068,8 @@ body > .container > footer {
     gap: var(--space-md);
 }
 
-/* ==========================================================================
-   Topic Tags Section
-   ========================================================================== */
+/* Topic Tags - Browseable topic navigation
+   -------------------------------------------------- */
 
 .topics {
     margin-bottom: var(--space-lg);  /* Section gap to essay list below */
@@ -1083,7 +1116,10 @@ body > .container > footer {
 }
 
 /* ==========================================================================
-   Essay Listings
+   10. ESSAYS - Essay/Note Listings & Single Pages
+
+   List items: date + title flex layout with baseline alignment.
+   Single pages: title + meta + body structure.
    ========================================================================== */
 
 /* Section lists have no bottom margin - footer/next section provides spacing */
@@ -1179,9 +1215,8 @@ time.note-date,
     margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
 }
 
-/* ==========================================================================
-   Single Essay Page
-   ========================================================================== */
+/* Single Essay/Note Page
+   -------------------------------------------------- */
 
 .essay-content,
 .note-content {
@@ -1278,8 +1313,11 @@ time.note-date,
 }
 
 /* ==========================================================================
-   Markdown Elements - Shared Content Body Styles (CSS Nesting)
-   Applied to both .essay-body and .note-body
+   11. MARKDOWN - Content Body Styles (CSS Nesting)
+
+   Styles for Markdown-generated content within .essay-body and .note-body.
+   Uses CSS nesting for scoped element styling.
+   Includes: lists, blockquotes, code blocks, tables, footnotes, images.
    ========================================================================== */
 
 .essay-body,
@@ -1659,7 +1697,10 @@ a.back-link {
 }
 
 /* ==========================================================================
-   Page-Specific Layout
+   12. PAGE-SPECIFIC - Page Layouts, Pagination, Contact, Skip Links
+
+   Page-specific styling: /media bio boxes, /podcast images, pagination,
+   contact display patterns, and skip link accessibility.
    ========================================================================== */
 
 /* Bio boxes on /media page */
@@ -1680,9 +1721,8 @@ a.back-link {
     margin-bottom: 0;
 }
 
-/* ==========================================================================
-   Page Content Wrappers
-   ========================================================================== */
+/* Page Content Wrappers
+   -------------------------------------------------- */
 
 .page-content {
     max-width: var(--content-max-width);
@@ -1707,9 +1747,8 @@ a.back-link {
     margin-bottom: var(--space-lg);
 }
 
-/* ==========================================================================
-   Pagination
-   ========================================================================== */
+/* Pagination
+   -------------------------------------------------- */
 
 .pagination {
     margin-top: var(--space-2xl);
@@ -1721,10 +1760,8 @@ a.back-link {
 
 /* Pagination styles consolidated with CTA links above */
 
-/* ==========================================================================
-   Contact Display Patterns
-   Utility Pages - Vertical stack (.info-pair, .info-label, .info-value)
-   ========================================================================== */
+/* Contact Display Patterns - Utility pages (.info-pair, .info-label, .info-value)
+   -------------------------------------------------- */
 
 .info-pair {
     margin-bottom: var(--space-lg);
@@ -1776,9 +1813,8 @@ a.back-link {
     }
 }
 
-/* ==========================================================================
-   Skip Links (Keyboard Navigation)
-   ========================================================================== */
+/* Skip Links - Keyboard navigation accessibility
+   -------------------------------------------------- */
 
 .skip-link {
     position: fixed;
@@ -1800,7 +1836,9 @@ a.back-link {
 }
 
 /* ==========================================================================
-   Utility Classes
+   13. UTILITIES - Helper Classes
+
+   Utility classes: screen-reader only, etc.
    ========================================================================== */
 
 .sr-only {
@@ -1816,8 +1854,9 @@ a.back-link {
 }
 
 /* ==========================================================================
-   FONT-WEIGHT & DARK MODE ARCHITECTURE
+   14. DARK MODE - Theme Toggle & System Preference Overrides
 
+   ARCHITECTURE NOTE - Theme toggle vs. CSS dark mode:
    PROBLEM: Theme toggle and CSS dark mode work differently:
    - Theme toggle: Sets data-theme="light|dark" attribute on <html>
    - Colors: Use light-dark() function which respects color-scheme property
@@ -1847,12 +1886,9 @@ a.back-link {
     font-weight: var(--font-weight-normal);
 }
 
-/* ==========================================================================
-   Dark Mode Overrides (System Preference)
-
-   These rules apply when SYSTEM prefers dark AND user hasn't explicitly
-   toggled to light mode via data-theme="light"
-   ========================================================================== */
+/* Dark Mode (System Preference) - Applies when SYSTEM prefers dark
+   AND user hasn't explicitly toggled to light mode
+   -------------------------------------------------- */
 
 @media (prefers-color-scheme: dark) {
     /* Typography - Enhanced heading contrast in dark mode */
@@ -1922,13 +1958,9 @@ a.back-link {
     }
 }
 
-/* ==========================================================================
-   Dark Mode Overrides (Explicit Toggle)
-
-   These rules apply when user explicitly toggled to dark mode via the
-   theme toggle (data-theme="dark"), regardless of system preference.
-   Needed for when system is light but user wants dark mode.
-   ========================================================================== */
+/* Dark Mode (Explicit Toggle) - User toggled to dark mode regardless of system
+   Needed when system is light but user wants dark mode
+   -------------------------------------------------- */
 
 html[data-theme="dark"] p,
 html[data-theme="dark"] li {
@@ -1952,7 +1984,9 @@ html[data-theme="dark"] .note-title {
 
 
 /* ==========================================================================
-   Print Styles
+   15. PRINT - Print Stylesheet
+
+   Minimal print styles: hide chrome, clean typography.
    ========================================================================== */
 
 @media print {
@@ -1964,7 +1998,10 @@ html[data-theme="dark"] .note-title {
 }
 
 /* ==========================================================================
-   YouTube Embeds and Captions
+   16. MEDIA EMBEDS - YouTube, Video Captions
+
+   Responsive video embeds (16:9 aspect ratio) and privacy-respecting
+   preview thumbnails with play button overlay.
    ========================================================================== */
 
 /* Add extra spacing after "Recent speaking" heading */
@@ -2042,8 +2079,10 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 /* ==========================================================================
-   Mobile Responsive Styles
-   Mobile breakpoint: 600px - hardcoded because CSS variables don't work in media queries
+   17. MOBILE - Responsive Breakpoints
+
+   Mobile-first adjustments for screens < 600px.
+   Note: Breakpoint is hardcoded because CSS variables don't work in media queries.
    ========================================================================== */
 
 @media (max-width: 600px) {
