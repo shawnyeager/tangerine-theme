@@ -283,7 +283,7 @@ h1 {
 
 /* Homepage display title - large, prominent headline */
 h1.display-title {
-    font-size: var(--font-2xl);
+    font-size: var(--font-custom-32);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
     margin-top: 0;
@@ -302,6 +302,11 @@ h1.display-title {
     width: 24px;
     height: 24px;
     background-color: var(--brand-orange);
+}
+
+.home-square--outlined {
+    background-color: transparent;
+    border: 3px solid var(--brand-orange);
 }
 
 .home-link:hover .home-square {
