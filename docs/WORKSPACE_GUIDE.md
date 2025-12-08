@@ -117,23 +117,28 @@ hugo server -D -p 1316
 
 ### Testing Theme Changes Locally (BEFORE Publishing)
 
-**With replace directives, testing is automatic:**
+**MANDATORY: Use the theme-dev.sh script to start dev servers:**
 
 ```bash
-# Make changes to theme
-cd ~/Work/shawnyeager/tangerine-theme
-# Edit files (layouts, CSS, templates)
-
-# Changes are IMMEDIATELY visible in both sites
-# Just refresh your browser - no hugo mod get needed!
-# The replace directive makes Hugo use ../tangerine-theme automatically
+cd ~/Work/shawnyeager
+./theme-dev.sh        # Start both sites
+./theme-dev.sh com    # Start only Gallery
+./theme-dev.sh notes  # Start only Workshop
 ```
 
-Start Hugo servers for both sites:
-- **Gallery (.com):** `hugo server -D -p 1313` → http://localhost:1313
-- **Workshop (notes.shawnyeager.com):** `hugo server -D -p 1316` → http://localhost:1316
+The script handles everything:
+1. Kills existing Hugo servers
+2. Ensures replace directive in go.mod (with proper newline)
+3. Cleans Hugo module cache (`hugo mod clean`)
+4. Clears resources and public directories
+5. Starts Hugo servers
 
-Then: Edit theme files → refresh browser → see changes instantly.
+**DO NOT manually start Hugo servers for theme testing. The script exists because:**
+- Replace directives must have a leading newline or go.mod is malformed
+- Hugo caches modules aggressively - `hugo mod clean` is required
+- Stale resources/public directories cause CSS hash conflicts
+
+After starting: Edit theme files → refresh browser → see changes instantly.
 
 **Important:** Once you push theme changes to GitHub, DO NOT manually update sites - GitHub Actions handles that automatically.
 
