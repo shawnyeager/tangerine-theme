@@ -845,6 +845,11 @@ body > .container > footer {
     }
 }
 
+/* Footer arrows: use Satoshi to match CTA arrows */
+.footer-links a span[aria-hidden="true"] {
+    font-family: var(--font-heading);
+}
+
 /* V4V icon tap target - pseudo-element creates 48x48 clickable area without affecting layout */
 .footer-links a[aria-label="Value for value"] {
     position: relative;
