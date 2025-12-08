@@ -1606,10 +1606,15 @@ time.note-date,
     color: var(--brand-orange-hover);
 }
 
+/* Action cluster: essay footer (V4V) + nav form a tight unit */
+.essay-footer + .essay-nav {
+    margin-top: 0;  /* No gap - same action block */
+}
+
 .essay-nav {
     border-bottom: none;
     padding-bottom: 0;
-    margin-top: var(--space-sm);
+    margin-top: var(--space-sm);  /* Default when not following essay-footer */
     gap: 0;
 }
 
