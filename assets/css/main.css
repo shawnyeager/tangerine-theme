@@ -68,7 +68,7 @@
     /* Font Weights */
     --font-weight-light: 300;     /* Lighter weight for dark mode */
     --font-weight-normal: 400;
-    --font-weight-body: light-dark(350, 300);  /* Body text - lighter in dark mode */
+    --font-weight-body: light-dark(300, 250);  /* Body text - light mode uses light weight, dark mode slightly lighter */
     --font-weight-list-title: 450;  /* List titles - overridden to 300 in dark mode */
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
@@ -222,6 +222,7 @@ html {
 body {
     font-family: var(--font-body);
     font-size: 16px;
+    font-weight: var(--font-weight-body);
     line-height: var(--line-height-body);
     color: var(--text-primary);
     background: var(--background-body);
@@ -857,7 +858,7 @@ body > .container > footer {
 
 /* Reduce spacing between section label and topic tags in topics section */
 .topics .section-label-small {
-    margin-bottom: var(--space-sm);  /* 12px - tighter grouping with topic tags */
+    margin-bottom: var(--space-xs);  /* 8px - tight grouping with topic tags */
 }
 
 .latest-essay {
@@ -1051,7 +1052,7 @@ body > .container > footer {
    ========================================================================== */
 
 .topics {
-    margin-bottom: var(--space-md);  /* Tight coupling to essay list below */
+    margin-bottom: var(--space-lg);  /* Section gap to essay list below */
 }
 
 /* When essays directly follow topics, remove essay list margin-top */
