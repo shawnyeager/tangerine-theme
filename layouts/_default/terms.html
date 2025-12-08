@@ -48,11 +48,8 @@ Important Notes:
     {{ $contentType := .Site.Params.content_type | default "essays" }}
     {{ $backLinkURL := cond (eq $contentType "notes") "/" (printf "/%s/" $contentType) }}
     {{ $backLinkText := printf "All %s" $contentType }}
-    {{ $backLinkClass := cond (eq $contentType "notes") "note-back-link" "back-link" }}
 
     <div class="back-link-wrapper">
-        <a href="{{ $backLinkURL | relURL }}" class="{{ $backLinkClass }}">
-            <span aria-hidden="true">←</span> {{ $backLinkText }}
-        </a>
+        {{- partial "links/back.html" (dict "url" ($backLinkURL | relURL) "text" $backLinkText) -}}
     </div>
 {{ end }}
