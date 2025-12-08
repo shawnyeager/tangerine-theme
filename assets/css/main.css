@@ -2363,7 +2363,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     padding: var(--space-xl);
     background: var(--background-card);
     border-radius: var(--border-radius-md);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
     transition: background-color var(--transition-fast);
     animation: v4v-fadeIn var(--transition-base) ease-out;
 }
