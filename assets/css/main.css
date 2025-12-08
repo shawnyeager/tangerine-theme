@@ -119,6 +119,8 @@
     --space-xl: 2rem;            /* 32px - Section breaks (page titles, content footers, back links) */
     --space-2xl: 3rem;           /* 48px - Major separations (header→main, main→footer, homepage sections) */
     --space-3xl: 4rem;           /* 64px - Page header element stacks (meta+title+first heading sequences) */
+    --container-mobile-h-padding: 1.25rem;  /* 20px - Mobile horizontal edges */
+    --icon-optical-adjust: 0.25rem;         /* 4px - SVG/icon alignment nudges */
 
     /* Typography spacing - heading proximity ratios (don't scale with viewport)
        Headings need more space above to associate with content below */
@@ -416,7 +418,7 @@ a span[aria-hidden="true"] {
     display: inline-block;
     vertical-align: middle;
     text-decoration: none;
-    font-size: 0.8em;
+    transform: translateY(-0.1em);
 }
 
 /* ==========================================================================
@@ -725,7 +727,7 @@ body > .container > footer {
 }
 
 .email-form input[type="email"] {
-    padding: 0.4rem 0;  /* Compact vertical padding for inline form */
+    padding: var(--space-xs) 0;  /* Compact vertical padding for inline form */
     border: none;
     border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
     border-radius: 0;
@@ -927,7 +929,7 @@ body > .container > footer {
     font-size: var(--font-code);
     color: var(--text-primary);
     display: block;
-    padding-right: 4rem;
+    padding-right: var(--space-3xl);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2029,7 +2031,7 @@ div[style*="padding-bottom: 56.25%"],
     pointer-events: none;
 
     svg {
-        margin-left: 4px;
+        margin-left: var(--icon-optical-adjust);
     }
 }
 
@@ -2065,7 +2067,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         --space-lg: 1rem;     /* 16px (was 24px) */
     }
 
-    .container { padding: var(--space-lg) 1.25rem 0 1.25rem; }
+    .container { padding: var(--space-lg) var(--container-mobile-h-padding) 0 var(--container-mobile-h-padding); }
     /* Keep header row layout, just tighten nav gap */
     nav { gap: var(--space-md); }
     .email-form input[type="email"] { max-width: none; }
