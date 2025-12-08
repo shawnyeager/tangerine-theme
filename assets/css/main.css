@@ -111,7 +111,6 @@
 
     /* Spacing Tokens */
     --space-label-gap: 0.25rem;  /* 4px - Label-to-value gap in info pairs */
-    --arrow-gap: 0.125rem;       /* 2px - Arrow spacing in links */
     --space-xs: 0.5rem;          /* 8px - Tight grouping within elements */
     --space-sm: 0.75rem;         /* 12px - Related elements (CTAs, internal spacing) */
     --space-md: 1rem;            /* 16px - Default spacing (paragraphs, list items, small headings) */
@@ -418,6 +417,7 @@ a span[aria-hidden="true"] {
     display: inline-block;
     vertical-align: middle;
     text-decoration: none;
+    font-size: 1.15em;
     transform: translateY(-0.1em);
 }
 
@@ -504,7 +504,6 @@ select:focus-visible,
     font-weight: var(--font-weight-medium);
     display: inline-flex;
     align-items: center;
-    gap: var(--arrow-gap);
 }
 
 /* Action links: block display for margin control, tight spacing above */
@@ -694,11 +693,7 @@ nav a {
    Homepage Sections
    ========================================================================== */
 
-.latest-essay,
-.latest-essay + h2.essay-section-header,
-.recent-essays {
-    margin-top: var(--section-gap);
-}
+/* Section spacing: bottom-margin only (no top margins to avoid stacking) */
 
 /* ==========================================================================
    Site Footer (Unified Footer Zone)
@@ -789,7 +784,6 @@ body > .container > footer {
     font-size: var(--font-sm);
     display: inline-flex;
     align-items: center;
-    gap: var(--arrow-gap);
 
     &:hover {
         color: var(--brand-orange-hover);
@@ -822,7 +816,7 @@ body > .container > footer {
 
 .bio,
 .notes-homepage-intro {
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--section-gap);  /* 48px - gap to next section */
     color: var(--text-secondary);
     font-size: var(--font-lg-plus);  /* 17px - slightly larger than base for prominence */
     line-height: 1.45;  /* Match long-form content */
@@ -864,7 +858,7 @@ body > .container > footer {
 }
 
 .latest-essay {
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--section-gap);  /* 48px - gap to next section */
 
     /* Semantic heading: essay title (h3 under h2 section header) */
     h3 {
@@ -1661,7 +1655,6 @@ a.back-link {
     font-size: var(--font-base);
     display: inline-flex;
     align-items: center;
-    gap: var(--arrow-gap);
 
     &:hover {
         color: var(--brand-orange);
@@ -2059,13 +2052,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
 @media (max-width: 600px) {
     html { font-size: 16px; }
-
-    /* Proportionally tighter spacing on mobile - step down the scale */
-    :root {
-        --space-2xl: 2rem;    /* 32px (was 48px) */
-        --space-xl: 1.5rem;   /* 24px (was 32px) */
-        --space-lg: 1rem;     /* 16px (was 24px) */
-    }
 
     .container { padding: var(--space-lg) var(--container-mobile-h-padding) 0 var(--container-mobile-h-padding); }
     /* Keep header row layout, just tighten nav gap */
