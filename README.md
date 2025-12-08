@@ -4,7 +4,7 @@ Hugo theme module shared between shawnyeager.com and notes.shawnyeager.com. A mi
 
 ## Features
 
-- Inter variable font with nuanced weight system (450 UI / 400 reading)
+- Satoshi + Inter variable fonts with nuanced weight system (450 UI / 400 reading)
 - Clean, readable typography with perfect fourth scale (1.333 ratio)
 - Automatic dark mode with weight compensation (follows system preference)
 - Responsive design (mobile-first, max-width: 700px)
@@ -32,11 +32,15 @@ hugo mod get -u
 
 ### Local Development
 
-For local theme development, use Hugo Modules:
+For local theme development, sites use a replace directive in `go.mod`:
 
-1. Make changes to the theme and commit locally
-2. In consuming sites, run `hugo mod get github.com/shawnyeager/tangerine-theme@master`
-3. Test with `hugo server`
+```
+replace github.com/shawnyeager/tangerine-theme => ../tangerine-theme
+```
+
+This makes theme changes appear immediately without running `hugo mod get`. Just edit theme files and refresh.
+
+**Important:** Never commit the replace directive. Run `git restore go.mod` before committing.
 
 Sites always specify the GitHub path in their `hugo.toml` and track the master branch. See [Development Workflow](#development-workflow) for details.
 
@@ -144,8 +148,9 @@ Add these parameters to your site's `hugo.toml`:
 
 ### Static Assets
 
-- `static/css/main.css` - Complete design system
-- `static/fonts/inter-variable.woff2` - Inter variable font (weights 100-900)
+- `assets/css/main.css` - Complete design system (processed by Hugo Pipes)
+- `static/fonts/Satoshi-Variable.woff2` - Satoshi variable font (headings, UI)
+- `static/fonts/Inter-Variable.woff2` - Inter variable font (body text, weights 100-900)
 
 ### Smart Page Title Visibility (page-title.html)
 
@@ -168,7 +173,7 @@ The theme includes a **`page-title.html` partial** that handles semantic H1 page
 - Essays listing: Hide H1 title (sr-only for accessibility)
 - Feature pages: Use `show_title: true` frontmatter to show title
 
-**Notes site (notes.shawnyeager-com):**
+**Notes site (notes.shawnyeager.com):**
 - Individual notes: Show H1 title (visible)
 - Notes listing: Hide H1 title (sr-only for accessibility)
 
@@ -274,7 +279,8 @@ your-site/
 
 ### Typography
 
-- Inter variable font (weights 100-900) with system font fallbacks
+- Satoshi variable font for headings/UI, Inter variable font for body text
+- Both fonts with system font fallbacks
 - Nuanced weight system: 450 for UI text, 400 for long-form reading
 - Perfect fourth typography scale (1.333 ratio)
 - Custom tokens for page titles (32px) and section headers (24px)

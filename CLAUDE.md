@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **NEVER PUSH TO GITHUB WITHOUT EXPLICIT PERMISSION**
 
 - Do NOT run `git push` without the user explicitly saying "push" or "ship it"
-- This applies to ALL repositories: tangerine-theme, shawnyeager-com, shawnyeager-org
+- This applies to ALL repositories: tangerine-theme, shawnyeager-com, shawnyeager-notes
 - Commits are fine. But NEVER push without permission.
 - When the user says "ship it", that means push. Otherwise, ASK FIRST.
 
@@ -35,7 +35,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - This design system is built on CSS custom properties (design tokens)
 - ALWAYS use tokens for colors, spacing, typography, etc.
 - NEVER hardcode pixel values, hex colors, or font weights
-- Check `static/css/main.css` lines 11-107 for available tokens
+- Check `assets/css/main.css` for available tokens (see TOC at top of file)
 - Examples:
   - ✅ `font-size: var(--font-lg);`
   - ❌ `font-size: 18px;`
@@ -91,11 +91,11 @@ tangerine-theme/
 │       ├── navigation.html     # Nav menu
 │       ├── footer.html         # Site footer
 │       └── page-title.html     # Smart page title visibility (see below)
+├── assets/
+│   └── css/
+│       └── main.css            # Complete design system (processed by Hugo Pipes)
 ├── static/
-│   ├── css/
-│   │   └── main.css            # Complete design system
-│   └── js/
-│       └── theme-toggle.js     # Theme switching logic
+│   └── fonts/                  # Satoshi + Inter variable fonts
 └── theme.toml                  # Theme metadata
 ```
 
@@ -109,13 +109,6 @@ tangerine-theme/
   - Spacing system
   - Component styles
   - WCAG compliance details
-
-- **BRAND_MESSAGING_BIBLE.md** - Brand voice and messaging including:
-  - Mission and positioning
-  - Primary/secondary messages
-  - Voice and tone guidelines
-  - Social media profiles
-  - Content principles
 
 - **PLAUSIBLE_SETUP.md** - Analytics setup guide including:
   - Goal configuration for both sites
@@ -136,7 +129,7 @@ Complete CSS implementing the design system:
 - Component styles
 
 **Key Design Principles:**
-- Inter variable font (weights 100-900)
+- Satoshi variable font (headings/UI) + Inter variable font (body text)
 - Trust Revolution Orange (#d63900 light, #FF5733 dark)
 - WCAG AA contrast compliance
 - 700px max-width container
@@ -263,21 +256,23 @@ Shawnyeager-notes (notes site):
 
 **See consuming site's CLAUDE.md for complete documentation on page-title visibility logic.**
 
-## Local Development with Git Modules
+## Local Development
 
 **Architecture:** Theme is imported via Hugo Modules from GitHub.
 
-**How it works:**
-- Sites specify `path = "github.com/shawnyeager/tangerine-theme"` in their `hugo.toml`
-- Netlify fetches from GitHub at the `go.mod` locked version
-- Local testing requires updating module version with `hugo mod get`
+**How local dev works:**
+- Sites use a `replace` directive in `go.mod` pointing to `../tangerine-theme`
+- This makes theme changes appear immediately without `hugo mod get`
+- Just edit theme files and refresh browser
 
 **Testing workflow:**
-1. Make changes to theme and commit locally
-2. In consuming site, run `hugo mod get -u github.com/shawnyeager/tangerine-theme`
-3. Test with `hugo server`
-4. Iterate as needed (commit theme changes; update and test in sites)
-5. When ready, push to master branch to trigger automated site updates
+1. Use `./theme-dev.sh` script from workspace root to start dev servers
+2. Make changes to theme files
+3. Refresh browser - changes appear instantly
+4. Commit theme changes when ready
+5. Push to master to trigger automated site updates
+
+**Important:** Never commit replace directives to site repos - they break Netlify builds.
 
 ## Making Theme Changes
 
@@ -288,23 +283,20 @@ Shawnyeager-notes (notes site):
 #### Local Development and Testing
 
 ```bash
+# Start dev servers using the theme-dev.sh script
+cd ~/Work/shawnyeager
+./theme-dev.sh        # Start both sites
+./theme-dev.sh com    # Start only Gallery (port 1313)
+./theme-dev.sh notes  # Start only Workshop (port 1316)
+
 # Make changes to theme
 cd ~/Work/shawnyeager/tangerine-theme
 # Edit CSS, layouts, templates...
-# Commit locally
+# Refresh browser - changes appear instantly
+
+# When ready, commit locally
 git add -A
 git commit -m "Description of changes"
-
-# Test in consuming sites
-cd ~/Work/shawnyeager/shawnyeager-com
-hugo mod get -u github.com/shawnyeager/tangerine-theme
-hugo server -D -p 1313
-
-cd ~/Work/shawnyeager/shawnyeager-notes
-hugo mod get -u github.com/shawnyeager/tangerine-theme
-hugo server -D -p 1316
-
-# Iterate as needed, making more commits and testing locally
 ```
 
 #### Publishing Theme Changes
@@ -409,7 +401,7 @@ When making CSS or layout changes:
   - `github.com/shawnyeager/shawnyeager-notes`
   - Imports this theme
   - Overrides: homepage, notes templates, page-title partial
-  - Blocks search engines via noindex
+  - Indexed by search engines (noindex = false)
 
 ## Testing Locally
 
@@ -418,19 +410,14 @@ When making CSS or layout changes:
 **Testing workflow:**
 
 ```bash
-# Make changes to theme
-cd ~/Work/shawnyeager/tangerine-theme
-# Edit files...
-# Commit changes locally
+# Start dev servers (handles replace directive and cache clearing)
+cd ~/Work/shawnyeager
+./theme-dev.sh        # Start both sites
+./theme-dev.sh com    # Start only Gallery (port 1313)
+./theme-dev.sh notes  # Start only Workshop (port 1316)
 
-# Test in consuming sites
-cd ~/Work/shawnyeager/shawnyeager-com
-hugo mod get -u github.com/shawnyeager/tangerine-theme
-hugo server -D -p 1313
-
-cd ~/Work/shawnyeager/shawnyeager-notes
-hugo mod get -u github.com/shawnyeager/tangerine-theme
-hugo server -D -p 1316
+# Make changes to theme files
+# Refresh browser - changes appear instantly
 ```
 
 When ready to publish to production (Netlify), push the theme changes to master branch.
