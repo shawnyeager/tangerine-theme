@@ -700,6 +700,28 @@ main .container {
     padding-top: 0;
 }
 
+/*
+ * Minimum content height for short pages
+ *
+ * Problem: On short pages (e.g., /pgp, /404), footer floats awkwardly mid-screen.
+ *
+ * Solution: Set min-height so footer lands in the "fold zone" (600-800px),
+ * where research shows users naturally stop scanning before scrolling.
+ * Source: Nielsen Norman Group - 80% of viewing time happens above fold.
+ * Source: Industry standard fold line is 600-800px for desktop.
+ *
+ * Calculation:
+ * - Target: Footer starts at 600px (bottom of fold zone)
+ * - Header height: ~80px
+ * - main min-height: 600 - 80 = 520px
+ *
+ * Result: Footer starts at ~600px on short pages, inside the fold zone.
+ * On long pages, content flows naturally past this minimum.
+ */
+main {
+    min-height: 520px;
+}
+
 nav a {
     color: var(--text-secondary);
     font-weight: var(--font-weight-medium);
