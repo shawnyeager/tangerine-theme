@@ -4,24 +4,24 @@
  *
  * TABLE OF CONTENTS
  * -----------------
- * 1. FONTS           (line ~28)        - Web font loading (Satoshi, Inter)
- * 2. TOKENS          (line ~54)        - CSS custom properties, spacing system
- * 3. RESET           (line ~239)       - Base styles, brand bar
- * 4. TYPOGRAPHY      (line ~291)       - Heading hierarchy, body text
- * 5. LINKS           (line ~418)       - Link styles, focus states, link hierarchy
- * 6. LAYOUT          (line ~639)       - Container, header/footer spacing
- * 7. FOOTER          (line ~714)       - Site footer, newsletter signup
- * 8. HOMEPAGE        (line ~832)       - Homepage sections (bio, latest essay, podcast)
- * 9. COMPONENTS      (line ~909)       - Cards, link-grid, topic tags
- * 10. ESSAYS         (line ~1118)      - Essay listings, single essay pages
- * 11. MARKDOWN       (line ~1315)      - Content body styles (nested CSS)
- * 12. PAGE-SPECIFIC  (line ~1699)      - Page layouts, pagination, contact, skip links
- * 13. UTILITIES      (line ~1838)      - Helper classes (sr-only, hidden, etc)
- * 14. DARK MODE      (line ~1860)      - Theme toggle & system preference overrides
- * 15. PRINT          (line ~1990)      - Print styles
- * 16. MEDIA EMBEDS   (line ~2004)      - YouTube, video captions
- * 17. MOBILE         (line ~2085)      - Responsive breakpoints
- * 18. V4V PAGE       (line ~2136)      - Value for Value payment page
+ * 1. FONTS           (line ~30)        - Web font loading (Satoshi, Inter)
+ * 2. TOKENS          (line ~56)        - CSS custom properties, spacing system
+ * 3. RESET           (line ~241)       - Base styles, brand bar
+ * 4. TYPOGRAPHY      (line ~293)       - Heading hierarchy, body text
+ * 5. LINKS           (line ~420)       - Link styles, focus states, link hierarchy
+ * 6. LAYOUT          (line ~641)       - Container, header/footer spacing
+ * 7. FOOTER          (line ~731)       - Site footer, newsletter signup
+ * 8. HOMEPAGE        (line ~854)       - Homepage sections (bio, latest essay, podcast)
+ * 9. COMPONENTS      (line ~931)       - Cards, link-grid, topic tags
+ * 10. ESSAYS         (line ~1140)      - Essay listings, single essay pages
+ * 11. MARKDOWN       (line ~1337)      - Content body styles (nested CSS)
+ * 12. PAGE-SPECIFIC  (line ~1723)      - Page layouts, pagination, contact, skip links
+ * 13. UTILITIES      (line ~1862)      - Helper classes (sr-only, hidden, etc)
+ * 14. DARK MODE      (line ~1884)      - Theme toggle & system preference overrides
+ * 15. PRINT          (line ~2014)      - Print styles
+ * 16. MEDIA EMBEDS   (line ~2028)      - YouTube, video captions
+ * 17. MOBILE         (line ~2109)      - Responsive breakpoints
+ * 18. V4V PAGE       (line ~2138)      - Value for Value payment page
  *
  * Line numbers are approximate. Update when making significant structural changes.
  */
@@ -701,26 +701,19 @@ main .container {
     padding-top: 0;
 }
 
-/*
- * Minimum content height for short pages
+/* Adaptive footer positioning for short pages
  *
- * Problem: On short pages (e.g., /pgp, /404), footer floats awkwardly mid-screen.
+ * Data sources:
+ * - Statcounter: 1920×1080 (23%), 1366×768 common viewport heights
+ * - Nielsen Norman: 57% viewing time above fold (~600-800px)
  *
- * Solution: Set min-height so footer lands in the "fold zone" (600-800px),
- * where research shows users naturally stop scanning before scrolling.
- * Source: Nielsen Norman Group - 80% of viewing time happens above fold.
- * Source: Industry standard fold line is 600-800px for desktop.
- *
- * Calculation:
- * - Target: Footer starts at 600px (bottom of fold zone)
- * - Header height: ~80px
- * - main min-height: 600 - 80 = 520px
- *
- * Result: Footer starts at ~600px on short pages, inside the fold zone.
- * On long pages, content flows naturally past this minimum.
+ * Values:
+ * - Floor 420px: mobile/small laptop minimum (600px viewport - 80px header - buffer)
+ * - Preferred 70dvh: scales with dynamic viewport (adapts to mobile browser chrome)
+ * - Ceiling 620px: keeps footer at fold line (~700px - 80px header)
  */
 main {
-    min-height: 520px;
+    min-height: clamp(420px, 70dvh, 620px);
 }
 
 nav a {
@@ -745,7 +738,10 @@ body > .container > footer {
     margin-top: var(--footer-gap-above);
     padding-top: var(--footer-gap-tight);
     padding-bottom: var(--footer-gap-below);
-    border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    /* 70% opacity: strong enough to anchor footer on short pages,
+       soft enough to avoid visual heaviness (Material Design uses
+       similar values for medium-emphasis elements) */
+    border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 70%, transparent);
 }
 
 .email-signup-intro {
