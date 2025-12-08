@@ -136,6 +136,8 @@
     --border-radius-code: 4px;
     --brand-bar-height: 3px;
     --table-cell-padding: 0.75rem 1rem;
+    --qr-size: 250px;
+    --border-width-emphasis: 2px;
 
     /* Z-index Scale */
     --z-brand-bar: 9999;
@@ -401,7 +403,7 @@ header a:hover,
     text-decoration: none;
 }
 
-/* Arrow alignment in links */
+/* Arrow alignment in links - both forward (→) and back (←) arrows */
 a span[aria-hidden="true"] {
     display: inline-block;
     vertical-align: middle;
