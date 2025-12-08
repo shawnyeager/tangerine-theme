@@ -532,11 +532,11 @@ select:focus-visible,
     gap: 0.125rem;
 }
 
-/* Action links: block display for margin control, tight spacing above */
+/* Action links: block display for margin control */
 .cta-link {
     display: flex;  /* Block-level flex for margin-top to work */
     width: fit-content;
-    margin-top: calc(-1 * var(--space-label-gap));  /* Pull up 4px: 16px para - 4px = 12px gap */
+    margin-top: 0;
     margin-bottom: 0;  /* Following element's margin-top provides spacing */
 }
 
@@ -1247,7 +1247,7 @@ time.note-date,
 
 .all-essays,
 .all-notes {
-    margin-top: var(--space-md);  /* 16px - breathing room after list */
+    margin-top: var(--space-sm);  /* 12px - matches section label spacing above list */
 }
 
 .topic-count {
@@ -1721,6 +1721,11 @@ time.note-date,
     margin-top: var(--space-lg);
 }
 
+.note-back-link .back-link,
+.back-link-wrapper .back-link {
+    margin-top: 0;  /* Wrapper provides spacing */
+}
+
 .note-back-link a,
 .back-link a,
 .back-link-wrapper a,
@@ -2188,7 +2193,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 .amount-selection {
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-xl);
 }
 
 .amount-grid {
@@ -2330,7 +2335,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     padding: var(--space-xl);
     background: var(--background-card);
     border-radius: var(--border-radius-md);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
     animation: v4v-fadeIn var(--transition-base) ease-out;
 }
 
@@ -2363,7 +2368,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     padding: var(--space-xl);
     background: var(--background-card);
     border-radius: var(--border-radius-md);
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-xl);
     transition: background-color var(--transition-fast);
     animation: v4v-fadeIn var(--transition-base) ease-out;
 }
@@ -2520,7 +2525,11 @@ a.qr-link:hover {
 }
 
 .v4v-page .essay-nav {
-    margin-top: 0;  /* amount-selection margin-bottom provides spacing */
+    margin-top: 0;
+}
+
+.v4v-page .back-link {
+    margin-top: 0;  /* Card margin-bottom provides 32px spacing to match intro */
 }
 
 .v4v-details {
