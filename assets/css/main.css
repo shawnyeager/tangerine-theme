@@ -881,24 +881,25 @@ body > .container > footer {
    Sections connect to footer via margin-bottom: 0 on last section.
    ========================================================================== */
 
-.bio,
-.notes-homepage-intro {
+.site-intro {
     margin-bottom: var(--section-gap);  /* 48px - gap to next section */
     color: var(--text-secondary);
     font-size: var(--font-lg-plus);  /* 17px - slightly larger than base for prominence */
     line-height: 1.45;  /* Match long-form content */
 }
 
-.bio p,
-.notes-homepage-intro p {
+.site-intro p {
     margin-bottom: var(--space-sm);
 }
 
-
-/* Override tight CTA spacing in bio - match paragraph spacing */
-.bio p:has(+ .cta-link),
-.notes-homepage-intro p:has(+ .cta-link) {
+/* Override tight CTA spacing in intro - match paragraph spacing */
+.site-intro p:has(+ .cta-link) {
     margin-bottom: var(--space-sm);
+}
+
+/* Intro CTAs inherit parent font-size (action-link sets --font-base by default) */
+.site-intro .action-link {
+    font-size: inherit;
 }
 
 /* Unified section header style */
