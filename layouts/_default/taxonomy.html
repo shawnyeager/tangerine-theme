@@ -45,12 +45,8 @@ Important Notes:
     {{ end }}
 
     {{/* Page title */}}
-    {{ if eq $contentType "notes" }}
-    <h1 class="page-title">Notes tagged: {{ .Title }}</h1>
-    {{ else }}
-    <h1 class="section-label-small">{{ .Title }}</h1>
+    <h1 class="page-title">{{ .Title }}</h1>
     <div class="topic-count">{{ len $pages }} {{ if eq (len $pages) 1 }}{{ $singular }}{{ else }}{{ $contentType }}{{ end }} on this topic</div>
-    {{ end }}
 
     <section class="{{ $sectionClass }}">
         {{ range $pages }}
