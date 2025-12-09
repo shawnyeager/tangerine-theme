@@ -30,9 +30,8 @@ Important Notes:
 
 {{ define "main" }}
     {{/* Dynamic title based on taxonomy type */}}
-    {{ $taxonomyName := .Data.Singular | title }}
     {{ $taxonomyPlural := .Data.Plural | title }}
-    <h1 class="section-label-small">All {{ $taxonomyPlural }}</h1>
+    <h1 class="page-title">{{ $taxonomyPlural }}</h1>
 
     {{ if .Data.Terms }}
     <section class="topics">
