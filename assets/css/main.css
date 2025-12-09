@@ -1712,15 +1712,20 @@ a.back-link:hover {
    Usage: V4V link + back link, or back link alone
 
    Spacing rationale:
-   - margin-top: lg (24px) — visual break after body content
-   - gap: sm (12px) — links are related ("what next"), not competing
+   - Default margin-top: lg (24px) — for single-link pages (404, gone)
+   - With action link: sm (12px) margin-top — tight to content, lg gap between links
    ========================================================================== */
 
 .content-nav {
     margin-top: var(--space-lg);
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: var(--space-lg);
+}
+
+/* When content-nav has action link (e.g., essays with Zap + back link) */
+.content-nav:has(.action-link) {
+    margin-top: var(--space-sm);
 }
 
 /* ==========================================================================

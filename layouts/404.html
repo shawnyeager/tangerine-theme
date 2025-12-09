@@ -15,8 +15,6 @@ Uses:
     {{ else }}
     <p>The <a href="{{ "essays" | relURL }}">essays</a> still work.</p>
     {{ end }}
-    <div class="back-link-wrapper">
-        {{- partial "links/back.html" (dict "url" ("/" | relURL) "text" "Home") -}}
-    </div>
 </div>
+{{- partial "content-nav.html" (dict "back_url" ("/" | relURL) "back_text" "Home") -}}
 {{ end }}
