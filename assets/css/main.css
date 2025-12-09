@@ -1252,8 +1252,8 @@ time.note-date,
 }
 
 .topic-count {
-    color: var(--text-secondary);
-    font-size: var(--font-base);
+    color: var(--text-meta);
+    font-size: var(--font-sm);
     margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
 }
 
