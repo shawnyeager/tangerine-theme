@@ -49,7 +49,5 @@ Important Notes:
     {{ $backLinkURL := cond (eq $contentType "notes") "/" (printf "/%s/" $contentType) }}
     {{ $backLinkText := printf "All %s" $contentType }}
 
-    <div class="back-link-wrapper">
-        {{- partial "links/back.html" (dict "url" ($backLinkURL | relURL) "text" $backLinkText) -}}
-    </div>
+    {{- partial "content-nav.html" (dict "back_url" ($backLinkURL | relURL) "back_text" $backLinkText) -}}
 {{ end }}
