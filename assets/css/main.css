@@ -1699,8 +1699,9 @@ a.back-link:hover {
     text-decoration: none;
 }
 
-/* Back-link arrows: lift to baseline (Satoshi ← yMin is -76/1000em) */
-.back-link span[aria-hidden="true"] {
+/* Back arrows (←): lift to baseline (Satoshi ← yMin is -76/1000em) */
+.back-link span[aria-hidden="true"],
+.pagination-prev span[aria-hidden="true"] {
     font-family: var(--font-heading);
     display: inline-block;
     transform: translateY(-0.076em);
