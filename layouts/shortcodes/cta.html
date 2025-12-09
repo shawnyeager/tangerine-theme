@@ -30,9 +30,9 @@ Important Notes:
 {{- $event := .Get "event" -}}
 
 {{- if eq $variant "download" -}}
-    {{- partial "links/download.html" (dict "url" $url "text" $text "event" $event) -}}
+    {{- partial "links/secondary.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- else if eq $variant "button" -}}
     <button type="submit">{{ $text }}</button>
 {{- else -}}
-    {{- partial "links/cta.html" (dict "url" $url "text" $text "event" $event) -}}
+    {{- partial "links/action.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- end -}}

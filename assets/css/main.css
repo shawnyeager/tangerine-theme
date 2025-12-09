@@ -386,8 +386,8 @@ p {
     font-weight: var(--font-weight-body);
 }
 
-/* Action link spacing now controlled by shortcode classes (.cta-link, .download-link, .back-link)
-   via negative margin-top - see Link Hierarchy section */
+/* Action link spacing now controlled by shortcode classes (.action-link, .secondary-link, .back-link)
+   via margin-top - see Link Hierarchy section */
 
 ul {
     margin: var(--space-md) 0;
@@ -502,22 +502,24 @@ select:focus-visible,
    ========================================================================== */
 
 /* Shared transition for all branded links */
-.cta-link,
+.action-link,
+.back-link,
 .all-essays,
 .all-notes,
 .podcast-links a,
 .essay-footer a,
 .pagination-prev,
 .pagination-next,
-.download-link,
+.secondary-link,
 .link-grid a {
     text-decoration: none;
     transition: color var(--transition-fast);
 }
 
-/* CTA Links - Primary action links WITH arrows (→)
+/* Action Links - Primary action links WITH arrows (→)
    Usage: "Read more →", "All essays →", "Subscribe to newsletter →" */
-.cta-link,
+.action-link,
+.back-link,
 .all-essays,
 .all-notes,
 .podcast-links a,
@@ -525,6 +527,7 @@ select:focus-visible,
 .pagination-prev,
 .pagination-next {
     font-family: var(--font-heading);
+    font-size: var(--font-base);
     color: var(--brand-orange);
     font-weight: var(--font-weight-medium);
     display: inline-flex;
@@ -533,37 +536,38 @@ select:focus-visible,
 }
 
 /* Action links: block display for margin control */
-.cta-link {
+.action-link {
     display: flex;  /* Block-level flex for margin-top to work */
     width: fit-content;
     margin-top: 0;
     margin-bottom: 0;  /* Following element's margin-top provides spacing */
 }
 
-/* CTAs inside paragraphs: inline, no margins */
-p .cta-link {
+/* Action links inside paragraphs: inline, no margins */
+p .action-link {
     display: inline-flex;
     margin-top: 0;
     white-space: nowrap;
 }
 
-/* CTAs inside container contexts: reset block-level properties */
-.podcast-links .cta-link,
-.footer-links .cta-link {
+/* Action links inside container contexts: reset block-level properties */
+.podcast-links .action-link,
+.footer-links .action-link {
     display: inline-flex;
     width: auto;
     margin-top: 0;
     margin-bottom: 0;
 }
 
-/* Adjacent CTAs in horizontal containers: no stacking margin */
-.podcast-links .cta-link + .cta-link,
-.footer-links .cta-link + .cta-link {
+/* Adjacent action links in horizontal containers: no stacking margin */
+.podcast-links .action-link + .action-link,
+.footer-links .action-link + .action-link {
     margin-top: 0;
 }
 
-/* Hover state for all primary CTAs - no underline (arrows would be underlined) */
-.cta-link:hover,
+/* Hover state for all primary action links - no underline (arrows would be underlined) */
+.action-link:hover,
+.back-link:hover,
 .all-essays:hover,
 .all-notes:hover,
 .podcast-links a:hover,
@@ -575,7 +579,7 @@ p .cta-link {
 }
 
 /* Underline link text (not arrow) on hover */
-.cta-link:hover .link-text,
+.action-link:hover .link-text,
 .all-essays:hover .link-text,
 .all-notes:hover .link-text,
 .podcast-links a:hover .link-text,
@@ -588,10 +592,10 @@ p .cta-link {
     text-underline-offset: var(--underline-offset);
 }
 
-/* Download Links - Secondary utility style for downloads
+/* Secondary Links - Utility style for downloads and de-emphasized actions
    Usage: "Download contact card", "Download ASCII key"
-   Gray, underlined, less prominent than CTAs */
-.download-link {
+   Gray, underlined, less prominent than action links */
+.secondary-link {
     color: var(--text-meta);
     font-size: var(--font-base);
     font-weight: var(--font-weight-normal);
@@ -605,23 +609,23 @@ p .cta-link {
     margin-top: var(--space-sm);
 }
 
-/* Stacked action links: match back-link spacing */
-.cta-link + .cta-link,
-.cta-link + .download-link,
-.download-link + .cta-link,
-.download-link + .download-link {
+/* Stacked action links: consistent spacing */
+.action-link + .action-link,
+.action-link + .secondary-link,
+.secondary-link + .action-link,
+.secondary-link + .secondary-link {
     margin-top: var(--space-lg);
 }
 
 /* Freestanding action links after info blocks: breathing room */
-.info-pair:has(+ .cta-link),
-.info-pair:has(+ .download-link) {
+.info-pair:has(+ .action-link),
+.info-pair:has(+ .secondary-link) {
     margin-bottom: var(--space-lg);
 }
 
 /* New section after action links */
-.cta-link + .info-pair,
-.download-link + .info-pair {
+.action-link + .info-pair,
+.secondary-link + .info-pair {
     margin-top: var(--space-xl);
 }
 
@@ -639,7 +643,7 @@ p .cta-link {
 }
 
 /* Hover states */
-.download-link:hover {
+.secondary-link:hover {
     color: var(--brand-orange-hover);
     text-decoration: none;
 }
@@ -1667,46 +1671,6 @@ time.note-date,
     }
 }
 
-.essay-footer {
-    margin-top: var(--space-md);
-    padding-top: 0;
-    border-top: none;
-}
-
-.essay-footer p {
-    color: var(--text-secondary);
-    margin-bottom: 0;
-}
-
-.essay-footer a {
-    color: var(--brand-orange);
-    text-decoration: none;
-}
-
-.essay-footer a:hover {
-    color: var(--brand-orange-hover);
-}
-
-/* Action cluster: essay footer (V4V) + nav form a tight unit */
-.essay-footer + .essay-nav {
-    margin-top: 0;  /* No gap - same action block */
-}
-
-.essay-nav {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-top: var(--space-sm);  /* Default when not following essay-footer */
-    gap: 0;
-}
-
-.essay-nav .all-essays {
-    color: var(--text-meta);
-}
-
-.essay-nav .all-essays:hover {
-    color: var(--brand-orange);
-}
-
 .essay-acknowledgement {
     color: var(--text-meta);
     font-style: italic;
@@ -1714,34 +1678,49 @@ time.note-date,
     margin-bottom: 0;
 }
 
-/* Back links - unified styling for wrappers and standalone anchors */
-.note-back-link,
+/* Back Links - Navigation links for returning to parent context
+   Usage: "← All essays", "← Home", "← Back to essay"
+   Meta color, Satoshi font, left arrow */
 .back-link,
-.back-link-wrapper {
-    margin-top: var(--space-lg);
-}
-
-.note-back-link .back-link,
-.back-link-wrapper .back-link {
-    margin-top: 0;  /* Wrapper provides spacing */
-}
-
-.note-back-link a,
-.back-link a,
-.back-link-wrapper a,
 a.back-link {
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-medium);
     color: var(--text-meta);
     text-decoration: none;
-    font-size: var(--font-base);
-    font-family: var(--font-heading);
     display: inline-flex;
     align-items: center;
     gap: 0.125rem;
+}
 
-    &:hover {
-        color: var(--brand-orange);
-        text-decoration: none;
-    }
+.back-link:hover,
+a.back-link:hover {
+    color: var(--brand-orange);
+    text-decoration: none;
+}
+
+/* Back-link arrows: shrink and lift to match right arrow visual weight */
+.back-link span[aria-hidden="true"] {
+    font-family: var(--font-heading);
+    display: inline-block;
+    font-size: 0.85em;
+    transform: translateY(-0.05em);
+}
+
+/* ==========================================================================
+   Content Navigation - End-of-content link container
+   Usage: V4V link + back link, or back link alone
+
+   Spacing rationale:
+   - margin-top: lg (24px) — visual break after body content
+   - gap: sm (12px) — links are related ("what next"), not competing
+   ========================================================================== */
+
+.content-nav {
+    margin-top: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
 }
 
 /* ==========================================================================
@@ -2522,14 +2501,6 @@ a.qr-link:hover {
     color: var(--text-secondary);
     font-size: var(--font-base);
     margin-bottom: 0;
-}
-
-.v4v-page .essay-nav {
-    margin-top: 0;
-}
-
-.v4v-page .back-link {
-    margin-top: 0;  /* Card margin-bottom provides 32px spacing to match intro */
 }
 
 .v4v-details {

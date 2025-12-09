@@ -1,5 +1,5 @@
 {{/*
-Purpose: Renders a primary CTA link with arrow or custom icon
+Purpose: Renders a primary action link with arrow or custom icon
 
 Parameters (dict):
   url      (string, required): Link destination
@@ -9,12 +9,12 @@ Parameters (dict):
   icon     (string, optional): "arrow" (default), "lightning", or "none"
 
 Usage in templates:
-  {{ partial "links/cta.html" (dict "url" "/subscribe" "text" "Subscribe") }}
-  {{ partial "links/cta.html" (dict "url" .Permalink "text" "Read more" "event" "essay_cta") }}
-  {{ partial "links/cta.html" (dict "url" "/v4v/" "text" "Zap" "icon" "lightning") }}
+  {{ partial "links/action.html" (dict "url" "/subscribe" "text" "Subscribe") }}
+  {{ partial "links/action.html" (dict "url" .Permalink "text" "Read more" "event" "essay_cta") }}
+  {{ partial "links/action.html" (dict "url" "/v4v/" "text" "Zap" "icon" "lightning") }}
 
 Important Notes:
-- Always outputs cta-link class
+- Always outputs action-link class
 - Arrow uses aria-hidden for accessibility
 - Lightning bolt SVG for V4V context
 */}}
@@ -25,7 +25,7 @@ Important Notes:
 {{- $extraClass := .class | default "" -}}
 {{- $icon := .icon | default "arrow" -}}
 
-{{- $class := "cta-link" -}}
+{{- $class := "action-link" -}}
 {{- if $extraClass }}{{ $class = printf "%s %s" $class $extraClass }}{{ end -}}
 {{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
 
