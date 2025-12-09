@@ -8,6 +8,7 @@ Context Expected:
 - .Title, .Description - Article metadata
 - .Permalink - Canonical URL
 - .Date, .Lastmod - Publication and modification dates
+- .Params.updated - Optional frontmatter field for explicit modification date
 - .WordCount - For reading time calculation
 - .Params.topics, .Params.tags - Taxonomy data for keywords
 - .Site.Params.author.* - Author information (name, email, description, jobTitle, image)
@@ -37,7 +38,12 @@ Important Notes:
   {{- $readingTimeMinutes = 1 -}}
 {{- end -}}
 {{- $timeRequired := printf "PT%dM" $readingTimeMinutes -}}
-{{- $structuredData := dict "@context" "https://schema.org" "@type" "BlogPosting" "headline" .Title "description" (cond .Description .Description .Site.Params.description) "url" .Permalink "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00") "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00") "wordCount" .WordCount "timeRequired" $timeRequired "inLanguage" "en-US" "isAccessibleForFree" true "copyrightYear" (.Date.Format "2006") -}}
+{{- /* Use frontmatter 'updated' field if set, otherwise fall back to Lastmod */ -}}
+{{- $dateModified := .Lastmod -}}
+{{- with .Params.updated -}}
+  {{- $dateModified = . -}}
+{{- end -}}
+{{- $structuredData := dict "@context" "https://schema.org" "@type" "BlogPosting" "headline" .Title "description" (cond .Description .Description .Site.Params.description) "url" .Permalink "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00") "dateModified" ($dateModified.Format "2006-01-02T15:04:05Z07:00") "wordCount" .WordCount "timeRequired" $timeRequired "inLanguage" "en-US" "isAccessibleForFree" true "copyrightYear" (.Date.Format "2006") -}}
 {{- /* Add articleSection from first topic */ -}}
 {{- if .Params.topics -}}
   {{- $structuredData = merge $structuredData (dict "articleSection" (index .Params.topics 0)) -}}

@@ -15,6 +15,7 @@ Structured data partials remain at root level:
 - structured-data-profile.html - ProfilePage JSON-LD
 - structured-data-podcast.html - PodcastSeries JSON-LD
 - structured-data-podcast-faq.html - FAQPage JSON-LD for podcast
+- structured-data-faq.html - FAQPage JSON-LD from frontmatter
 - structured-data-breadcrumbs.html - Breadcrumb navigation JSON-LD
 
 Parameters: None (uses page and site context)
@@ -34,5 +35,6 @@ Parameters: None (uses page and site context)
     {{ partial "structured-data-profile.html" . }}
     {{ partial "structured-data-podcast.html" . }}
     {{ partial "structured-data-podcast-faq.html" . }}
+    {{ partial "structured-data-faq.html" . }}
     {{ partial "structured-data-breadcrumbs.html" . }}
 </head>
