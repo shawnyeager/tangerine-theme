@@ -1,0 +1,22 @@
+{{/*
+Purpose: 404 error page (parameterized for essays/notes)
+
+Uses:
+- .Site.Params.content_type - "essays" or "notes"
+- links/back.html partial for home navigation
+*/}}
+
+{{ define "main" }}
+<h1 class="page-title">404</h1>
+<div class="page-body">
+    <p>This link is broken. Like the money.</p>
+    {{ if eq .Site.Params.content_type "notes" }}
+    <p>The <a href="{{ "notes" | relURL }}">notes</a> still work.</p>
+    {{ else }}
+    <p>The <a href="{{ "essays" | relURL }}">essays</a> still work.</p>
+    {{ end }}
+    <div class="back-link-wrapper">
+        {{- partial "links/back.html" (dict "url" ("/" | relURL) "text" "Home") -}}
+    </div>
+</div>
+{{ end }}
