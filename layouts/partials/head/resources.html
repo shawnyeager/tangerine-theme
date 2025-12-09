@@ -40,16 +40,14 @@ Context Expected:
 <!-- Sitemap -->
 <link rel="sitemap" type="application/xml" href="{{ "sitemap.xml" | absURL }}" title="Sitemap">
 
-<!-- Favicon (parameterized: solid for .com, outlined for .notes) -->
-<!-- SVG favicon for modern browsers (best quality, brand orange color) -->
-{{ if eq .Site.Params.favicon_style "outlined" }}
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2032%2032%27%3E%3Crect%20x=%272%27%20y=%272%27%20width=%2728%27%20height=%2728%27%20fill=%27none%27%20stroke=%27%23F84200%27%20stroke-width=%274%27/%3E%3C/svg%3E">
-{{ else }}
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2032%2032%27%3E%3Crect%20x=%272%27%20y=%272%27%20width=%2728%27%20height=%2728%27%20fill=%27%23F84200%27/%3E%3C/svg%3E">
-{{ end }}
-<!-- File-based favicons for Google and legacy browsers -->
-<link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
+<!-- Favicons -->
+<!-- SVG favicon for modern browsers (best quality, scalable) -->
+<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+<!-- PNG favicons for compatibility -->
+<link rel="icon" type="image/png" sizes="96x96" href="{{ "favicon-96x96.png" | relURL }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ "favicon-32x32.png" | relURL }}">
 <link rel="icon" type="image/png" sizes="16x16" href="{{ "favicon-16x16.png" | relURL }}">
+<!-- ICO fallback for legacy browsers -->
+<link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ "apple-touch-icon.png" | relURL }}">
 <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">

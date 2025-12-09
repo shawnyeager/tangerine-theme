@@ -30,3 +30,6 @@ Context Expected:
 
 <!-- Robots meta tag -->
 <meta name="robots" content="{{ if .Site.Params.noindex }}noindex, nofollow{{ else }}index, follow{{ end }}">
+
+<!-- Apple web app title -->
+<meta name="apple-mobile-web-app-title" content="{{ .Site.Params.short_name | default .Site.Title }}">
