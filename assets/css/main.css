@@ -892,14 +892,10 @@ body > .container > footer {
     margin-bottom: var(--space-sm);
 }
 
-/* Override tight CTA spacing in intro - match paragraph spacing */
-.site-intro p:has(+ .cta-link) {
-    margin-bottom: var(--space-sm);
-}
-
-/* Intro CTAs inherit parent font-size (action-link sets --font-base by default) */
+/* Intro CTAs: inherit font-size, add spacing above */
 .site-intro .action-link {
     font-size: inherit;
+    margin-top: var(--space-sm);
 }
 
 /* Unified section header style */
