@@ -1699,11 +1699,11 @@ a.back-link:hover {
     text-decoration: none;
 }
 
-/* Back-link arrows: lift to match right arrow vertical alignment */
+/* Back-link arrows: lift to baseline (Satoshi ← yMin is -76/1000em) */
 .back-link span[aria-hidden="true"] {
     font-family: var(--font-heading);
     display: inline-block;
-    transform: translateY(-0.1em);
+    transform: translateY(-0.076em);
 }
 
 /* ==========================================================================
