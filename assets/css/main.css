@@ -886,15 +886,24 @@ body > .container > footer {
     color: var(--text-secondary);
     font-size: var(--font-lg-plus);  /* 17px - slightly larger than base for prominence */
     line-height: 1.45;  /* Match long-form content */
+
+    &::after {
+        content: '';
+        display: block;
+        width: 48px;
+        height: 2px;
+        background: var(--brand-orange);
+        margin-top: var(--space-lg);
+    }
 }
 
 .site-intro p {
     margin-bottom: var(--space-sm);
 }
 
-/* Intro CTAs: inherit font-size, add spacing above */
+/* Intro CTAs: sized for presence, add spacing above */
 .site-intro .action-link {
-    font-size: inherit;
+    font-size: var(--font-lg);
     margin-top: var(--space-sm);
 }
 
@@ -955,8 +964,7 @@ body > .container > footer {
    Cards share base styling (padding, background, transitions).
    ========================================================================== */
 
-/* Base card styling shared by podcast, services, and RSS cards */
-.podcast,
+/* Base card styling shared by services and RSS cards */
 .link-grid-card,
 .rss-feed-card {
     padding: var(--card-padding);
@@ -965,7 +973,13 @@ body > .container > footer {
     contain: layout style paint; /* Isolate rendering for better performance */
 }
 
+/* Podcast card - lighter weight than other cards */
 .podcast {
+    padding: var(--card-padding);
+    background: transparent;
+    border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    transition: background-color var(--transition-fast);
+    contain: layout style paint;
     margin-bottom: var(--space-2xl);
 
     /* Prevent double spacing at card bottom edge */
