@@ -894,7 +894,16 @@ body > .container > footer {
     width: 48px;
     height: 1px;
     background: var(--brand-orange);
-    margin-top: var(--space-md);
+}
+
+@media (max-width: 600px) {
+    .site-intro::after {
+        display: none;
+    }
+    .site-intro .action-link {
+        display: block;
+        margin-top: var(--space-sm);
+    }
 }
 
 
