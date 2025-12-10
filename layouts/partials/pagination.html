@@ -1,0 +1,35 @@
+{{/*
+Purpose: Renders pagination navigation for list pages
+
+Context Expected:
+- .paginator - Hugo paginator object (required)
+- .prevText - Text for "previous" link (default: "Newer")
+- .nextText - Text for "next" link (default: "Older")
+
+Usage:
+{{ $paginator := .Paginate .Pages }}
+{{ partial "pagination.html" (dict "paginator" $paginator "prevText" "Newer essays" "nextText" "Older essays") }}
+
+Or with defaults:
+{{ partial "pagination.html" (dict "paginator" $paginator) }}
+
+Important Notes:
+- Uses .arrow class for consistent arrow spacing (margin-based, not gap)
+- Arrow spans have aria-hidden="true" for accessibility
+- Only renders if there are multiple pages
+*/}}
+
+{{ $paginator := .paginator }}
+{{ $prevText := .prevText | default "Newer" }}
+{{ $nextText := .nextText | default "Older" }}
+
+{{ if or $paginator.HasPrev $paginator.HasNext }}
+<nav class="pagination">
+    {{ if $paginator.HasPrev }}
+    <a href="{{ $paginator.Prev.URL }}" class="pagination-prev"><span class="arrow" aria-hidden="true">←</span><span class="link-text">{{ $prevText }}</span></a>
+    {{ end }}
+    {{ if $paginator.HasNext }}
+    <a href="{{ $paginator.Next.URL }}" class="pagination-next"><span class="link-text">{{ $nextText }}</span><span class="arrow" aria-hidden="true">→</span></a>
+    {{ end }}
+</nav>
+{{ end }}
