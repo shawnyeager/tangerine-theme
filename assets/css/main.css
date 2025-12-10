@@ -899,20 +899,21 @@ body > .container > footer {
     background: var(--brand-orange);
 }
 
+/* Site intro CTA: inline on desktop */
+.site-intro .action-link {
+    display: inline-flex;
+    font-size: inherit;
+}
+
+/* Mobile: CTA on own line, hide accent bar */
 @media (max-width: 600px) {
     .site-intro::after {
         display: none;
     }
     .site-intro .action-link {
-        display: inline-flex;
-        margin-top: var(--space-sm);
+        display: block;
+        margin-top: var(--space-md);
     }
-}
-
-/* Intro CTAs: inline with text, inherit font-size */
-.site-intro .action-link {
-    display: inline-flex;
-    font-size: inherit;
 }
 
 /* Unified section header style */
