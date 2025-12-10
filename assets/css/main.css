@@ -441,13 +441,6 @@ header a:hover,
     text-decoration: none;
 }
 
-/* Arrow alignment in links - both forward (→) and back (←) arrows */
-a span[aria-hidden="true"] {
-    display: inline-block;
-    vertical-align: middle;
-    text-decoration: none;
-}
-
 /* Focus Indicators - Keyboard Navigation Accessibility
    -------------------------------------------------- */
 
@@ -541,6 +534,16 @@ select:focus-visible,
     width: fit-content;
     margin-top: 0;
     margin-bottom: 0;  /* Following element's margin-top provides spacing */
+}
+
+/* Arrow spans in action links: prevent underline inheritance */
+.action-link span[aria-hidden="true"],
+.back-link span[aria-hidden="true"],
+.all-essays span[aria-hidden="true"],
+.all-notes span[aria-hidden="true"],
+.pagination-prev span[aria-hidden="true"],
+.pagination-next span[aria-hidden="true"] {
+    text-decoration: none;
 }
 
 /* Action links inside paragraphs: inline, no margins */
@@ -901,11 +904,10 @@ body > .container > footer {
         display: none;
     }
     .site-intro .action-link {
-        display: block;
+        display: inline-flex;
         margin-top: var(--space-sm);
     }
 }
-
 
 /* Intro CTAs: inherit font-size from parent */
 .site-intro .action-link {
