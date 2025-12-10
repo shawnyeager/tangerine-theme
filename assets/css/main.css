@@ -9,19 +9,19 @@
  * 3. RESET           (line ~241)       - Base styles, brand bar
  * 4. TYPOGRAPHY      (line ~293)       - Heading hierarchy, body text
  * 5. LINKS           (line ~420)       - Link styles, focus states, link hierarchy
- * 6. LAYOUT          (line ~641)       - Container, header/footer spacing
- * 7. FOOTER          (line ~731)       - Site footer, newsletter signup
- * 8. HOMEPAGE        (line ~854)       - Homepage sections (bio, latest essay, podcast)
- * 9. COMPONENTS      (line ~931)       - Cards, link-grid, topic tags
- * 10. ESSAYS         (line ~1140)      - Essay listings, single essay pages
- * 11. MARKDOWN       (line ~1337)      - Content body styles (nested CSS)
- * 12. PAGE-SPECIFIC  (line ~1723)      - Page layouts, pagination, contact, skip links
- * 13. UTILITIES      (line ~1862)      - Helper classes (sr-only, hidden, etc)
- * 14. DARK MODE      (line ~1884)      - Theme toggle & system preference overrides
- * 15. PRINT          (line ~2014)      - Print styles
- * 16. MEDIA EMBEDS   (line ~2028)      - YouTube, video captions
- * 17. MOBILE         (line ~2109)      - Responsive breakpoints
- * 18. V4V PAGE       (line ~2138)      - Value for Value payment page
+ * 6. LAYOUT          (line ~663)       - Container, header/footer spacing
+ * 7. FOOTER          (line ~753)       - Site footer, newsletter signup
+ * 8. HOMEPAGE        (line ~881)       - Homepage sections (bio, latest essay, podcast)
+ * 9. COMPONENTS      (line ~968)       - Cards, link-grid, topic tags
+ * 10. ESSAYS         (line ~1182)      - Essay listings, single essay pages
+ * 11. MARKDOWN       (line ~1379)      - Content body styles (nested CSS)
+ * 12. PAGE-SPECIFIC  (line ~1750)      - Page layouts, pagination, contact, skip links
+ * 13. UTILITIES      (line ~1889)      - Helper classes (sr-only, hidden, etc)
+ * 14. DARK MODE      (line ~1911)      - Theme toggle & system preference overrides
+ * 15. PRINT          (line ~2041)      - Print styles
+ * 16. MEDIA EMBEDS   (line ~2055)      - YouTube, video captions
+ * 17. MOBILE         (line ~2136)      - Responsive breakpoints
+ * 18. V4V PAGE       (line ~2165)      - Value for Value payment page
  *
  * Line numbers are approximate. Update when making significant structural changes.
  */
@@ -482,15 +482,15 @@ select:focus-visible,
 
 /* Link Hierarchy System - Intent-based link categories
 
-   PRIMARY CTAs (.cta-link, .all-essays, .all-notes, .podcast-links a)
-   - Orange with arrows (→), color lightens on hover
+   PRIMARY CTAs (.action-link, .back-link, .all-essays, .all-notes, .podcast-links a)
+   - Orange with arrows (→ or ←), color lightens on hover
    - Display: inline-flex with gap for arrow spacing
 
-   SECONDARY/DOWNLOAD LINKS (.download-link, .link-grid a)
+   SECONDARY LINKS (.secondary-link, .link-grid a)
    - Gray/secondary color, orange on hover
-   - No underline at rest, none on hover
+   - Underlined at rest, none on hover
 
-   INLINE CONTENT LINKS (.info-value, body links)
+   INLINE CONTENT LINKS (body links)
    - Orange, underline appears on hover
    ========================================================================== */
 
@@ -1372,7 +1372,7 @@ time.note-date,
 /* Footer CTA spacing after essay/note content */
 .essay-body + footer,
 .note-body + footer {
-    margin-top: var(--space-sm);  /* 8px - tight spacing like p:has(+ .cta-link) */
+    margin-top: var(--space-sm);  /* 12px - tight spacing after content body */
 }
 
 /* ==========================================================================
