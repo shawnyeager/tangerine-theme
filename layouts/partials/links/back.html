@@ -26,4 +26,4 @@ Important Notes:
 {{- if $extraClass }}{{ $class = printf "%s %s" $class $extraClass }}{{ end -}}
 {{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
 
-<a href="{{ $url }}" class="{{ $class }}"><span aria-hidden="true">←</span> <span class="link-text">{{ $text }}</span></a>
+<a href="{{ $url }}" class="{{ $class }}"><span class="arrow" aria-hidden="true">←</span><span class="link-text">{{ $text }}</span></a>

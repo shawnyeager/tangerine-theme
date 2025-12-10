@@ -29,4 +29,4 @@ Important Notes:
 {{- if $extraClass }}{{ $class = printf "%s %s" $class $extraClass }}{{ end -}}
 {{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
 
-<a href="{{ $url }}" class="{{ $class }}"><span class="link-text">{{ $text }}</span>{{ if eq $icon "lightning" }}&#8239;<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg>{{ else if eq $icon "arrow" }} <span aria-hidden="true">→</span>{{ end }}</a>
+<a href="{{ $url }}" class="{{ $class }}"><span class="link-text">{{ $text }}</span>{{ if eq $icon "lightning" }}&#8239;<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg>{{ else if eq $icon "arrow" }}<span class="arrow" aria-hidden="true">→</span>{{ end }}</a>
