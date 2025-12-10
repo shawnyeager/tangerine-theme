@@ -78,46 +78,36 @@ Reusable GitHub Actions workflows for content quality and validation.
 
 Essay commits become permanent public record.
 
-### Never Commit Replace Directives
-**Replace directives are for LOCAL testing ONLY. NEVER commit them to site repos.**
+### Replace Directives (Automated Safety)
 
-When testing theme changes locally:
-- ✅ Add `replace` to go.mod (NOT committed)
-- ✅ Test changes with Hugo server
-- ❌ **NEVER** run `git add go.mod` if it contains replace directive
-- ✅ Use `git restore go.mod` before committing
+**Replace directives are handled automatically - you cannot commit them by accident.**
 
-**Pre-commit check before ANY site repo commit:**
+**Safety layers:**
+1. **Pre-commit hook** - BLOCKS any commit containing replace directive (all branches)
+2. **theme-dev.sh cleanup** - Automatically removes replace directive when you stop the dev server (Ctrl+C)
+
+**If you see a blocked commit:**
 ```bash
-# Verify go.mod has no replace directive:
-git diff go.mod | grep "replace"  # Should return nothing
+git restore go.mod        # Remove replace directive
+git add go.mod            # Re-stage clean version
 ```
 
-**Why this matters:** Netlify can't access `../tangerine-theme` (outside repo), builds fail with module download errors.
-
-**If you accidentally commit it:** Immediately fix with `git restore go.mod`, commit removal, and push.
-
-### Theme Deployment: NEVER Skip the Workflow
+### Theme Deployment (Fully Automated)
 
 **When user says "go", "ship it", or "push" after theme work:**
 
 1. Push theme: `git -C tangerine-theme push origin master`
-2. Trigger workflows (MANDATORY - DO NOT SKIP):
-   ```bash
-   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
-   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
-   ```
-3. Wait for PRs (~2-3 min)
+2. **DONE.** GitHub Actions automatically triggers site PRs.
+3. Wait ~3 min for PRs to appear
 4. User reviews deploy previews
 5. User merges PRs
+
+**No manual workflow triggers needed.** The theme repo has a GitHub Action that automatically triggers site update workflows when you push to master.
 
 **FORBIDDEN:**
 - DO NOT push existing local branches to site repos
 - DO NOT create PRs manually from local branches
 - DO NOT run `hugo mod get` in site repos
-- Local branches have STALE go.mod - the workflow creates FRESH go.mod
-
-**Why this matters:** The workflow runs `hugo mod get -u` to fetch the LATEST theme commit. Manual branches contain OLD theme references. Pushing stale branches deploys OLD code.
 
 ---
 
@@ -150,23 +140,19 @@ cd ~/Work/shawnyeager
 
 The script handles everything:
 1. Kills existing Hugo servers
-2. Ensures replace directive in go.mod (with proper newline)
+2. Adds replace directive to go.mod
 3. Cleans Hugo module cache (`hugo mod clean`)
 4. Clears resources and public directories
 5. Starts Hugo servers
-
-**DO NOT manually start Hugo servers for theme testing. The script exists because:**
-- Replace directives must have a leading newline or go.mod is malformed
-- Hugo caches modules aggressively - `hugo mod clean` is required
-- Stale resources/public directories cause CSS hash conflicts
+6. **Automatically cleans up replace directive when you Ctrl+C**
 
 After starting: Edit theme files → refresh browser → see changes instantly.
 
-**Important:** Once you push theme changes to GitHub, DO NOT manually update sites - GitHub Actions handles that automatically.
+**When you stop the dev server (Ctrl+C)**, the script automatically removes the replace directive from go.mod, leaving it safe to commit.
 
 ### Publishing Theme Changes
 
-Theme publishing uses **PR-based workflow via GitHub Actions**:
+Theme publishing is **fully automated via GitHub Actions**:
 
 **When you push theme changes:**
 
@@ -178,27 +164,15 @@ Theme publishing uses **PR-based workflow via GitHub Actions**:
    git push origin master
    ```
 
-2. Manually trigger update workflows in both sites:
-   ```bash
-   # Trigger in shawnyeager-com
-   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
+2. **DONE.** GitHub Actions automatically:
+   - Triggers site update workflows in both repos
+   - Creates PRs with theme updates (~3 min)
 
-   # Trigger in shawnyeager-notes
-   gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
-   ```
+3. Review deploy previews (FREE - 0 credits)
 
-3. Wait 2-3 minutes for GitHub Actions to create PRs
+4. Merge PRs when satisfied (triggers production builds - 15 credits each)
 
-4. Review deploy previews (FREE - 0 credits)
-
-5. Merge PRs when satisfied (triggers production builds - 15 credits each)
-
-**Cost savings:**
-- Deploy previews: FREE (0 credits)
-- Only pay when merging PR to production
-- Multiple theme commits accumulate in one PR
-
-**Sites track master branch - no version tagging needed.**
+**No manual workflow triggers needed.** Push theme → PRs appear automatically.
 
 ---
 
@@ -220,14 +194,14 @@ Theme publishing uses **PR-based workflow via GitHub Actions**:
 - **shawnyeager.com** = The Gallery (finished work, SEO indexed)
 - **notes.shawnyeager.com** = The Workshop (WIP, SEO indexed)
 
-### PR-Based Theme Update Workflow
+### Automated Theme Update Workflow
 
-Theme changes trigger manual PR creation via GitHub Actions:
+Theme changes automatically trigger PRs in both site repos:
 1. Push to `tangerine-theme` master branch
-2. Manually trigger workflows in both site repos (or wait for daily cron)
-3. GitHub Actions creates PR with theme updates
-4. Netlify builds FREE deploy preview for the PR
-5. Review preview, then manually merge PR
+2. GitHub Actions in theme repo triggers site update workflows
+3. Site workflows create PRs with theme updates (~3 min)
+4. Netlify builds FREE deploy preview for each PR
+5. Review previews, then merge PRs
 6. Netlify builds production (15 credits × 2 sites = 30 credits)
 
 ---
