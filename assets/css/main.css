@@ -909,8 +909,9 @@ body > .container > footer {
     }
 }
 
-/* Intro CTAs: inherit font-size from parent */
+/* Intro CTAs: inline with text, inherit font-size */
 .site-intro .action-link {
+    display: inline-flex;
     font-size: inherit;
 }
 
