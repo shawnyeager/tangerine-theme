@@ -886,25 +886,21 @@ body > .container > footer {
     color: var(--text-secondary);
     font-size: var(--font-lg-plus);  /* 17px - slightly larger than base for prominence */
     line-height: 1.45;  /* Match long-form content */
-
-    &::after {
-        content: '';
-        display: block;
-        width: 48px;
-        height: 2px;
-        background: var(--brand-orange);
-        margin-top: var(--space-lg);
-    }
 }
 
-.site-intro p {
-    margin-bottom: var(--space-sm);
+.site-intro::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--brand-orange);
+    margin-top: var(--space-md);
 }
 
-/* Intro CTAs: sized for presence, add spacing above */
+
+/* Intro CTAs: inherit font-size from parent */
 .site-intro .action-link {
-    font-size: var(--font-lg);
-    margin-top: var(--space-sm);
+    font-size: inherit;
 }
 
 /* Unified section header style */
