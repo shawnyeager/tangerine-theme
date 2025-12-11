@@ -2621,6 +2621,22 @@ a.qr-link:hover {
     margin: 0 0 var(--space-lg) 0;
 }
 
+/* Body content - multiple paragraphs */
+.landing-body {
+    margin-bottom: var(--space-xl);
+}
+
+.landing-body p {
+    font-size: var(--font-lg);
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin: 0 0 var(--space-md) 0;
+}
+
+.landing-body p:last-child {
+    margin-bottom: 0;
+}
+
 /* CTA block - accent bar underneath */
 .landing-cta-block {
     margin-bottom: var(--space-lg);
