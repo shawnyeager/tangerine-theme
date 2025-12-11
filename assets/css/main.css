@@ -2598,51 +2598,62 @@ a.qr-link:hover {
 }
 
 /* ==========================================================================
-   19. LANDING PAGE - Sales/Conversion Landing Pages
-
-   Matches site-intro aesthetic. Clean, simple, consistent.
+   19. LANDING PAGE - Conversion page using existing design patterns
    ========================================================================== */
 
 .landing-page {
     max-width: var(--content-max-width);
-    color: var(--text-secondary);
-    font-size: var(--font-lg-plus);
-    line-height: 1.45;
 }
 
-/* Page title - matches display-title pattern */
-.landing-page .landing-title {
+/* Title - display-title pattern */
+.landing-title {
     font-size: var(--font-custom-32);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
-    letter-spacing: var(--letter-spacing-tight-lg);
-    color: var(--text-primary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+/* Intro - .site-intro pattern */
+.landing-intro {
+    font-size: var(--font-lg-plus);
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin: 0 0 var(--space-lg) 0;
+}
+
+/* CTA block - accent bar underneath */
+.landing-cta-block {
     margin-bottom: var(--space-lg);
 }
 
-/* All paragraphs - consistent spacing */
-.landing-page p {
-    margin-bottom: var(--space-md);
-}
-
-/* Standalone CTA - inherit size from container (17px vs base 16px) */
-.landing-page > a.action-link {
-    font-size: inherit;
-    margin-top: var(--space-md);
-    margin-bottom: var(--space-xs);
-}
-
-/* Meta line after CTA (e.g., "10 questions. 3 minutes.") */
-.landing-page > a.action-link + p {
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-}
-
-/* Divider */
-.landing-page > hr {
-    border: none;
+.landing-cta-block::after {
+    content: '';
+    display: block;
     width: 48px;
     height: 1px;
     background: var(--brand-orange);
-    margin: var(--space-xl) 0;
+    margin-top: var(--space-md);
+}
+
+/* Primary CTA - larger for prominence */
+.landing-cta-block .action-link {
+    font-size: var(--font-lg);
+}
+
+/* Supporting text - .episode-tag pattern */
+.landing-supporting {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    margin: var(--space-xs) 0 0 0;
+}
+
+/* Secondary - alternative exit ramp, inline format */
+.landing-secondary {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+}
+
+.landing-secondary .action-link {
+    display: inline-flex;
+    font-size: inherit;
 }
