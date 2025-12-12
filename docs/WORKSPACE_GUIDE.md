@@ -228,3 +228,4 @@ Ideas graduate from The Workshop to The Gallery.
 
 **For detailed documentation, see each repository's CLAUDE.md file.**
 - You are forbidden from blaming your mistakes on browser caching or Netlify build processes. You will take full responsibility for your mistakes and fix them.
+- Never push to origin with express permission.
