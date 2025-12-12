@@ -172,6 +172,8 @@
     --card-padding: var(--space-xl);
     --border-radius-interactive: 4px;
     --border-radius-code: 4px;
+    --border-radius-sm: 2px;
+    --arrow-spacing: 0.15em;
     --brand-bar-height: 3px;
     --table-cell-padding: 0.75rem 1rem;
     --qr-size: 250px;
@@ -458,7 +460,7 @@ select:focus-visible,
 [tabindex]:focus-visible {
     outline: 2px solid var(--brand-orange);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: var(--border-radius-sm);
 }
 
 /* Reduced Motion Support - Accessibility
@@ -548,16 +550,16 @@ select:focus-visible,
 
 /* Arrow spacing (no space character in HTML) */
 .action-link .arrow {
-    margin-left: 0.15em;
+    margin-left: var(--arrow-spacing);
 }
 
 .back-link .arrow,
 .pagination-prev .arrow {
-    margin-right: 0.15em;
+    margin-right: var(--arrow-spacing);
 }
 
 .pagination-next .arrow {
-    margin-left: 0.15em;
+    margin-left: var(--arrow-spacing);
 }
 
 /* Action links inside paragraphs: inline, no margins */
@@ -824,25 +826,7 @@ body > .container > footer {
     opacity: 0.5;
 }
 
-.email-form button {
-    padding: var(--space-xs) var(--space-md);
-    background: transparent;
-    color: var(--text-meta);
-    border: var(--border-width) solid var(--text-meta);
-    border-radius: var(--border-radius-interactive);
-    font-size: var(--font-xs);
-    font-weight: var(--font-weight-medium);
-    font-family: inherit;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.email-form button:hover {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
-}
+/* Email form button now uses .btn-ghost.btn-ghost--muted */
 
 .footer-links {
     display: flex;
@@ -872,7 +856,7 @@ body > .container > footer {
 }
 
 .footer-links a .arrow {
-    margin-left: 0.15em;
+    margin-left: var(--arrow-spacing);
 }
 
 /* V4V icon tap target - pseudo-element creates 48x48 clickable area without affecting layout */
@@ -2642,5 +2626,63 @@ a.qr-link:hover {
     font-size: var(--font-sm);
     color: var(--text-meta);
     margin: var(--space-xs) 0 0 0;
+}
+
+/* ==========================================================================
+   14. GHOST BUTTONS - Shared base and variants
+
+   Ghost buttons: transparent background with border.
+   Variants: muted (newsletter) and primary (conversion CTA).
+   ========================================================================== */
+
+/* Shared base */
+.btn-ghost {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid;
+    border-radius: 0;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    text-decoration: none;
+}
+
+/* Muted variant (newsletter signup) */
+.btn-ghost--muted {
+    padding: var(--space-xs) var(--space-md);
+    font-family: inherit;
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-meta);
+    border-color: var(--text-meta);
+    border-radius: var(--border-radius-sm);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-ghost--muted:hover {
+    color: var(--brand-orange);
+    border-color: var(--brand-orange);
+}
+
+/* Primary variant (conversion CTA) */
+.btn-ghost--primary {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-orange);
+    border-color: var(--brand-orange);
+}
+
+.btn-ghost--primary:hover {
+    border-width: 2px;
+    padding: calc(var(--space-sm) - 1px) calc(var(--space-lg) - 1px);
+    color: light-dark(#a82e00, #ff7a52);
+    border-color: light-dark(#a82e00, #ff7a52);
+    text-decoration: none;
+}
+
+.btn-ghost--primary .arrow {
+    margin-left: var(--arrow-spacing);
 }
 
