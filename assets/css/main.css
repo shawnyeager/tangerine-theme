@@ -633,7 +633,7 @@ p .action-link {
 .action-link + .secondary-link,
 .secondary-link + .action-link,
 .secondary-link + .secondary-link {
-    margin-top: var(--space-lg);
+    margin-top: var(--space-sm);
 }
 
 /* Freestanding action links after info blocks: breathing room */
@@ -887,35 +887,17 @@ body > .container > footer {
    ========================================================================== */
 
 .site-intro {
-    margin-bottom: var(--section-gap);  /* 48px - gap to next section */
+    margin-bottom: var(--section-gap);
     color: var(--text-secondary);
-    font-size: var(--font-lg-plus);  /* 17px - slightly larger than base for prominence */
-    line-height: 1.45;  /* Match long-form content */
+    font-size: var(--font-lg-plus);
+    line-height: 1.45;
 }
 
-.site-intro::after {
-    content: '';
+.site-intro .action-link,
+.landing-page .action-link {
     display: block;
-    width: 48px;
-    height: 1px;
-    background: var(--brand-orange);
-}
-
-/* Site intro CTA: inline on desktop */
-.site-intro .action-link {
-    display: inline-flex;
+    margin-top: var(--space-md);
     font-size: inherit;
-}
-
-/* Mobile: CTA on own line, hide accent bar */
-@media (max-width: 600px) {
-    .site-intro::after {
-        display: none;
-    }
-    .site-intro .action-link {
-        display: block;
-        margin-top: var(--space-md);
-    }
 }
 
 /* Unified section header style */
@@ -2584,6 +2566,7 @@ a.qr-link:hover {
 
 .landing-page {
     max-width: var(--content-max-width);
+    font-size: var(--font-lg);
 }
 
 /* Title - display-title pattern */
@@ -2591,42 +2574,28 @@ a.qr-link:hover {
     font-size: var(--font-custom-32);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
-    margin: 0 0 var(--space-md) 0;
+    margin: 0 0 var(--space-sm) 0;
 }
 
-/* Intro - .site-intro pattern */
-.landing-intro {
-    font-size: var(--font-lg-plus);
+.landing-subtitle {
+    font-size: var(--font-xl);
     color: var(--text-secondary);
-    line-height: 1.45;
+    line-height: 1.4;
     margin: 0 0 var(--space-lg) 0;
 }
 
-/* Body content - multiple paragraphs */
+/* Body content */
 .landing-body p {
     font-size: var(--font-lg);
     color: var(--text-secondary);
     line-height: 1.45;
-    margin: 0 0 var(--space-md) 0;
+    margin: 0 0 var(--space-sm) 0;
 }
 
-/* CTA block - accent bar underneath */
-.landing-cta-block {
-    margin-bottom: var(--space-lg);
+.landing-body p:last-of-type {
+    margin-bottom: var(--space-md);
 }
 
-
-/* Primary CTA - match body text size */
-.landing-cta-block .action-link {
-    font-size: var(--font-lg);
-}
-
-/* Supporting text - .episode-tag pattern */
-.landing-supporting {
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-    margin: var(--space-xs) 0 0 0;
-}
 
 /* ==========================================================================
    14. GHOST BUTTONS - Shared base and variants
