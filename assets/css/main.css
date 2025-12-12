@@ -2575,9 +2575,6 @@ a.qr-link:hover {
     line-height: var(--line-height-body);
 }
 
-.v4v-details p:last-child {
-    margin-bottom: 0;
-}
 
 /* V4V mobile adjustments */
 @media (max-width: 600px) {
@@ -2622,10 +2619,6 @@ a.qr-link:hover {
 }
 
 /* Body content - multiple paragraphs */
-.landing-body {
-    margin-bottom: var(--space-xl);
-}
-
 .landing-body p {
     font-size: var(--font-lg);
     color: var(--text-secondary);
@@ -2633,25 +2626,13 @@ a.qr-link:hover {
     margin: 0 0 var(--space-md) 0;
 }
 
-.landing-body p:last-child {
-    margin-bottom: 0;
-}
-
 /* CTA block - accent bar underneath */
 .landing-cta-block {
     margin-bottom: var(--space-lg);
 }
 
-.landing-cta-block::after {
-    content: '';
-    display: block;
-    width: 48px;
-    height: 1px;
-    background: var(--brand-orange);
-    margin-top: var(--space-md);
-}
 
-/* Primary CTA - larger for prominence */
+/* Primary CTA - match body text size */
 .landing-cta-block .action-link {
     font-size: var(--font-lg);
 }
@@ -2663,13 +2644,3 @@ a.qr-link:hover {
     margin: var(--space-xs) 0 0 0;
 }
 
-/* Secondary - alternative exit ramp, inline format */
-.landing-secondary {
-    font-size: var(--font-base);
-    color: var(--text-secondary);
-}
-
-.landing-secondary .action-link {
-    display: inline-flex;
-    font-size: inherit;
-}
