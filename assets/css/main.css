@@ -1686,11 +1686,28 @@ time.note-date,
     }
 }
 
-.aside {
+.essay-body .aside,
+.note-body .aside {
     color: var(--text-meta);
     font-style: italic;
     font-size: var(--font-base);
+    margin-top: var(--space-lg);
     margin-bottom: 0;
+}
+
+.essay-body .aside a,
+.note-body .aside a {
+    color: var(--text-meta);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+}
+
+.essay-body .aside a:hover,
+.note-body .aside a:hover {
+    color: var(--brand-orange-hover);
+    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
 }
 
 /* Back Links - Navigation links for returning to parent context
