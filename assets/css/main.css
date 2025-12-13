@@ -219,6 +219,7 @@
     --font-2xl: 1.777rem;
 
     /* Custom Typography Sizes */
+    --font-custom-40: 2.5rem;     /* 40px - Landing page hero */
     --font-custom-32: 2rem;
     --font-custom-24: 1.5rem;
 
@@ -2145,6 +2146,10 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         white-space: pre-line;     /* Preserve newlines, wrap at spaces (fingerprints) */
         overflow-wrap: break-word; /* Break long words if needed (npubs, keys) */
     }
+    /* Landing page - scale down title on mobile */
+    .landing-title {
+        font-size: var(--font-custom-32);
+    }
 }
 
 /* ==========================================================================
@@ -2561,35 +2566,53 @@ a.qr-link:hover {
 }
 
 /* ==========================================================================
-   19. LANDING PAGE - Conversion page using existing design patterns
+   19. LANDING PAGE - Conversion page with refined minimal drama
    ========================================================================== */
 
 .landing-page {
     max-width: var(--content-max-width);
-    font-size: var(--font-lg);
 }
 
-/* Title - display-title pattern */
+/* Title - large display with presence */
 .landing-title {
-    font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-medium);
+    font-size: var(--font-custom-40);
+    font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-title);
-    margin: 0 0 var(--space-sm) 0;
+    letter-spacing: var(--letter-spacing-tight-lg);
+    margin: 0 0 var(--space-md) 0;
 }
 
+/* Subtitle - clear secondary hierarchy */
 .landing-subtitle {
     font-size: var(--font-xl);
+    font-weight: var(--font-weight-body);
     color: var(--text-secondary);
     line-height: 1.4;
+    margin: 0 0 var(--space-xl) 0;
+}
+
+/* Body content - primary color, persuasive copy */
+.landing-body {
+    margin-bottom: var(--space-xl);
+}
+
+.landing-body p {
+    font-size: var(--font-lg);
+    color: var(--text-primary);
+    line-height: 1.5;
     margin: 0 0 var(--space-md) 0;
 }
 
-/* Body content */
-.landing-body p {
-    font-size: var(--font-lg);
-    color: var(--text-secondary);
-    line-height: 1.45;
-    margin: 0 0 var(--space-md) 0;
+.landing-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* CTA section */
+.landing-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
 }
 
 
