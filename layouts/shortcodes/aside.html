@@ -1,0 +1,19 @@
+{{/*
+Purpose: Wraps aside text in styled paragraph
+
+Parameters: None
+
+Inner Content:
+- Markdown content for asides, acknowledgements, related links
+
+Features:
+- Block-level element for proper spacing
+- Styled via aside class
+- Markdown processing enabled for links
+
+Usage:
+{{< aside >}}This extends [Other Essay](/other-essay/).{{< /aside >}}
+{{< aside >}}Thanks to Alice and Bob for feedback.{{< /aside >}}
+*/}}
+
+<p class="aside">{{ .Inner | markdownify }}</p>
