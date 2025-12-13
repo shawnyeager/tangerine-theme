@@ -1686,7 +1686,7 @@ time.note-date,
     }
 }
 
-.essay-acknowledgement {
+.aside {
     color: var(--text-meta);
     font-style: italic;
     font-size: var(--font-base);
