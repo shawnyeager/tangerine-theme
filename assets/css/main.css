@@ -2146,10 +2146,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         white-space: pre-line;     /* Preserve newlines, wrap at spaces (fingerprints) */
         overflow-wrap: break-word; /* Break long words if needed (npubs, keys) */
     }
-    /* Landing page - scale down title on mobile */
-    .landing-title {
-        font-size: var(--font-custom-32);
-    }
 }
 
 /* ==========================================================================
@@ -2573,9 +2569,9 @@ a.qr-link:hover {
     max-width: var(--content-max-width);
 }
 
-/* Title - large display with presence */
+/* Title - display with presence */
 .landing-title {
-    font-size: var(--font-custom-40);
+    font-size: var(--font-custom-32);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-title);
     letter-spacing: var(--letter-spacing-tight-lg);
