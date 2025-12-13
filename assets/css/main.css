@@ -1690,6 +1690,7 @@ time.note-date,
 .note-body .aside {
     color: var(--text-meta);
     font-style: italic;
+    font-size: var(--font-sm);
     margin-top: var(--space-md);
 }
 
