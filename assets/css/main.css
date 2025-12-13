@@ -2581,7 +2581,7 @@ a.qr-link:hover {
     font-size: var(--font-xl);
     color: var(--text-secondary);
     line-height: 1.4;
-    margin: 0 0 var(--space-lg) 0;
+    margin: 0 0 var(--space-md) 0;
 }
 
 /* Body content */
@@ -2589,11 +2589,7 @@ a.qr-link:hover {
     font-size: var(--font-lg);
     color: var(--text-secondary);
     line-height: 1.45;
-    margin: 0 0 var(--space-sm) 0;
-}
-
-.landing-body p:last-of-type {
-    margin-bottom: var(--space-md);
+    margin: 0 0 var(--space-md) 0;
 }
 
 
