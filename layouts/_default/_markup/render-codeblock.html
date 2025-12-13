@@ -1,26 +1,6 @@
 {{/*
-Purpose: Custom render hook for fenced code blocks with accessibility improvements
-
-Parameters (from Hugo):
-- .Type: The language identifier (e.g., "javascript", "python", "bash")
-- .Inner: The raw code content
-- .Attributes: Any additional attributes from the fence
-
-Features:
-- Adds lang attribute to <pre> element for screen reader pronunciation
-- Uses Hugo's built-in Chroma syntax highlighting
-- Preserves all default Hugo highlighting behavior (inline styles, no line numbers)
-
-Usage:
-Automatically applied to all fenced code blocks in markdown:
-```javascript
-const x = 42;
-```
-
-Important Notes:
-- The lang attribute improves accessibility for screen readers
-- Hugo's Chroma highlighter handles syntax highlighting with monokailight style
-- Language is detected from the fence identifier (```lang)
+Render hook for fenced code blocks.
+Adds lang attribute to <pre> for screen reader accessibility.
 */}}
 
 {{- $lang := .Type | default "text" -}}
