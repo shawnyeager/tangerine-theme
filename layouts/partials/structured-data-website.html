@@ -31,31 +31,7 @@ Important Notes:
   "url": "{{ .Site.BaseURL }}",
   "description": "{{ .Site.Params.description }}",
   "inLanguage": "en-US",
-  "author": {
-    "@type": "Person",
-    "name": "{{ .Site.Params.author.name }}",
-    "email": "{{ .Site.Params.author.email }}",
-    "url": "{{ .Site.BaseURL }}"
-    {{- with .Site.Params.author.description -}}
-    ,"description": "{{ . }}"
-    {{- end -}}
-    {{- with .Site.Params.author.jobTitle -}}
-    ,"jobTitle": "{{ . }}"
-    {{- end -}}
-    {{- with .Site.Params.author.image -}}
-    ,"image": "{{ . | absURL }}"
-    {{- end -}}
-    {{- with .Site.Params.author.sameAs -}}
-    ,"sameAs": [
-      {{- $links := slice -}}
-      {{- with .linkedin -}}{{ $links = $links | append . }}{{- end -}}
-      {{- with .github -}}{{ $links = $links | append . }}{{- end -}}
-      {{- with .nostr -}}{{ $links = $links | append . }}{{- end -}}
-      {{- with .podcast -}}{{ $links = $links | append . }}{{- end -}}
-      {{- delimit $links "\",\n      \"" | printf "\"%s\"" | safeJS }}
-    ]
-    {{- end -}}
-  },
+  "author": {{ partial "structured-data-author.html" . | safeJS }},
   "copyrightYear": "{{ now.Format "2006" }}",
   "copyrightHolder": {
     "@type": "Person",

@@ -59,28 +59,8 @@ Important Notes:
 {{- if gt (len $keywords) 0 -}}
   {{- $structuredData = merge $structuredData (dict "keywords" (delimit $keywords ", ")) -}}
 {{- end -}}
-{{- /* Enhanced author with URL, description, jobTitle, image, and sameAs */ -}}
-{{- $author := dict "@type" "Person" "name" .Site.Params.author.name "email" .Site.Params.author.email "url" .Site.BaseURL -}}
-{{- with .Site.Params.author.description -}}
-  {{- $author = merge $author (dict "description" .) -}}
-{{- end -}}
-{{- with .Site.Params.author.jobTitle -}}
-  {{- $author = merge $author (dict "jobTitle" .) -}}
-{{- end -}}
-{{- with .Site.Params.author.image -}}
-  {{- $author = merge $author (dict "image" (. | absURL)) -}}
-{{- end -}}
-{{- /* Build sameAs array from structured config */ -}}
-{{- with .Site.Params.author.sameAs -}}
-  {{- $sameAs := slice -}}
-  {{- with .linkedin -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
-  {{- with .github -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
-  {{- with .nostr -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
-  {{- with .podcast -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
-  {{- if gt (len $sameAs) 0 -}}
-    {{- $author = merge $author (dict "sameAs" $sameAs) -}}
-  {{- end -}}
-{{- end -}}
+{{- /* Author with URL, description, jobTitle, image, and sameAs */ -}}
+{{- $author := partial "functions/build-author-dict.html" . -}}
 {{- $structuredData = merge $structuredData (dict "author" $author) -}}
 {{- /* Publisher as Organization with logo */ -}}
 {{- $publisherLogo := dict "@type" "ImageObject" "url" (.Site.Params.og_image | absURL) -}}

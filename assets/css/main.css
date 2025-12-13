@@ -99,6 +99,7 @@
     /* Typography - Dual font system */
     --font-heading: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
     --line-height-body: 1.5;
     --line-height-title: 1.15;  /* Tight line-height for large display titles */
@@ -170,13 +171,16 @@
     /* Component Sizing */
     --content-max-width: 700px;
     --card-padding: var(--space-xl);
+    --border-radius-sm: 2px;
     --border-radius-interactive: 4px;
     --border-radius-code: 4px;
-    --border-radius-sm: 2px;
+    --border-radius-md: 8px;
     --arrow-spacing: 0.15em;
     --brand-bar-height: 3px;
     --table-cell-padding: 0.75rem 1rem;
     --qr-size: 250px;
+    --play-button-size: 80px;
+    --video-aspect-ratio: 56.25%;
     --border-width-emphasis: 2px;
 
     /* Z-index Scale */
@@ -185,6 +189,12 @@
 
     /* Transitions */
     --transition-fast: 0.3s ease;
+    --transition-base: 0.4s ease;
+
+    /* Opacity Scale */
+    --opacity-subtle: 0.5;
+    --opacity-medium: 0.6;
+    --opacity-muted: 0.7;
 
     /* Link Styling */
     --underline-offset: 0.2em;
@@ -1593,7 +1603,7 @@ time.note-date,
 
         hr {
             margin: var(--space-lg) 0 var(--space-md) 0;
-            opacity: 0.5;
+            opacity: var(--opacity-subtle);
         }
 
         ol {
@@ -1631,7 +1641,7 @@ time.note-date,
     .footnote-backref {
         margin-left: var(--space-xs);
         font-size: var(--font-base);
-        opacity: 0.6;
+        opacity: var(--opacity-medium);
     }
 
     .footnote-backref:hover {
@@ -2059,7 +2069,7 @@ div[style*="padding-bottom: 56.25%"],
 /* YouTube preview shortcode styles */
 .youtube-preview-container {
     position: relative;
-    padding-bottom: 56.25%;  /* 16:9 aspect ratio */
+    padding-bottom: var(--video-aspect-ratio);  /* 16:9 aspect ratio */
     height: 0;
     overflow: hidden;
     cursor: pointer;
@@ -2088,8 +2098,8 @@ div[style*="padding-bottom: 56.25%"],
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
+    width: var(--play-button-size);
+    height: var(--play-button-size);
     background: rgba(255, 0, 0, 0.9);
     border-radius: 50%;
     display: flex;

@@ -24,12 +24,12 @@ Important Notes:
 {{ $nextText := .nextText | default "Older" }}
 
 {{ if or $paginator.HasPrev $paginator.HasNext }}
-<nav class="pagination">
+<nav class="pagination" aria-label="Page navigation">
     {{ if $paginator.HasPrev }}
-    <a href="{{ $paginator.Prev.URL }}" class="pagination-prev"><span class="arrow" aria-hidden="true">←</span><span class="link-text">{{ $prevText }}</span></a>
+    <a href="{{ $paginator.Prev.URL }}" class="pagination-prev" aria-label="Go to previous page: {{ $prevText }}"><span class="arrow" aria-hidden="true">←</span><span class="link-text">{{ $prevText }}</span></a>
     {{ end }}
     {{ if $paginator.HasNext }}
-    <a href="{{ $paginator.Next.URL }}" class="pagination-next"><span class="link-text">{{ $nextText }}</span><span class="arrow" aria-hidden="true">→</span></a>
+    <a href="{{ $paginator.Next.URL }}" class="pagination-next" aria-label="Go to next page: {{ $nextText }}"><span class="link-text">{{ $nextText }}</span><span class="arrow" aria-hidden="true">→</span></a>
     {{ end }}
 </nav>
 {{ end }}
