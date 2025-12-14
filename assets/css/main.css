@@ -644,13 +644,13 @@ p .action-link {
 .action-link + .secondary-link,
 .secondary-link + .action-link,
 .secondary-link + .secondary-link {
-    margin-top: var(--space-sm);
+    margin-top: var(--space-md);
 }
 
 /* Freestanding action links after info blocks: breathing room */
 .info-pair:has(+ .action-link),
 .info-pair:has(+ .secondary-link) {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
 }
 
 /* New section after action links */
