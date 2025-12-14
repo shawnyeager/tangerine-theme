@@ -2637,6 +2637,11 @@ a.qr-link:hover {
     gap: var(--space-sm);
 }
 
+/* Separation between landing page content and CTAs */
+.landing-body .cta-group {
+    margin-top: var(--space-xl);
+}
+
 
 /* ==========================================================================
    14. GHOST BUTTONS - Shared base and variants
