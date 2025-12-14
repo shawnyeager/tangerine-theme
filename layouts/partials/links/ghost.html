@@ -1,0 +1,25 @@
+{{/*
+Purpose: Renders a ghost button link with arrow (for landing pages)
+
+Parameters (dict):
+  url      (string, required): Link destination
+  text     (string, required): Link text
+  event    (string, optional): Plausible analytics event name
+
+Usage in templates:
+  {{ partial "links/ghost.html" (dict "url" "/start" "text" "Get started") }}
+
+Important Notes:
+- Ghost button style (outlined, not filled)
+- Includes arrow icon
+- Primary variant styling
+*/}}
+
+{{- $url := .url -}}
+{{- $text := .text -}}
+{{- $event := .event | default "" -}}
+
+{{- $class := "btn-ghost btn-ghost--primary" -}}
+{{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
+
+<a href="{{ $url }}" class="{{ $class }}"><span class="link-text">{{ $text }}</span><span class="arrow" aria-hidden="true">→</span></a>

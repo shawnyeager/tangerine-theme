@@ -2,35 +2,50 @@
 Purpose: Renders a call-to-action link
 
 Parameters:
-- url (string, required): Link destination
+- url (string, required): Link destination, or "podcast" to use site.Params.podcast_url
 - text (string, required): Link text
-- variant (string, optional): Style variant - "cta" (default), "download", or "button"
+- variant (string, optional): Style variant - "cta" (default), "ghost", "secondary", "download", or "button"
 - event (string, optional): Plausible analytics event name
 
 Features:
-- Three variants: CTA link with arrow, download link, or submit button
+- Five variants for different contexts
+- Special URL value "podcast" resolves to site.Params.podcast_url
 - Optional analytics tracking
 - Semantic HTML based on variant
 
 Usage:
 {{< cta url="/subscribe" text="Subscribe" >}}
+{{< cta url="/start" text="Get started" variant="ghost" >}}
+{{< cta url="/contact" text="Or reach out" variant="secondary" >}}
 {{< cta url="/file.pdf" text="Download PDF" variant="download" >}}
 {{< cta text="Submit" variant="button" >}}
 {{< cta url="/signup" text="Get Started" event="cta_signup" >}}
+{{< cta url="podcast" text="Listen" >}}
 
 Important Notes:
-- Default variant is "cta" (link with → arrow)
+- Default variant is "cta" (action link with → arrow)
+- "ghost" variant renders ghost button with arrow (for landing pages)
+- "secondary" variant renders de-emphasized link (no arrow)
+- "download" variant same as secondary (alias)
 - "button" variant renders <button> (no URL)
 - Analytics event added via plausible-event-name class
 */}}
 
-{{- $url := .Get "url" -}}
+{{- $urlParam := .Get "url" -}}
 {{- $text := .Get "text" -}}
 {{- $variant := .Get "variant" | default "cta" -}}
 {{- $event := .Get "event" -}}
 
-{{- if eq $variant "download" -}}
+{{/* Resolve special URL values to site params */}}
+{{- $url := $urlParam -}}
+{{- if eq $urlParam "podcast" -}}
+    {{- $url = site.Params.podcast_url -}}
+{{- end -}}
+
+{{- if or (eq $variant "download") (eq $variant "secondary") -}}
     {{- partial "links/secondary.html" (dict "url" $url "text" $text "event" $event) -}}
+{{- else if eq $variant "ghost" -}}
+    {{- partial "links/ghost.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- else if eq $variant "button" -}}
     <button type="submit">{{ $text }}</button>
 {{- else -}}
