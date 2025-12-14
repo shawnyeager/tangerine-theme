@@ -1797,9 +1797,12 @@ a.back-link:hover {
     display: block;
 }
 
-.podcast-content > img:first-of-type {
+.podcast-content > img:first-of-type,
+.podcast-content > picture:first-of-type img {
     width: var(--podcast-art-size);
     height: var(--podcast-art-size);
+    max-width: var(--podcast-art-size);
+    max-height: var(--podcast-art-size);
 }
 
 /* Image size utility - used via shortcode variant param */
