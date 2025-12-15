@@ -2024,7 +2024,7 @@ a.back-link:hover {
     .essay-body .highlight pre[style],
     .note-body .highlight pre[style] {
         background: var(--code-background) !important;
-        color: #d0d0d0 !important;
+        color: var(--syntax-default) !important;
     }
 }
 
@@ -2119,7 +2119,7 @@ div[style*="padding-bottom: 56.25%"],
     transform: translate(-50%, -50%);
     width: var(--play-button-size);
     height: var(--play-button-size);
-    background: rgba(255, 0, 0, 0.9);
+    background: var(--brand-orange);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -2695,8 +2695,8 @@ a.qr-link:hover {
 .btn-ghost--primary:hover {
     border-width: 2px;
     padding: calc(var(--space-sm) - 1px) calc(var(--space-lg) - 1px);
-    color: light-dark(#a82e00, #ff7a52);
-    border-color: light-dark(#a82e00, #ff7a52);
+    color: var(--brand-orange-hover);
+    border-color: var(--brand-orange-hover);
     text-decoration: none;
 }
 
