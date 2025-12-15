@@ -1014,26 +1014,14 @@ body > .container > footer {
     white-space: nowrap;
 }
 
+/* Positioning override for copy button in feed card context.
+   Visual styling inherited from .btn-ghost.btn-ghost--muted */
 .rss-copy-btn {
     position: absolute;
     right: var(--space-lg);
     top: 50%;
     transform: translateY(-50%);
-    background: transparent;
-    color: var(--text-secondary);
-    border: var(--border-width) solid var(--border-color);
-    padding: 0.4rem var(--space-sm);  /* Compact button */
-    border-radius: var(--border-radius-interactive);
-    cursor: pointer;
-    font-weight: var(--font-weight-medium);
-    font-size: var(--font-xs);
-    transition: all var(--transition-fast);
-    font-family: var(--font-heading);
-}
-
-.rss-copy-btn:hover {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
+    padding: var(--space-xs) var(--space-sm);  /* Compact for inline context */
 }
 
 .podcast-header {

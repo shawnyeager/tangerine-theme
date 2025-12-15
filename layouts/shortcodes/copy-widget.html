@@ -31,7 +31,7 @@ Important Notes:
 
 {{- $html := printf `<div class="rss-feed-card">
     <code id="%s_url" class="rss-url">%s</code>
-    <button onclick="%s()" id="%s_btn" class="rss-copy-btn">%s</button>
+    <button onclick="%s()" id="%s_btn" class="btn-ghost btn-ghost--muted rss-copy-btn">%s</button>
 </div>
 
 <script>
@@ -46,8 +46,8 @@ function %s() {
 
         setTimeout(() => {
             btn.textContent = '%s';
-            btn.style.color = 'var(--text-secondary)';
-            btn.style.borderColor = 'var(--border-color)';
+            btn.style.color = '';
+            btn.style.borderColor = '';
         }, 2000);
     });
 }
