@@ -2165,6 +2165,13 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     }
 }
 
+/* Desktop: spacious note list spacing (notes site only - .com keeps tight spacing for multi-section layout) */
+@media (min-width: 601px) {
+    .note-item {
+        margin-bottom: var(--space-md);
+    }
+}
+
 /* ==========================================================================
    18. V4V PAGE - Value for Value Payment Page
 
