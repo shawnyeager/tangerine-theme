@@ -2633,6 +2633,14 @@ a.qr-link:hover {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-sm);
+    margin-bottom: var(--space-lg);  /* Space after group */
+}
+
+/* Reset link margins inside cta-group - gap handles spacing */
+.cta-group .action-link,
+.cta-group .secondary-link {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* Separation between landing page content and CTAs */
