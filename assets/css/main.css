@@ -649,7 +649,8 @@ p .action-link {
 
 /* Freestanding action links after info blocks: breathing room */
 .info-pair:has(+ .action-link),
-.info-pair:has(+ .secondary-link) {
+.info-pair:has(+ .secondary-link),
+.info-pair:has(+ p) {
     margin-bottom: var(--space-md);
 }
 
