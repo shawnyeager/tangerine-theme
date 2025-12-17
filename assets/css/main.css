@@ -1488,7 +1488,12 @@ time.note-date,
 
     /* Dinkus (section break) */
     .dinkus {
-        height: var(--space-xl);
+        width: 10px;
+        height: 10px;
+        background: var(--border-color);
+        opacity: 0.4;
+        margin: var(--space-xl) auto;
+        border: none;
     }
 
     /* Tables */
