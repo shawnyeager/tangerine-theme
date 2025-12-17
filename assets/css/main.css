@@ -1486,6 +1486,11 @@ time.note-date,
         background: var(--border-color);
     }
 
+    /* Dinkus (section break) */
+    .dinkus {
+        height: var(--space-xl);
+    }
+
     /* Tables */
     table {
         width: 100%;
