@@ -1360,62 +1360,6 @@ time.note-date,
     }
 }
 
-/* Long-form paragraph spacing - matched to line box height for optimal readability
-   Light: 1.625rem ≈ 1× line box (18px × 1.45 line-height)
-   Dark: 1.875rem ≈ 1.15× line box (compensates for perceived density) */
-.essay-body p,
-.note-body p {
-    margin-bottom: 1.625rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .essay-body p,
-    html:not([data-theme="light"]) .note-body p {
-        margin-bottom: 1.875rem;
-    }
-}
-
-html[data-theme="dark"] .essay-body p,
-html[data-theme="dark"] .note-body p {
-    margin-bottom: 1.875rem;
-}
-
-/* Long-form stacked CTAs - match paragraph rhythm */
-.essay-body .action-link + .action-link,
-.essay-body .action-link + .secondary-link,
-.essay-body .secondary-link + .action-link,
-.essay-body .secondary-link + .secondary-link,
-.note-body .action-link + .action-link,
-.note-body .action-link + .secondary-link,
-.note-body .secondary-link + .action-link,
-.note-body .secondary-link + .secondary-link {
-    margin-top: 1.625rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .essay-body .action-link + .action-link,
-    html:not([data-theme="light"]) .essay-body .action-link + .secondary-link,
-    html:not([data-theme="light"]) .essay-body .secondary-link + .action-link,
-    html:not([data-theme="light"]) .essay-body .secondary-link + .secondary-link,
-    html:not([data-theme="light"]) .note-body .action-link + .action-link,
-    html:not([data-theme="light"]) .note-body .action-link + .secondary-link,
-    html:not([data-theme="light"]) .note-body .secondary-link + .action-link,
-    html:not([data-theme="light"]) .note-body .secondary-link + .secondary-link {
-        margin-top: 1.875rem;
-    }
-}
-
-html[data-theme="dark"] .essay-body .action-link + .action-link,
-html[data-theme="dark"] .essay-body .action-link + .secondary-link,
-html[data-theme="dark"] .essay-body .secondary-link + .action-link,
-html[data-theme="dark"] .essay-body .secondary-link + .secondary-link,
-html[data-theme="dark"] .note-body .action-link + .action-link,
-html[data-theme="dark"] .note-body .action-link + .secondary-link,
-html[data-theme="dark"] .note-body .secondary-link + .action-link,
-html[data-theme="dark"] .note-body .secondary-link + .secondary-link {
-    margin-top: 1.875rem;
-}
-
 /* Reading content uses primary color for optimal contrast */
 .page-body p,
 .latest-essay p,
@@ -1834,20 +1778,9 @@ a.back-link:hover {
     gap: var(--space-lg);
 }
 
-/* When content-nav has action link (e.g., essays with Zap + back link)
-   Spacing matches paragraph rhythm for visual consistency */
+/* When content-nav has action link (e.g., essays with Zap + back link) */
 .content-nav:has(.action-link) {
-    margin-top: 1.625rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .content-nav:has(.action-link) {
-        margin-top: 1.875rem;
-    }
-}
-
-html[data-theme="dark"] .content-nav:has(.action-link) {
-    margin-top: 1.875rem;
+    margin-top: var(--space-sm);
 }
 
 /* ==========================================================================
