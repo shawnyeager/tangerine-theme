@@ -651,12 +651,28 @@ p .action-link {
     margin-top: var(--space-sm);
 }
 
-/* Stacked action links: consistent spacing */
+/* Stacked action links: match paragraph rhythm */
 .action-link + .action-link,
 .action-link + .secondary-link,
 .secondary-link + .action-link,
 .secondary-link + .secondary-link {
-    margin-top: var(--space-md);
+    margin-top: 1.625rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .action-link + .action-link,
+    html:not([data-theme="light"]) .action-link + .secondary-link,
+    html:not([data-theme="light"]) .secondary-link + .action-link,
+    html:not([data-theme="light"]) .secondary-link + .secondary-link {
+        margin-top: 1.875rem;
+    }
+}
+
+html[data-theme="dark"] .action-link + .action-link,
+html[data-theme="dark"] .action-link + .secondary-link,
+html[data-theme="dark"] .secondary-link + .action-link,
+html[data-theme="dark"] .secondary-link + .secondary-link {
+    margin-top: 1.875rem;
 }
 
 /* Freestanding action links after info blocks: breathing room */
