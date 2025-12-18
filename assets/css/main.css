@@ -52,6 +52,14 @@
     src: url('/fonts/Inter-Variable.woff2') format('woff2-variations');
 }
 
+@font-face {
+    font-family: 'Inter';
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+    src: url('/fonts/Inter-Italic-Variable.woff2') format('woff2-variations');
+}
+
 /* ==========================================================================
    2. TOKENS - CSS Custom Properties (Design Tokens)
 
@@ -108,6 +116,7 @@
     --font-weight-light: 300;     /* Lighter weight for dark mode */
     --font-weight-normal: 400;
     --font-weight-body: light-dark(300, 250);  /* Body text - light mode uses light weight, dark mode slightly lighter */
+    --font-weight-italic: light-dark(250, 200);  /* Italic compensation - 50 lighter than body for optical balance */
     --font-weight-list-title: 450;  /* List titles - overridden to 300 in dark mode */
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
