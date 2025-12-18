@@ -95,7 +95,7 @@
     --brand-orange-hover: light-dark(#bf3300, #FF6B47);
 
     /* Text Colors - WCAG AA compliant */
-    --text-primary: light-dark(#1a1a1a, #f0f0f0);
+    --text-primary: light-dark(#1a1a1a, #f5f5f4);
     --text-secondary: light-dark(#444, #c8c8c8);
     --text-meta: light-dark(#666, #a8a8a8);
     --text-subtle: light-dark(#767676, #b0b0b0);
@@ -1358,6 +1358,26 @@ time.note-date,
         box-shadow: var(--shadow-content-light);
         transition: box-shadow var(--transition-fast);
     }
+}
+
+/* Long-form paragraph spacing - matched to line box height for optimal readability
+   Light: 1.625rem ≈ 1× line box (18px × 1.45 line-height)
+   Dark: 1.875rem ≈ 1.15× line box (compensates for perceived density) */
+.essay-body p,
+.note-body p {
+    margin-bottom: 1.625rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .essay-body p,
+    html:not([data-theme="light"]) .note-body p {
+        margin-bottom: 1.875rem;
+    }
+}
+
+html[data-theme="dark"] .essay-body p,
+html[data-theme="dark"] .note-body p {
+    margin-bottom: 1.875rem;
 }
 
 /* Reading content uses primary color for optimal contrast */
