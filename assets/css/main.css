@@ -12,7 +12,7 @@
  * 6. LAYOUT          (line ~663)       - Container, header/footer spacing
  * 7. FOOTER          (line ~753)       - Site footer, newsletter signup
  * 8. HOMEPAGE        (line ~881)       - Homepage sections (bio, latest essay, podcast)
- * 9. COMPONENTS      (line ~968)       - Cards, link-grid, topic tags
+ * 9. COMPONENTS      (line ~968)       - Cards, link-grid, topic tags, cta-group
  * 10. ESSAYS         (line ~1182)      - Essay listings, single essay pages
  * 11. MARKDOWN       (line ~1379)      - Content body styles (nested CSS)
  * 12. PAGE-SPECIFIC  (line ~1750)      - Page layouts, pagination, contact, skip links
@@ -1172,6 +1172,21 @@ body > .container > footer {
             color: var(--brand-orange);
         }
     }
+}
+
+/* CTA Group - Wrapper for related call-to-action links
+   Used by: {{< cta-group >}} shortcode on /lets-win, /pgp, etc.
+   -------------------------------------------------- */
+.cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+}
+
+/* Text-link pairs need less space than button+text pairs */
+.cta-group .action-link + .secondary-link {
+    margin-top: 0;
 }
 
 /* ==========================================================================
@@ -2642,19 +2657,6 @@ a.qr-link:hover {
 
 .landing-body p:last-child {
     margin-bottom: 0;
-}
-
-/* CTA group - wrapper for related call-to-action links */
-.cta-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-sm);
-}
-
-/* Text-link pairs need less space than button+text pairs */
-.cta-group .action-link + .secondary-link {
-    margin-top: 0;
 }
 
 /* Separation between landing page content and CTAs */
