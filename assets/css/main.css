@@ -1491,7 +1491,6 @@ time.note-date,
         width: 10px;
         height: 10px;
         background: var(--border-color);
-        opacity: 0.4;
         margin: var(--space-xl) auto;
         border: none;
     }
