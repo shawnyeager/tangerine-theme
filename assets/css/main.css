@@ -1380,6 +1380,42 @@ html[data-theme="dark"] .note-body p {
     margin-bottom: 1.375rem;
 }
 
+/* Long-form stacked CTAs - match paragraph rhythm */
+.essay-body .action-link + .action-link,
+.essay-body .action-link + .secondary-link,
+.essay-body .secondary-link + .action-link,
+.essay-body .secondary-link + .secondary-link,
+.note-body .action-link + .action-link,
+.note-body .action-link + .secondary-link,
+.note-body .secondary-link + .action-link,
+.note-body .secondary-link + .secondary-link {
+    margin-top: 1.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .essay-body .action-link + .action-link,
+    html:not([data-theme="light"]) .essay-body .action-link + .secondary-link,
+    html:not([data-theme="light"]) .essay-body .secondary-link + .action-link,
+    html:not([data-theme="light"]) .essay-body .secondary-link + .secondary-link,
+    html:not([data-theme="light"]) .note-body .action-link + .action-link,
+    html:not([data-theme="light"]) .note-body .action-link + .secondary-link,
+    html:not([data-theme="light"]) .note-body .secondary-link + .action-link,
+    html:not([data-theme="light"]) .note-body .secondary-link + .secondary-link {
+        margin-top: 1.375rem;
+    }
+}
+
+html[data-theme="dark"] .essay-body .action-link + .action-link,
+html[data-theme="dark"] .essay-body .action-link + .secondary-link,
+html[data-theme="dark"] .essay-body .secondary-link + .action-link,
+html[data-theme="dark"] .essay-body .secondary-link + .secondary-link,
+html[data-theme="dark"] .note-body .action-link + .action-link,
+html[data-theme="dark"] .note-body .action-link + .secondary-link,
+html[data-theme="dark"] .note-body .secondary-link + .action-link,
+html[data-theme="dark"] .note-body .secondary-link + .secondary-link {
+    margin-top: 1.375rem;
+}
+
 /* Reading content uses primary color for optimal contrast */
 .page-body p,
 .latest-essay p,
