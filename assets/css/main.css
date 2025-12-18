@@ -1360,6 +1360,26 @@ time.note-date,
     }
 }
 
+/* Long-form paragraph spacing - 0.75× line box (18px × 1.45 = 26.1px line box)
+   Light: 1.25rem (20px) = 0.77× line box
+   Dark: 1.375rem (22px) = 0.85× line box (compensates for perceived density) */
+.essay-body p,
+.note-body p {
+    margin-bottom: 1.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .essay-body p,
+    html:not([data-theme="light"]) .note-body p {
+        margin-bottom: 1.375rem;
+    }
+}
+
+html[data-theme="dark"] .essay-body p,
+html[data-theme="dark"] .note-body p {
+    margin-bottom: 1.375rem;
+}
+
 /* Reading content uses primary color for optimal contrast */
 .page-body p,
 .latest-essay p,
@@ -1778,9 +1798,20 @@ a.back-link:hover {
     gap: var(--space-lg);
 }
 
-/* When content-nav has action link (e.g., essays with Zap + back link) */
+/* When content-nav has action link (e.g., essays with Zap + back link)
+   Matches paragraph rhythm for visual consistency */
 .content-nav:has(.action-link) {
-    margin-top: var(--space-sm);
+    margin-top: 1.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .content-nav:has(.action-link) {
+        margin-top: 1.375rem;
+    }
+}
+
+html[data-theme="dark"] .content-nav:has(.action-link) {
+    margin-top: 1.375rem;
 }
 
 /* ==========================================================================
