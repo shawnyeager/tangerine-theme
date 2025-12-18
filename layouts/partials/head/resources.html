@@ -10,7 +10,6 @@ Context Expected:
 <!-- Preload critical resources -->
 <link rel="preload" href="{{ "fonts/Satoshi-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/Inter-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ "fonts/Inter-Italic-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 {{- $cssPath := "css/main.css" -}}
 {{- $css := (resources.Get $cssPath) -}}
 {{- if $css -}}
