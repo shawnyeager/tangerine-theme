@@ -11,14 +11,11 @@ Context Expected:
 <link rel="preload" href="{{ "fonts/Satoshi-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/Inter-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 {{- $cssPath := "css/main.css" -}}
-{{- $css := (resources.Get $cssPath) -}}
+{{- $css := resources.Get $cssPath -}}
 {{- if $css -}}
-  {{/* Create non-fingerprinted version for XSLT reference */}}
-  {{- $cssPlain := $css | resources.Minify -}}
-  {{- $cssPlainPermalink := $cssPlain.RelPermalink -}}
-
-  {{/* Create fingerprinted version for site */}}
-  {{- $cssFingerprinted := $css | resources.Minify | resources.Fingerprint -}}
+  {{/* Minify once, then fingerprint */}}
+  {{- $cssMinified := $css | resources.Minify -}}
+  {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
   <link rel="preload" href="{{ $cssFingerprinted.RelPermalink }}" as="style" integrity="{{ $cssFingerprinted.Data.Integrity }}">
 {{- else -}}
   <link rel="preload" href="{{ $cssPath | relURL }}" as="style">
@@ -26,7 +23,8 @@ Context Expected:
 
 <!-- CSS -->
 {{- if $css -}}
-  {{- $cssFingerprinted := $css | resources.Minify | resources.Fingerprint -}}
+  {{- $cssMinified := $css | resources.Minify -}}
+  {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
   <link rel="stylesheet" href="{{ $cssFingerprinted.RelPermalink }}" integrity="{{ $cssFingerprinted.Data.Integrity }}">
 {{- else -}}
   <link rel="stylesheet" href="{{ $cssPath | relURL }}">
