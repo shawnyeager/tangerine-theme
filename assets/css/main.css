@@ -22,6 +22,8 @@
  * 16. MEDIA EMBEDS   (line ~2055)      - YouTube, video captions
  * 17. MOBILE         (line ~2136)      - Responsive breakpoints
  * 18. V4V PAGE       (line ~2165)      - Value for Value payment page
+ * 19. LANDING PAGE   (line ~2604)      - Conversion page styles
+ * 20. GHOST BUTTONS  (line ~2665)      - Ghost button base and variants
  *
  * Line numbers are approximate. Update when making significant structural changes.
  */
@@ -290,6 +292,7 @@ pre,
     letter-spacing: normal;
 }
 
+/* Info-pair code: fingerprints, npubs, keys - preserve line breaks, allow wrapping */
 .info-pair code {
     display: inline-block;
     max-width: 100%;
@@ -657,9 +660,7 @@ p .action-link {
 }
 
 /* Freestanding action links after info blocks: breathing room */
-.info-pair:has(+ .action-link),
-.info-pair:has(+ .secondary-link),
-.info-pair:has(+ p) {
+.info-pair:has(+ .action-link, + .secondary-link, + p) {
     margin-bottom: var(--space-md);
 }
 
@@ -1813,7 +1814,8 @@ a.back-link:hover {
     max-height: var(--podcast-art-size);
 }
 
-/* Image size utility - used via shortcode variant param */
+/* Image size utility - used via {{< image variant="img-lg" >}} shortcode
+   !important overrides Hugo's inline width/height from image processing */
 .img-lg {
     display: block;
     width: var(--image-size-lg) !important;
@@ -1842,11 +1844,6 @@ a.back-link:hover {
     display: flex;
     flex-direction: column;
     gap: var(--space-label-gap);
-
-    /* Tighter spacing when followed by related download links */
-    &:has(+ .download-link) {
-        margin-bottom: var(--space-md);
-    }
 
     /* Monospace code elements for fingerprints and keys - plain text, not links */
     code {
@@ -2667,7 +2664,7 @@ a.qr-link:hover {
 
 
 /* ==========================================================================
-   14. GHOST BUTTONS - Shared base and variants
+   20. GHOST BUTTONS - Shared base and variants
 
    Ghost buttons: transparent background with border.
    Variants: muted (newsletter) and primary (conversion CTA).
