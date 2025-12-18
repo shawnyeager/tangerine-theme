@@ -651,28 +651,12 @@ p .action-link {
     margin-top: var(--space-sm);
 }
 
-/* Stacked action links: match paragraph rhythm */
+/* Stacked action links: default spacing for utility/landing pages */
 .action-link + .action-link,
 .action-link + .secondary-link,
 .secondary-link + .action-link,
 .secondary-link + .secondary-link {
-    margin-top: 1.625rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .action-link + .action-link,
-    html:not([data-theme="light"]) .action-link + .secondary-link,
-    html:not([data-theme="light"]) .secondary-link + .action-link,
-    html:not([data-theme="light"]) .secondary-link + .secondary-link {
-        margin-top: 1.875rem;
-    }
-}
-
-html[data-theme="dark"] .action-link + .action-link,
-html[data-theme="dark"] .action-link + .secondary-link,
-html[data-theme="dark"] .secondary-link + .action-link,
-html[data-theme="dark"] .secondary-link + .secondary-link {
-    margin-top: 1.875rem;
+    margin-top: var(--space-md);
 }
 
 /* Freestanding action links after info blocks: breathing room */
@@ -1394,6 +1378,42 @@ time.note-date,
 html[data-theme="dark"] .essay-body p,
 html[data-theme="dark"] .note-body p {
     margin-bottom: 1.875rem;
+}
+
+/* Long-form stacked CTAs - match paragraph rhythm */
+.essay-body .action-link + .action-link,
+.essay-body .action-link + .secondary-link,
+.essay-body .secondary-link + .action-link,
+.essay-body .secondary-link + .secondary-link,
+.note-body .action-link + .action-link,
+.note-body .action-link + .secondary-link,
+.note-body .secondary-link + .action-link,
+.note-body .secondary-link + .secondary-link {
+    margin-top: 1.625rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .essay-body .action-link + .action-link,
+    html:not([data-theme="light"]) .essay-body .action-link + .secondary-link,
+    html:not([data-theme="light"]) .essay-body .secondary-link + .action-link,
+    html:not([data-theme="light"]) .essay-body .secondary-link + .secondary-link,
+    html:not([data-theme="light"]) .note-body .action-link + .action-link,
+    html:not([data-theme="light"]) .note-body .action-link + .secondary-link,
+    html:not([data-theme="light"]) .note-body .secondary-link + .action-link,
+    html:not([data-theme="light"]) .note-body .secondary-link + .secondary-link {
+        margin-top: 1.875rem;
+    }
+}
+
+html[data-theme="dark"] .essay-body .action-link + .action-link,
+html[data-theme="dark"] .essay-body .action-link + .secondary-link,
+html[data-theme="dark"] .essay-body .secondary-link + .action-link,
+html[data-theme="dark"] .essay-body .secondary-link + .secondary-link,
+html[data-theme="dark"] .note-body .action-link + .action-link,
+html[data-theme="dark"] .note-body .action-link + .secondary-link,
+html[data-theme="dark"] .note-body .secondary-link + .action-link,
+html[data-theme="dark"] .note-body .secondary-link + .secondary-link {
+    margin-top: 1.875rem;
 }
 
 /* Reading content uses primary color for optimal contrast */
