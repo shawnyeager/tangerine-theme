@@ -1835,19 +1835,9 @@ a.back-link:hover {
 }
 
 /* When content-nav has action link (e.g., essays with Zap + back link)
-   Matches paragraph rhythm for visual consistency */
+   Zero margin - last paragraph's margin-bottom provides spacing and flexes with light/dark */
 .content-nav:has(.action-link) {
-    margin-top: 1.25rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .content-nav:has(.action-link) {
-        margin-top: 1.375rem;
-    }
-}
-
-html[data-theme="dark"] .content-nav:has(.action-link) {
-    margin-top: 1.375rem;
+    margin-top: 0;
 }
 
 /* ==========================================================================
