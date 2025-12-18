@@ -2713,7 +2713,7 @@ a.qr-link:hover {
 }
 
 .btn-ghost--primary:hover {
-    border-width: 2px;
+    border-width: var(--border-width-emphasis);
     padding: calc(var(--space-sm) - 1px) calc(var(--space-lg) - 1px);
     color: var(--brand-orange-hover);
     border-color: var(--brand-orange-hover);
