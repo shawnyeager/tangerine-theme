@@ -1537,11 +1537,19 @@ time.note-date,
 
     /* Dinkus (section break) */
     .dinkus {
-        width: 10px;
-        height: 10px;
-        background: var(--border-color);
-        margin: var(--space-xl) auto;
-        border: none;
+        display: flex;
+        justify-content: center;
+        gap: var(--space-sm);
+        margin: var(--space-lg) auto;
+    }
+
+    .dinkus::before,
+    .dinkus::after,
+    .dinkus span {
+        content: '';
+        width: 4px;
+        height: 4px;
+        background: color-mix(in srgb, var(--text-primary) 40%, transparent);
     }
 
     /* Tables */
