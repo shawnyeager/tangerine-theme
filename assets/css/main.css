@@ -172,7 +172,7 @@
 
     /* Typography spacing - heading proximity ratios (don't scale with viewport)
        Headings need more space above to associate with content below */
-    --para-gap-long-form: light-dark(1.25rem, 1.375rem);  /* Long-form paragraph spacing */
+    --para-gap-long-form: 1.25rem;  /* Long-form paragraph spacing (light mode default) */
     --heading-above-lg: 1.5rem;   /* 24px - h2 section breaks */
     --heading-below-lg: 1rem;     /* 16px - maintains 1.5:1 ratio */
     --heading-above-md: 1rem;     /* 16px - h3 subsection breaks */
@@ -1328,8 +1328,7 @@ time.note-date,
 }
 
 .essay-body,
-.note-body,
-.long-form {
+.note-body {
     font-size: var(--font-lg);
     line-height: 1.45;  /* Tighter than body default (1.5) for optimal reading */
 
@@ -1397,9 +1396,7 @@ time.note-date,
 /* First heading after page header elements - reduce top margin to avoid excessive stacking
    Applies when meta/title/subtitle elements precede the first content heading */
 .essay-content > header + .essay-body > h2:first-child,
-.note-content > header + .note-body > h2:first-child,
-.long-form > h2:first-child,
-.long-form > h3:first-child {
+.note-content > header + .note-body > h2:first-child {
     margin-top: 0;  /* No top margin - header elements provide spacing */
 }
 
@@ -1736,17 +1733,18 @@ time.note-date,
     }
 }
 
-.essay-body .aside,
-.note-body .aside {
+/* Aside - acknowledgments after essay/note body */
+.essay-content .aside,
+.note-content .aside {
     color: var(--text-meta);
     font-style: italic;
     font-size: var(--font-base);
-    margin-top: var(--space-md);
-    margin-bottom: var(--space-lg);
+    margin-top: 0;  /* Preceding paragraph's margin-bottom provides spacing */
+    margin-bottom: var(--para-gap-long-form);  /* Match paragraph rhythm */
 }
 
-.essay-body .aside a,
-.note-body .aside a {
+.essay-content .aside a,
+.note-content .aside a {
     color: var(--text-meta);
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
@@ -1754,8 +1752,8 @@ time.note-date,
     text-underline-offset: var(--underline-offset);
 }
 
-.essay-body .aside a:hover,
-.note-body .aside a:hover {
+.essay-content .aside a:hover,
+.note-content .aside a:hover {
     color: var(--brand-orange-hover);
     text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
 }
@@ -2010,6 +2008,11 @@ a.back-link:hover {
    -------------------------------------------------- */
 
 @media (prefers-color-scheme: dark) {
+    /* Long-form paragraph spacing - wider in dark mode */
+    html:not([data-theme="light"]) {
+        --para-gap-long-form: 1.375rem;
+    }
+
     /* Typography - Enhanced heading contrast in dark mode */
     h2 { color: var(--text-heading-h2); }
     h3 { color: var(--text-heading-h3); }
@@ -2080,6 +2083,10 @@ a.back-link:hover {
 /* Dark Mode (Explicit Toggle) - User toggled to dark mode regardless of system
    Needed when system is light but user wants dark mode
    -------------------------------------------------- */
+
+html[data-theme="dark"] {
+    --para-gap-long-form: 1.375rem;
+}
 
 html[data-theme="dark"] p,
 html[data-theme="dark"] li {
