@@ -2291,6 +2291,13 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         border: none;
         padding: 0;
     }
+    .latest-essay header {
+        margin: 0;
+        padding: 0;
+    }
+    .latest-essay h3 {
+        margin-top: 0;
+    }
 }
 
 /* Desktop: spacious note list spacing (notes site only - .com keeps tight spacing for multi-section layout) */
