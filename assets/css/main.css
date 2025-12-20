@@ -948,6 +948,8 @@ body > .container > footer {
 
 .latest-essay {
     margin-bottom: var(--section-gap);  /* 48px - gap to next section */
+    padding: var(--card-padding);
+    border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 
     /* Semantic heading: essay title (h3 under h2 section header) */
     h3 {
@@ -1305,7 +1307,7 @@ time.note-date,
 }
 
 .page-meta {
-    margin-bottom: var(--space-lg);  /* Breathing room before content */
+    margin-bottom: var(--space-xl);  /* Clear break before content begins */
     color: var(--text-meta);
     font-size: var(--font-sm);
     display: flex;
@@ -1331,30 +1333,17 @@ time.note-date,
    Essay Hero Images
 
    Full-width hero treatment for essay feature images.
-   Displays above title with brand accent, subtle elevation, and
-   refined spacing that integrates with the editorial aesthetic.
+   Refined spacing that integrates with the editorial aesthetic.
    ========================================================================== */
 
 .essay-hero {
     margin-bottom: var(--space-xl);
-    position: relative;
 }
 
 .essay-hero-image {
     width: 100%;
     height: auto;
     display: block;
-    /* No shadow - image background matches page, blends seamlessly */
-}
-
-/* Brand accent line below hero - thin orange rule */
-.essay-hero::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 3px;
-    background: var(--brand-orange);
-    margin-top: var(--space-lg);
 }
 
 /* Mobile: tighter spacing */
@@ -1362,43 +1351,27 @@ time.note-date,
     .essay-hero {
         margin-bottom: var(--space-lg);
     }
-
-    .essay-hero::after {
-        margin-top: var(--space-md);
-    }
 }
 
-/* Dark mode: soft edge fade - images blend naturally into dark background */
+/* Dark mode: soft edge fade + subtle warm tint for brand cohesion */
 @media (prefers-color-scheme: dark) {
     .essay-hero-image {
-        filter: brightness(0.88);
+        filter: brightness(0.88) sepia(15%) saturate(1.1);
         mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
         -webkit-mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
-    }
-
-    .essay-hero::after {
-        display: none;
     }
 }
 
 html[data-theme="dark"] .essay-hero-image {
-    filter: brightness(0.88);
+    filter: brightness(0.88) sepia(15%) saturate(1.1);
     mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
     -webkit-mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
-}
-
-html[data-theme="dark"] .essay-hero::after {
-    display: none;
 }
 
 html[data-theme="light"] .essay-hero-image {
     filter: none;
     mask-image: none;
     -webkit-mask-image: none;
-}
-
-html[data-theme="light"] .essay-hero::after {
-    display: block;
 }
 
 .essay-body,
@@ -1548,7 +1521,7 @@ html[data-theme="light"] .essay-hero::after {
         background: var(--background-card);
         padding: 0.2em 0.4em;
         border-radius: var(--border-radius-code);
-        border: var(--border-width) solid var(--border-color);
+        border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
         white-space: nowrap;
     }
 
@@ -1557,7 +1530,7 @@ html[data-theme="light"] .essay-hero::after {
         margin: var(--space-xl) 0;
         padding: var(--space-lg);
         background: var(--background-card);
-        border: var(--border-width) solid var(--border-color);
+        border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
         border-radius: var(--border-radius-code);
         overflow-x: auto;
         line-height: 1.5;
@@ -1638,7 +1611,7 @@ html[data-theme="light"] .essay-hero::after {
             text-align: left;
             font-weight: var(--font-weight-semibold);
             background: var(--background-card);
-            border: var(--border-width) solid var(--border-color);
+            border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 
             &:last-child {
                 text-align: right;
@@ -1647,7 +1620,7 @@ html[data-theme="light"] .essay-hero::after {
 
         td {
             padding: var(--table-cell-padding);
-            border: var(--border-width) solid var(--border-color);
+            border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 
             &:last-child {
                 text-align: right;
