@@ -2289,7 +2289,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     /* Remove card treatment on mobile - label is sufficient, let content flow */
     .latest-essay {
         border: none;
-        padding: var(--space-lg) 0;
+        padding: 0;
     }
 }
 
