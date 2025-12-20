@@ -1368,19 +1368,37 @@ time.note-date,
     }
 }
 
-/* Dark mode: subtle brightness reduction to soften contrast */
+/* Dark mode: soft edge fade - images blend naturally into dark background */
 @media (prefers-color-scheme: dark) {
     .essay-hero-image {
-        filter: brightness(0.92);
+        filter: brightness(0.88);
+        mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
+        -webkit-mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
+    }
+
+    .essay-hero::after {
+        display: none;
     }
 }
 
 html[data-theme="dark"] .essay-hero-image {
-    filter: brightness(0.92);
+    filter: brightness(0.88);
+    mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
+}
+
+html[data-theme="dark"] .essay-hero::after {
+    display: none;
 }
 
 html[data-theme="light"] .essay-hero-image {
     filter: none;
+    mask-image: none;
+    -webkit-mask-image: none;
+}
+
+html[data-theme="light"] .essay-hero::after {
+    display: block;
 }
 
 .essay-body,
