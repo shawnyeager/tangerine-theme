@@ -1327,6 +1327,62 @@ time.note-date,
     letter-spacing: var(--letter-spacing-tight-lg);
 }
 
+/* ==========================================================================
+   Essay Hero Images
+
+   Full-width hero treatment for essay feature images.
+   Displays above title with brand accent, subtle elevation, and
+   refined spacing that integrates with the editorial aesthetic.
+   ========================================================================== */
+
+.essay-hero {
+    margin-bottom: var(--space-xl);
+    position: relative;
+}
+
+.essay-hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* No shadow - image background matches page, blends seamlessly */
+}
+
+/* Brand accent line below hero - thin orange rule */
+.essay-hero::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--brand-orange);
+    margin-top: var(--space-lg);
+}
+
+/* Mobile: tighter spacing */
+@media (max-width: 600px) {
+    .essay-hero {
+        margin-bottom: var(--space-lg);
+    }
+
+    .essay-hero::after {
+        margin-top: var(--space-md);
+    }
+}
+
+/* Dark mode: subtle brightness reduction to soften contrast */
+@media (prefers-color-scheme: dark) {
+    .essay-hero-image {
+        filter: brightness(0.92);
+    }
+}
+
+html[data-theme="dark"] .essay-hero-image {
+    filter: brightness(0.92);
+}
+
+html[data-theme="light"] .essay-hero-image {
+    filter: none;
+}
+
 .essay-body,
 .note-body {
     font-size: var(--font-lg);
