@@ -1,9 +1,13 @@
 /**
  * Theme Toggle Script
  *
- * Provides keyboard shortcuts for toggling between light/dark themes:
- * - 'd' or 'D': Toggle between light and dark (maintains manual preference)
+ * Keyboard shortcuts:
+ * - 'd' or 'D': Toggle between light and dark theme
  * - 'a' or 'A': Switch to auto mode (follows system preference)
+ * - 'j': Scroll down
+ * - 'k': Scroll up
+ * - 'gg': Scroll to top (vim-style)
+ * - 'G': Scroll to bottom (vim-style)
  * - '?': Show keyboard shortcuts help
  *
  * Features:
@@ -12,6 +16,7 @@
  * - Listens for system preference changes
  * - Gracefully handles localStorage unavailability
  * - Accessible help modal with focus management
+ * - Vim-style navigation for power users
  *
  * Note: FOUC prevention script runs earlier in <head> to apply theme before page render
  */
@@ -74,6 +79,18 @@
                         <dd>Switch to auto (system) theme</dd>
                     </div>
                     <div class="keyboard-help-item">
+                        <dt><kbd>j</kbd> / <kbd>k</kbd></dt>
+                        <dd>Scroll down / up</dd>
+                    </div>
+                    <div class="keyboard-help-item">
+                        <dt><kbd>gg</kbd></dt>
+                        <dd>Go to top</dd>
+                    </div>
+                    <div class="keyboard-help-item">
+                        <dt><kbd>G</kbd></dt>
+                        <dd>Go to bottom</dd>
+                    </div>
+                    <div class="keyboard-help-item">
                         <dt><kbd>?</kbd></dt>
                         <dd>Show this help</dd>
                     </div>
@@ -123,6 +140,35 @@
         return helpModal && helpModal.getAttribute('data-visible') === 'true';
     }
 
+    // Vim-style navigation
+    function scrollDown() {
+        window.scrollBy({ top: 100, behavior: 'smooth' });
+    }
+
+    function scrollUp() {
+        window.scrollBy({ top: -100, behavior: 'smooth' });
+    }
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToBottom() {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    // Easter egg
+    function flashOrange() {
+        const overlay = document.createElement('div');
+        overlay.className = 'bitcoin-flash';
+        document.body.appendChild(overlay);
+        setTimeout(() => overlay.remove(), 500);
+    }
+
+    // Key sequence tracking for multi-key shortcuts (gg, bitcoin)
+    let keySequence = '';
+    let sequenceTimeout = null;
+
     // Listen for system preference changes
     mediaQuery.addEventListener('change', function(e) {
         try {
@@ -168,16 +214,58 @@
             return;
         }
 
+        // Track key sequences for multi-key shortcuts
+        keySequence += e.key.toLowerCase();
+        clearTimeout(sequenceTimeout);
+        sequenceTimeout = setTimeout(() => keySequence = '', 1000);
+
+        // Check for 'gg' sequence (scroll to top)
+        if (keySequence.endsWith('gg')) {
+            e.preventDefault();
+            scrollToTop();
+            keySequence = '';
+            return;
+        }
+
+        // Check for 'bitcoin' easter egg
+        if (keySequence.endsWith('bitcoin')) {
+            flashOrange();
+            keySequence = '';
+            return;
+        }
+
+        // Single-key shortcuts
         // Toggle between light and dark (maintains manual preference)
         if (e.key === 'd' || e.key === 'D') {
             e.preventDefault();
             toggleTheme();
+            return;
         }
 
         // Switch to auto mode (follows system preference)
         if (e.key === 'a' || e.key === 'A') {
             e.preventDefault();
             setAutoMode();
+            return;
+        }
+
+        // Vim-style navigation
+        if (e.key === 'j') {
+            e.preventDefault();
+            scrollDown();
+            return;
+        }
+
+        if (e.key === 'k') {
+            e.preventDefault();
+            scrollUp();
+            return;
+        }
+
+        if (e.key === 'G') {
+            e.preventDefault();
+            scrollToBottom();
+            return;
         }
     });
 })();
