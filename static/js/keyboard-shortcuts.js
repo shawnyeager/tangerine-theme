@@ -301,13 +301,30 @@
             opacity: 0
         });
 
+        let lastData = null;
         function updateContent(d) {
             if (!d) return;
-            content.innerHTML = `<div class="mempool-block-fee">~${d.medianFee} sat/vB</div>
+
+            const setContent = () => {
+                content.innerHTML = `<div class="mempool-block-fee">~${d.medianFee} sat/vB</div>
                    <div class="mempool-block-range">${d.minFee} - ${d.maxFee} sat/vB</div>
                    <div class="mempool-block-total">${d.totalBTC} BTC</div>
                    <div class="mempool-block-count">${d.txCount} transactions</div>
                    <div class="mempool-block-time">In ~10 minutes</div>`;
+            };
+
+            // Heartbeat first, then update data
+            if (lastData && (d.txCount !== lastData.txCount || d.medianFee !== lastData.medianFee)) {
+                animate(block, {
+                    scale: [1, 1.05, 1, 1.03, 1],
+                    duration: 1200,
+                    ease: 'inOutQuad',
+                    onComplete: setContent
+                });
+            } else {
+                setContent();
+            }
+            lastData = d;
         }
 
         // Update content when data arrives
@@ -347,9 +364,9 @@
         // Show content after fly-in completes
         animate(content, { opacity: 1, duration: BLOCK.ANIM_CONTENT_IN, delay: BLOCK.ANIM_FLY_IN, ease: 'outQuad' });
 
-        // Subtle pulse animation
+        // Pulse animation - darken instead of brighten to avoid washed-out look
         animate(block, {
-            filter: ['brightness(1)', 'brightness(1.15)'],
+            filter: ['brightness(1)', 'brightness(0.85)'],
             duration: BLOCK.ANIM_PULSE,
             loop: true,
             alternate: true,
