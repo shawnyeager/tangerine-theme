@@ -344,7 +344,7 @@ h1 {
 
 /* Homepage display title - large, prominent headline */
 h1.display-title {
-    font-size: var(--font-custom-32);
+    font-size: var(--font-custom-40);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
     margin-top: 0;
