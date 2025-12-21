@@ -164,10 +164,7 @@
         ANIM_CONTENT_IN: 300,
         ANIM_CONTENT_OUT: 100,
         ANIM_PULSE: 1200,
-        POLL_INTERVAL: 10000,
-        // 3D face colors (decorative, not tokenized)
-        FACE_TOP: '#2d2824',
-        FACE_LEFT: '#1f1b18'
+        POLL_INTERVAL: 10000
     };
 
     let mempoolOverlay = null;
@@ -272,26 +269,26 @@
             overflow: 'visible'
         });
 
-        // Top face (3D lighting - lighter charcoal)
+        // Top face (color set via CSS class for theme switching)
+        topFace.className = 'mempool-block-face-top';
         set(topFace, {
             position: 'absolute',
             width: '100%',
             height: startFaceDepth + 'px',
             bottom: '100%',
             right: '0',
-            background: BLOCK.FACE_TOP,
             transform: 'skewX(45deg)',
             transformOrigin: 'bottom right'
         });
 
-        // Left face (3D lighting - darker charcoal)
+        // Left face (color set via CSS class for theme switching)
+        leftFace.className = 'mempool-block-face-left';
         set(leftFace, {
             position: 'absolute',
             width: startFaceDepth + 'px',
             height: '100%',
             top: '0',
             right: '100%',
-            background: BLOCK.FACE_LEFT,
             transform: 'skewY(45deg)',
             transformOrigin: 'top right'
         });

@@ -2961,6 +2961,20 @@ a.qr-link:hover {
    3D block flies from home-square to center with real-time fee info.
    ========================================================================== */
 
+:root {
+    /* 3D face colors: text tokens for light, warm charcoals for dark */
+    --block-face-top: light-dark(var(--text-secondary), #2d2824);
+    --block-face-left: light-dark(var(--text-primary), #1f1b18);
+}
+
+.mempool-block-face-top {
+    background: var(--block-face-top);
+}
+
+.mempool-block-face-left {
+    background: var(--block-face-left);
+}
+
 .mempool-block-fee {
     font-size: var(--font-base);
     margin-bottom: 2px;
