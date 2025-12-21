@@ -952,8 +952,6 @@ body > .container > footer {
 
 .latest-essay {
     margin-bottom: var(--section-gap);  /* 48px - gap to next section */
-    padding: var(--card-padding);
-    border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 
     /* Semantic heading: essay title (h3 under h2 section header) */
     h3 {
@@ -2289,18 +2287,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .info-pair code {
         white-space: pre-line;     /* Preserve newlines, wrap at spaces (fingerprints) */
         overflow-wrap: break-word; /* Break long words if needed (npubs, keys) */
-    }
-    /* Remove card treatment on mobile - label is sufficient, let content flow */
-    .latest-essay {
-        border: none;
-        padding: 0;
-    }
-    .latest-essay header {
-        margin: 0;
-        padding: 0;
-    }
-    .latest-essay h3 {
-        margin-top: 0;
     }
 }
 
