@@ -151,26 +151,28 @@
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
-    // Mempool easter egg - shows next block from mempool.space
-    // Uses GSAP Flip for smooth animation from brand square
+    // Mempool easter egg
     let mempoolOverlay = null;
-    let gsapLoaded = false;
+    let pollInterval = null;
 
-    function loadScript(src) {
-        return new Promise((resolve, reject) => {
-            const s = document.createElement('script');
-            s.src = src;
-            s.onload = resolve;
-            s.onerror = reject;
-            document.head.appendChild(s);
-        });
-    }
-
-    async function loadGSAP() {
-        if (gsapLoaded) return;
-        await loadScript('https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js');
-        await loadScript('https://cdn.jsdelivr.net/npm/gsap@3/dist/Flip.min.js');
-        gsapLoaded = true;
+    async function fetchMempoolData() {
+        try {
+            const res = await fetch('https://mempool.space/api/v1/fees/mempool-blocks', {
+                signal: AbortSignal.timeout(5000)
+            });
+            const blocks = await res.json();
+            const b = blocks[0];
+            return {
+                medianFee: Math.round(b.medianFee),
+                minFee: b.feeRange[0].toFixed(1),
+                maxFee: b.feeRange[6].toFixed(1),
+                totalBTC: (b.totalFees / 100000000).toFixed(3),
+                txCount: b.nTx.toLocaleString(),
+                fullness: Math.min(100, Math.round((b.blockVSize / 1000000) * 100))
+            };
+        } catch {
+            return null;
+        }
     }
 
     async function showMempoolBlock() {
@@ -179,109 +181,225 @@
         const homeSquare = document.querySelector('.home-square');
         if (!homeSquare) return;
 
-        // Load GSAP and fetch data in parallel
-        const [, blockData] = await Promise.all([
-            loadGSAP(),
-            fetch('https://mempool.space/api/v1/fees/mempool-blocks', {
-                signal: AbortSignal.timeout(5000)
-            }).then(r => r.json()).then(blocks => {
-                const b = blocks[0];
-                // Block fullness: blockVSize / max (4M weight units = 1M vBytes)
-                const fullness = Math.min(100, Math.round((b.blockVSize / 1000000) * 100));
-                return {
-                    medianFee: Math.round(b.medianFee),
-                    minFee: b.feeRange[0].toFixed(1),
-                    maxFee: b.feeRange[6].toFixed(1),
-                    totalBTC: (b.totalFees / 100000000).toFixed(3),
-                    txCount: b.nTx.toLocaleString(),
-                    fullness: fullness
-                };
-            }).catch(() => null)
-        ]);
+        // Load anime.js
+        if (!window.anime) {
+            await new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/animejs';
+                s.onload = resolve;
+                s.onerror = reject;
+                document.head.appendChild(s);
+            });
+        }
 
-        // Build content HTML
-        const contentHTML = blockData
-            ? `<div class="mempool-fee">~${blockData.medianFee} sat/vB</div>
-               <div class="mempool-range">${blockData.minFee} - ${blockData.maxFee} sat/vB</div>
-               <div class="mempool-total">${blockData.totalBTC} BTC</div>
-               <div class="mempool-txs">${blockData.txCount} transactions</div>
-               <div class="mempool-eta">In ~10 minutes</div>`
-            : `<div class="mempool-total">₿</div>
-               <div class="mempool-txs">offline</div>`;
+        const { animate, set } = anime;
+        const data = await fetchMempoolData();
 
-        // Get brand square position
+        // Colors
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches &&
+             !document.documentElement.getAttribute('data-theme'));
+        const brandOrange = isDark ? '#E84A1C' : '#d63900';
+        const fontHeading = getComputedStyle(document.documentElement).getPropertyValue('--font-heading').trim();
+
+        // Get home-square position
         const sq = homeSquare.getBoundingClientRect();
+        const startFaceDepth = Math.round(sq.width * 0.15);
 
-        // Create overlay and block with content already painted
-        // Fullness gradient: dark at top (empty), bright at bottom (filled), highlight edge
-        const fullness = blockData?.fullness ?? 100;
-        const emptyStop = 100 - fullness;
-
-        // Gradient: dark (left/empty) → filled → highlight (right edge)
-        const fillStart = 100 - fullness;
-        const gradient = `linear-gradient(to right,
-            #4a1500 0%,
-            #4a1500 ${fillStart}%,
-            #6b1c00 ${fillStart}%,
-            #8a2a00 ${Math.max(fillStart + 5, 92)}%,
-            #c44000 100%)`;
-
+        // Create elements
         mempoolOverlay = document.createElement('div');
-        mempoolOverlay.className = 'mempool-overlay';
-        mempoolOverlay.innerHTML = `
-            <div class="mempool-block" style="background: ${gradient};">
-                <div class="mempool-content">${contentHTML}</div>
-            </div>
-        `;
+        const block = document.createElement('div');
+        const topFace = document.createElement('div');
+        const leftFace = document.createElement('div');
+        const content = document.createElement('div');
+
+        mempoolOverlay.appendChild(block);
+        block.appendChild(topFace);
+        block.appendChild(leftFace);
+        block.appendChild(content);
         document.body.appendChild(mempoolOverlay);
 
-        const block = mempoolOverlay.querySelector('.mempool-block');
+        // Click target with radial shadow that darkens the page
+        set(mempoolOverlay, {
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            cursor: 'pointer'
+        });
 
-        // Block is 220x220, positioned at top:0 left:0 via CSS
-        const blockSize = 220;
-        const centerX = (window.innerWidth - blockSize) / 2;
-        const centerY = (window.innerHeight - blockSize) / 2;
-        const startScale = sq.width / blockSize;
+        // Shadow element - offset to match 3D lighting (light from top-right)
+        const shadow = document.createElement('div');
+        mempoolOverlay.insertBefore(shadow, block);
+        const shadowOffset = Math.round(sq.width * 0.15);
+        set(shadow, {
+            position: 'fixed',
+            left: (sq.left - shadowOffset) + 'px',
+            top: (sq.top + shadowOffset) + 'px',
+            width: sq.width + 'px',
+            height: sq.height + 'px',
+            background: 'rgba(0,0,0,0.4)',
+            filter: 'blur(20px)',
+            pointerEvents: 'none'
+        });
 
-        // Set initial position BEFORE showing (prevents flash at 0,0)
-        gsap.set(block, { x: sq.left, y: sq.top, scale: startScale });
-        mempoolOverlay.classList.add('visible');
+        // Block - starts at home-square size/position
+        set(block, {
+            position: 'fixed',
+            left: sq.left + 'px',
+            top: sq.top + 'px',
+            width: sq.width + 'px',
+            height: sq.height + 'px',
+            background: brandOrange,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'visible'
+        });
 
-        // Animate from brand square to center
-        gsap.to(block, { x: centerX, y: centerY, scale: 1, duration: 0.8, ease: 'back.out(1.4)' });
+        // Top face
+        set(topFace, {
+            position: 'absolute',
+            width: '100%',
+            height: startFaceDepth + 'px',
+            bottom: '100%',
+            right: '0',
+            background: '#2d2824',
+            transform: 'skewX(45deg)',
+            transformOrigin: 'bottom right'
+        });
+
+        // Left face
+        set(leftFace, {
+            position: 'absolute',
+            width: startFaceDepth + 'px',
+            height: '100%',
+            top: '0',
+            right: '100%',
+            background: '#1f1b18',
+            transform: 'skewY(45deg)',
+            transformOrigin: 'top right'
+        });
+
+        // Content
+        set(content, {
+            position: 'relative',
+            textAlign: 'center',
+            color: '#fff',
+            fontFamily: fontHeading,
+            zIndex: 1,
+            opacity: 0
+        });
+
+        function updateContent(d) {
+            content.innerHTML = d
+                ? `<div style="font-size:16px;margin-bottom:2px">~${d.medianFee} sat/vB</div>
+                   <div style="font-size:12px;opacity:0.7;margin-bottom:8px">${d.minFee} - ${d.maxFee} sat/vB</div>
+                   <div style="font-size:28px;font-weight:700;margin-bottom:8px">${d.totalBTC} BTC</div>
+                   <div style="font-size:13px;opacity:0.85;margin-bottom:4px">${d.txCount} transactions</div>
+                   <div style="font-size:14px;opacity:0.85">In ~10 minutes</div>`
+                : '<div style="font-size:28px">₿</div>';
+        }
+        updateContent(data);
+
+        // Final positions
+        const finalSize = 240;
+        const finalLeft = (window.innerWidth - finalSize) / 2;
+        const finalTop = (window.innerHeight - finalSize) / 2;
+
+
+        // Fly block to center
+        animate(block, {
+            left: finalLeft,
+            top: finalTop,
+            width: finalSize,
+            height: finalSize,
+            duration: 600,
+            ease: 'outBack'
+        });
+
+        // Shadow follows block (offset for 3D lighting)
+        const finalShadowOffset = 40;
+        animate(shadow, {
+            left: finalLeft - finalShadowOffset,
+            top: finalTop + finalShadowOffset,
+            width: finalSize,
+            height: finalSize,
+            filter: 'blur(30px)',
+            duration: 600,
+            ease: 'outBack'
+        });
+
+        // Animate 3D faces
+        animate(topFace, { height: 40, duration: 600, ease: 'outBack' });
+        animate(leftFace, { width: 40, duration: 600, ease: 'outBack' });
+
+        // Show content after fly-in
+        animate(content, { opacity: 1, duration: 300, delay: 500, ease: 'outQuad' });
+
+        // Pulse
+        animate(block, {
+            filter: ['brightness(1)', 'brightness(1.15)'],
+            duration: 1200,
+            loop: true,
+            alternate: true,
+            ease: 'inOutSine'
+        });
+
+        // Poll every 10s
+        pollInterval = setInterval(async () => {
+            const newData = await fetchMempoolData();
+            if (newData) updateContent(newData);
+        }, 10000);
 
         // Close handler
         const close = () => {
             if (!mempoolOverlay) return;
+            clearInterval(pollInterval);
 
-            // Get current brand square position
             const sqNow = homeSquare.getBoundingClientRect();
+            const endFaceDepth = Math.round(sqNow.width * 0.15);
 
-            // Animate back to brand square
-            gsap.to(block, {
-                x: sqNow.left,
-                y: sqNow.top,
-                scale: startScale,
-                duration: 0.6,
-                ease: 'power2.in',
+            // Hide content immediately
+            animate(content, { opacity: 0, duration: 100, ease: 'inQuad' });
+
+            // Fly block back
+            animate(block, {
+                left: sqNow.left,
+                top: sqNow.top,
+                width: sqNow.width,
+                height: sqNow.height,
+                duration: 400,
+                ease: 'inQuad',
                 onComplete: () => {
-                    mempoolOverlay.classList.remove('visible');
-                    setTimeout(() => {
-                        mempoolOverlay?.remove();
-                        mempoolOverlay = null;
-                    }, 300);
+                    mempoolOverlay.remove();
+                    mempoolOverlay = null;
                 }
             });
+
+            // Shadow follows block back
+            const endShadowOffset = Math.round(sqNow.width * 0.15);
+            animate(shadow, {
+                left: sqNow.left - endShadowOffset,
+                top: sqNow.top + endShadowOffset,
+                width: sqNow.width,
+                height: sqNow.height,
+                filter: 'blur(20px)',
+                duration: 400,
+                ease: 'inQuad'
+            });
+
+            // Animate 3D faces back
+            animate(topFace, { height: endFaceDepth, duration: 400, ease: 'inQuad' });
+            animate(leftFace, { width: endFaceDepth, duration: 400, ease: 'inQuad' });
         };
 
         mempoolOverlay.addEventListener('click', close);
-        const escHandler = (e) => {
+        document.addEventListener('keydown', function handler(e) {
             if (e.key === 'Escape') {
                 close();
-                document.removeEventListener('keydown', escHandler);
+                document.removeEventListener('keydown', handler);
             }
-        };
-        document.addEventListener('keydown', escHandler);
+        });
     }
 
     // Key sequence tracking for multi-key shortcuts (gg, mempool)
