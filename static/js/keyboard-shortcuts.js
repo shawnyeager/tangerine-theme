@@ -175,7 +175,7 @@
             const blocks = await res.json();
             const b = blocks[0];
             return {
-                medianFee: Math.round(b.medianFee),
+                medianFee: Math.max(1, Math.round(b.medianFee)),
                 minFee: b.feeRange[0].toFixed(1),
                 maxFee: b.feeRange[6].toFixed(1),
                 totalBTC: (b.totalFees / 100000000).toFixed(3),
@@ -217,20 +217,83 @@
         // Get home-square position
         const sq = homeSquare.getBoundingClientRect();
 
-        // Create elements
+        // Create elements - using SVG for seamless 3D faces (no subpixel gaps)
         mempoolOverlay = document.createElement('div');
-        const block = document.createElement('div');
-        const topFace = document.createElement('div');
-        const leftFace = document.createElement('div');
         const content = document.createElement('div');
 
-        mempoolOverlay.appendChild(block);
-        block.appendChild(topFace);
-        block.appendChild(leftFace);
-        block.appendChild(content);
+        // SVG dimensions: S = block size, D = depth
+        const S = BLOCK.SIZE_FINAL;
+        const D = BLOCK.FACE_DEPTH_FINAL;
+        // ViewBox must accommodate the skewed faces:
+        // - Top face extends D pixels right beyond front face
+        // - Left face extends D pixels down beyond front face
+        const svgW = S + D + D; // 310
+        const svgH = S + D + D; // 310
+
+        // Read face colors from CSS tokens
+        const faceTop = styles.getPropertyValue('--block-face-top').trim();
+        const faceLeft = styles.getPropertyValue('--block-face-left').trim();
+
+        // Create SVG block with three faces as polygons
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+        svg.style.overflow = 'visible';
+
+        // Front face position in SVG coords
+        const fx = D;      // 35
+        const fy = D;      // 35
+        const fw = S;      // 240
+        const fh = S;      // 240
+
+        // Draw entire cube as a single path - no seams
+        // Back corner (0,0), then clockwise around the visible surface
+        const cubePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        // M = back corner, then trace: top-right of top face, front top-right,
+        // front bottom-right, front bottom-left, bottom-left of left face, back to start
+        const pathD = `M ${fx-D},${fy-D}
+                       L ${fx+fw-D},${fy-D}
+                       L ${fx+fw},${fy}
+                       L ${fx+fw},${fy+fh}
+                       L ${fx},${fy+fh}
+                       L ${fx-D},${fy+fh-D}
+                       Z`;
+        cubePath.setAttribute('d', pathD);
+        cubePath.setAttribute('fill', brandOrange);
+
+        // Draw faces with gradients to show 3D depth
+        const topFull = `${fx},${fy} ${fx+fw},${fy} ${fx+fw-D},${fy-D} ${fx-D},${fy-D}`;
+        const leftFull = `${fx},${fy} ${fx},${fy+fh} ${fx-D},${fy+fh-D} ${fx-D},${fy-D}`;
+
+        const topFace = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        topFace.setAttribute('points', topFull);
+        topFace.setAttribute('fill', faceTop);
+
+        const leftFace = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        leftFace.setAttribute('points', leftFull);
+        leftFace.setAttribute('fill', faceLeft);
+
+        // Front face overlaps slightly to cover any edge artifacts
+        const frontFace = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        frontFace.setAttribute('x', D - 0.5);
+        frontFace.setAttribute('y', D - 0.5);
+        frontFace.setAttribute('width', S + 1);
+        frontFace.setAttribute('height', S + 1);
+        frontFace.setAttribute('fill', brandOrange);
+
+        svg.appendChild(cubePath);
+        svg.appendChild(topFace);
+        svg.appendChild(leftFace);
+        svg.appendChild(frontFace);
+
+        // Wrapper holds SVG + content so pulse filter affects both
+        const blockWrapper = document.createElement('div');
+        blockWrapper.appendChild(svg);
+        blockWrapper.appendChild(content);
+
+        mempoolOverlay.appendChild(blockWrapper);
         document.body.appendChild(mempoolOverlay);
 
-        // Click target with radial shadow that darkens the page
+        // Click target
         set(mempoolOverlay, {
             position: 'fixed',
             inset: 0,
@@ -238,9 +301,9 @@
             cursor: 'pointer'
         });
 
-        // Shadow element - starts hidden at brand square, grows during fly-out
+        // Shadow element
         const shadow = document.createElement('div');
-        mempoolOverlay.insertBefore(shadow, block);
+        mempoolOverlay.insertBefore(shadow, blockWrapper);
         set(shadow, {
             position: 'fixed',
             left: sq.left + 'px',
@@ -253,52 +316,41 @@
             pointerEvents: 'none'
         });
 
-        // Block - starts at home-square size/position
-        set(block, {
+        // Wrapper starts at home-square size/position
+        set(blockWrapper, {
             position: 'fixed',
             left: sq.left + 'px',
             top: sq.top + 'px',
             width: sq.width + 'px',
-            height: sq.height + 'px',
-            background: brandOrange,
+            height: sq.height + 'px'
+        });
+
+        // SVG fills wrapper
+        set(svg, {
+            width: '100%',
+            height: '100%'
+        });
+
+        // Content - positioned over the front face using percentages to scale with wrapper
+        // Front face is at (D, D) in SVG viewBox of (svgW, svgH)
+        const pctOffset = (D / svgW * 100) + '%';
+        const pctSize = (S / svgW * 100) + '%';
+        set(content, {
+            position: 'absolute',
+            left: pctOffset,
+            top: pctOffset,
+            width: pctSize,
+            height: pctSize,
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            overflow: 'visible'
-        });
-
-        // Top face - starts flat (0 height), grows during fly-out
-        topFace.className = 'mempool-block-face-top';
-        set(topFace, {
-            position: 'absolute',
-            width: '100%',
-            height: '0px',
-            bottom: '100%',
-            right: '0',
-            transform: `skewX(${BLOCK.FACE_SKEW}deg)`,
-            transformOrigin: 'bottom right'
-        });
-
-        // Left face - starts flat (0 width), grows during fly-out
-        leftFace.className = 'mempool-block-face-left';
-        set(leftFace, {
-            position: 'absolute',
-            width: '0px',
-            height: '100%',
-            top: '0',
-            right: '100%',
-            transform: `skewY(${BLOCK.FACE_SKEW}deg)`,
-            transformOrigin: 'top right'
-        });
-
-        // Content
-        set(content, {
-            position: 'relative',
             textAlign: 'center',
             color: '#fff',
             fontFamily: fontHeading,
             zIndex: 1,
-            opacity: 0
+            opacity: 0,
+            pointerEvents: 'none'
         });
 
         let lastData = null;
@@ -310,12 +362,12 @@
                    <div class="mempool-block-range">${d.minFee} - ${d.maxFee} sat/vB</div>
                    <div class="mempool-block-total">${d.totalBTC} BTC</div>
                    <div class="mempool-block-count">${d.txCount} transactions</div>
-                   <div class="mempool-block-time">In ~10 minutes</div>`;
+                   <div class="mempool-block-time">~10 min</div>`;
             };
 
-            // Heartbeat first, then update data
+            // Heartbeat on data update
             if (lastData && (d.txCount !== lastData.txCount || d.medianFee !== lastData.medianFee)) {
-                animate([block, shadow], {
+                animate([blockWrapper, shadow], {
                     scale: [1, 1.05, 1, 1.03, 1],
                     duration: 1200,
                     ease: 'inOutQuad',
@@ -330,43 +382,44 @@
         // Update content when data arrives
         dataPromise.then(updateContent);
 
-        // Final positions (centered on screen)
-        const finalSize = BLOCK.SIZE_FINAL;
-        const finalLeft = (window.innerWidth - finalSize) / 2;
-        const finalTop = (window.innerHeight - finalSize) / 2;
+        // Final positions - SVG includes 3D faces extending beyond front face
+        // Position so the front face (at fx,fy in SVG) is centered on screen
+        const contentLeft = (window.innerWidth - S) / 2;
+        const contentTop = (window.innerHeight - S) / 2;
+        // SVG position accounts for the front face offset within the SVG
+        const finalLeft = contentLeft - D;
+        const finalTop = contentTop - D;
 
-        // Fly block to center (inOutCubic: slow start/end for smooth emergence and landing)
-        animate(block, {
+        // Fly wrapper to center
+        animate(blockWrapper, {
             left: finalLeft,
             top: finalTop,
-            width: finalSize,
-            height: finalSize,
+            width: svgW,
+            height: svgH,
             duration: BLOCK.ANIM_FLY_IN,
             ease: 'inOutCubic'
         });
 
-        // Shadow larger and underneath for full coverage
+        // Shadow positioned under front face
         const shadowPad = 20;
         animate(shadow, {
-            left: finalLeft - shadowPad,
-            top: finalTop + BLOCK.SHADOW_OFFSET_FINAL - shadowPad,
-            width: finalSize + shadowPad * 2,
-            height: finalSize + shadowPad * 2,
+            left: contentLeft - shadowPad,
+            top: contentTop + BLOCK.SHADOW_OFFSET_FINAL - shadowPad,
+            width: S + shadowPad * 2,
+            height: S + shadowPad * 2,
             opacity: 0.75,
             filter: 'blur(35px)',
             duration: BLOCK.ANIM_FLY_IN,
             ease: 'inOutCubic'
         });
 
-        // Animate 3D faces to final depth
-        animate(topFace, { height: BLOCK.FACE_DEPTH_FINAL, duration: BLOCK.ANIM_FLY_IN, ease: 'inOutCubic' });
-        animate(leftFace, { width: BLOCK.FACE_DEPTH_FINAL, duration: BLOCK.ANIM_FLY_IN, ease: 'inOutCubic' });
+        // 3D faces are shown immediately (full shape) - no point animation needed
 
         // Show content after fly-in completes
         animate(content, { opacity: 1, duration: BLOCK.ANIM_CONTENT_IN, delay: BLOCK.ANIM_FLY_IN, ease: 'outQuad' });
 
-        // Pulse animation - darken instead of brighten to avoid washed-out look
-        animate(block, {
+        // Pulse animation on wrapper (affects both SVG and content)
+        animate(blockWrapper, {
             filter: ['brightness(1)', 'brightness(0.85)'],
             duration: BLOCK.ANIM_PULSE,
             loop: true,
@@ -390,8 +443,8 @@
             // Hide content immediately
             animate(content, { opacity: 0, duration: BLOCK.ANIM_CONTENT_OUT, ease: 'inQuad' });
 
-            // Fly block back to origin (inOutCubic: slow end for smooth landing)
-            animate(block, {
+            // Fly wrapper back to origin
+            animate(blockWrapper, {
                 left: sqNow.left,
                 top: sqNow.top,
                 width: sqNow.width,
@@ -416,9 +469,7 @@
                 ease: 'inOutCubic'
             });
 
-            // 3D faces finish shrinking just before block lands
-            animate(topFace, { height: 0, duration: BLOCK.ANIM_FLY_OUT * 0.9, ease: 'linear' });
-            animate(leftFace, { width: 0, duration: BLOCK.ANIM_FLY_OUT * 0.9, ease: 'linear' });
+            // 3D faces stay visible during fly-out (SVG scales with size animation)
         };
 
         mempoolOverlay.addEventListener('click', close);
@@ -474,7 +525,7 @@
             const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
 
             // If moving in the right diagonal direction, prevent pull-to-refresh
-            if (angle >= 20 && angle <= 70 && deltaY > 10) {
+            if (angle >= 10 && angle <= 80 && deltaY > 10) {
                 e.preventDefault();
                 isValidSwipe = true;
             }
@@ -498,8 +549,8 @@
             // Calculate angle (0° = right, 90° = down)
             const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
 
-            // Accept 25°-65° range (down-right diagonal, slightly forgiving)
-            if (angle >= 25 && angle <= 65 && distance >= 40) {
+            // Accept 10°-80° range (down-right diagonal, forgiving)
+            if (angle >= 10 && angle <= 80 && distance >= 30) {
                 e.preventDefault();
                 // Haptic feedback if available
                 if (navigator.vibrate) navigator.vibrate(15);

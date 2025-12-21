@@ -2948,9 +2948,9 @@ a.qr-link:hover {
    ========================================================================== */
 
 :root {
-    /* 3D face colors: text tokens for light, warm charcoals for dark */
-    --block-face-top: light-dark(var(--text-secondary), #2d2824);
-    --block-face-left: light-dark(var(--text-primary), #1f1b18);
+    /* 3D face colors: darken brand orange via color-mix */
+    --block-face-top: color-mix(in srgb, var(--brand-orange), black 20%);
+    --block-face-left: color-mix(in srgb, var(--brand-orange), black 35%);
 }
 
 .mempool-block-face-top {
