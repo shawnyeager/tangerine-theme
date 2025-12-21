@@ -152,67 +152,126 @@
     }
 
     // Mempool easter egg - shows next block from mempool.space
-    // Uses FLIP animation from brand square to center
+    // Uses GSAP Flip for smooth animation from brand square
     let mempoolOverlay = null;
+    let gsapLoaded = false;
+
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = src;
+            s.onload = resolve;
+            s.onerror = reject;
+            document.head.appendChild(s);
+        });
+    }
+
+    async function loadGSAP() {
+        if (gsapLoaded) return;
+        await loadScript('https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js');
+        await loadScript('https://cdn.jsdelivr.net/npm/gsap@3/dist/Flip.min.js');
+        gsapLoaded = true;
+    }
 
     async function showMempoolBlock() {
-        if (mempoolOverlay) return; // Already showing
+        if (mempoolOverlay) return;
 
-        // FLIP: First - get brand square position
         const homeSquare = document.querySelector('.home-square');
         if (!homeSquare) return;
-        const first = homeSquare.getBoundingClientRect();
 
-        // Create overlay with block in final position (centered)
+        // Load GSAP and fetch data in parallel
+        const [, blockData] = await Promise.all([
+            loadGSAP(),
+            fetch('https://mempool.space/api/v1/fees/mempool-blocks', {
+                signal: AbortSignal.timeout(5000)
+            }).then(r => r.json()).then(blocks => {
+                const b = blocks[0];
+                // Block fullness: blockVSize / max (4M weight units = 1M vBytes)
+                const fullness = Math.min(100, Math.round((b.blockVSize / 1000000) * 100));
+                return {
+                    medianFee: Math.round(b.medianFee),
+                    minFee: b.feeRange[0].toFixed(1),
+                    maxFee: b.feeRange[6].toFixed(1),
+                    totalBTC: (b.totalFees / 100000000).toFixed(3),
+                    txCount: b.nTx.toLocaleString(),
+                    fullness: fullness
+                };
+            }).catch(() => null)
+        ]);
+
+        // Build content HTML
+        const contentHTML = blockData
+            ? `<div class="mempool-fee">~${blockData.medianFee} sat/vB</div>
+               <div class="mempool-range">${blockData.minFee} - ${blockData.maxFee} sat/vB</div>
+               <div class="mempool-total">${blockData.totalBTC} BTC</div>
+               <div class="mempool-txs">${blockData.txCount} transactions</div>
+               <div class="mempool-eta">In ~10 minutes</div>`
+            : `<div class="mempool-total">₿</div>
+               <div class="mempool-txs">offline</div>`;
+
+        // Get brand square position
+        const sq = homeSquare.getBoundingClientRect();
+
+        // Create overlay and block with content already painted
+        // Fullness gradient: dark at top (empty), bright at bottom (filled), highlight edge
+        const fullness = blockData?.fullness ?? 100;
+        const emptyStop = 100 - fullness;
+
+        // Gradient: dark (left/empty) → filled → highlight (right edge)
+        const fillStart = 100 - fullness;
+        const gradient = `linear-gradient(to right,
+            #4a1500 0%,
+            #4a1500 ${fillStart}%,
+            #6b1c00 ${fillStart}%,
+            #8a2a00 ${Math.max(fillStart + 5, 92)}%,
+            #c44000 100%)`;
+
         mempoolOverlay = document.createElement('div');
         mempoolOverlay.className = 'mempool-overlay';
         mempoolOverlay.innerHTML = `
-            <div class="mempool-block">
-                <div class="mempool-content">
-                    <div class="mempool-loading">...</div>
-                </div>
+            <div class="mempool-block" style="background: ${gradient};">
+                <div class="mempool-content">${contentHTML}</div>
             </div>
         `;
         document.body.appendChild(mempoolOverlay);
 
         const block = mempoolOverlay.querySelector('.mempool-block');
 
-        // FLIP: Last - get final centered position
-        const last = block.getBoundingClientRect();
+        // Block is 220x220, positioned at top:0 left:0 via CSS
+        const blockSize = 220;
+        const centerX = (window.innerWidth - blockSize) / 2;
+        const centerY = (window.innerHeight - blockSize) / 2;
+        const startScale = sq.width / blockSize;
 
-        // FLIP: Invert - calculate deltas (using center points)
-        const firstCenterX = first.left + first.width / 2;
-        const firstCenterY = first.top + first.height / 2;
-        const lastCenterX = last.left + last.width / 2;
-        const lastCenterY = last.top + last.height / 2;
-        const deltaX = firstCenterX - lastCenterX;
-        const deltaY = firstCenterY - lastCenterY;
-        const deltaScale = first.width / last.width;
-
-        // Apply inverse transform (makes it appear at brand square)
-        block.style.transformOrigin = 'center center';
-        block.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${deltaScale})`;
-
-        // Force reflow before enabling transition
-        block.offsetHeight;
-
-        // FLIP: Play - animate to final position
+        // Set initial position BEFORE showing (prevents flash at 0,0)
+        gsap.set(block, { x: sq.left, y: sq.top, scale: startScale });
         mempoolOverlay.classList.add('visible');
-        block.style.transition = 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        block.style.transform = 'translate(0, 0) scale(1)';
 
-        // Close with reverse animation
+        // Animate from brand square to center
+        gsap.to(block, { x: centerX, y: centerY, scale: 1, duration: 0.8, ease: 'back.out(1.4)' });
+
+        // Close handler
         const close = () => {
             if (!mempoolOverlay) return;
 
-            // Animate back to brand square
-            block.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${deltaScale})`;
-            mempoolOverlay.classList.remove('visible');
+            // Get current brand square position
+            const sqNow = homeSquare.getBoundingClientRect();
 
-            setTimeout(() => {
-                mempoolOverlay?.remove();
-                mempoolOverlay = null;
-            }, 800);
+            // Animate back to brand square
+            gsap.to(block, {
+                x: sqNow.left,
+                y: sqNow.top,
+                scale: startScale,
+                duration: 0.6,
+                ease: 'power2.in',
+                onComplete: () => {
+                    mempoolOverlay.classList.remove('visible');
+                    setTimeout(() => {
+                        mempoolOverlay?.remove();
+                        mempoolOverlay = null;
+                    }, 300);
+                }
+            });
         };
 
         mempoolOverlay.addEventListener('click', close);
@@ -223,39 +282,6 @@
             }
         };
         document.addEventListener('keydown', escHandler);
-
-        // Fetch next block data from mempool
-        try {
-            const res = await fetch('https://mempool.space/api/v1/fees/mempool-blocks', {
-                signal: AbortSignal.timeout(5000)
-            });
-            const blocks = await res.json();
-            const nextBlock = blocks[0]; // Next block to be mined
-
-            const medianFee = Math.round(nextBlock.medianFee);
-            const minFee = nextBlock.feeRange[0].toFixed(1);
-            const maxFee = nextBlock.feeRange[6].toFixed(1);
-            const totalBTC = (nextBlock.totalFees / 100000000).toFixed(3);
-
-            const content = mempoolOverlay?.querySelector('.mempool-content');
-            if (content) {
-                content.innerHTML = `
-                    <div class="mempool-fee">~${medianFee} sat/vB</div>
-                    <div class="mempool-range">${minFee} - ${maxFee} sat/vB</div>
-                    <div class="mempool-total">${totalBTC} BTC</div>
-                    <div class="mempool-txs">${nextBlock.nTx.toLocaleString()} transactions</div>
-                    <div class="mempool-eta">In ~10 minutes</div>
-                `;
-            }
-        } catch (e) {
-            const content = mempoolOverlay?.querySelector('.mempool-content');
-            if (content) {
-                content.innerHTML = `
-                    <div class="mempool-total">₿</div>
-                    <div class="mempool-txs">offline</div>
-                `;
-            }
-        }
     }
 
     // Key sequence tracking for multi-key shortcuts (gg, mempool)

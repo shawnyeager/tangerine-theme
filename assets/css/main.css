@@ -2971,17 +2971,22 @@ a.qr-link:hover {
 
 .mempool-block {
     position: fixed;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     width: 220px;
     height: 220px;
-    margin-left: -110px;
-    margin-top: -110px;
-    /* Orange gradient face - brand variation */
+    transform-origin: top left;
+    /* Orange gradient face - brand variation, fullness set via JS */
     background: linear-gradient(to bottom, #b33000, #d63900);
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: mempool-pulse 2s ease-in-out infinite;
+}
+
+@keyframes mempool-pulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.12); }
 }
 
 /* 3D extrusion - top face */
@@ -2989,10 +2994,10 @@ a.qr-link:hover {
     content: '';
     position: absolute;
     width: 100%;
-    height: 20px;
+    height: 32px;
     bottom: 100%;
     left: 0;
-    background: #2a2a2a; /* matches --background-card dark */
+    background: #2d2824;
     transform-origin: bottom left;
     transform: skewX(45deg);
 }
@@ -3001,11 +3006,11 @@ a.qr-link:hover {
 .mempool-block::after {
     content: '';
     position: absolute;
-    width: 20px;
+    width: 32px;
     height: 100%;
     top: 0;
     right: 100%;
-    background: #1e1e1e; /* matches --background-body dark */
+    background: #26221F;
     transform-origin: top right;
     transform: skewY(45deg);
 }
@@ -3014,12 +3019,6 @@ a.qr-link:hover {
 .mempool-content {
     text-align: center;
     color: #fff;
-    opacity: 0;
-    transition: opacity 0.4s ease 0.6s;
-}
-
-.mempool-overlay.visible .mempool-content {
-    opacity: 1;
 }
 
 .mempool-loading {
