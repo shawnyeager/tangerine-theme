@@ -151,7 +151,25 @@
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
-    // Mempool easter egg
+    // Block easter egg - shows live mempool.space next block data
+    // Triggered by typing 'block' anywhere on page
+    const BLOCK = {
+        SIZE_FINAL: 240,
+        FACE_DEPTH_FINAL: 40,
+        FACE_RATIO: 0.15,
+        SHADOW_OFFSET_FINAL: 40,
+        // Animation durations (ms)
+        ANIM_FLY_IN: 600,
+        ANIM_FLY_OUT: 400,
+        ANIM_CONTENT_IN: 300,
+        ANIM_CONTENT_OUT: 100,
+        ANIM_PULSE: 1200,
+        POLL_INTERVAL: 10000,
+        // 3D face colors (decorative, not tokenized)
+        FACE_TOP: '#2d2824',
+        FACE_LEFT: '#1f1b18'
+    };
+
     let mempoolOverlay = null;
     let pollInterval = null;
 
@@ -195,16 +213,14 @@
         const { animate, set } = anime;
         const data = await fetchMempoolData();
 
-        // Colors
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
-            (window.matchMedia('(prefers-color-scheme: dark)').matches &&
-             !document.documentElement.getAttribute('data-theme'));
-        const brandOrange = isDark ? '#E84A1C' : '#d63900';
-        const fontHeading = getComputedStyle(document.documentElement).getPropertyValue('--font-heading').trim();
+        // Read design tokens from CSS
+        const styles = getComputedStyle(document.documentElement);
+        const brandOrange = styles.getPropertyValue('--brand-orange').trim();
+        const fontHeading = styles.getPropertyValue('--font-heading').trim();
 
         // Get home-square position
         const sq = homeSquare.getBoundingClientRect();
-        const startFaceDepth = Math.round(sq.width * 0.15);
+        const startFaceDepth = Math.round(sq.width * BLOCK.FACE_RATIO);
 
         // Create elements
         mempoolOverlay = document.createElement('div');
@@ -227,10 +243,10 @@
             cursor: 'pointer'
         });
 
-        // Shadow element - offset to match 3D lighting (light from top-right)
+        // Shadow element - offset down-left to match 3D lighting (light from top-right)
         const shadow = document.createElement('div');
         mempoolOverlay.insertBefore(shadow, block);
-        const shadowOffset = Math.round(sq.width * 0.15);
+        const shadowOffset = Math.round(sq.width * BLOCK.FACE_RATIO);
         set(shadow, {
             position: 'fixed',
             left: (sq.left - shadowOffset) + 'px',
@@ -256,26 +272,26 @@
             overflow: 'visible'
         });
 
-        // Top face
+        // Top face (3D lighting - lighter charcoal)
         set(topFace, {
             position: 'absolute',
             width: '100%',
             height: startFaceDepth + 'px',
             bottom: '100%',
             right: '0',
-            background: '#2d2824',
+            background: BLOCK.FACE_TOP,
             transform: 'skewX(45deg)',
             transformOrigin: 'bottom right'
         });
 
-        // Left face
+        // Left face (3D lighting - darker charcoal)
         set(leftFace, {
             position: 'absolute',
             width: startFaceDepth + 'px',
             height: '100%',
             top: '0',
             right: '100%',
-            background: '#1f1b18',
+            background: BLOCK.FACE_LEFT,
             transform: 'skewY(45deg)',
             transformOrigin: 'top right'
         });
@@ -292,20 +308,19 @@
 
         function updateContent(d) {
             content.innerHTML = d
-                ? `<div style="font-size:16px;margin-bottom:2px">~${d.medianFee} sat/vB</div>
-                   <div style="font-size:12px;opacity:0.7;margin-bottom:8px">${d.minFee} - ${d.maxFee} sat/vB</div>
-                   <div style="font-size:28px;font-weight:700;margin-bottom:8px">${d.totalBTC} BTC</div>
-                   <div style="font-size:13px;opacity:0.85;margin-bottom:4px">${d.txCount} transactions</div>
-                   <div style="font-size:14px;opacity:0.85">In ~10 minutes</div>`
-                : '<div style="font-size:28px">₿</div>';
+                ? `<div class="mempool-block-fee">~${d.medianFee} sat/vB</div>
+                   <div class="mempool-block-range">${d.minFee} - ${d.maxFee} sat/vB</div>
+                   <div class="mempool-block-total">${d.totalBTC} BTC</div>
+                   <div class="mempool-block-count">${d.txCount} transactions</div>
+                   <div class="mempool-block-time">In ~10 minutes</div>`
+                : '<div class="mempool-block-total">₿</div>';
         }
         updateContent(data);
 
-        // Final positions
-        const finalSize = 240;
+        // Final positions (centered on screen)
+        const finalSize = BLOCK.SIZE_FINAL;
         const finalLeft = (window.innerWidth - finalSize) / 2;
         const finalTop = (window.innerHeight - finalSize) / 2;
-
 
         // Fly block to center
         animate(block, {
@@ -313,62 +328,62 @@
             top: finalTop,
             width: finalSize,
             height: finalSize,
-            duration: 600,
+            duration: BLOCK.ANIM_FLY_IN,
             ease: 'outBack'
         });
 
-        // Shadow follows block (offset for 3D lighting)
-        const finalShadowOffset = 40;
+        // Shadow follows block
         animate(shadow, {
-            left: finalLeft - finalShadowOffset,
-            top: finalTop + finalShadowOffset,
+            left: finalLeft - BLOCK.SHADOW_OFFSET_FINAL,
+            top: finalTop + BLOCK.SHADOW_OFFSET_FINAL,
             width: finalSize,
             height: finalSize,
             filter: 'blur(30px)',
-            duration: 600,
+            duration: BLOCK.ANIM_FLY_IN,
             ease: 'outBack'
         });
 
-        // Animate 3D faces
-        animate(topFace, { height: 40, duration: 600, ease: 'outBack' });
-        animate(leftFace, { width: 40, duration: 600, ease: 'outBack' });
+        // Animate 3D faces to final depth
+        animate(topFace, { height: BLOCK.FACE_DEPTH_FINAL, duration: BLOCK.ANIM_FLY_IN, ease: 'outBack' });
+        animate(leftFace, { width: BLOCK.FACE_DEPTH_FINAL, duration: BLOCK.ANIM_FLY_IN, ease: 'outBack' });
 
-        // Show content after fly-in
-        animate(content, { opacity: 1, duration: 300, delay: 500, ease: 'outQuad' });
+        // Show content after fly-in completes
+        animate(content, { opacity: 1, duration: BLOCK.ANIM_CONTENT_IN, delay: 500, ease: 'outQuad' });
 
-        // Pulse
+        // Subtle pulse animation
         animate(block, {
             filter: ['brightness(1)', 'brightness(1.15)'],
-            duration: 1200,
+            duration: BLOCK.ANIM_PULSE,
             loop: true,
             alternate: true,
             ease: 'inOutSine'
         });
 
-        // Poll every 10s
+        // Poll for updated data
         pollInterval = setInterval(async () => {
             const newData = await fetchMempoolData();
             if (newData) updateContent(newData);
-        }, 10000);
+        }, BLOCK.POLL_INTERVAL);
 
-        // Close handler
+        // Close handler - fly block back to home-square
         const close = () => {
             if (!mempoolOverlay) return;
             clearInterval(pollInterval);
 
             const sqNow = homeSquare.getBoundingClientRect();
-            const endFaceDepth = Math.round(sqNow.width * 0.15);
+            const endFaceDepth = Math.round(sqNow.width * BLOCK.FACE_RATIO);
+            const endShadowOffset = Math.round(sqNow.width * BLOCK.FACE_RATIO);
 
             // Hide content immediately
-            animate(content, { opacity: 0, duration: 100, ease: 'inQuad' });
+            animate(content, { opacity: 0, duration: BLOCK.ANIM_CONTENT_OUT, ease: 'inQuad' });
 
-            // Fly block back
+            // Fly block back to origin
             animate(block, {
                 left: sqNow.left,
                 top: sqNow.top,
                 width: sqNow.width,
                 height: sqNow.height,
-                duration: 400,
+                duration: BLOCK.ANIM_FLY_OUT,
                 ease: 'inQuad',
                 onComplete: () => {
                     mempoolOverlay.remove();
@@ -377,20 +392,19 @@
             });
 
             // Shadow follows block back
-            const endShadowOffset = Math.round(sqNow.width * 0.15);
             animate(shadow, {
                 left: sqNow.left - endShadowOffset,
                 top: sqNow.top + endShadowOffset,
                 width: sqNow.width,
                 height: sqNow.height,
                 filter: 'blur(20px)',
-                duration: 400,
+                duration: BLOCK.ANIM_FLY_OUT,
                 ease: 'inQuad'
             });
 
-            // Animate 3D faces back
-            animate(topFace, { height: endFaceDepth, duration: 400, ease: 'inQuad' });
-            animate(leftFace, { width: endFaceDepth, duration: 400, ease: 'inQuad' });
+            // Animate 3D faces back to proportional size
+            animate(topFace, { height: endFaceDepth, duration: BLOCK.ANIM_FLY_OUT, ease: 'inQuad' });
+            animate(leftFace, { width: endFaceDepth, duration: BLOCK.ANIM_FLY_OUT, ease: 'inQuad' });
         };
 
         mempoolOverlay.addEventListener('click', close);
@@ -402,7 +416,7 @@
         });
     }
 
-    // Key sequence tracking for multi-key shortcuts (gg, mempool)
+    // Key sequence tracking for multi-key shortcuts (gg, block)
     let keySequence = '';
     let sequenceTimeout = null;
 

@@ -25,6 +25,7 @@
  * 19. LANDING PAGE   (line ~2604)      - Conversion page styles
  * 20. GHOST BUTTONS  (line ~2665)      - Ghost button base and variants
  * 21. KEYBOARD HELP  (line ~2832)      - Keyboard shortcuts modal
+ * 22. BLOCK EASTER   (line ~2956)      - Mempool next block visualization
  *
  * Line numbers are approximate. Update when making significant structural changes.
  */
@@ -2953,3 +2954,37 @@ a.qr-link:hover {
 }
 
 
+/* ==========================================================================
+   22. BLOCK EASTER EGG - Mempool next block visualization
+
+   Hidden feature: type 'block' to show live mempool.space data.
+   3D block flies from home-square to center with real-time fee info.
+   ========================================================================== */
+
+.mempool-block-fee {
+    font-size: var(--font-base);
+    margin-bottom: 2px;
+}
+
+.mempool-block-range {
+    font-size: var(--font-sm);
+    opacity: var(--opacity-muted);
+    margin-bottom: var(--space-xs);
+}
+
+.mempool-block-total {
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-xs);
+}
+
+.mempool-block-count {
+    font-size: var(--font-sm);
+    opacity: 0.85;
+    margin-bottom: var(--space-label-gap);
+}
+
+.mempool-block-time {
+    font-size: var(--font-sm);
+    opacity: 0.85;
+}
