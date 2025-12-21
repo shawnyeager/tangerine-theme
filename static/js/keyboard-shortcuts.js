@@ -152,8 +152,8 @@
     // Triggered by typing 'block' anywhere on page
     const BLOCK = {
         SIZE_FINAL: 240,
-        FACE_DEPTH_FINAL: 40,
-        FACE_RATIO: 0.15,
+        FACE_DEPTH_FINAL: 35,
+        FACE_SKEW: 45,  // degrees
         SHADOW_OFFSET_FINAL: 40,
         // Animation durations (ms)
         ANIM_FLY_IN: 600,
@@ -275,7 +275,7 @@
             height: '0px',
             bottom: '100%',
             right: '0',
-            transform: 'skewX(45deg)',
+            transform: `skewX(${BLOCK.FACE_SKEW}deg)`,
             transformOrigin: 'bottom right'
         });
 
@@ -287,7 +287,7 @@
             height: '100%',
             top: '0',
             right: '100%',
-            transform: 'skewY(45deg)',
+            transform: `skewY(${BLOCK.FACE_SKEW}deg)`,
             transformOrigin: 'top right'
         });
 
@@ -315,7 +315,7 @@
 
             // Heartbeat first, then update data
             if (lastData && (d.txCount !== lastData.txCount || d.medianFee !== lastData.medianFee)) {
-                animate(block, {
+                animate([block, shadow], {
                     scale: [1, 1.05, 1, 1.03, 1],
                     duration: 1200,
                     ease: 'inOutQuad',
@@ -345,14 +345,15 @@
             ease: 'inOutCubic'
         });
 
-        // Shadow fades in and offsets during fly-out
+        // Shadow larger and underneath for full coverage
+        const shadowPad = 20;
         animate(shadow, {
-            left: finalLeft - BLOCK.SHADOW_OFFSET_FINAL,
-            top: finalTop + BLOCK.SHADOW_OFFSET_FINAL,
-            width: finalSize,
-            height: finalSize,
-            opacity: 1,
-            filter: 'blur(30px)',
+            left: finalLeft - shadowPad,
+            top: finalTop + BLOCK.SHADOW_OFFSET_FINAL - shadowPad,
+            width: finalSize + shadowPad * 2,
+            height: finalSize + shadowPad * 2,
+            opacity: 0.75,
+            filter: 'blur(35px)',
             duration: BLOCK.ANIM_FLY_IN,
             ease: 'inOutCubic'
         });
@@ -415,9 +416,9 @@
                 ease: 'inOutCubic'
             });
 
-            // 3D faces shrink to flat
-            animate(topFace, { height: 0, duration: BLOCK.ANIM_FLY_OUT, ease: 'inOutCubic' });
-            animate(leftFace, { width: 0, duration: BLOCK.ANIM_FLY_OUT, ease: 'inOutCubic' });
+            // 3D faces finish shrinking just before block lands
+            animate(topFace, { height: 0, duration: BLOCK.ANIM_FLY_OUT * 0.9, ease: 'linear' });
+            animate(leftFace, { width: 0, duration: BLOCK.ANIM_FLY_OUT * 0.9, ease: 'linear' });
         };
 
         mempoolOverlay.addEventListener('click', close);
