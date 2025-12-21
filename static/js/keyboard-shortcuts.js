@@ -9,9 +9,6 @@
  * - 'G': Go to bottom
  * - '?': Show help modal
  *
- * Easter egg:
- * - Type 'block': Show next block info from mempool.space
- *
  * Note: FOUC prevention script runs earlier in <head> to apply theme before render
  */
 (function() {
@@ -196,7 +193,7 @@
         const homeSquare = document.querySelector('.home-square');
         if (!homeSquare) return;
 
-        // Load anime.js
+        // Load anime.js (required for animation)
         if (!window.anime) {
             await new Promise((resolve, reject) => {
                 const s = document.createElement('script');
@@ -208,7 +205,9 @@
         }
 
         const { animate, set } = anime;
-        const data = await fetchMempoolData();
+
+        // Fetch data async - will update content when ready
+        const dataPromise = fetchMempoolData();
 
         // Read design tokens from CSS
         const styles = getComputedStyle(document.documentElement);
@@ -217,7 +216,6 @@
 
         // Get home-square position
         const sq = homeSquare.getBoundingClientRect();
-        const startFaceDepth = Math.round(sq.width * BLOCK.FACE_RATIO);
 
         // Create elements
         mempoolOverlay = document.createElement('div');
@@ -240,18 +238,18 @@
             cursor: 'pointer'
         });
 
-        // Shadow element - offset down-left to match 3D lighting (light from top-right)
+        // Shadow element - starts hidden at brand square, grows during fly-out
         const shadow = document.createElement('div');
         mempoolOverlay.insertBefore(shadow, block);
-        const shadowOffset = Math.round(sq.width * BLOCK.FACE_RATIO);
         set(shadow, {
             position: 'fixed',
-            left: (sq.left - shadowOffset) + 'px',
-            top: (sq.top + shadowOffset) + 'px',
+            left: sq.left + 'px',
+            top: sq.top + 'px',
             width: sq.width + 'px',
             height: sq.height + 'px',
             background: 'rgba(0,0,0,0.4)',
             filter: 'blur(20px)',
+            opacity: 0,
             pointerEvents: 'none'
         });
 
@@ -269,23 +267,23 @@
             overflow: 'visible'
         });
 
-        // Top face (color set via CSS class for theme switching)
+        // Top face - starts flat (0 height), grows during fly-out
         topFace.className = 'mempool-block-face-top';
         set(topFace, {
             position: 'absolute',
             width: '100%',
-            height: startFaceDepth + 'px',
+            height: '0px',
             bottom: '100%',
             right: '0',
             transform: 'skewX(45deg)',
             transformOrigin: 'bottom right'
         });
 
-        // Left face (color set via CSS class for theme switching)
+        // Left face - starts flat (0 width), grows during fly-out
         leftFace.className = 'mempool-block-face-left';
         set(leftFace, {
             position: 'absolute',
-            width: startFaceDepth + 'px',
+            width: '0px',
             height: '100%',
             top: '0',
             right: '100%',
@@ -304,48 +302,50 @@
         });
 
         function updateContent(d) {
-            content.innerHTML = d
-                ? `<div class="mempool-block-fee">~${d.medianFee} sat/vB</div>
+            if (!d) return;
+            content.innerHTML = `<div class="mempool-block-fee">~${d.medianFee} sat/vB</div>
                    <div class="mempool-block-range">${d.minFee} - ${d.maxFee} sat/vB</div>
                    <div class="mempool-block-total">${d.totalBTC} BTC</div>
                    <div class="mempool-block-count">${d.txCount} transactions</div>
-                   <div class="mempool-block-time">In ~10 minutes</div>`
-                : '<div class="mempool-block-total">₿</div>';
+                   <div class="mempool-block-time">In ~10 minutes</div>`;
         }
-        updateContent(data);
+
+        // Update content when data arrives
+        dataPromise.then(updateContent);
 
         // Final positions (centered on screen)
         const finalSize = BLOCK.SIZE_FINAL;
         const finalLeft = (window.innerWidth - finalSize) / 2;
         const finalTop = (window.innerHeight - finalSize) / 2;
 
-        // Fly block to center
+        // Fly block to center (inOutCubic: slow start/end for smooth emergence and landing)
         animate(block, {
             left: finalLeft,
             top: finalTop,
             width: finalSize,
             height: finalSize,
             duration: BLOCK.ANIM_FLY_IN,
-            ease: 'outBack'
+            ease: 'inOutCubic'
         });
 
-        // Shadow follows block
+        // Shadow fades in and offsets during fly-out
         animate(shadow, {
             left: finalLeft - BLOCK.SHADOW_OFFSET_FINAL,
             top: finalTop + BLOCK.SHADOW_OFFSET_FINAL,
             width: finalSize,
             height: finalSize,
+            opacity: 1,
             filter: 'blur(30px)',
             duration: BLOCK.ANIM_FLY_IN,
-            ease: 'outBack'
+            ease: 'inOutCubic'
         });
 
         // Animate 3D faces to final depth
-        animate(topFace, { height: BLOCK.FACE_DEPTH_FINAL, duration: BLOCK.ANIM_FLY_IN, ease: 'outBack' });
-        animate(leftFace, { width: BLOCK.FACE_DEPTH_FINAL, duration: BLOCK.ANIM_FLY_IN, ease: 'outBack' });
+        animate(topFace, { height: BLOCK.FACE_DEPTH_FINAL, duration: BLOCK.ANIM_FLY_IN, ease: 'inOutCubic' });
+        animate(leftFace, { width: BLOCK.FACE_DEPTH_FINAL, duration: BLOCK.ANIM_FLY_IN, ease: 'inOutCubic' });
 
         // Show content after fly-in completes
-        animate(content, { opacity: 1, duration: BLOCK.ANIM_CONTENT_IN, delay: 500, ease: 'outQuad' });
+        animate(content, { opacity: 1, duration: BLOCK.ANIM_CONTENT_IN, delay: BLOCK.ANIM_FLY_IN, ease: 'outQuad' });
 
         // Subtle pulse animation
         animate(block, {
@@ -368,40 +368,39 @@
             clearInterval(pollInterval);
 
             const sqNow = homeSquare.getBoundingClientRect();
-            const endFaceDepth = Math.round(sqNow.width * BLOCK.FACE_RATIO);
-            const endShadowOffset = Math.round(sqNow.width * BLOCK.FACE_RATIO);
 
             // Hide content immediately
             animate(content, { opacity: 0, duration: BLOCK.ANIM_CONTENT_OUT, ease: 'inQuad' });
 
-            // Fly block back to origin
+            // Fly block back to origin (inOutCubic: slow end for smooth landing)
             animate(block, {
                 left: sqNow.left,
                 top: sqNow.top,
                 width: sqNow.width,
                 height: sqNow.height,
                 duration: BLOCK.ANIM_FLY_OUT,
-                ease: 'inQuad',
+                ease: 'inOutCubic',
                 onComplete: () => {
                     mempoolOverlay.remove();
                     mempoolOverlay = null;
                 }
             });
 
-            // Shadow follows block back
+            // Shadow shrinks back and fades out
             animate(shadow, {
-                left: sqNow.left - endShadowOffset,
-                top: sqNow.top + endShadowOffset,
+                left: sqNow.left,
+                top: sqNow.top,
                 width: sqNow.width,
                 height: sqNow.height,
+                opacity: 0,
                 filter: 'blur(20px)',
                 duration: BLOCK.ANIM_FLY_OUT,
-                ease: 'inQuad'
+                ease: 'inOutCubic'
             });
 
-            // Animate 3D faces back to proportional size
-            animate(topFace, { height: endFaceDepth, duration: BLOCK.ANIM_FLY_OUT, ease: 'inQuad' });
-            animate(leftFace, { width: endFaceDepth, duration: BLOCK.ANIM_FLY_OUT, ease: 'inQuad' });
+            // 3D faces shrink to flat
+            animate(topFace, { height: 0, duration: BLOCK.ANIM_FLY_OUT, ease: 'inOutCubic' });
+            animate(leftFace, { width: 0, duration: BLOCK.ANIM_FLY_OUT, ease: 'inOutCubic' });
         };
 
         mempoolOverlay.addEventListener('click', close);
