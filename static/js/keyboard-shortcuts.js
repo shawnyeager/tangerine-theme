@@ -1,24 +1,18 @@
 /**
- * Theme Toggle Script
+ * Keyboard Shortcuts
  *
- * Keyboard shortcuts:
- * - 'd' or 'D': Toggle between light and dark theme
- * - 'a' or 'A': Switch to auto mode (follows system preference)
- * - 'j': Scroll down
- * - 'k': Scroll up
- * - 'gg': Scroll to top (vim-style)
- * - 'G': Scroll to bottom (vim-style)
- * - '?': Show keyboard shortcuts help
+ * Shortcuts:
+ * - 'd': Toggle light/dark theme
+ * - 'a': Auto mode (follow system)
+ * - 'j/k': Scroll down/up
+ * - 'gg': Go to top
+ * - 'G': Go to bottom
+ * - '?': Show help modal
  *
- * Features:
- * - Respects system preference when no manual override set
- * - Stores preference in localStorage
- * - Listens for system preference changes
- * - Gracefully handles localStorage unavailability
- * - Accessible help modal with focus management
- * - Vim-style navigation for power users
+ * Easter egg:
+ * - Type 'mempool': Show next block info from mempool.space
  *
- * Note: FOUC prevention script runs earlier in <head> to apply theme before page render
+ * Note: FOUC prevention script runs earlier in <head> to apply theme before render
  */
 (function() {
     // Cache system preference query
@@ -157,15 +151,114 @@
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
-    // Easter egg
-    function flashOrange() {
-        const overlay = document.createElement('div');
-        overlay.className = 'bitcoin-flash';
-        document.body.appendChild(overlay);
-        setTimeout(() => overlay.remove(), 500);
+    // Mempool easter egg - shows next block from mempool.space
+    // Uses FLIP animation from brand square to center
+    let mempoolOverlay = null;
+
+    async function showMempoolBlock() {
+        if (mempoolOverlay) return; // Already showing
+
+        // FLIP: First - get brand square position
+        const homeSquare = document.querySelector('.home-square');
+        if (!homeSquare) return;
+        const first = homeSquare.getBoundingClientRect();
+
+        // Create overlay with block in final position (centered)
+        mempoolOverlay = document.createElement('div');
+        mempoolOverlay.className = 'mempool-overlay';
+        mempoolOverlay.innerHTML = `
+            <div class="mempool-block">
+                <div class="mempool-content">
+                    <div class="mempool-loading">...</div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(mempoolOverlay);
+
+        const block = mempoolOverlay.querySelector('.mempool-block');
+
+        // FLIP: Last - get final centered position
+        const last = block.getBoundingClientRect();
+
+        // FLIP: Invert - calculate deltas (using center points)
+        const firstCenterX = first.left + first.width / 2;
+        const firstCenterY = first.top + first.height / 2;
+        const lastCenterX = last.left + last.width / 2;
+        const lastCenterY = last.top + last.height / 2;
+        const deltaX = firstCenterX - lastCenterX;
+        const deltaY = firstCenterY - lastCenterY;
+        const deltaScale = first.width / last.width;
+
+        // Apply inverse transform (makes it appear at brand square)
+        block.style.transformOrigin = 'center center';
+        block.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${deltaScale})`;
+
+        // Force reflow before enabling transition
+        block.offsetHeight;
+
+        // FLIP: Play - animate to final position
+        mempoolOverlay.classList.add('visible');
+        block.style.transition = 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        block.style.transform = 'translate(0, 0) scale(1)';
+
+        // Close with reverse animation
+        const close = () => {
+            if (!mempoolOverlay) return;
+
+            // Animate back to brand square
+            block.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${deltaScale})`;
+            mempoolOverlay.classList.remove('visible');
+
+            setTimeout(() => {
+                mempoolOverlay?.remove();
+                mempoolOverlay = null;
+            }, 800);
+        };
+
+        mempoolOverlay.addEventListener('click', close);
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                close();
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+
+        // Fetch next block data from mempool
+        try {
+            const res = await fetch('https://mempool.space/api/v1/fees/mempool-blocks', {
+                signal: AbortSignal.timeout(5000)
+            });
+            const blocks = await res.json();
+            const nextBlock = blocks[0]; // Next block to be mined
+
+            const medianFee = Math.round(nextBlock.medianFee);
+            const minFee = nextBlock.feeRange[0].toFixed(1);
+            const maxFee = nextBlock.feeRange[6].toFixed(1);
+            const totalBTC = (nextBlock.totalFees / 100000000).toFixed(3);
+
+            const content = mempoolOverlay?.querySelector('.mempool-content');
+            if (content) {
+                content.innerHTML = `
+                    <div class="mempool-fee">~${medianFee} sat/vB</div>
+                    <div class="mempool-range">${minFee} - ${maxFee} sat/vB</div>
+                    <div class="mempool-total">${totalBTC} BTC</div>
+                    <div class="mempool-txs">${nextBlock.nTx.toLocaleString()} transactions</div>
+                    <div class="mempool-eta">In ~10 minutes</div>
+                `;
+            }
+        } catch (e) {
+            const content = mempoolOverlay?.querySelector('.mempool-content');
+            if (content) {
+                content.innerHTML = `
+                    <div class="mempool-total">₿</div>
+                    <div class="mempool-txs">offline</div>
+                `;
+            }
+        }
     }
 
-    // Key sequence tracking for multi-key shortcuts (gg, bitcoin)
+    // Key sequence tracking for multi-key shortcuts (gg, mempool)
     let keySequence = '';
     let sequenceTimeout = null;
 
@@ -227,9 +320,9 @@
             return;
         }
 
-        // Check for 'bitcoin' easter egg
-        if (keySequence.endsWith('bitcoin')) {
-            flashOrange();
+        // Check for 'mempool' easter egg
+        if (keySequence.endsWith('mempool')) {
+            showMempoolBlock();
             keySequence = '';
             return;
         }
