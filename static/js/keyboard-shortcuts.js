@@ -448,6 +448,81 @@
         }
     });
 
+    // Mobile easter egg: diagonal swipe on brand square
+    // Swipe down-right (45°) to "pull" the block out in the direction it emerges
+    function initMobileTrigger() {
+        const homeLink = document.querySelector('.home-link');
+        if (!homeLink) return;
+
+        let touchStart = null;
+        let isValidSwipe = false;
+
+        homeLink.addEventListener('touchstart', (e) => {
+            if (window.innerWidth > 768) return;
+            const touch = e.touches[0];
+            touchStart = { x: touch.clientX, y: touch.clientY };
+            isValidSwipe = false;
+        }, { passive: true });
+
+        homeLink.addEventListener('touchmove', (e) => {
+            if (window.innerWidth > 768 || !touchStart) return;
+
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - touchStart.x;
+            const deltaY = touch.clientY - touchStart.y;
+            const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+
+            // If moving in the right diagonal direction, prevent pull-to-refresh
+            if (angle >= 20 && angle <= 70 && deltaY > 10) {
+                e.preventDefault();
+                isValidSwipe = true;
+            }
+        }, { passive: false });
+
+        homeLink.addEventListener('touchend', (e) => {
+            if (window.innerWidth > 768 || !touchStart) return;
+
+            const touch = e.changedTouches[0];
+            const deltaX = touch.clientX - touchStart.x;
+            const deltaY = touch.clientY - touchStart.y;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            // Check if it's a swipe (not a tap)
+            if (distance < 30) {
+                touchStart = null;
+                isValidSwipe = false;
+                return; // Let normal tap/click happen
+            }
+
+            // Calculate angle (0° = right, 90° = down)
+            const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+
+            // Accept 25°-65° range (down-right diagonal, slightly forgiving)
+            if (angle >= 25 && angle <= 65 && distance >= 40) {
+                e.preventDefault();
+                // Haptic feedback if available
+                if (navigator.vibrate) navigator.vibrate(15);
+                showMempoolBlock();
+            }
+
+            touchStart = null;
+            isValidSwipe = false;
+        });
+
+        // Reset state if touch is interrupted
+        homeLink.addEventListener('touchcancel', () => {
+            touchStart = null;
+            isValidSwipe = false;
+        });
+    }
+
+    // Initialize mobile trigger when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobileTrigger);
+    } else {
+        initMobileTrigger();
+    }
+
     // Keyboard shortcut handler
     document.addEventListener('keydown', function(e) {
         // Don't trigger if user is typing in an input field
