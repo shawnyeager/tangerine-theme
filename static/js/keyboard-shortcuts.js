@@ -10,7 +10,7 @@
  * - '?': Show help modal
  *
  * Easter egg:
- * - Type 'mempool': Show next block info from mempool.space
+ * - Type 'block': Show next block info from mempool.space
  *
  * Note: FOUC prevention script runs earlier in <head> to apply theme before render
  */
@@ -464,8 +464,8 @@
             return;
         }
 
-        // Check for 'mempool' easter egg
-        if (keySequence.endsWith('mempool')) {
+        // Check for 'block' easter egg
+        if (keySequence.endsWith('block')) {
             showMempoolBlock();
             keySequence = '';
             return;
