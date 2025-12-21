@@ -24,6 +24,7 @@
  * 18. V4V PAGE       (line ~2165)      - Value for Value payment page
  * 19. LANDING PAGE   (line ~2604)      - Conversion page styles
  * 20. GHOST BUTTONS  (line ~2665)      - Ghost button base and variants
+ * 21. KEYBOARD HELP  (line ~2832)      - Keyboard shortcuts modal
  *
  * Line numbers are approximate. Update when making significant structural changes.
  */
@@ -198,6 +199,7 @@
     /* Z-index Scale */
     --z-brand-bar: 9999;
     --z-skip-link: 10000;
+    --z-modal: 10001;
 
     /* Transitions */
     --transition-fast: 0.3s ease;
@@ -2825,5 +2827,128 @@ a.qr-link:hover {
 
 .btn-ghost--primary .arrow {
     margin-left: var(--arrow-spacing);
+}
+
+
+/* ==========================================================================
+   21. KEYBOARD HELP - Accessible shortcut overlay
+
+   Triggered by pressing '?' key. Shows available keyboard shortcuts.
+   Dismissible via Escape key or clicking outside the card.
+   ========================================================================== */
+
+/* Overlay - semi-transparent backdrop */
+.keyboard-help-overlay {
+    position: fixed;
+    inset: 0;
+    background: light-dark(rgba(26, 26, 26, 0.5), rgba(0, 0, 0, 0.7));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-fast), visibility var(--transition-fast);
+}
+
+.keyboard-help-overlay[data-visible="true"] {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Card - centered content container */
+.keyboard-help-card {
+    background: var(--background-body);
+    border: var(--border-width) solid var(--border-color);
+    padding: var(--space-xl);
+    max-width: 320px;
+    width: calc(100% - var(--space-xl) * 2);
+    box-shadow: var(--shadow-content-light);
+    transform: translateY(var(--space-sm));
+    transition: transform var(--transition-fast);
+}
+
+.keyboard-help-card:focus {
+    outline: none;
+}
+
+.keyboard-help-overlay[data-visible="true"] .keyboard-help-card {
+    transform: translateY(0);
+}
+
+/* Heading */
+.keyboard-help-heading {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-lg) 0;
+    letter-spacing: var(--letter-spacing-tight-md);
+}
+
+/* Shortcut list */
+.keyboard-help-list {
+    margin: 0;
+    padding: 0;
+}
+
+.keyboard-help-item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+.keyboard-help-item:last-child {
+    margin-bottom: 0;
+}
+
+.keyboard-help-item dt {
+    flex-shrink: 0;
+}
+
+.keyboard-help-item dd {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+}
+
+/* Keyboard key styling */
+.keyboard-help-card kbd {
+    display: inline-block;
+    min-width: 1.75rem;
+    padding: var(--space-label-gap) var(--space-xs);
+    font-family: var(--font-monospace);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    color: var(--text-primary);
+    background: var(--background-card);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius-interactive);
+}
+
+/* Dismiss hint */
+.keyboard-help-dismiss {
+    margin: var(--space-lg) 0 0 0;
+    padding-top: var(--space-md);
+    border-top: var(--border-width) solid var(--border-color);
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    text-align: center;
+}
+
+.keyboard-help-dismiss kbd {
+    font-size: var(--font-xs);
+    padding: 0.125rem var(--space-label-gap);
+    min-width: auto;
+}
+
+/* Reduced motion - instant transitions */
+@media (prefers-reduced-motion: reduce) {
+    .keyboard-help-overlay,
+    .keyboard-help-card {
+        transition: none;
+    }
 }
 
