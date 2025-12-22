@@ -313,6 +313,9 @@
             const offRight = window.innerWidth + 50;
             const offLeft = -svgW - 50;
 
+            // Hide content during celebration
+            content.style.display = 'none';
+
             // Wind up (slight left), then fly right
             animate(blockWrapper, {
                 left: [centerX, centerX - 15, offRight],
@@ -325,7 +328,11 @@
                         animate(blockWrapper, {
                             left: centerX,
                             duration: 800,
-                            ease: 'outCubic'
+                            ease: 'outCubic',
+                            onComplete: () => {
+                                // Show content again after fly-in
+                                content.style.display = 'flex';
+                            }
                         });
                     }, 400);
                 }
