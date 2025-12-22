@@ -2915,6 +2915,16 @@ a.qr-link:hover {
     border-radius: var(--border-radius-interactive);
 }
 
+/* Easter egg hint - barely visible */
+.keyboard-help-hint {
+    opacity: 0.4;
+}
+
+.keyboard-help-hint dt {
+    font-family: var(--font-body);
+    letter-spacing: 0.15em;
+}
+
 /* Dismiss hint */
 .keyboard-help-dismiss {
     margin: var(--space-lg) 0 0 0;

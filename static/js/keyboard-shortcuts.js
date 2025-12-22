@@ -85,6 +85,10 @@
                         <dt><kbd>?</kbd></dt>
                         <dd>Show this help</dd>
                     </div>
+                    <div class="keyboard-help-item keyboard-help-hint">
+                        <dt>···</dt>
+                        <dd>there's always another</dd>
+                    </div>
                 </dl>
                 <p class="keyboard-help-dismiss">Press <kbd>Esc</kbd> or click outside to close</p>
             </div>
