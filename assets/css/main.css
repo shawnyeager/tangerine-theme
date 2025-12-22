@@ -2845,6 +2845,7 @@ a.qr-link:hover {
 
 /* Card - centered content container */
 .keyboard-help-card {
+    position: relative;
     background: var(--background-body);
     border: var(--border-width) solid var(--border-color);
     padding: var(--space-xl);
@@ -2915,16 +2916,6 @@ a.qr-link:hover {
     border-radius: var(--border-radius-interactive);
 }
 
-/* Easter egg hint - barely visible */
-.keyboard-help-hint {
-    opacity: 0.4;
-}
-
-.keyboard-help-hint dt {
-    font-family: var(--font-body);
-    letter-spacing: 0.15em;
-}
-
 /* Dismiss hint */
 .keyboard-help-dismiss {
     margin: var(--space-lg) 0 0 0;
@@ -2989,4 +2980,10 @@ a.qr-link:hover {
 .mempool-block-time {
     font-size: var(--font-sm);
     opacity: 0.85;
+}
+
+.mempool-block-height {
+    font-size: var(--font-custom-32);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
 }

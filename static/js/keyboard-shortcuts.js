@@ -85,10 +85,6 @@
                         <dt><kbd>?</kbd></dt>
                         <dd>Show this help</dd>
                     </div>
-                    <div class="keyboard-help-item keyboard-help-hint">
-                        <dt>···</dt>
-                        <dd>there's always another</dd>
-                    </div>
                 </dl>
                 <p class="keyboard-help-dismiss">Press <kbd>Esc</kbd> or click outside to close</p>
             </div>
@@ -194,8 +190,13 @@
 
         const content = document.createElement('div');
         let firstPaint = true;
+        let celebrating = false;
+        let lastData = null;
+        let lastSeenHeight = 0;
         function updateContent(d) {
+            lastData = d;
             if (!d) return;
+            content.style.display = 'flex';
             content.innerHTML = `<div class="mempool-block-fee">~${d.medianFee} sat/vB</div>
                <div class="mempool-block-range">${d.minFee} - ${d.maxFee} sat/vB</div>
                <div class="mempool-block-total">${d.totalBTC} BTC</div>
@@ -221,18 +222,23 @@
             };
             mempoolWs.onmessage = (e) => {
                 const msg = JSON.parse(e.data);
-                if (msg.block) {
-                    // New block mined - celebrate!
-                    celebrateNewBlock();
+                // Track initial block height from blocks array
+                if (msg.blocks && msg.blocks.length > 0) {
+                    lastSeenHeight = msg.blocks[0].height;
                 }
-                if (msg['mempool-blocks']) {
+                // Only celebrate if this is a NEW block (height > last seen)
+                if (msg.block && msg.block.height > lastSeenHeight) {
+                    lastSeenHeight = msg.block.height;
+                    celebrateNewBlock(msg.block.height);
+                }
+                if (msg['mempool-blocks'] && !celebrating) {
                     updateContent(parseBlockData(msg['mempool-blocks'][0]));
                 }
             };
+            mempoolWs.onerror = (e) => console.error('WebSocket error:', e);
         }
 
         let celebrateNewBlock = () => {}; // Placeholder until blockWrapper exists
-        connectWs();
 
         if (!window.anime) {
             await new Promise((resolve, reject) => {
@@ -312,30 +318,54 @@
         blockWrapper.appendChild(content);
 
         // Now that blockWrapper exists, wire up celebration
-        celebrateNewBlock = () => {
+        celebrateNewBlock = (height) => {
+            celebrating = true;
             const centerX = (window.innerWidth - S) / 2 - D;
             const offRight = window.innerWidth + 50;
             const offLeft = -svgW - 50;
 
-            // Hide content during celebration
-            content.style.display = 'none';
+            // Stamp block number on face before flying out
+            if (height) {
+                // Fade out old content, then stamp in new
+                animate(content, {
+                    opacity: 0,
+                    duration: 100,
+                    ease: 'outQuad',
+                    onComplete: () => {
+                        content.innerHTML = `<div class="mempool-block-height">${height.toLocaleString()}</div>`;
+                        set(content, { opacity: 1 });
+                        // Stamp effect - punch in with slight overshoot
+                        animate(content.firstChild, {
+                            scale: [0, 1.15, 1],
+                            opacity: [0, 1],
+                            duration: 300,
+                            ease: 'outBack'
+                        });
+                    }
+                });
+            } else {
+                content.style.display = 'none';
+            }
 
             // Wind up (slight left), then fly right
             animate(blockWrapper, {
                 left: [centerX, centerX - 15, offRight],
+                delay: 1000,
                 duration: 1000,
                 ease: 'inCubic',
                 onComplete: () => {
                     // Brief pause, then new block slides in
                     setTimeout(() => {
+                        content.style.display = 'none';
                         set(blockWrapper, { left: offLeft });
                         animate(blockWrapper, {
                             left: centerX,
                             duration: 800,
                             ease: 'outCubic',
                             onComplete: () => {
-                                // Show content again after fly-in
-                                content.style.display = 'flex';
+                                celebrating = false;
+                                // Immediately paint cached data
+                                if (lastData) updateContent(lastData);
                             }
                         });
                     }, 400);
@@ -375,7 +405,7 @@
             top: pctOffset,
             width: pctSize,
             height: pctSize,
-            display: 'flex',
+            display: 'none',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
@@ -385,6 +415,9 @@
             zIndex: 10,
             pointerEvents: 'none'
         });
+
+        // Start WS now - data will arrive during fly-in
+        connectWs();
 
         // Center front face on screen (accounting for 3D offset)
         const centerX = (window.innerWidth - S) / 2;
@@ -412,7 +445,7 @@
         });
 
         animate(blockWrapper, {
-            filter: ['brightness(1)', 'brightness(0.85)'],
+            filter: ['brightness(1)', 'brightness(0.75)'],
             duration: BLOCK.PULSE,
             loop: true,
             alternate: true,
