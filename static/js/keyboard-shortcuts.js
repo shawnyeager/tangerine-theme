@@ -192,7 +192,7 @@
         let firstPaint = true;
         let celebrating = false;
         let lastData = null;
-        let lastSeenHeight = 0;
+        let lastSeenHeight = null; // null until we receive blocks array
         function updateContent(d) {
             lastData = d;
             if (!d) return;
@@ -226,8 +226,8 @@
                 if (msg.blocks && msg.blocks.length > 0) {
                     lastSeenHeight = msg.blocks[0].height;
                 }
-                // Only celebrate if this is a NEW block (height > last seen)
-                if (msg.block && msg.block.height > lastSeenHeight) {
+                // Only celebrate if we have baseline AND this is a NEW block
+                if (msg.block && lastSeenHeight !== null && msg.block.height > lastSeenHeight) {
                     lastSeenHeight = msg.block.height;
                     celebrateNewBlock(msg.block.height);
                 }
@@ -445,7 +445,7 @@
         });
 
         animate(blockWrapper, {
-            filter: ['brightness(1)', 'brightness(0.75)'],
+            filter: ['brightness(1)', 'brightness(0.88)'],
             duration: BLOCK.PULSE,
             loop: true,
             alternate: true,
