@@ -217,32 +217,77 @@
         // Get home-square position
         const sq = homeSquare.getBoundingClientRect();
 
-        // Create elements - using CSS 3D transforms for seamless cube
+        // Create elements - using SVG for seamless 3D faces (no subpixel gaps)
         mempoolOverlay = document.createElement('div');
         const content = document.createElement('div');
 
-        const S = BLOCK.SIZE_FINAL;  // 240 - cube face size
-        const halfS = S / 2;
+        // SVG dimensions: S = block size, D = depth
+        const S = BLOCK.SIZE_FINAL;
+        const D = BLOCK.FACE_DEPTH_FINAL;
+        // ViewBox must accommodate the skewed faces:
+        // - Top face extends D pixels right beyond front face
+        // - Left face extends D pixels down beyond front face
+        const svgW = S + D + D; // 310
+        const svgH = S + D + D; // 310
 
         // Read face colors from CSS tokens
         const faceTop = styles.getPropertyValue('--block-face-top').trim();
         const faceLeft = styles.getPropertyValue('--block-face-left').trim();
 
-        // Perspective wrapper - contains the 3D scene
+        // Create SVG block with three faces as polygons
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+        svg.style.overflow = 'visible';
+
+        // Front face position in SVG coords
+        const fx = D;      // 35
+        const fy = D;      // 35
+        const fw = S;      // 240
+        const fh = S;      // 240
+
+        // Draw entire cube as a single path - no seams
+        // Back corner (0,0), then clockwise around the visible surface
+        const cubePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        // M = back corner, then trace: top-right of top face, front top-right,
+        // front bottom-right, front bottom-left, bottom-left of left face, back to start
+        const pathD = `M ${fx-D},${fy-D}
+                       L ${fx+fw-D},${fy-D}
+                       L ${fx+fw},${fy}
+                       L ${fx+fw},${fy+fh}
+                       L ${fx},${fy+fh}
+                       L ${fx-D},${fy+fh-D}
+                       Z`;
+        cubePath.setAttribute('d', pathD);
+        cubePath.setAttribute('fill', brandOrange);
+
+        // Draw faces with gradients to show 3D depth
+        const topFull = `${fx},${fy} ${fx+fw},${fy} ${fx+fw-D},${fy-D} ${fx-D},${fy-D}`;
+        const leftFull = `${fx},${fy} ${fx},${fy+fh} ${fx-D},${fy+fh-D} ${fx-D},${fy-D}`;
+
+        const topFace = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        topFace.setAttribute('points', topFull);
+        topFace.setAttribute('fill', faceTop);
+
+        const leftFace = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        leftFace.setAttribute('points', leftFull);
+        leftFace.setAttribute('fill', faceLeft);
+
+        // Front face overlaps slightly to cover any edge artifacts
+        const frontFace = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        frontFace.setAttribute('x', D - 0.5);
+        frontFace.setAttribute('y', D - 0.5);
+        frontFace.setAttribute('width', S + 1);
+        frontFace.setAttribute('height', S + 1);
+        frontFace.setAttribute('fill', brandOrange);
+
+        svg.appendChild(cubePath);
+        svg.appendChild(topFace);
+        svg.appendChild(leftFace);
+        svg.appendChild(frontFace);
+
+        // Wrapper holds SVG + content so pulse filter affects both
         const blockWrapper = document.createElement('div');
-
-        // Cube container - holds faces in 3D space
-        const cube = document.createElement('div');
-
-        // Create three visible faces
-        const frontFace = document.createElement('div');
-        const topFace = document.createElement('div');
-        const leftFace = document.createElement('div');
-
-        cube.appendChild(frontFace);
-        cube.appendChild(topFace);
-        cube.appendChild(leftFace);
-        blockWrapper.appendChild(cube);
+        blockWrapper.appendChild(svg);
         blockWrapper.appendChild(content);
 
         mempoolOverlay.appendChild(blockWrapper);
@@ -271,59 +316,31 @@
             pointerEvents: 'none'
         });
 
-        // Wrapper with perspective
+        // Wrapper starts at home-square size/position
         set(blockWrapper, {
             position: 'fixed',
             left: sq.left + 'px',
             top: sq.top + 'px',
             width: sq.width + 'px',
-            height: sq.height + 'px',
-            perspective: '800px',
-            perspectiveOrigin: '50% 50%'
+            height: sq.height + 'px'
         });
 
-        // Cube container - preserve-3d and centered
-        set(cube, {
-            position: 'absolute',
+        // SVG fills wrapper
+        set(svg, {
             width: '100%',
-            height: '100%',
-            transformStyle: 'preserve-3d',
-            transform: 'rotateX(-25deg) rotateY(-35deg)'
+            height: '100%'
         });
 
-        // Common face styles
-        const faceStyle = {
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backfaceVisibility: 'hidden'
-        };
-
-        // Front face - pushed forward
-        set(frontFace, {
-            ...faceStyle,
-            background: brandOrange,
-            transform: 'translateZ(' + halfS + 'px)'
-        });
-
-        // Top face - rotated up and pushed to top
-        set(topFace, {
-            ...faceStyle,
-            background: faceTop,
-            transform: 'rotateX(90deg) translateZ(' + halfS + 'px)'
-        });
-
-        // Left face - rotated left and pushed to side
-        set(leftFace, {
-            ...faceStyle,
-            background: faceLeft,
-            transform: 'rotateY(-90deg) translateZ(' + halfS + 'px)'
-        });
-
-        // Content - centered over the cube
+        // Content - positioned over the front face using percentages to scale with wrapper
+        // Front face is at (D, D) in SVG viewBox of (svgW, svgH)
+        const pctOffset = (D / svgW * 100) + '%';
+        const pctSize = (S / svgW * 100) + '%';
         set(content, {
             position: 'absolute',
-            inset: 0,
+            left: pctOffset,
+            top: pctOffset,
+            width: pctSize,
+            height: pctSize,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -365,25 +382,29 @@
         // Update content when data arrives
         dataPromise.then(updateContent);
 
-        // Final positions - center the cube on screen
-        const finalLeft = (window.innerWidth - S) / 2;
-        const finalTop = (window.innerHeight - S) / 2;
+        // Final positions - SVG includes 3D faces extending beyond front face
+        // Position so the front face (at fx,fy in SVG) is centered on screen
+        const contentLeft = (window.innerWidth - S) / 2;
+        const contentTop = (window.innerHeight - S) / 2;
+        // SVG position accounts for the front face offset within the SVG
+        const finalLeft = contentLeft - D;
+        const finalTop = contentTop - D;
 
         // Fly wrapper to center
         animate(blockWrapper, {
             left: finalLeft,
             top: finalTop,
-            width: S,
-            height: S,
+            width: svgW,
+            height: svgH,
             duration: BLOCK.ANIM_FLY_IN,
             ease: 'inOutCubic'
         });
 
-        // Shadow positioned under cube
+        // Shadow positioned under front face
         const shadowPad = 20;
         animate(shadow, {
-            left: finalLeft - shadowPad,
-            top: finalTop + BLOCK.SHADOW_OFFSET_FINAL - shadowPad,
+            left: contentLeft - shadowPad,
+            top: contentTop + BLOCK.SHADOW_OFFSET_FINAL - shadowPad,
             width: S + shadowPad * 2,
             height: S + shadowPad * 2,
             opacity: 0.75,
@@ -392,14 +413,17 @@
             ease: 'inOutCubic'
         });
 
+        // 3D faces are shown immediately (full shape) - no point animation needed
+
         // Show content after fly-in completes
         animate(content, { opacity: 1, duration: BLOCK.ANIM_CONTENT_IN, delay: BLOCK.ANIM_FLY_IN, ease: 'outQuad' });
 
-        // Pulse animation - subtle rotation oscillation for 3D effect
-        animate(cube, {
-            rotateY: [-35, -33, -35],
+        // Pulse animation on wrapper (affects both SVG and content)
+        animate(blockWrapper, {
+            filter: ['brightness(1)', 'brightness(0.85)'],
             duration: BLOCK.ANIM_PULSE,
             loop: true,
+            alternate: true,
             ease: 'inOutSine'
         });
 
@@ -444,6 +468,8 @@
                 duration: BLOCK.ANIM_FLY_OUT,
                 ease: 'inOutCubic'
             });
+
+            // 3D faces stay visible during fly-out (SVG scales with size animation)
         };
 
         mempoolOverlay.addEventListener('click', close);
