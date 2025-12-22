@@ -335,12 +335,12 @@
                    <div class="mempool-block-time">~10 min</div>`;
             };
 
-            // Heartbeat on data update
+            // Pulse on data update
             if (lastData && (d.txCount !== lastData.txCount || d.medianFee !== lastData.medianFee)) {
                 animate([blockWrapper, shadow], {
-                    scale: [1, 1.05, 1, 1.03, 1],
-                    duration: 1200,
-                    ease: 'inOutQuad',
+                    scale: [1, 1.06, 1],
+                    duration: 600,
+                    ease: 'outQuad',
                     onComplete: setContent
                 });
             } else {
@@ -453,32 +453,41 @@
     });
 
     function initMobileTrigger() {
-        const homeLink = document.querySelector('.home-link');
-        if (!homeLink) return;
+        const homeSquare = document.querySelector('.home-square');
+        if (!homeSquare) return;
 
         let touchStart = null;
         const MIN_DISTANCE = 30;
         const ANGLE_MIN = 10, ANGLE_MAX = 80;
+        const ZONE_EXTEND = 60; // px to extend hit zone down and right
 
-        homeLink.addEventListener('touchstart', (e) => {
+        function inHitZone(x, y) {
+            const r = homeSquare.getBoundingClientRect();
+            // Include the square itself plus extended zone below and to the right
+            return x >= r.left && x <= r.right + ZONE_EXTEND &&
+                   y >= r.top && y <= r.bottom + ZONE_EXTEND;
+        }
+
+        document.addEventListener('touchstart', (e) => {
             if (window.innerWidth > 768) return;
             const t = e.touches[0];
-            touchStart = { x: t.clientX, y: t.clientY };
+            if (inHitZone(t.clientX, t.clientY)) {
+                touchStart = { x: t.clientX, y: t.clientY };
+            }
         }, { passive: true });
 
-        homeLink.addEventListener('touchmove', (e) => {
+        document.addEventListener('touchmove', (e) => {
             if (window.innerWidth > 768 || !touchStart) return;
             const t = e.touches[0];
             const dx = t.clientX - touchStart.x;
             const dy = t.clientY - touchStart.y;
             const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-            // Prevent pull-to-refresh during diagonal swipe
-            if (angle >= ANGLE_MIN && angle <= ANGLE_MAX && dy > 10) {
+            if (angle >= ANGLE_MIN && angle <= ANGLE_MAX && dy > 5) {
                 e.preventDefault();
             }
         }, { passive: false });
 
-        homeLink.addEventListener('touchend', (e) => {
+        document.addEventListener('touchend', (e) => {
             if (window.innerWidth > 768 || !touchStart) return;
 
             const t = e.changedTouches[0];
@@ -487,7 +496,7 @@
             const dist = Math.sqrt(dx * dx + dy * dy);
             touchStart = null;
 
-            if (dist < MIN_DISTANCE) return; // Tap, not swipe
+            if (dist < MIN_DISTANCE) return;
 
             const angle = Math.atan2(dy, dx) * (180 / Math.PI);
             if (angle >= ANGLE_MIN && angle <= ANGLE_MAX) {
@@ -497,7 +506,7 @@
             }
         });
 
-        homeLink.addEventListener('touchcancel', () => { touchStart = null; });
+        document.addEventListener('touchcancel', () => { touchStart = null; });
     }
 
     if (document.readyState === 'loading') {
