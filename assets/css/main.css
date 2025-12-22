@@ -2953,14 +2953,6 @@ a.qr-link:hover {
     --block-face-left: color-mix(in srgb, var(--brand-orange), black 35%);
 }
 
-.mempool-block-face-top {
-    background: var(--block-face-top);
-}
-
-.mempool-block-face-left {
-    background: var(--block-face-left);
-}
-
 .mempool-block-fee {
     font-size: var(--font-base);
     margin-bottom: 2px;

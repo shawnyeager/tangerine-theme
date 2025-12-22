@@ -165,33 +165,21 @@
         SHADOW_OFFSET: 40,
         FLY_IN: 600,
         FLY_OUT: 400,
-        CONTENT_IN: 300,
-        CONTENT_OUT: 100,
-        PULSE: 1200,
-        POLL_INTERVAL: 10000
+        PULSE: 1200
     };
 
     let mempoolOverlay = null;
-    let pollInterval = null;
+    let mempoolWs = null;
 
-    async function fetchMempoolData() {
-        try {
-            const res = await fetch('https://mempool.space/api/v1/fees/mempool-blocks', {
-                signal: AbortSignal.timeout(5000)
-            });
-            const blocks = await res.json();
-            const b = blocks[0];
-            return {
-                medianFee: Math.max(1, Math.round(b.medianFee)),
-                minFee: b.feeRange[0].toFixed(1),
-                maxFee: b.feeRange[6].toFixed(1),
-                totalBTC: (b.totalFees / 100000000).toFixed(3),
-                txCount: b.nTx.toLocaleString(),
-                fullness: Math.min(100, Math.round((b.blockVSize / 1000000) * 100))
-            };
-        } catch {
-            return null;
-        }
+    function parseBlockData(b) {
+        const formatFee = (f) => f >= 100 ? Math.round(f) : f >= 10 ? f.toFixed(1) : f.toFixed(2);
+        return {
+            medianFee: Math.round(b.medianFee),
+            minFee: formatFee(b.feeRange[0]),
+            maxFee: formatFee(b.feeRange[6]),
+            totalBTC: parseFloat((b.totalFees / 100000000).toFixed(3)),
+            txCount: b.nTx.toLocaleString()
+        };
     }
 
     async function showMempoolBlock() {
@@ -199,6 +187,48 @@
 
         const homeSquare = document.querySelector('.home-square');
         if (!homeSquare) return;
+
+        const content = document.createElement('div');
+        let firstPaint = true;
+        function updateContent(d) {
+            if (!d) return;
+            content.innerHTML = `<div class="mempool-block-fee">~${d.medianFee} sat/vB</div>
+               <div class="mempool-block-range">${d.minFee} - ${d.maxFee} sat/vB</div>
+               <div class="mempool-block-total">${d.totalBTC} BTC</div>
+               <div class="mempool-block-count">${d.txCount} transactions</div>
+               <div class="mempool-block-time">~10 min</div>`;
+            if (firstPaint && window.anime) {
+                firstPaint = false;
+                const { animate } = window.anime;
+                animate(content.children, {
+                    opacity: [0, 1],
+                    translateY: [10, 0],
+                    delay: (el, i) => i * 50,
+                    duration: 200,
+                    ease: 'outQuad'
+                });
+            }
+        }
+        function connectWs() {
+            if (mempoolWs) return;
+            mempoolWs = new WebSocket('wss://mempool.space/api/v1/ws');
+            mempoolWs.onopen = () => {
+                mempoolWs.send(JSON.stringify({ action: 'want', data: ['blocks', 'mempool-blocks'] }));
+            };
+            mempoolWs.onmessage = (e) => {
+                const msg = JSON.parse(e.data);
+                if (msg.block) {
+                    // New block mined - celebrate!
+                    celebrateNewBlock();
+                }
+                if (msg['mempool-blocks']) {
+                    updateContent(parseBlockData(msg['mempool-blocks'][0]));
+                }
+            };
+        }
+
+        let celebrateNewBlock = () => {}; // Placeholder until blockWrapper exists
+        connectWs();
 
         if (!window.anime) {
             await new Promise((resolve, reject) => {
@@ -212,7 +242,6 @@
 
         const { animate, set } = anime;
 
-        const dataPromise = fetchMempoolData();
         const styles = getComputedStyle(document.documentElement);
         const brandOrange = styles.getPropertyValue('--brand-orange').trim();
         const fontHeading = styles.getPropertyValue('--font-heading').trim();
@@ -220,7 +249,6 @@
         const sq = homeSquare.getBoundingClientRect();
 
         mempoolOverlay = document.createElement('div');
-        const content = document.createElement('div');
 
         const S = BLOCK.SIZE;
         const D = BLOCK.DEPTH;
@@ -279,6 +307,31 @@
         blockWrapper.appendChild(svg);
         blockWrapper.appendChild(content);
 
+        // Now that blockWrapper exists, wire up celebration
+        celebrateNewBlock = () => {
+            const centerX = (window.innerWidth - S) / 2 - D;
+            const offRight = window.innerWidth + 50;
+            const offLeft = -svgW - 50;
+
+            // Wind up (slight left), then fly right
+            animate(blockWrapper, {
+                left: [centerX, centerX - 15, offRight],
+                duration: 1000,
+                ease: 'inCubic',
+                onComplete: () => {
+                    // Brief pause, then new block slides in
+                    setTimeout(() => {
+                        set(blockWrapper, { left: offLeft });
+                        animate(blockWrapper, {
+                            left: centerX,
+                            duration: 800,
+                            ease: 'outCubic'
+                        });
+                    }, 400);
+                }
+            });
+        };
+
         mempoolOverlay.appendChild(blockWrapper);
         document.body.appendChild(mempoolOverlay);
 
@@ -302,10 +355,10 @@
 
         set(svg, { width: '100%', height: '100%' });
 
-        // Content positioned over the front face
+        // Position content over front face
         const pctOffset = (D / svgW * 100) + '%';
         const pctSize = (S / svgW * 100) + '%';
-        set(content, {
+        Object.assign(content.style, {
             position: 'absolute',
             left: pctOffset,
             top: pctOffset,
@@ -318,42 +371,14 @@
             textAlign: 'center',
             color: '#fff',
             fontFamily: fontHeading,
-            zIndex: 1,
-            opacity: 0,
+            zIndex: 10,
             pointerEvents: 'none'
         });
 
-        let lastData = null;
-        function updateContent(d) {
-            if (!d) return;
-
-            const setContent = () => {
-                content.innerHTML = `<div class="mempool-block-fee">~${d.medianFee} sat/vB</div>
-                   <div class="mempool-block-range">${d.minFee} - ${d.maxFee} sat/vB</div>
-                   <div class="mempool-block-total">${d.totalBTC} BTC</div>
-                   <div class="mempool-block-count">${d.txCount} transactions</div>
-                   <div class="mempool-block-time">~10 min</div>`;
-            };
-
-            // Pulse on data update
-            if (lastData && (d.txCount !== lastData.txCount || d.medianFee !== lastData.medianFee)) {
-                animate([blockWrapper, shadow], {
-                    scale: [1, 1.06, 1],
-                    duration: 600,
-                    ease: 'outQuad',
-                    onComplete: setContent
-                });
-            } else {
-                setContent();
-            }
-            lastData = d;
-        }
-
-        dataPromise.then(updateContent);
-
-        // Center the front face on screen (accounting for 3D face offset)
+        // Center front face on screen (accounting for 3D offset)
         const centerX = (window.innerWidth - S) / 2;
         const centerY = (window.innerHeight - S) / 2;
+        const shadowPad = 20;
 
         animate(blockWrapper, {
             left: centerX - D,
@@ -364,7 +389,6 @@
             ease: 'inOutCubic'
         });
 
-        const shadowPad = 20;
         animate(shadow, {
             left: centerX - shadowPad,
             top: centerY + BLOCK.SHADOW_OFFSET - shadowPad,
@@ -376,8 +400,6 @@
             ease: 'inOutCubic'
         });
 
-        animate(content, { opacity: 1, duration: BLOCK.CONTENT_IN, delay: BLOCK.FLY_IN, ease: 'outQuad' });
-
         animate(blockWrapper, {
             filter: ['brightness(1)', 'brightness(0.85)'],
             duration: BLOCK.PULSE,
@@ -386,18 +408,14 @@
             ease: 'inOutSine'
         });
 
-        pollInterval = setInterval(async () => {
-            const newData = await fetchMempoolData();
-            if (newData) updateContent(newData);
-        }, BLOCK.POLL_INTERVAL);
-
         const close = () => {
             if (!mempoolOverlay) return;
-            clearInterval(pollInterval);
+            if (mempoolWs) { mempoolWs.close(); mempoolWs = null; }
 
             const sqNow = homeSquare.getBoundingClientRect();
 
-            animate(content, { opacity: 0, duration: BLOCK.CONTENT_OUT, ease: 'inQuad' });
+            // Hide content immediately during fly-out
+            content.style.display = 'none';
 
             animate(blockWrapper, {
                 left: sqNow.left,
@@ -425,12 +443,26 @@
         };
 
         mempoolOverlay.addEventListener('click', close);
-        document.addEventListener('keydown', function handler(e) {
+        document.addEventListener('keydown', function escHandler(e) {
             if (e.key === 'Escape') {
                 close();
-                document.removeEventListener('keydown', handler);
+                document.removeEventListener('keydown', escHandler);
+                document.removeEventListener('visibilitychange', visHandler);
             }
         });
+
+        function visHandler() {
+            if (!mempoolOverlay) {
+                document.removeEventListener('visibilitychange', visHandler);
+                return;
+            }
+            if (document.hidden) {
+                if (mempoolWs) { mempoolWs.close(); mempoolWs = null; }
+            } else {
+                connectWs();
+            }
+        }
+        document.addEventListener('visibilitychange', visHandler);
     }
 
     // Key sequence tracking for multi-key shortcuts (gg, block)
@@ -566,21 +598,18 @@
         }
 
         // Single-key shortcuts
-        // Toggle between light and dark (maintains manual preference)
         if (e.key === 'd' || e.key === 'D') {
             e.preventDefault();
             toggleTheme();
             return;
         }
 
-        // Switch to auto mode (follows system preference)
         if (e.key === 'a' || e.key === 'A') {
             e.preventDefault();
             setAutoMode();
             return;
         }
 
-        // Vim-style navigation
         if (e.key === 'j') {
             e.preventDefault();
             scrollDown();
