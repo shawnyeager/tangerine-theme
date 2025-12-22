@@ -148,19 +148,26 @@
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
-    // Block easter egg - shows live mempool.space next block data
-    // Triggered by typing 'block' anywhere on page
+    /**
+     * Block Easter Egg
+     *
+     * Shows live mempool.space next block data in an animated 3D block.
+     *
+     * Activation:
+     * - Desktop: Type "block" anywhere on page
+     * - Mobile: Diagonal swipe (down-right) on brand square
+     *
+     * Dismissal: Click/tap anywhere or press Escape
+     */
     const BLOCK = {
-        SIZE_FINAL: 240,
-        FACE_DEPTH_FINAL: 35,
-        FACE_SKEW: 45,  // degrees
-        SHADOW_OFFSET_FINAL: 40,
-        // Animation durations (ms)
-        ANIM_FLY_IN: 600,
-        ANIM_FLY_OUT: 400,
-        ANIM_CONTENT_IN: 300,
-        ANIM_CONTENT_OUT: 100,
-        ANIM_PULSE: 1200,
+        SIZE: 240,
+        DEPTH: 35,
+        SHADOW_OFFSET: 40,
+        FLY_IN: 600,
+        FLY_OUT: 400,
+        CONTENT_IN: 300,
+        CONTENT_OUT: 100,
+        PULSE: 1200,
         POLL_INTERVAL: 10000
     };
 
@@ -193,7 +200,6 @@
         const homeSquare = document.querySelector('.home-square');
         if (!homeSquare) return;
 
-        // Load anime.js (required for animation)
         if (!window.anime) {
             await new Promise((resolve, reject) => {
                 const s = document.createElement('script');
@@ -206,50 +212,34 @@
 
         const { animate, set } = anime;
 
-        // Fetch data async - will update content when ready
         const dataPromise = fetchMempoolData();
-
-        // Read design tokens from CSS
         const styles = getComputedStyle(document.documentElement);
         const brandOrange = styles.getPropertyValue('--brand-orange').trim();
         const fontHeading = styles.getPropertyValue('--font-heading').trim();
 
-        // Get home-square position
         const sq = homeSquare.getBoundingClientRect();
 
-        // Create elements - using SVG for seamless 3D faces (no subpixel gaps)
         mempoolOverlay = document.createElement('div');
         const content = document.createElement('div');
 
-        // SVG dimensions: S = block size, D = depth
-        const S = BLOCK.SIZE_FINAL;
-        const D = BLOCK.FACE_DEPTH_FINAL;
-        // ViewBox must accommodate the skewed faces:
-        // - Top face extends D pixels right beyond front face
-        // - Left face extends D pixels down beyond front face
-        const svgW = S + D + D; // 310
-        const svgH = S + D + D; // 310
+        const S = BLOCK.SIZE;
+        const D = BLOCK.DEPTH;
+        const svgW = S + D * 2;
+        const svgH = S + D * 2;
 
-        // Read face colors from CSS tokens
         const faceTop = styles.getPropertyValue('--block-face-top').trim();
         const faceLeft = styles.getPropertyValue('--block-face-left').trim();
 
-        // Create SVG block with three faces as polygons
+        // SVG cube with three visible faces
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
         svg.style.overflow = 'visible';
 
         // Front face position in SVG coords
-        const fx = D;      // 35
-        const fy = D;      // 35
-        const fw = S;      // 240
-        const fh = S;      // 240
+        const fx = D, fy = D, fw = S, fh = S;
 
-        // Draw entire cube as a single path - no seams
-        // Back corner (0,0), then clockwise around the visible surface
+        // Cube silhouette path
         const cubePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        // M = back corner, then trace: top-right of top face, front top-right,
-        // front bottom-right, front bottom-left, bottom-left of left face, back to start
         const pathD = `M ${fx-D},${fy-D}
                        L ${fx+fw-D},${fy-D}
                        L ${fx+fw},${fy}
@@ -260,19 +250,19 @@
         cubePath.setAttribute('d', pathD);
         cubePath.setAttribute('fill', brandOrange);
 
-        // Draw faces with gradients to show 3D depth
-        const topFull = `${fx},${fy} ${fx+fw},${fy} ${fx+fw-D},${fy-D} ${fx-D},${fy-D}`;
-        const leftFull = `${fx},${fy} ${fx},${fy+fh} ${fx-D},${fy+fh-D} ${fx-D},${fy-D}`;
+        // Face polygons for 3D shading
+        const topPts = `${fx},${fy} ${fx+fw},${fy} ${fx+fw-D},${fy-D} ${fx-D},${fy-D}`;
+        const leftPts = `${fx},${fy} ${fx},${fy+fh} ${fx-D},${fy+fh-D} ${fx-D},${fy-D}`;
 
         const topFace = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        topFace.setAttribute('points', topFull);
+        topFace.setAttribute('points', topPts);
         topFace.setAttribute('fill', faceTop);
 
         const leftFace = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        leftFace.setAttribute('points', leftFull);
+        leftFace.setAttribute('points', leftPts);
         leftFace.setAttribute('fill', faceLeft);
 
-        // Front face overlaps slightly to cover any edge artifacts
+        // Front face overlaps slightly to cover edge artifacts
         const frontFace = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         frontFace.setAttribute('x', D - 0.5);
         frontFace.setAttribute('y', D - 0.5);
@@ -285,7 +275,6 @@
         svg.appendChild(leftFace);
         svg.appendChild(frontFace);
 
-        // Wrapper holds SVG + content so pulse filter affects both
         const blockWrapper = document.createElement('div');
         blockWrapper.appendChild(svg);
         blockWrapper.appendChild(content);
@@ -293,46 +282,27 @@
         mempoolOverlay.appendChild(blockWrapper);
         document.body.appendChild(mempoolOverlay);
 
-        // Click target
-        set(mempoolOverlay, {
-            position: 'fixed',
-            inset: 0,
-            zIndex: 9999,
-            cursor: 'pointer'
-        });
+        set(mempoolOverlay, { position: 'fixed', inset: 0, zIndex: 9999, cursor: 'pointer' });
 
-        // Shadow element
         const shadow = document.createElement('div');
         mempoolOverlay.insertBefore(shadow, blockWrapper);
         set(shadow, {
             position: 'fixed',
-            left: sq.left + 'px',
-            top: sq.top + 'px',
-            width: sq.width + 'px',
-            height: sq.height + 'px',
-            background: 'rgba(0,0,0,0.4)',
-            filter: 'blur(20px)',
-            opacity: 0,
-            pointerEvents: 'none'
+            left: sq.left + 'px', top: sq.top + 'px',
+            width: sq.width + 'px', height: sq.height + 'px',
+            background: 'rgba(0,0,0,0.4)', filter: 'blur(20px)',
+            opacity: 0, pointerEvents: 'none'
         });
 
-        // Wrapper starts at home-square size/position
         set(blockWrapper, {
             position: 'fixed',
-            left: sq.left + 'px',
-            top: sq.top + 'px',
-            width: sq.width + 'px',
-            height: sq.height + 'px'
+            left: sq.left + 'px', top: sq.top + 'px',
+            width: sq.width + 'px', height: sq.height + 'px'
         });
 
-        // SVG fills wrapper
-        set(svg, {
-            width: '100%',
-            height: '100%'
-        });
+        set(svg, { width: '100%', height: '100%' });
 
-        // Content - positioned over the front face using percentages to scale with wrapper
-        // Front face is at (D, D) in SVG viewBox of (svgW, svgH)
+        // Content positioned over the front face
         const pctOffset = (D / svgW * 100) + '%';
         const pctSize = (S / svgW * 100) + '%';
         set(content, {
@@ -379,77 +349,62 @@
             lastData = d;
         }
 
-        // Update content when data arrives
         dataPromise.then(updateContent);
 
-        // Final positions - SVG includes 3D faces extending beyond front face
-        // Position so the front face (at fx,fy in SVG) is centered on screen
-        const contentLeft = (window.innerWidth - S) / 2;
-        const contentTop = (window.innerHeight - S) / 2;
-        // SVG position accounts for the front face offset within the SVG
-        const finalLeft = contentLeft - D;
-        const finalTop = contentTop - D;
+        // Center the front face on screen (accounting for 3D face offset)
+        const centerX = (window.innerWidth - S) / 2;
+        const centerY = (window.innerHeight - S) / 2;
 
-        // Fly wrapper to center
         animate(blockWrapper, {
-            left: finalLeft,
-            top: finalTop,
+            left: centerX - D,
+            top: centerY - D,
             width: svgW,
             height: svgH,
-            duration: BLOCK.ANIM_FLY_IN,
+            duration: BLOCK.FLY_IN,
             ease: 'inOutCubic'
         });
 
-        // Shadow positioned under front face
         const shadowPad = 20;
         animate(shadow, {
-            left: contentLeft - shadowPad,
-            top: contentTop + BLOCK.SHADOW_OFFSET_FINAL - shadowPad,
+            left: centerX - shadowPad,
+            top: centerY + BLOCK.SHADOW_OFFSET - shadowPad,
             width: S + shadowPad * 2,
             height: S + shadowPad * 2,
             opacity: 0.75,
             filter: 'blur(35px)',
-            duration: BLOCK.ANIM_FLY_IN,
+            duration: BLOCK.FLY_IN,
             ease: 'inOutCubic'
         });
 
-        // 3D faces are shown immediately (full shape) - no point animation needed
+        animate(content, { opacity: 1, duration: BLOCK.CONTENT_IN, delay: BLOCK.FLY_IN, ease: 'outQuad' });
 
-        // Show content after fly-in completes
-        animate(content, { opacity: 1, duration: BLOCK.ANIM_CONTENT_IN, delay: BLOCK.ANIM_FLY_IN, ease: 'outQuad' });
-
-        // Pulse animation on wrapper (affects both SVG and content)
         animate(blockWrapper, {
             filter: ['brightness(1)', 'brightness(0.85)'],
-            duration: BLOCK.ANIM_PULSE,
+            duration: BLOCK.PULSE,
             loop: true,
             alternate: true,
             ease: 'inOutSine'
         });
 
-        // Poll for updated data
         pollInterval = setInterval(async () => {
             const newData = await fetchMempoolData();
             if (newData) updateContent(newData);
         }, BLOCK.POLL_INTERVAL);
 
-        // Close handler - fly block back to home-square
         const close = () => {
             if (!mempoolOverlay) return;
             clearInterval(pollInterval);
 
             const sqNow = homeSquare.getBoundingClientRect();
 
-            // Hide content immediately
-            animate(content, { opacity: 0, duration: BLOCK.ANIM_CONTENT_OUT, ease: 'inQuad' });
+            animate(content, { opacity: 0, duration: BLOCK.CONTENT_OUT, ease: 'inQuad' });
 
-            // Fly wrapper back to origin
             animate(blockWrapper, {
                 left: sqNow.left,
                 top: sqNow.top,
                 width: sqNow.width,
                 height: sqNow.height,
-                duration: BLOCK.ANIM_FLY_OUT,
+                duration: BLOCK.FLY_OUT,
                 ease: 'inOutCubic',
                 onComplete: () => {
                     mempoolOverlay.remove();
@@ -457,7 +412,6 @@
                 }
             });
 
-            // Shadow shrinks back and fades out
             animate(shadow, {
                 left: sqNow.left,
                 top: sqNow.top,
@@ -465,11 +419,9 @@
                 height: sqNow.height,
                 opacity: 0,
                 filter: 'blur(20px)',
-                duration: BLOCK.ANIM_FLY_OUT,
+                duration: BLOCK.FLY_OUT,
                 ease: 'inOutCubic'
             });
-
-            // 3D faces stay visible during fly-out (SVG scales with size animation)
         };
 
         mempoolOverlay.addEventListener('click', close);
@@ -500,75 +452,54 @@
         }
     });
 
-    // Mobile easter egg: diagonal swipe on brand square
-    // Swipe down-right (45°) to "pull" the block out in the direction it emerges
     function initMobileTrigger() {
         const homeLink = document.querySelector('.home-link');
         if (!homeLink) return;
 
         let touchStart = null;
-        let isValidSwipe = false;
+        const MIN_DISTANCE = 30;
+        const ANGLE_MIN = 10, ANGLE_MAX = 80;
 
         homeLink.addEventListener('touchstart', (e) => {
             if (window.innerWidth > 768) return;
-            const touch = e.touches[0];
-            touchStart = { x: touch.clientX, y: touch.clientY };
-            isValidSwipe = false;
+            const t = e.touches[0];
+            touchStart = { x: t.clientX, y: t.clientY };
         }, { passive: true });
 
         homeLink.addEventListener('touchmove', (e) => {
             if (window.innerWidth > 768 || !touchStart) return;
-
-            const touch = e.touches[0];
-            const deltaX = touch.clientX - touchStart.x;
-            const deltaY = touch.clientY - touchStart.y;
-            const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-
-            // If moving in the right diagonal direction, prevent pull-to-refresh
-            if (angle >= 10 && angle <= 80 && deltaY > 10) {
+            const t = e.touches[0];
+            const dx = t.clientX - touchStart.x;
+            const dy = t.clientY - touchStart.y;
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            // Prevent pull-to-refresh during diagonal swipe
+            if (angle >= ANGLE_MIN && angle <= ANGLE_MAX && dy > 10) {
                 e.preventDefault();
-                isValidSwipe = true;
             }
         }, { passive: false });
 
         homeLink.addEventListener('touchend', (e) => {
             if (window.innerWidth > 768 || !touchStart) return;
 
-            const touch = e.changedTouches[0];
-            const deltaX = touch.clientX - touchStart.x;
-            const deltaY = touch.clientY - touchStart.y;
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const t = e.changedTouches[0];
+            const dx = t.clientX - touchStart.x;
+            const dy = t.clientY - touchStart.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            touchStart = null;
 
-            // Check if it's a swipe (not a tap)
-            if (distance < 30) {
-                touchStart = null;
-                isValidSwipe = false;
-                return; // Let normal tap/click happen
-            }
+            if (dist < MIN_DISTANCE) return; // Tap, not swipe
 
-            // Calculate angle (0° = right, 90° = down)
-            const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-
-            // Accept 10°-80° range (down-right diagonal, forgiving)
-            if (angle >= 10 && angle <= 80 && distance >= 30) {
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            if (angle >= ANGLE_MIN && angle <= ANGLE_MAX) {
                 e.preventDefault();
-                // Haptic feedback if available
                 if (navigator.vibrate) navigator.vibrate(15);
                 showMempoolBlock();
             }
-
-            touchStart = null;
-            isValidSwipe = false;
         });
 
-        // Reset state if touch is interrupted
-        homeLink.addEventListener('touchcancel', () => {
-            touchStart = null;
-            isValidSwipe = false;
-        });
+        homeLink.addEventListener('touchcancel', () => { touchStart = null; });
     }
 
-    // Initialize mobile trigger when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initMobileTrigger);
     } else {
