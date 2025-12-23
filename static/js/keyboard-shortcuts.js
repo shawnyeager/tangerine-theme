@@ -324,20 +324,34 @@
             celebrating = true;
             if (pulseAnim) pulseAnim.pause();
             const centerX = (window.innerWidth - S) / 2 - D;
-            const offRight = window.innerWidth + 50;
-            const offLeft = -svgW - 50;
+            const offRight = window.innerWidth + 100;
+            const offLeft = -svgW - 100;
+
+            // Haptic feedback on mobile
+            if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
 
             createTimeline()
                 .add(content, { opacity: 0, duration: 100, ease: 'outQuad' })
                 .call(() => {
                     content.innerHTML = `<div class="mempool-block-height">${height.toLocaleString()}</div>`;
+                    content.style.display = 'flex';
                 })
-                .set(content, { opacity: 1 })
-                .add(content.firstChild, { scale: [0, 1.15, 1], opacity: [0, 1], duration: 300, ease: 'outBack' })
-                .add(blockWrapper, { left: [centerX, centerX - 15, offRight], duration: 1000, ease: 'inCubic' }, '+=700')
-                .call(() => { content.style.display = 'none'; }, '+=400')
+                // Elastic stamp - impactful arrival
+                .add(content.firstChild, { scale: [0, 1.2, 1], opacity: [0, 1], duration: 400, ease: 'outElastic(1, 0.6)' })
+                // Wind-up before exit
+                .add(blockWrapper, { left: centerX - 20, duration: 150, ease: 'inQuad' }, '+=500')
+                // Fly off right
+                .add(blockWrapper, { left: offRight, duration: 400, ease: 'inCubic' })
+                .add(shadow, { left: offRight, opacity: 0, duration: 400, ease: 'inCubic' }, '<')
+                .call(() => { content.style.display = 'none'; }, '+=250')
+                // Reset left
                 .set(blockWrapper, { left: offLeft })
-                .add(blockWrapper, { left: centerX, duration: 800, ease: 'outCubic' })
+                .set(shadow, { left: offLeft, opacity: 0 })
+                // Fly in from left
+                .add(blockWrapper, { left: centerX, duration: 500, ease: 'outCubic' })
+                .add(shadow, { left: centerX - shadowPad + D, opacity: 0.75, duration: 500, ease: 'outCubic' }, '<')
+                // Settle bounce
+                .add(blockWrapper, { scale: [1, 1.03, 1], duration: 120, ease: 'outQuad' })
                 .call(() => {
                     celebrating = false;
                     firstPaint = true;
@@ -399,7 +413,7 @@
 
         // Fly-in animation: block and shadow in parallel
         createTimeline({ defaults: { duration: BLOCK.FLY_IN, ease: 'inOutCubic' }})
-            .add(blockWrapper, { left: centerX - D, top: centerY - D, width: svgW, height: svgH })
+            .add(blockWrapper, { left: centerX - D, top: centerY - D, width: svgW, height: svgH, ease: 'outBack(1.1)' })
             .add(shadow, {
                 left: centerX - shadowPad,
                 top: centerY + BLOCK.SHADOW_OFFSET - shadowPad,
@@ -430,6 +444,7 @@
             createTimeline({ defaults: { duration: BLOCK.FLY_OUT, ease: 'inOutCubic' }})
                 .add(blockWrapper, { left: sqNow.left, top: sqNow.top, width: sqNow.width, height: sqNow.height })
                 .add(shadow, { left: sqNow.left, top: sqNow.top, width: sqNow.width, height: sqNow.height, opacity: 0, filter: 'blur(20px)' }, 0)
+                .add(blockWrapper, { scale: [1, 1.05, 1], duration: 150, ease: 'outQuad' })
                 .call(() => { mempoolOverlay.remove(); mempoolOverlay = null; });
         };
 
