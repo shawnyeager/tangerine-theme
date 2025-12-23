@@ -163,7 +163,7 @@
         SIZE: 240,
         DEPTH: 35,
         SHADOW_OFFSET: 40,
-        FLY_IN: 600,
+        FLY_IN: 650,
         FLY_OUT: 400,
         PULSE: 1200
     };
@@ -425,8 +425,8 @@
         const travelX = blockEndLeft - sq.left;
         const travelY = blockEndTop - sq.top;
 
-        createTimeline({ defaults: { duration: BLOCK.FLY_IN, ease: 'inOutCubic' }})
-            .add(blockWrapper, { left: blockEndLeft, top: blockEndTop, width: svgW, height: svgH, ease: 'outBack(1.1)' })
+        createTimeline({ defaults: { duration: BLOCK.FLY_IN }})
+            // Shadow arrives first, grounds the motion
             .add(shadow, {
                 left: sq.left + travelX - shadowPad + D,
                 top: sq.top + BLOCK.SHADOW_OFFSET + travelY,
@@ -434,8 +434,20 @@
                 height: S + shadowPad * 2,
                 opacity: 0.75,
                 filter: 'blur(35px)',
-                ease: 'outBack(1.1)'
-            }, 0);
+                ease: 'inOutQuad'
+            }, 0)
+            // Block follows with overshoot
+            .add(blockWrapper, {
+                left: blockEndLeft,
+                top: blockEndTop,
+                ease: 'inOutBack(1.3)'
+            }, 30)
+            // Size catches up slightly after
+            .add(blockWrapper, {
+                width: svgW,
+                height: svgH,
+                ease: 'outBack(1.2)'
+            }, 80);
 
         // Pulse animation (stored for pause/resume on visibility change)
         pulseAnim = animate(blockWrapper, {
@@ -455,10 +467,29 @@
             content.style.display = 'none';
             const sqNow = homeSquare.getBoundingClientRect();
 
-            createTimeline({ defaults: { duration: BLOCK.FLY_OUT, ease: 'inOutCubic' }})
-                .add(blockWrapper, { left: sqNow.left, top: sqNow.top, width: sqNow.width, height: sqNow.height })
-                .add(shadow, { left: sqNow.left, top: sqNow.top, width: sqNow.width, height: sqNow.height, opacity: 0, filter: 'blur(20px)' }, 0)
-                .add(blockWrapper, { scale: [1, 1.05, 1], duration: 150, ease: 'outQuad' })
+            createTimeline({ defaults: { duration: BLOCK.FLY_OUT }})
+                // Size shrinks first
+                .add(blockWrapper, {
+                    width: sqNow.width,
+                    height: sqNow.height,
+                    ease: 'inBack(1.2)'
+                }, 0)
+                // Position follows
+                .add(blockWrapper, {
+                    left: sqNow.left,
+                    top: sqNow.top,
+                    ease: 'inOutBack(1.3)'
+                }, 30)
+                // Shadow trails behind
+                .add(shadow, {
+                    left: sqNow.left,
+                    top: sqNow.top,
+                    width: sqNow.width,
+                    height: sqNow.height,
+                    opacity: 0,
+                    filter: 'blur(20px)',
+                    ease: 'inOutQuad'
+                }, 60)
                 .call(() => { mempoolOverlay.remove(); mempoolOverlay = null; });
         };
 

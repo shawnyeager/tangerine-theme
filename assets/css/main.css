@@ -2961,6 +2961,7 @@ a.qr-link:hover {
 
 .mempool-block-range {
     font-size: var(--font-sm);
+    font-weight: var(--font-weight-normal);
     opacity: var(--opacity-muted);
     margin-bottom: var(--space-xs);
 }
