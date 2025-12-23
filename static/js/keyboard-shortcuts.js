@@ -170,6 +170,8 @@
 
     let mempoolOverlay = null;
     let mempoolWs = null;
+    let pulseAnim = null;
+    let eventController = null;
 
     function parseBlockData(b) {
         const formatFee = (f) => f >= 100 ? Math.round(f) : f >= 10 ? f.toFixed(1) : f.toFixed(2);
@@ -204,11 +206,11 @@
                <div class="mempool-block-time">~10 min</div>`;
             if (firstPaint && window.anime) {
                 firstPaint = false;
-                const { animate } = window.anime;
+                const { animate, stagger } = window.anime;
                 animate(content.children, {
                     opacity: [0, 1],
                     translateY: [10, 0],
-                    delay: (el, i) => i * 50,
+                    delay: stagger(50),
                     duration: 200,
                     ease: 'outQuad'
                 });
@@ -250,7 +252,7 @@
             });
         }
 
-        const { animate, set } = anime;
+        const { animate, set, stagger, createTimeline } = anime;
 
         const styles = getComputedStyle(document.documentElement);
         const brandOrange = styles.getPropertyValue('--brand-orange').trim();
@@ -317,60 +319,31 @@
         blockWrapper.appendChild(svg);
         blockWrapper.appendChild(content);
 
-        // Now that blockWrapper exists, wire up celebration
+        // Now that blockWrapper exists, wire up new block celebration
         celebrateNewBlock = (height) => {
             celebrating = true;
+            if (pulseAnim) pulseAnim.pause();
             const centerX = (window.innerWidth - S) / 2 - D;
             const offRight = window.innerWidth + 50;
             const offLeft = -svgW - 50;
 
-            // Stamp block number on face before flying out
-            if (height) {
-                // Fade out old content, then stamp in new
-                animate(content, {
-                    opacity: 0,
-                    duration: 100,
-                    ease: 'outQuad',
-                    onComplete: () => {
-                        content.innerHTML = `<div class="mempool-block-height">${height.toLocaleString()}</div>`;
-                        set(content, { opacity: 1 });
-                        // Stamp effect - punch in with slight overshoot
-                        animate(content.firstChild, {
-                            scale: [0, 1.15, 1],
-                            opacity: [0, 1],
-                            duration: 300,
-                            ease: 'outBack'
-                        });
-                    }
+            createTimeline()
+                .add(content, { opacity: 0, duration: 100, ease: 'outQuad' })
+                .call(() => {
+                    content.innerHTML = `<div class="mempool-block-height">${height.toLocaleString()}</div>`;
+                })
+                .set(content, { opacity: 1 })
+                .add(content.firstChild, { scale: [0, 1.15, 1], opacity: [0, 1], duration: 300, ease: 'outBack' })
+                .add(blockWrapper, { left: [centerX, centerX - 15, offRight], duration: 1000, ease: 'inCubic' }, '+=700')
+                .call(() => { content.style.display = 'none'; }, '+=400')
+                .set(blockWrapper, { left: offLeft })
+                .add(blockWrapper, { left: centerX, duration: 800, ease: 'outCubic' })
+                .call(() => {
+                    celebrating = false;
+                    firstPaint = true;
+                    if (lastData) updateContent(lastData);
+                    if (pulseAnim) pulseAnim.play();
                 });
-            } else {
-                content.style.display = 'none';
-            }
-
-            // Wind up (slight left), then fly right
-            animate(blockWrapper, {
-                left: [centerX, centerX - 15, offRight],
-                delay: 1000,
-                duration: 1000,
-                ease: 'inCubic',
-                onComplete: () => {
-                    // Brief pause, then new block slides in
-                    setTimeout(() => {
-                        content.style.display = 'none';
-                        set(blockWrapper, { left: offLeft });
-                        animate(blockWrapper, {
-                            left: centerX,
-                            duration: 800,
-                            ease: 'outCubic',
-                            onComplete: () => {
-                                celebrating = false;
-                                // Immediately paint cached data
-                                if (lastData) updateContent(lastData);
-                            }
-                        });
-                    }, 400);
-                }
-            });
         };
 
         mempoolOverlay.appendChild(blockWrapper);
@@ -424,27 +397,20 @@
         const centerY = (window.innerHeight - S) / 2;
         const shadowPad = 20;
 
-        animate(blockWrapper, {
-            left: centerX - D,
-            top: centerY - D,
-            width: svgW,
-            height: svgH,
-            duration: BLOCK.FLY_IN,
-            ease: 'inOutCubic'
-        });
+        // Fly-in animation: block and shadow in parallel
+        createTimeline({ defaults: { duration: BLOCK.FLY_IN, ease: 'inOutCubic' }})
+            .add(blockWrapper, { left: centerX - D, top: centerY - D, width: svgW, height: svgH })
+            .add(shadow, {
+                left: centerX - shadowPad,
+                top: centerY + BLOCK.SHADOW_OFFSET - shadowPad,
+                width: S + shadowPad * 2,
+                height: S + shadowPad * 2,
+                opacity: 0.75,
+                filter: 'blur(35px)'
+            }, 0);
 
-        animate(shadow, {
-            left: centerX - shadowPad,
-            top: centerY + BLOCK.SHADOW_OFFSET - shadowPad,
-            width: S + shadowPad * 2,
-            height: S + shadowPad * 2,
-            opacity: 0.75,
-            filter: 'blur(35px)',
-            duration: BLOCK.FLY_IN,
-            ease: 'inOutCubic'
-        });
-
-        animate(blockWrapper, {
+        // Pulse animation (stored for pause/resume on visibility change)
+        pulseAnim = animate(blockWrapper, {
             filter: ['brightness(1)', 'brightness(0.88)'],
             duration: BLOCK.PULSE,
             loop: true,
@@ -455,58 +421,34 @@
         const close = () => {
             if (!mempoolOverlay) return;
             if (mempoolWs) { mempoolWs.close(); mempoolWs = null; }
+            if (pulseAnim) { pulseAnim.pause(); pulseAnim = null; }
+            if (eventController) { eventController.abort(); eventController = null; }
 
+            content.style.display = 'none';
             const sqNow = homeSquare.getBoundingClientRect();
 
-            // Hide content immediately during fly-out
-            content.style.display = 'none';
-
-            animate(blockWrapper, {
-                left: sqNow.left,
-                top: sqNow.top,
-                width: sqNow.width,
-                height: sqNow.height,
-                duration: BLOCK.FLY_OUT,
-                ease: 'inOutCubic',
-                onComplete: () => {
-                    mempoolOverlay.remove();
-                    mempoolOverlay = null;
-                }
-            });
-
-            animate(shadow, {
-                left: sqNow.left,
-                top: sqNow.top,
-                width: sqNow.width,
-                height: sqNow.height,
-                opacity: 0,
-                filter: 'blur(20px)',
-                duration: BLOCK.FLY_OUT,
-                ease: 'inOutCubic'
-            });
+            createTimeline({ defaults: { duration: BLOCK.FLY_OUT, ease: 'inOutCubic' }})
+                .add(blockWrapper, { left: sqNow.left, top: sqNow.top, width: sqNow.width, height: sqNow.height })
+                .add(shadow, { left: sqNow.left, top: sqNow.top, width: sqNow.width, height: sqNow.height, opacity: 0, filter: 'blur(20px)' }, 0)
+                .call(() => { mempoolOverlay.remove(); mempoolOverlay = null; });
         };
 
-        mempoolOverlay.addEventListener('click', close);
-        document.addEventListener('keydown', function escHandler(e) {
-            if (e.key === 'Escape') {
-                close();
-                document.removeEventListener('keydown', escHandler);
-                document.removeEventListener('visibilitychange', visHandler);
-            }
-        });
+        // Event listeners with AbortController for clean teardown
+        eventController = new AbortController();
+        const { signal } = eventController;
 
-        function visHandler() {
-            if (!mempoolOverlay) {
-                document.removeEventListener('visibilitychange', visHandler);
-                return;
-            }
+        mempoolOverlay.addEventListener('click', close, { signal });
+        document.addEventListener('keydown', e => e.key === 'Escape' && close(), { signal });
+        document.addEventListener('visibilitychange', () => {
+            if (!mempoolOverlay) return;
             if (document.hidden) {
                 if (mempoolWs) { mempoolWs.close(); mempoolWs = null; }
+                if (pulseAnim) pulseAnim.pause();
             } else {
                 connectWs();
+                if (pulseAnim) pulseAnim.play();
             }
-        }
-        document.addEventListener('visibilitychange', visHandler);
+        }, { signal });
     }
 
     // Key sequence tracking for multi-key shortcuts (gg, block)
