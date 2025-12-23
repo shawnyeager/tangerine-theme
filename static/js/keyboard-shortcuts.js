@@ -315,22 +315,23 @@
         svg.appendChild(leftFace);
         svg.appendChild(frontFace);
 
-        const blockWrapper = document.createElement('div');
-        blockWrapper.appendChild(svg);
-        blockWrapper.appendChild(content);
+        // Single container for everything - use scale() so all content scales together
+        const block = document.createElement('div');
 
-        // Shadow inside blockWrapper - moves as one unit
+        // Shadow inside block
         const shadow = document.createElement('div');
         const shadowPad = 20;
-        const shadowOffsetX = D - shadowPad; // 15px right of block origin
-        const shadowOffsetY = BLOCK.SHADOW_OFFSET; // 40px below block origin
+        const shadowOffsetX = D - shadowPad;
+        const shadowOffsetY = BLOCK.SHADOW_OFFSET;
 
-        // Container for block + shadow (animate this for position)
-        const blockGroup = document.createElement('div');
-        blockGroup.appendChild(shadow);
-        blockGroup.appendChild(blockWrapper);
+        block.appendChild(shadow);
+        block.appendChild(svg);
+        block.appendChild(content);
 
-        // Now that blockGroup exists, wire up new block celebration
+        // Scale ratio: brand square to full size
+        const startScale = sq.width / svgW;
+
+        // Wire up new block celebration
         celebrateNewBlock = (height) => {
             celebrating = true;
             if (pulseAnim) pulseAnim.pause();
@@ -338,10 +339,8 @@
             const offRight = window.innerWidth + 100;
             const offLeft = -svgW - 100;
 
-            // Haptic feedback on mobile
             if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
 
-            // Create height element before timeline so we can reference it
             const heightEl = document.createElement('div');
             heightEl.className = 'mempool-block-height';
             heightEl.textContent = height.toLocaleString();
@@ -354,17 +353,13 @@
                     content.style.display = 'flex';
                     set(content, { opacity: 1 });
                 })
-                // Grand stamp - single dramatic impact
                 .add(heightEl, { scale: [0, 1], opacity: [0, 1], duration: 800, ease: 'outBack(2)' })
-                // Let it breathe before flying off
-                .add(blockGroup, { left: centerX - 20, duration: 150, ease: 'inQuad' }, '+=600')
-                // Fly off right - container moves, shadow fades
-                .add(blockGroup, { left: offRight, duration: 400, ease: 'inCubic' })
+                .add(block, { left: centerX - 20, duration: 150, ease: 'inQuad' }, '+=600')
+                .add(block, { left: offRight, duration: 400, ease: 'inCubic' })
                 .add(shadow, { opacity: 0, duration: 400, ease: 'inCubic' }, '<')
                 .call(() => { content.style.display = 'none'; }, '+=250')
-                // Fly in from left - shadow visible from start
                 .call(() => { set(shadow, { opacity: 0.75 }); })
-                .add(blockGroup, { left: [offLeft, centerX], duration: 500, ease: 'outBack(1.1)' })
+                .add(block, { left: [offLeft, centerX], duration: 500, ease: 'outQuad' })
                 .call(() => {
                     celebrating = false;
                     firstPaint = true;
@@ -375,46 +370,42 @@
                 });
         };
 
-        mempoolOverlay.appendChild(blockGroup);
+        mempoolOverlay.appendChild(block);
         document.body.appendChild(mempoolOverlay);
 
         set(mempoolOverlay, { position: 'fixed', inset: 0, zIndex: 9999, cursor: 'pointer' });
 
-        // blockGroup is the animated container
-        set(blockGroup, {
+        // Block at final size, scaled down initially, positioned at brand square
+        set(block, {
             position: 'fixed',
             left: sq.left + 'px', top: sq.top + 'px',
             width: svgW + 'px', height: svgH + 'px',
+            transformOrigin: '0 0',
+            scale: startScale,
             overflow: 'visible'
         });
 
-        // Shadow positioned relative to blockGroup
+        // Shadow positioned inside block
         set(shadow, {
             position: 'absolute',
             left: shadowOffsetX + 'px', top: shadowOffsetY + 'px',
-            width: sq.width + 'px', height: sq.height + 'px',
-            background: 'rgba(0,0,0,0.4)', filter: 'blur(20px)',
+            width: (S + shadowPad * 2) + 'px', height: (S + shadowPad * 2) + 'px',
+            background: 'rgba(0,0,0,0.4)', filter: 'blur(35px)',
             opacity: 0, pointerEvents: 'none'
         });
 
-        // blockWrapper at origin of blockGroup
-        set(blockWrapper, {
+        // SVG fills the block
+        set(svg, {
             position: 'absolute',
             left: 0, top: 0,
-            width: sq.width + 'px', height: sq.height + 'px'
+            width: '100%', height: '100%'
         });
 
-        set(svg, { width: '100%', height: '100%' });
-
-        // Position content over front face
-        const pctOffset = (D / svgW * 100) + '%';
-        const pctSize = (S / svgW * 100) + '%';
+        // Content positioned over front face
         Object.assign(content.style, {
             position: 'absolute',
-            left: pctOffset,
-            top: pctOffset,
-            width: pctSize,
-            height: pctSize,
+            left: D + 'px', top: D + 'px',
+            width: S + 'px', height: S + 'px',
             display: 'none',
             flexDirection: 'column',
             alignItems: 'center',
@@ -443,39 +434,23 @@
         const centerX = (window.innerWidth - S) / 2;
         const centerY = (window.innerHeight - S) / 2;
 
-        // Fly-in: animate blockGroup as single unit
+        // Fly-in: animate single block container
         const blockEndLeft = centerX - D;
         const blockEndTop = centerY - D;
 
         createTimeline({ defaults: { duration: BLOCK.FLY_IN }})
-            // Shadow fades in and grows (position relative to blockGroup)
-            .add(shadow, {
-                width: S + shadowPad * 2,
-                height: S + shadowPad * 2,
-                opacity: 0.75,
-                filter: 'blur(35px)',
-                ease: 'inOutQuad'
-            }, 0)
-            // blockGroup moves and grows (carries both block and shadow)
-            .add(blockGroup, {
+            // Shadow fades in
+            .add(shadow, { opacity: 0.75, ease: 'inOutQuad' }, 0)
+            // Block moves and scales up (everything inside scales together)
+            .add(block, {
                 left: blockEndLeft,
                 top: blockEndTop,
-                ease: 'inOutBack(1.3)'
-            }, 30)
-            .add(blockGroup, {
-                width: svgW,
-                height: svgH,
-                ease: 'outBack(1.2)'
-            }, 80)
-            // blockWrapper fills the blockGroup
-            .add(blockWrapper, {
-                width: svgW,
-                height: svgH,
-                ease: 'outBack(1.2)'
-            }, 80);
+                scale: 1,
+                ease: 'outQuad'
+            }, 0);
 
-        // Pulse animation (stored for pause/resume on visibility change)
-        pulseAnim = animate(blockWrapper, {
+        // Pulse animation
+        pulseAnim = animate(block, {
             filter: ['brightness(1)', 'brightness(0.88)'],
             duration: BLOCK.PULSE,
             loop: true,
@@ -489,35 +464,19 @@
             if (pulseAnim) { pulseAnim.pause(); pulseAnim = null; }
             if (eventController) { eventController.abort(); eventController = null; }
 
-            content.style.display = 'none';
             const sqNow = homeSquare.getBoundingClientRect();
+            const endScale = sqNow.width / svgW;
 
             createTimeline({ defaults: { duration: BLOCK.FLY_OUT }})
-                // Size shrinks first (both blockGroup and blockWrapper)
-                .add(blockGroup, {
-                    width: sqNow.width,
-                    height: sqNow.height,
-                    ease: 'inBack(1.2)'
-                }, 0)
-                .add(blockWrapper, {
-                    width: sqNow.width,
-                    height: sqNow.height,
-                    ease: 'inBack(1.2)'
-                }, 0)
-                // Position follows (blockGroup carries everything)
-                .add(blockGroup, {
+                // Block scales down and moves back to brand square
+                .add(block, {
                     left: sqNow.left,
                     top: sqNow.top,
-                    ease: 'inOutBack(1.3)'
-                }, 30)
-                // Shadow shrinks and fades (position is relative, just animate size/opacity)
-                .add(shadow, {
-                    width: sqNow.width,
-                    height: sqNow.height,
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    ease: 'inOutQuad'
-                }, 60)
+                    scale: endScale,
+                    ease: 'inQuad'
+                }, 0)
+                // Shadow fades
+                .add(shadow, { opacity: 0, ease: 'inQuad' }, 0)
                 .call(() => { mempoolOverlay.remove(); mempoolOverlay = null; });
         };
 
