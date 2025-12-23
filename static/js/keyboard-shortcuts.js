@@ -341,16 +341,23 @@
             // Haptic feedback on mobile
             if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
 
+            // Create height element before timeline so we can reference it
+            const heightEl = document.createElement('div');
+            heightEl.className = 'mempool-block-height';
+            heightEl.textContent = height.toLocaleString();
+
             createTimeline()
                 .add(content, { opacity: 0, duration: 100, ease: 'outQuad' })
                 .call(() => {
-                    content.innerHTML = `<div class="mempool-block-height">${height.toLocaleString()}</div>`;
+                    content.innerHTML = '';
+                    content.appendChild(heightEl);
                     content.style.display = 'flex';
+                    set(content, { opacity: 1 });
                 })
-                // Elastic stamp - impactful arrival
-                .add(content.firstChild, { scale: [0, 1.2, 1], opacity: [0, 1], duration: 400, ease: 'outElastic(1, 0.6)' })
-                // Wind-up before exit - animate container (block+shadow move as one)
-                .add(blockGroup, { left: centerX - 20, duration: 150, ease: 'inQuad' }, '+=500')
+                // Grand stamp - single dramatic impact
+                .add(heightEl, { scale: [0, 1], opacity: [0, 1], duration: 800, ease: 'outBack(2)' })
+                // Let it breathe before flying off
+                .add(blockGroup, { left: centerX - 20, duration: 150, ease: 'inQuad' }, '+=600')
                 // Fly off right - container moves, shadow fades
                 .add(blockGroup, { left: offRight, duration: 400, ease: 'inCubic' })
                 .add(shadow, { opacity: 0, duration: 400, ease: 'inCubic' }, '<')
@@ -520,12 +527,6 @@
 
         mempoolOverlay.addEventListener('click', close, { signal });
         document.addEventListener('keydown', e => e.key === 'Escape' && close(), { signal });
-        // Debug: 'n' triggers fake new block celebration
-        document.addEventListener('keydown', e => {
-            if (e.key === 'n' && mempoolOverlay && !celebrating) {
-                celebrateNewBlock((lastSeenHeight || 876000) + 1);
-            }
-        }, { signal });
         document.addEventListener('visibilitychange', () => {
             if (!mempoolOverlay) return;
             if (document.hidden) {
