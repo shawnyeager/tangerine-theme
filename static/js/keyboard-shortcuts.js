@@ -401,7 +401,17 @@
             pointerEvents: 'none'
         });
 
-        // Start WS now - data will arrive during fly-in
+        // Prefetch data via HTTP (faster than waiting for WS)
+        fetch('https://mempool.space/api/v1/fees/mempool-blocks')
+            .then(r => r.json())
+            .then(blocks => {
+                if (blocks && blocks[0] && !lastData) {
+                    updateContent(parseBlockData(blocks[0]));
+                }
+            })
+            .catch(() => {}); // Silently fail, WS will provide data
+
+        // Start WS for live updates
         connectWs();
 
         // Center front face on screen (accounting for 3D offset)
