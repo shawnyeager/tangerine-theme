@@ -411,9 +411,9 @@
         const centerY = (window.innerHeight - S) / 2;
         const shadowPad = 20;
 
-        // Fly-in animation: block and shadow in parallel
+        // Fly-in animation: block and shadow together
         createTimeline({ defaults: { duration: BLOCK.FLY_IN, ease: 'inOutCubic' }})
-            .add(blockWrapper, { left: centerX - D, top: centerY - D, width: svgW, height: svgH, ease: 'outBack(1.1)' })
+            .add(blockWrapper, { left: centerX - D, top: centerY - D, width: svgW, height: svgH })
             .add(shadow, {
                 left: centerX - shadowPad,
                 top: centerY + BLOCK.SHADOW_OFFSET - shadowPad,
