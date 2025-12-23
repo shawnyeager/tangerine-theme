@@ -74,10 +74,6 @@ tangerine-theme/
 ├── CLAUDE.md                    # This file
 ├── README.md                    # Quick reference guide
 ├── hugo.toml                    # Shared params (merged into sites)
-├── docs/                        # Documentation
-│   ├── BRAND_MESSAGING_BIBLE.md        # Brand voice, messaging, positioning
-│   ├── DESIGN_SYSTEM_SPECIFICATION.md  # Complete design system specs
-│   └── PLAUSIBLE_SETUP.md              # Analytics setup guide
 ├── layouts/
 │   ├── _default/
 │   │   ├── baseof.html         # Base template wrapper
@@ -101,7 +97,7 @@ tangerine-theme/
 
 ## Documentation
 
-**Key documentation files in `docs/`:**
+**Documentation lives in the workspace:** `~/Work/shawnyeager/docs/`
 
 - **DESIGN_SYSTEM_SPECIFICATION.md** - Complete design system documentation including:
   - Color system (light/dark mode)
@@ -135,7 +131,7 @@ Complete CSS implementing the design system:
 - 700px max-width container
 - Perfect fourth typography scale (1.333 ratio)
 
-**For complete specifications:** See `docs/DESIGN_SYSTEM_SPECIFICATION.md`
+**For complete specifications:** See `~/Work/shawnyeager/docs/DESIGN_SYSTEM_SPECIFICATION.md`
 
 ## Shared Configuration (hugo.toml)
 
