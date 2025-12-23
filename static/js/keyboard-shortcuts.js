@@ -347,11 +347,9 @@
                 // Reset left
                 .set(blockWrapper, { left: offLeft })
                 .set(shadow, { left: offLeft, opacity: 0 })
-                // Fly in from left
-                .add(blockWrapper, { left: centerX, duration: 500, ease: 'outCubic' })
-                .add(shadow, { left: centerX - shadowPad + D, opacity: 0.75, duration: 500, ease: 'outCubic' }, '<')
-                // Settle bounce
-                .add(blockWrapper, { scale: [1, 1.03, 1], duration: 120, ease: 'outQuad' })
+                // Fly in from left with overshoot
+                .add(blockWrapper, { left: centerX, duration: 500, ease: 'outBack(1.1)' })
+                .add(shadow, { left: centerX - shadowPad + D, opacity: 0.75, duration: 500, ease: 'outBack(1.1)' }, '<')
                 .call(() => {
                     celebrating = false;
                     firstPaint = true;
@@ -369,7 +367,7 @@
         mempoolOverlay.insertBefore(shadow, blockWrapper);
         set(shadow, {
             position: 'fixed',
-            left: sq.left + 'px', top: sq.top + 'px',
+            left: sq.left + 'px', top: (sq.top + BLOCK.SHADOW_OFFSET) + 'px',
             width: sq.width + 'px', height: sq.height + 'px',
             background: 'rgba(0,0,0,0.4)', filter: 'blur(20px)',
             opacity: 0, pointerEvents: 'none'
@@ -411,16 +409,22 @@
         const centerY = (window.innerHeight - S) / 2;
         const shadowPad = 20;
 
-        // Fly-in animation: block and shadow together
+        // Fly-in: shadow follows block (same vertical travel distance)
+        const blockEndLeft = centerX - D;
+        const blockEndTop = centerY - D;
+        const travelX = blockEndLeft - sq.left;
+        const travelY = blockEndTop - sq.top;
+
         createTimeline({ defaults: { duration: BLOCK.FLY_IN, ease: 'inOutCubic' }})
-            .add(blockWrapper, { left: centerX - D, top: centerY - D, width: svgW, height: svgH })
+            .add(blockWrapper, { left: blockEndLeft, top: blockEndTop, width: svgW, height: svgH, ease: 'outBack(1.1)' })
             .add(shadow, {
-                left: centerX - shadowPad,
-                top: centerY + BLOCK.SHADOW_OFFSET - shadowPad,
+                left: sq.left + travelX - shadowPad + D,
+                top: sq.top + BLOCK.SHADOW_OFFSET + travelY,
                 width: S + shadowPad * 2,
                 height: S + shadowPad * 2,
                 opacity: 0.75,
-                filter: 'blur(35px)'
+                filter: 'blur(35px)',
+                ease: 'outBack(1.1)'
             }, 0);
 
         // Pulse animation (stored for pause/resume on visibility change)
