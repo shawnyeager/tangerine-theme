@@ -1347,6 +1347,7 @@ time.note-date,
     height: auto;
     aspect-ratio: 16 / 9;
     display: block;
+    color: transparent;  /* Hide alt text during load, preserves screen reader access */
 }
 
 /* Mobile: tighter spacing */
