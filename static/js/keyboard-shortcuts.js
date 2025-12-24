@@ -207,8 +207,14 @@
             if (firstPaint && window.anime) {
                 firstPaint = false;
                 const { animate, stagger } = window.anime;
+                // Read CSS-defined opacities (force style calc with offsetHeight)
+                const children = Array.from(content.children);
+                void content.offsetHeight;
+                const targetOpacities = children.map(el =>
+                    parseFloat(getComputedStyle(el).opacity) || 1
+                );
                 animate(content.children, {
-                    opacity: [0, 1],
+                    opacity: (_, i) => [0, targetOpacities[i]],
                     translateY: [10, 0],
                     delay: stagger(50),
                     duration: 200,
