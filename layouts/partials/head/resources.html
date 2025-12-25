@@ -47,9 +47,11 @@ Context Expected:
 <link rel="sitemap" type="application/xml" href="{{ "sitemap.xml" | absURL }}" title="Sitemap">
 
 <!-- Favicons -->
+<!-- High-res PNG for Google Search (padded for circular crop on mobile) -->
+<link rel="icon" type="image/png" sizes="192x192" href="{{ "icon-192.png" | relURL }}">
 <!-- SVG favicon for modern browsers (best quality, scalable) -->
 <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
-<!-- PNG favicons for compatibility -->
+<!-- PNG favicons for browser tabs -->
 <link rel="icon" type="image/png" sizes="96x96" href="{{ "favicon-96x96.png" | relURL }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ "favicon-32x32.png" | relURL }}">
 <link rel="icon" type="image/png" sizes="16x16" href="{{ "favicon-16x16.png" | relURL }}">
