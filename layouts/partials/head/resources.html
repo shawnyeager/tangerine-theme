@@ -13,8 +13,9 @@ Context Expected:
 {{- with .Params.hero_image -}}
   {{- $img := resources.Get . -}}
   {{- if $img -}}
-    {{- $webp := $img.Process "webp q85" -}}
-<link rel="preload" href="{{ $webp.RelPermalink }}" as="image" type="image/webp">
+    {{- $medium := $img.Resize "1024x" -}}
+    {{- $avif := $medium.Process "avif q80" -}}
+<link rel="preload" href="{{ $avif.RelPermalink }}" as="image" type="image/avif">
   {{- end -}}
 {{- end -}}
 {{- $cssPath := "css/main.css" -}}
