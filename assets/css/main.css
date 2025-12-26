@@ -4,28 +4,28 @@
  *
  * TABLE OF CONTENTS
  * -----------------
- * 1. FONTS           (line ~30)        - Web font loading (Satoshi, Inter)
- * 2. TOKENS          (line ~56)        - CSS custom properties, spacing system
- * 3. RESET           (line ~241)       - Base styles, brand bar
- * 4. TYPOGRAPHY      (line ~293)       - Heading hierarchy, body text
- * 5. LINKS           (line ~420)       - Link styles, focus states, link hierarchy
- * 6. LAYOUT          (line ~663)       - Container, header/footer spacing
- * 7. FOOTER          (line ~753)       - Site footer, newsletter signup
- * 8. HOMEPAGE        (line ~881)       - Homepage sections (bio, latest essay, podcast)
- * 9. COMPONENTS      (line ~968)       - Cards, link-grid, topic tags, cta-group
- * 10. ESSAYS         (line ~1182)      - Essay listings, single essay pages
- * 11. MARKDOWN       (line ~1379)      - Content body styles (nested CSS)
- * 12. PAGE-SPECIFIC  (line ~1750)      - Page layouts, pagination, contact, skip links
- * 13. UTILITIES      (line ~1889)      - Helper classes (sr-only, hidden, etc)
- * 14. DARK MODE      (line ~1911)      - Theme toggle & system preference overrides
- * 15. PRINT          (line ~2041)      - Print styles
- * 16. MEDIA EMBEDS   (line ~2055)      - YouTube, video captions
- * 17. MOBILE         (line ~2136)      - Responsive breakpoints
- * 18. V4V PAGE       (line ~2165)      - Value for Value payment page
- * 19. LANDING PAGE   (line ~2604)      - Conversion page styles
- * 20. GHOST BUTTONS  (line ~2665)      - Ghost button base and variants
- * 21. KEYBOARD HELP  (line ~2832)      - Keyboard shortcuts modal
- * 22. BLOCK EASTER   (line ~2956)      - Mempool next block visualization
+ * 1. FONTS           (line ~33)        - Web font loading (Satoshi, Inter)
+ * 2. TOKENS          (line ~67)        - CSS custom properties, spacing system
+ * 3. RESET           (line ~281)       - Base styles, brand bar
+ * 4. TYPOGRAPHY      (line ~334)       - Heading hierarchy, body text
+ * 5. LINKS           (line ~460)       - Link styles, focus states, link hierarchy
+ * 6. LAYOUT          (line ~716)       - Container, header/footer spacing
+ * 7. FOOTER          (line ~806)       - Site footer, newsletter signup
+ * 8. HOMEPAGE        (line ~920)       - Homepage sections (bio, latest essay, podcast)
+ * 9. COMPONENTS      (line ~997)       - Cards, link-grid, topic tags, cta-group
+ * 10. ESSAYS         (line ~1215)      - Essay listings, single essay pages
+ * 11. CONTENT BODY   (line ~1473)      - Reading content styles (CSS nesting)
+ * 12. PAGE-SPECIFIC  (line ~1881)      - Page layouts, pagination, contact, skip links
+ * 13. UTILITIES      (line ~2019)      - Helper classes (sr-only, hidden, etc)
+ * 14. DARK MODE      (line ~2041)      - Theme toggle & system preference overrides
+ * 15. PRINT          (line ~2184)      - Print styles
+ * 16. MEDIA EMBEDS   (line ~2226)      - YouTube, video captions
+ * 17. MOBILE         (line ~2307)      - Responsive breakpoints
+ * 18. V4V PAGE       (line ~2348)      - Value for Value payment page
+ * 19. LANDING PAGE   (line ~2761)      - Conversion page styles
+ * 20. GHOST BUTTONS  (line ~2809)      - Ghost button base and variants
+ * 21. KEYBOARD HELP  (line ~2868)      - Keyboard shortcuts modal
+ * 22. BLOCK EASTER   (line ~2992)      - Mempool next block visualization
  *
  * Line numbers are approximate. Update when making significant structural changes.
  */
@@ -96,7 +96,18 @@
     --brand-orange: light-dark(#d63900, #FF5733);
     --brand-orange-hover: light-dark(#bf3300, #FF6B47);
 
-    /* Text Colors - WCAG AA compliant */
+    /* Text Colors - WCAG AA compliant
+       Color Hierarchy:
+       - --text-primary: Main content, headings, body text
+       - --text-secondary: Descriptions, secondary info
+       - --text-meta: Dates, reading time, timestamps
+       - --text-subtle: Placeholder text, disabled states
+       - --text-bold: Bold/strong text emphasis
+
+       Link Colors:
+       - --brand-orange: Primary links (CTAs, action links)
+       - --text-secondary: Secondary links (footer, nav)
+       - --text-meta: Tertiary links (metadata, timestamps) */
     --text-primary: light-dark(#1a1a1a, #f5f5f4);
     --text-secondary: light-dark(#444, #c8c8c8);
     --text-meta: light-dark(#666, #a8a8a8);
@@ -115,6 +126,9 @@
     --font-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
     --line-height-body: 1.5;
     --line-height-title: 1.15;  /* Tight line-height for large display titles */
+    --line-height-heading: 1.3; /* Headings within content */
+    --line-height-reading: 1.45; /* Essay/note body - tighter than body default */
+    --line-height-none: 1; /* Single-line elements (badges, icons) */
 
     /* Font Weights */
     --font-weight-light: 300;     /* Lighter weight for dark mode */
@@ -340,17 +354,7 @@ h1 {
     letter-spacing: var(--letter-spacing-tight-lg);
 }
 
-/* Homepage display title - large, prominent headline */
-h1.display-title {
-    font-size: var(--font-custom-40);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--line-height-title);
-    margin-top: 0;
-    margin-bottom: var(--space-md);
-    letter-spacing: var(--letter-spacing-tight-lg);
-}
-
-/* Home link square - 24x24px solid orange square */
+/* Brand square in header - home link */
 .home-link {
     display: flex;
     align-items: center;
@@ -372,6 +376,15 @@ h1.display-title {
     opacity: 0.8;
 }
 
+/* Homepage display title - large, prominent headline */
+h1.display-title {
+    font-size: var(--font-custom-40);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-title);
+    margin-top: 0;
+    margin-bottom: var(--space-md);
+    letter-spacing: var(--letter-spacing-tight-lg);
+}
 
 /* Global headings - use typography tokens for tight, consistent spacing */
 h2 {
@@ -915,7 +928,7 @@ body > .container > footer {
     margin-bottom: calc(var(--section-gap) + var(--space-lg));
     color: var(--text-secondary);
     font-size: var(--font-lg-plus);
-    line-height: 1.45;
+    line-height: var(--line-height-reading);
 }
 
 .site-intro .action-link,
@@ -925,7 +938,13 @@ body > .container > footer {
     font-size: inherit;
 }
 
-/* Unified section header style */
+/* Section Label Variants:
+   - .section-label-small: Subtle dividers (--font-sm, --text-subtle)
+     Use for: "Latest Essay", "Topics", "Recent Essays" headers
+   - .section-label-medium: Prominent groupings (--font-base, --text-secondary)
+     Use for: Year headers in essay/note lists
+
+   Both use: Satoshi, uppercase, wide letter-spacing, medium weight */
 .essay-section-header,
 .section-label-small,
 .topics h4 {
@@ -957,7 +976,7 @@ body > .container > footer {
         font-weight: var(--font-weight-medium);
         margin-top: 0;
         margin-bottom: var(--space-sm);  /* 16px - title to description */
-        line-height: 1.3;
+        line-height: var(--line-height-heading);
 
         a {
             color: var(--text-primary);
@@ -989,6 +1008,12 @@ body > .container > footer {
     background: var(--background-card);
     transition: background-color var(--transition-fast);
     contain: layout style paint; /* Isolate rendering for better performance */
+    margin-bottom: var(--space-xl);
+}
+
+/* RSS-specific: relative positioning for absolute copy button */
+.rss-feed-card {
+    position: relative;
 }
 
 /* Podcast card - lighter weight than other cards */
@@ -1004,17 +1029,6 @@ body > .container > footer {
     > *:last-child {
         margin-bottom: 0;
     }
-}
-
-/* Link grid and RSS cards share spacing */
-.link-grid-card,
-.rss-feed-card {
-    margin-bottom: var(--space-xl);
-}
-
-/* RSS Feed Card - relative positioning for absolute copy button */
-.rss-feed-card {
-    position: relative;
 }
 
 .rss-url {
@@ -1245,7 +1259,7 @@ body > .container > footer {
         text-decoration: none;
         display: flex;
         gap: var(--space-lg);
-        line-height: 1.5;
+        line-height: var(--line-height-body);
         align-items: baseline;
 
         &:hover {
@@ -1355,9 +1369,12 @@ time.note-date,
     }
 }
 
-/* Dark mode: soft edge fade + subtle warm tint for brand cohesion */
+/* Dark mode: soft edge fade + subtle warm tint for brand cohesion
+   Uses same pattern as dark mode font-weight rules (section 14):
+   - Media query with :not([data-theme="light"]) for system dark
+   - Explicit html[data-theme="dark"] for user toggle to dark */
 @media (prefers-color-scheme: dark) {
-    .essay-hero-image {
+    html:not([data-theme="light"]) .essay-hero-image {
         filter: brightness(0.88) sepia(15%) saturate(1.1);
         mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
         -webkit-mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
@@ -1370,16 +1387,10 @@ html[data-theme="dark"] .essay-hero-image {
     -webkit-mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
 }
 
-html[data-theme="light"] .essay-hero-image {
-    filter: none;
-    mask-image: none;
-    -webkit-mask-image: none;
-}
-
 .essay-body,
 .note-body {
     font-size: var(--font-lg);
-    line-height: 1.45;  /* Tighter than body default (1.5) for optimal reading */
+    line-height: var(--line-height-reading);
 
     /* Paragraphs */
     p {
@@ -1535,7 +1546,7 @@ html[data-theme="light"] .essay-hero-image {
         border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
         border-radius: var(--border-radius-code);
         overflow-x: auto;
-        line-height: 1.5;
+        line-height: var(--line-height-body);
 
         code {
             background: none;
@@ -1661,7 +1672,7 @@ html[data-theme="light"] .essay-hero-image {
                 color: white;
                 font-size: 0.9em;
                 font-weight: var(--font-weight-bold);
-                line-height: 1;
+                line-height: var(--line-height-none);
             }
         }
     }
@@ -2139,7 +2150,11 @@ a.back-link:hover {
 
 /* Dark Mode (Explicit Toggle) - User toggled to dark mode regardless of system
    Needed when system is light but user wants dark mode
-   -------------------------------------------------- */
+   --------------------------------------------------
+   NOTE: These rules duplicate the media query rules above. This is intentional:
+   - Media query handles: system=dark AND user hasn't forced light
+   - Explicit toggle handles: user forced dark (overrides system light)
+   Both are needed for complete dark mode support. */
 
 html[data-theme="dark"] {
     --para-gap-long-form: 1.375rem;
@@ -2193,7 +2208,7 @@ html[data-theme="dark"] .note-title {
     a[href^="http"]::after {
         content: " (" attr(href) ")";
         font-size: 0.8em;
-        color: #666;
+        color: var(--text-meta);
     }
     /* Don't show URL for internal links */
     a[href^="/"]::after,
@@ -2765,7 +2780,7 @@ a.qr-link:hover {
     font-size: var(--font-xl);
     font-weight: var(--font-weight-body);
     color: var(--text-secondary);
-    line-height: 1.4;
+    line-height: var(--line-height-heading);
     margin: 0 0 var(--space-xl) 0;
 }
 
@@ -2777,7 +2792,7 @@ a.qr-link:hover {
 .landing-body p {
     font-size: var(--font-lg);
     color: var(--text-primary);
-    line-height: 1.5;
+    line-height: var(--line-height-body);
     margin: 0 0 var(--space-md) 0;
 }
 
