@@ -1,0 +1,42 @@
+{{/*
+Purpose: Generates JSON-LD structured data for WebSite schema
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .IsHome - Only runs on homepage
+- .Site.Title, .Site.BaseURL - Website metadata
+- .Site.Params.description - Site description
+- .Site.Params.author.* - Author information (name, email, description, jobTitle, image)
+- .Site.Params.author.sameAs.* - Social profile URLs (linkedin, github, nostr, podcast)
+
+Features:
+- WebSite schema for homepage
+- Author as Person with description, jobTitle, image, and sameAs links
+- Copyright holder and year
+- Social media profiles from author.sameAs config
+
+Important Notes:
+- Only generates on homepage (.IsHome check)
+- Copyright year uses current year (now.Format "2006")
+- Social links built from author.sameAs config (linkedin, github, nostr, podcast)
+*/}}
+
+{{- if .IsHome -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ .Site.Title }}",
+  "url": "{{ .Site.BaseURL }}",
+  "description": "{{ .Site.Params.description }}",
+  "inLanguage": "en-US",
+  "author": {{ partial "structured-data-author.html" . | safeJS }},
+  "copyrightYear": "{{ now.Format "2006" }}",
+  "copyrightHolder": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author.name }}"
+  }
+}
+</script>
+{{- end -}}

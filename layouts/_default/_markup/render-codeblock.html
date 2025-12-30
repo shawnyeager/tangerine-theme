@@ -1,0 +1,9 @@
+{{/*
+Render hook for fenced code blocks.
+Adds lang attribute to <pre> for screen reader accessibility.
+*/}}
+
+{{- $lang := .Type | default "text" -}}
+{{- $highlighted := transform.Highlight .Inner $lang -}}
+{{- $highlighted = replaceRE `<pre[^>]*>` (printf `<pre lang="%s">` $lang) $highlighted -}}
+{{ $highlighted | safeHTML }}

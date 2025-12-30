@@ -1,0 +1,38 @@
+{{/*
+Purpose: Generates JSON-LD structured data for ProfilePage schema
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .Title, .Description - Page metadata
+- .Permalink - Page URL
+- .Site.Params.description - Fallback description
+- .Site.Params.author.* - Author information (name, email, description, jobTitle, image)
+- .Site.Params.author.sameAs.* - Social profile URLs (fountain, github, linkedin, nostr, substack)
+- .Site.BaseURL - Site base URL
+
+Features:
+- ProfilePage schema for personal/about pages
+- mainEntity as Person with full author details
+- Applied to pages with layout="now", layout="podcast", or type="page"
+- Includes author image, jobTitle, description, and social profiles
+
+Important Notes:
+- Only runs on specific personal pages (not homepage, not content pages)
+- mainEntity is the author (Person) that the page is about
+- Helps search engines understand profile-related pages
+*/}}
+
+{{- if or (eq .Layout "now") (eq .Layout "podcast") (and (eq .Type "page") (ne .Layout "")) -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "name": "{{ .Title }}",
+  "url": "{{ .Permalink }}",
+  "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}",
+  "inLanguage": "en-US",
+  "mainEntity": {{ partial "structured-data-author.html" . | safeJS }}
+}
+</script>
+{{- end -}}

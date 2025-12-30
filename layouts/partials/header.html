@@ -1,0 +1,23 @@
+{{/*
+Purpose: Renders site header with home link square and main navigation
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .Site.Title - Site title (used in aria-label for accessibility)
+
+Features:
+- 24x24px solid orange square as home link
+- Accessible via aria-label="Home"
+- Hover state: opacity 0.8
+- Flexbox layout with space-between
+
+Important Notes:
+- Square uses brand orange color
+- Navigation partial unchanged
+*/}}
+
+<header aria-label="Site header">
+    <a href="{{ "/" | relURL }}" class="home-link" aria-label="Home"><span class="home-square{{ if eq .Site.Params.favicon_style "outlined" }} home-square--outlined{{ end }}"></span></a>
+    {{ partial "navigation.html" . }}
+</header>

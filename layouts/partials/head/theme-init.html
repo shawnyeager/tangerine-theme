@@ -1,0 +1,22 @@
+{{/*
+Purpose: Dark mode initialization script (runs immediately to prevent FOUC)
+
+This script runs before page render to apply saved theme preference from localStorage,
+preventing Flash of Unstyled Content (FOUC) when the page loads.
+
+No context expected - this is a standalone script
+*/}}
+
+<!-- Dark Mode Initialization - Runs immediately to prevent FOUC -->
+<script>
+    (function() {
+        try {
+            const stored = localStorage.getItem('tangerine-theme-preference');
+            if (stored) {
+                document.documentElement.setAttribute('data-theme', stored);
+            }
+        } catch (e) {
+            // Fail silently - fall back to system preference via CSS media query
+        }
+    })();
+</script>

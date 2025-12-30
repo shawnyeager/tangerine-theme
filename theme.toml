@@ -1,0 +1,13 @@
+name = "Tangerine Theme"
+license = "MIT"
+licenselink = ""
+description = "Minimal Hugo theme for essays and notes with clean typography, dark mode, and semantic HTML"
+homepage = "https://github.com/shawnyeager/tangerine-theme"
+demosite = ""
+tags = ["personal", "blog", "minimal"]
+features = ["responsive", "dark-mode", "accessibility"]
+min_version = "0.151.0"
+
+[author]
+  name = "Shawn Yeager"
+  homepage = "https://shawnyeager.com"

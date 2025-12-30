@@ -1,0 +1,52 @@
+{{/*
+Purpose: Renders taxonomy listing pages (e.g., /topics/, /tags/)
+
+Parameters: None (uses page and site context)
+
+Context Expected:
+- .Data.Singular - Singular taxonomy name (e.g., "topic")
+- .Data.Plural - Plural taxonomy name (e.g., "topics")
+- .Data.Terms - All terms in this taxonomy
+- .Site.Params.content_type - "essays" or "notes" (default: "essays")
+
+Features:
+- Dynamic heading from taxonomy plural name
+- Alphabetically sorted taxonomy terms
+- Term count displayed for each term
+- Parameterized back link based on content type
+- Links to individual taxonomy term pages
+
+Display Format:
+- Heading: "All Topics" or "All Tags" (titlecased)
+- Terms: "Bitcoin (5)" "Sales (3)" etc.
+- Back link: "← All essays" or "← All notes"
+
+Important Notes:
+- Terms sorted alphabetically via .Alphabetical
+- Count shows number of pages with each term
+- Back link URL differs: essays→/essays/, notes→/
+- CSS classes: note-back-link vs back-link based on content type
+*/}}
+
+{{ define "main" }}
+    {{/* Dynamic title based on taxonomy type */}}
+    {{ $taxonomyPlural := .Data.Plural | title }}
+    <h1 class="page-title">{{ $taxonomyPlural }}</h1>
+
+    {{ if .Data.Terms }}
+    <section class="topics">
+        <div class="topic-tags">
+            {{ range .Data.Terms.Alphabetical }}
+            <a href="{{ .Page.Permalink }}">{{ .Page.Title }} ({{ .Count }})</a>
+            {{ end }}
+        </div>
+    </section>
+    {{ end }}
+
+    {{/* Parameterized back link based on content type */}}
+    {{ $contentType := .Site.Params.content_type | default "essays" }}
+    {{ $backLinkURL := cond (eq $contentType "notes") "/" (printf "/%s/" $contentType) }}
+    {{ $backLinkText := printf "All %s" $contentType }}
+
+    {{- partial "content-nav.html" (dict "back_url" ($backLinkURL | relURL) "back_text" $backLinkText) -}}
+{{ end }}

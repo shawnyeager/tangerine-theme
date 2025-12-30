@@ -1,0 +1,27 @@
+{{/*
+Purpose: Groups related CTAs with proper spacing and layout
+
+Parameters: None
+
+Inner Content:
+- One or more cta shortcodes
+
+Features:
+- Flex column layout
+- Consistent gap spacing between CTAs
+- Left-aligned
+
+Usage:
+{{< cta-group >}}
+{{< cta url="/start" text="Get started" variant="ghost" >}}
+{{< cta url="/contact" text="Or reach out" variant="secondary" >}}
+{{< /cta-group >}}
+
+Important Notes:
+- Use when multiple CTAs should appear as a unit
+- Provides consistent spacing via gap property
+*/}}
+
+<div class="cta-group">
+{{ .Inner }}
+</div>

@@ -1,0 +1,19 @@
+{{/*
+Purpose: Gone page (parameterized for essays/notes)
+
+Uses:
+- .Site.Params.content_type - "essays" or "notes"
+- content-nav.html partial for home navigation
+*/}}
+
+{{ define "main" }}
+<h1 class="page-title">Gone</h1>
+<div class="page-body">
+    {{ if eq .Site.Params.content_type "notes" }}
+    <p>I took this page down. If you're looking for something I wrote, try the <a href="{{ "notes" | relURL }}">notes</a>.</p>
+    {{ else }}
+    <p>I took this page down. If you're looking for something I wrote, try the <a href="{{ "essays" | relURL }}">essays</a>.</p>
+    {{ end }}
+</div>
+{{- partial "content-nav.html" (dict "back_url" ("/" | relURL) "back_text" "Home") -}}
+{{ end }}

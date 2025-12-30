@@ -1,0 +1,64 @@
+{{/*
+Purpose: Renders a label-value pair with optional link or code formatting
+
+Parameters:
+- label (string, required): Label text
+- value (string, required): Value text (or use inner content)
+- url (string, optional): Makes value a clickable link
+- code (string, optional): If "true", renders value in monospace code element
+- multiline (string, optional): If "true" with code="true", splits value on "|" for two-line display
+
+Features:
+- Four display modes based on parameters:
+  1. Code + Multiline: Renders value split on "|" with <br> between lines
+  2. Code: Renders value in <code> element (colon omitted from label)
+  3. Link: Renders value as clickable <a> element
+  4. Plain: Renders value as <span> element
+- Supports inner content as alternative to value parameter
+- Consistent info-pair styling
+
+Usage:
+{{< detail-pair label="Email" value="hello@example.com" url="mailto:hello@example.com" >}}
+{{< detail-pair label="API Key" value="sk_test_..." code="true" >}}
+{{< detail-pair label="Status" value="Active" >}}
+{{< detail-pair label="Fingerprint" value="ABCD 1234|EF56 7890" code="true" multiline="true" >}}
+{{< detail-pair label="Bio" >}}Inner content works here{{< /detail-pair >}}
+
+Important Notes:
+- Colon automatically added to label unless code="true"
+- Code mode useful for displaying keys, hashes, or technical values
+- Multiline splits on pipe character "|" and renders with <br> tag
+- Inner content takes precedence over value parameter if both provided
+*/}}
+
+{{- $label := .Get "label" -}}
+{{- $url := .Get "url" -}}
+{{- $value := .Get "value" -}}
+{{- $code := .Get "code" -}}
+{{- $multiline := .Get "multiline" -}}
+{{- $inner := .Inner | strings.TrimLeft "\n" | strings.TrimRight "\n" -}}
+{{- $content := cond (ne $inner "") $inner $value -}}
+
+{{- /* Validate required parameters */ -}}
+{{- if not $label -}}
+    {{- errorf "detail-pair shortcode: 'label' parameter is required in %s" .Position -}}
+{{- end -}}
+{{- if and (not $value) (eq $inner "") -}}
+    {{- errorf "detail-pair shortcode: 'value' parameter or inner content is required in %s" .Position -}}
+{{- end -}}
+
+<div class="info-pair">
+    <span class="info-label">{{ $label }}{{ if not (eq $code "true") }}:{{ end }}</span>
+    {{- if eq $code "true" -}}
+        {{- if eq $multiline "true" -}}
+        {{- $lines := split $content "|" -}}
+        <code>{{ index $lines 0 }}<br>{{ index $lines 1 }}</code>
+        {{- else -}}
+        <code>{{ $content }}</code>
+        {{- end -}}
+    {{- else if $url -}}
+        <a href="{{ $url }}" class="info-value">{{ $content }}</a>
+    {{- else -}}
+        <span class="info-value">{{ $content }}</span>
+    {{- end -}}
+</div>

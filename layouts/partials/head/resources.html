@@ -1,0 +1,61 @@
+{{/*
+Purpose: CSS, fonts, RSS, sitemap, and favicon resources
+
+Context Expected:
+- .Site.Params.favicon_style - Favicon style ("solid" or "outlined")
+- .Site.Title - Site title for RSS feed
+- .OutputFormats - Available output formats (for RSS link)
+*/}}
+
+<!-- Preload critical resources -->
+<link rel="preload" href="{{ "fonts/Satoshi-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/Inter-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+{{- with .Params.hero_image -}}
+  {{- $img := resources.Get . -}}
+  {{- if $img -}}
+    {{- $medium := $img.Resize "1024x" -}}
+    {{- $avif := $medium.Process "avif q80" -}}
+<link rel="preload" href="{{ $avif.RelPermalink }}" as="image" type="image/avif">
+  {{- end -}}
+{{- end -}}
+{{- $cssPath := "css/main.css" -}}
+{{- $css := resources.Get $cssPath -}}
+{{- if $css -}}
+  {{/* Minify once, then fingerprint */}}
+  {{- $cssMinified := $css | resources.Minify -}}
+  {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
+  <link rel="preload" href="{{ $cssFingerprinted.RelPermalink }}" as="style" integrity="{{ $cssFingerprinted.Data.Integrity }}">
+{{- else -}}
+  <link rel="preload" href="{{ $cssPath | relURL }}" as="style">
+{{- end -}}
+
+<!-- CSS -->
+{{- if $css -}}
+  {{- $cssMinified := $css | resources.Minify -}}
+  {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
+  <link rel="stylesheet" href="{{ $cssFingerprinted.RelPermalink }}" integrity="{{ $cssFingerprinted.Data.Integrity }}">
+{{- else -}}
+  <link rel="stylesheet" href="{{ $cssPath | relURL }}">
+{{- end -}}
+
+<!-- RSS Feed -->
+{{ with .OutputFormats.Get "rss" -}}
+{{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end -}}
+
+<!-- Sitemap -->
+<link rel="sitemap" type="application/xml" href="{{ "sitemap.xml" | absURL }}" title="Sitemap">
+
+<!-- Favicons -->
+<!-- High-res PNG for Google Search (padded for circular crop on mobile) -->
+<link rel="icon" type="image/png" sizes="192x192" href="{{ "icon-192.png" | relURL }}">
+<!-- SVG favicon for modern browsers (best quality, scalable) -->
+<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+<!-- PNG favicons for browser tabs -->
+<link rel="icon" type="image/png" sizes="96x96" href="{{ "favicon-96x96.png" | relURL }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ "favicon-32x32.png" | relURL }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ "favicon-16x16.png" | relURL }}">
+<!-- ICO fallback for legacy browsers -->
+<link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ "apple-touch-icon.png" | relURL }}">
+<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">

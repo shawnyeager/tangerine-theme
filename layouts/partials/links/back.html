@@ -1,0 +1,29 @@
+{{/*
+Purpose: Renders a back navigation link with left arrow
+
+Parameters (dict):
+  url      (string, required): Link destination
+  text     (string, required): Link text
+  event    (string, optional): Plausible analytics event name
+  class    (string, optional): Additional CSS classes
+
+Usage in templates:
+  {{ partial "links/back.html" (dict "url" "/essays/" "text" "All essays") }}
+  {{ partial "links/back.html" (dict "url" "/" "text" "All notes" "event" "back_click") }}
+
+Important Notes:
+- Always outputs back-link class
+- Arrow uses aria-hidden for accessibility
+- Link text wrapped in span for hover underline styling
+*/}}
+
+{{- $url := .url -}}
+{{- $text := .text -}}
+{{- $event := .event | default "" -}}
+{{- $extraClass := .class | default "" -}}
+
+{{- $class := "back-link" -}}
+{{- if $extraClass }}{{ $class = printf "%s %s" $class $extraClass }}{{ end -}}
+{{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
+
+<a href="{{ $url }}" class="{{ $class }}"><span class="arrow" aria-hidden="true">←</span><span class="link-text">{{ $text }}</span></a>

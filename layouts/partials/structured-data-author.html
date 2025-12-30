@@ -1,0 +1,17 @@
+{{/*
+Purpose: Generates JSON-LD Person schema fragment for author
+
+Parameters: None (uses site context)
+
+Context Expected:
+- See partials/functions/build-author-dict.html for full context requirements
+
+Output:
+- Raw JSON fragment for Person schema (no trailing comma)
+- Designed to be embedded within parent JSON-LD structures
+
+Usage:
+  "author": {{ partial "structured-data-author.html" . }}
+*/}}
+{{- $author := partial "functions/build-author-dict.html" . -}}
+{{- $author | jsonify | safeHTML -}}

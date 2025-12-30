@@ -1,0 +1,64 @@
+{{/*
+Purpose: Generates JSON-LD structured data for FAQPage schema on podcast page
+
+Parameters: None (uses page and site context)
+
+Context Expected:
+- .Layout - Page layout (only runs on layout="podcast")
+- .Site.Params.podcast_name - Podcast name
+- .Site.Params.podcast_rss - RSS feed URL
+- .Site.Params.author.name - Host name
+
+Features:
+- FAQPage schema for rich snippets in search results
+- Standard podcast questions (subscribe, schedule, host, format)
+- Only renders on podcast pages
+
+Important Notes:
+- Only generates on podcast layout pages (layout="podcast" check)
+- Helps create expandable FAQ sections in Google search results
+- Improves click-through rate from search
+*/}}
+
+{{- if and (eq .Layout "podcast") .Site.Params.podcast_name -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I subscribe to {{ .Site.Params.podcast_name }}?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Subscribe via your favorite podcast app using our RSS feed at {{ .Site.Params.podcast_rss }}, or listen directly on Fountain.fm. The podcast is available on all major podcast platforms."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often are new episodes released?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "New episodes of {{ .Site.Params.podcast_name }} are released weekly, featuring unfiltered conversations about rethinking trust for a decentralized future."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who hosts {{ .Site.Params.podcast_name }}?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The podcast is hosted by {{ .Site.Params.author.name }}, {{ .Site.Params.author.description }}."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the format of the podcast?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ .Site.Params.podcast_name }} features in-depth, unfiltered conversations exploring trust, decentralization, and Bitcoin. Episodes are audio-only, designed for focused listening and available in podcast format."
+      }
+    }
+  ]
+}
+</script>
+{{- end -}}

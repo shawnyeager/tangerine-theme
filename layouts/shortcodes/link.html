@@ -1,0 +1,48 @@
+{{/*
+Purpose: Renders a styled link with optional analytics tracking
+
+Parameters:
+- url (string, required): Link destination, or "podcast" to use site.Params.podcast_url
+- text (string, required): Link text
+- style (string, optional): Link style - "plain" (default), "cta", or "back"
+- event (string, optional): Plausible analytics event name
+
+Features:
+- Three style variants:
+  - "plain": Standard link (no class)
+  - "cta": Call-to-action with → arrow
+  - "back": Back link with ← arrow
+- Optional analytics event tracking
+- Special URL value "podcast" resolves to site.Params.podcast_url
+
+Usage:
+{{< link url="/about" text="Learn more" >}}
+{{< link url="/subscribe" text="Get Started" style="cta" >}}
+{{< link url="/essays" text="Back to Essays" style="back" >}}
+{{< link url="/download" text="Download" event="download_click" >}}
+{{< link url="podcast" text="Listen" style="cta" >}}
+
+Important Notes:
+- Arrows use aria-hidden for accessibility
+- Analytics event added via plausible-event-name class
+- Default style is "plain" (basic link)
+*/}}
+
+{{- $urlParam := .Get "url" -}}
+{{- $text := .Get "text" -}}
+{{- $style := .Get "style" | default "plain" -}}
+{{- $event := .Get "event" -}}
+
+{{/* Resolve special URL values to site params */}}
+{{- $url := $urlParam -}}
+{{- if eq $urlParam "podcast" -}}
+    {{- $url = site.Params.podcast_url -}}
+{{- end -}}
+
+{{- if eq $style "cta" -}}
+    {{- partial "links/action.html" (dict "url" $url "text" $text "event" $event) -}}
+{{- else if eq $style "back" -}}
+<nav class="content-nav">{{- partial "links/back.html" (dict "url" $url "text" $text "event" $event) -}}</nav>
+{{- else -}}
+    <a href="{{ $url }}"{{ if $event }} class="plausible-event-name={{ $event }}"{{ end }}>{{ $text }}</a>
+{{- end -}}

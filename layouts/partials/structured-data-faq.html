@@ -1,0 +1,51 @@
+{{/*
+Purpose: Generates JSON-LD structured data for FAQPage schema
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .Params.faq - Array of FAQ items, each with "question" and "answer" keys
+
+Usage in frontmatter:
+  faq:
+    - question: "What is Bitcoin?"
+      answer: "Bitcoin is a decentralized digital currency..."
+    - question: "How does it work?"
+      answer: "Bitcoin uses a peer-to-peer network..."
+
+Features:
+- FAQPage schema for rich snippets in search results
+- Only renders when faq frontmatter is present with valid items
+- Supports any number of Q&A pairs
+
+Important Notes:
+- Requires explicit frontmatter definition (no auto-detection)
+- Each FAQ item must have both "question" and "answer" keys
+- Helps create expandable FAQ sections in Google search results
+*/}}
+
+{{- with .Params.faq -}}
+{{- if gt (len .) 0 -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{- range $index, $item := . -}}
+    {{- if and $item.question $item.answer -}}
+    {{- if $index }},{{ end }}
+    {
+      "@type": "Question",
+      "name": {{ $item.question | jsonify }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ $item.answer | jsonify }}
+      }
+    }
+    {{- end -}}
+    {{- end }}
+  ]
+}
+</script>
+{{- end -}}
+{{- end -}}

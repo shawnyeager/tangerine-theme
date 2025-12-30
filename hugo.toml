@@ -1,0 +1,10 @@
+# Hugo Configuration for Tangerine Theme
+# Shared params for all sites using this theme
+#
+# NOTE: Hugo only merges [params] and [[menu.*]] from theme modules
+# Top-level config (markup, imaging, taxonomies, etc.) must be in site configs
+# Sites automatically inherit these params via Hugo's module merge system
+# Site-specific hugo.toml files override these defaults as needed
+
+# Theme is now fully reusable - no personal information
+# Sites must define all [params] in their own hugo.toml files

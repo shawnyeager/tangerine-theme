@@ -1,0 +1,44 @@
+{{/*
+Purpose: Builds author Person dict for JSON-LD structured data
+
+Parameters: None (uses site context)
+
+Context Expected:
+- .Site.Params.author.name - Author name (required)
+- .Site.Params.author.email - Author email
+- .Site.BaseURL - Author URL
+- .Site.Params.author.description - Optional author bio
+- .Site.Params.author.jobTitle - Optional job title
+- .Site.Params.author.image - Optional profile image
+- .Site.Params.author.sameAs.* - Social profile URLs (fountain, github, linkedin, nostr, substack)
+
+Output:
+- Hugo dict representing Person schema
+- Designed for use with jsonify in dict-based structured data templates
+
+Usage:
+  {{- $author := partial "functions/build-author-dict.html" . -}}
+  {{- $structuredData = merge $structuredData (dict "author" $author) -}}
+*/}}
+{{- $author := dict "@type" "Person" "name" .Site.Params.author.name "email" .Site.Params.author.email "url" .Site.BaseURL -}}
+{{- with .Site.Params.author.description -}}
+  {{- $author = merge $author (dict "description" .) -}}
+{{- end -}}
+{{- with .Site.Params.author.jobTitle -}}
+  {{- $author = merge $author (dict "jobTitle" .) -}}
+{{- end -}}
+{{- with .Site.Params.author.image -}}
+  {{- $author = merge $author (dict "image" (. | absURL)) -}}
+{{- end -}}
+{{- with .Site.Params.author.sameAs -}}
+  {{- $sameAs := slice -}}
+  {{- with .fountain -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- with .github -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- with .linkedin -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- with .nostr -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- with .substack -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- if gt (len $sameAs) 0 -}}
+    {{- $author = merge $author (dict "sameAs" $sameAs) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $author -}}

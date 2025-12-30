@@ -1,0 +1,62 @@
+{{/*
+Purpose: Generates JSON-LD structured data for BreadcrumbList schema
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .IsHome - Skip on homepage (no breadcrumbs needed)
+- .Kind - Page type for conditional breadcrumb generation
+- .Section - Section name (e.g., "essays", "notes")
+- .Title - Page title for final breadcrumb
+- .Site.BaseURL - Base URL for breadcrumb items
+
+Features:
+- Breadcrumb navigation trail for SEO
+- Dynamic position calculation based on hierarchy
+- Always includes Home as position 1
+- Adds Section as position 2 (if exists)
+- Adds current page as final item (unless on section page)
+
+Breadcrumb Structure:
+- Homepage: No breadcrumbs
+- Section page (e.g., /essays/): Home → Essays
+- Content page (e.g., /essays/bitcoin/): Home → Essays → Bitcoin
+- Page without section: Home → Page Title
+
+Important Notes:
+- Position numbers adjust based on hierarchy depth
+- Final breadcrumb item omits "item" property (current page, not clickable)
+- Section names are titlecased for display
+*/}}
+
+{{- if not .IsHome -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    }
+    {{- if .Section -}}
+    ,{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ .Section | title }}",
+      "item": "{{ .Site.BaseURL }}{{ .Section }}/"
+    }
+    {{- end -}}
+    {{- if not (or .IsHome (eq .Kind "section")) -}}
+    ,{
+      "@type": "ListItem",
+      "position": {{ if .Section }}3{{ else }}2{{ end }},
+      "name": "{{ .Title }}"
+    }
+    {{- end -}}
+  ]
+}
+</script>
+{{- end -}}

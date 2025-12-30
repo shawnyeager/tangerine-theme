@@ -1,0 +1,22 @@
+{{/*
+Purpose: Renders a link to a podcast platform
+
+Parameters:
+- url (string, optional): Custom URL (default: .Site.Params.podcast_url)
+- text (string, optional): Link text (default: "Listen on Fountain")
+- event (string, optional): Plausible analytics event name
+
+Usage:
+{{< podcast-link >}}
+{{< podcast-link url="https://fountain.fm/show/..." text="Fountain" >}}
+{{< podcast-link url="https://podcasts.apple.com/..." text="Apple Podcasts" >}}
+
+Note: This shortcode outputs a plain <a> tag designed to work inside link-grid.
+The .link-grid a CSS provides orange color, medium weight, and underline on hover.
+*/}}
+
+{{- $url := .Get "url" | default .Site.Params.podcast_url -}}
+{{- $text := .Get "text" | default "Listen on Fountain" -}}
+{{- $event := .Get "event" -}}
+
+<a href="{{ $url }}"{{ if $event }} class="plausible-event-name={{ $event }}"{{ end }}>{{ $text }}</a>

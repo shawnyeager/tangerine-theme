@@ -1,0 +1,30 @@
+{{/*
+Purpose: End-of-content navigation container
+
+Parameters (dict):
+  action_url   (string, optional): Primary action link URL
+  action_text  (string, optional): Primary action link text
+  action_icon  (string, optional): "arrow" (default), "lightning", "none"
+  action_event (string, optional): Plausible analytics event name
+  back_url     (string, required): Back link URL
+  back_text    (string, required): Back link text
+  back_event   (string, optional): Plausible analytics event name
+
+Usage:
+  {{ partial "content-nav.html" (dict "back_url" "/essays/" "back_text" "All essays") }}
+
+  {{ partial "content-nav.html" (dict
+      "action_url" "/v4v/"
+      "action_text" "Zap this essay"
+      "action_icon" "lightning"
+      "back_url" "/essays/"
+      "back_text" "All essays"
+  ) }}
+*/}}
+
+<nav class="content-nav">
+    {{- if and .action_url .action_text }}
+        {{- partial "links/action.html" (dict "url" .action_url "text" .action_text "icon" (.action_icon | default "arrow") "event" .action_event) }}
+    {{- end }}
+    {{- partial "links/back.html" (dict "url" .back_url "text" .back_text "event" .back_event) }}
+</nav>

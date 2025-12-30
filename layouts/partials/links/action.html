@@ -1,0 +1,32 @@
+{{/*
+Purpose: Renders a primary action link with arrow or custom icon
+
+Parameters (dict):
+  url      (string, required): Link destination
+  text     (string, required): Link text
+  event    (string, optional): Plausible analytics event name
+  class    (string, optional): Additional CSS classes
+  icon     (string, optional): "arrow" (default), "lightning", or "none"
+
+Usage in templates:
+  {{ partial "links/action.html" (dict "url" "/subscribe" "text" "Subscribe") }}
+  {{ partial "links/action.html" (dict "url" .Permalink "text" "Read more" "event" "essay_cta") }}
+  {{ partial "links/action.html" (dict "url" "/v4v/" "text" "Zap" "icon" "lightning") }}
+
+Important Notes:
+- Always outputs action-link class
+- Arrow uses aria-hidden for accessibility
+- Lightning bolt SVG for V4V context
+*/}}
+
+{{- $url := .url -}}
+{{- $text := .text -}}
+{{- $event := .event | default "" -}}
+{{- $extraClass := .class | default "" -}}
+{{- $icon := .icon | default "arrow" -}}
+
+{{- $class := "action-link" -}}
+{{- if $extraClass }}{{ $class = printf "%s %s" $class $extraClass }}{{ end -}}
+{{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
+
+<a href="{{ $url }}" class="{{ $class }}"><span class="link-text">{{ $text }}</span>{{ if eq $icon "lightning" }}&#8239;<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg>{{ else if eq $icon "arrow" }}<span class="arrow" aria-hidden="true">→</span>{{ end }}</a>

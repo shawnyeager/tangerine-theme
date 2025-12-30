@@ -1,0 +1,34 @@
+{{/*
+Purpose: Renders a list of topic taxonomy links
+
+Parameters (via dict):
+- .heading (string, optional): Section heading text (default: "Browse by Topic")
+- .context (page context, required): Must be passed for site taxonomy access
+
+Context Expected:
+- .context.Site.Taxonomies.topics - Topics taxonomy with pages
+
+Usage:
+{{ partial "topic-list.html" (dict "context" .) }}
+{{ partial "topic-list.html" (dict "heading" "Topics" "context" .) }}
+
+Features:
+- Displays all topics as clickable tags
+- Customizable heading via parameter
+- Semantic section element with proper heading
+
+Important Notes:
+- Must pass page context via dict because partial receives dict, not page context
+- Topics must be defined in site config taxonomies
+- Uses h2 for section heading (semantic correctness per W3C validator)
+*/}}
+
+{{ $heading := .heading | default "Browse by Topic" }}
+<section class="topics">
+    <h2 class="section-label-small">{{ $heading }}</h2>
+    <div class="topic-tags">
+        {{ range .context.Site.Taxonomies.topics }}
+        <a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a>
+        {{ end }}
+    </div>
+</section>

@@ -1,0 +1,40 @@
+{{/*
+Purpose: Main HTML <head> element with all meta tags, links, and scripts
+
+This partial has been refactored into focused sub-partials for better maintainability:
+- head/meta-tags.html - Basic meta tags (charset, viewport, description, canonical, robots)
+- head/resources.html - CSS, fonts, RSS, sitemap, favicons
+- head/analytics.html - Plausible analytics setup and 404 tracking
+- head/social-cards.html - Open Graph and Twitter Card tags
+- head/theme-init.html - Dark mode initialization script (prevents FOUC)
+
+Structured data partials remain at root level:
+- structured-data.html - Article/page JSON-LD
+- structured-data-website.html - Website JSON-LD
+- structured-data-collection.html - Collection/list JSON-LD
+- structured-data-profile.html - ProfilePage JSON-LD
+- structured-data-podcast.html - PodcastSeries JSON-LD
+- structured-data-podcast-faq.html - FAQPage JSON-LD for podcast
+- structured-data-faq.html - FAQPage JSON-LD from frontmatter
+- structured-data-breadcrumbs.html - Breadcrumb navigation JSON-LD
+
+Parameters: None (uses page and site context)
+*/}}
+
+<head>
+    {{ partial "head/meta-tags.html" . }}
+    {{ partial "head/resources.html" . }}
+    {{ partial "head/analytics.html" . }}
+    {{ partial "head/social-cards.html" . }}
+    {{ partial "head/theme-init.html" . }}
+
+    <!-- Structured Data (JSON-LD) -->
+    {{ partial "structured-data.html" . }}
+    {{ partial "structured-data-website.html" . }}
+    {{ partial "structured-data-collection.html" . }}
+    {{ partial "structured-data-profile.html" . }}
+    {{ partial "structured-data-podcast.html" . }}
+    {{ partial "structured-data-podcast-faq.html" . }}
+    {{ partial "structured-data-faq.html" . }}
+    {{ partial "structured-data-breadcrumbs.html" . }}
+</head>

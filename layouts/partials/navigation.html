@@ -1,0 +1,36 @@
+{{/*
+Purpose: Renders main navigation menu with active state highlighting
+
+Parameters: None (uses page context and site menus)
+
+Context Expected:
+- .Site.Menus.main - Main menu items defined in site config
+- .RelPermalink - Current page URL
+- .Section - Current section (e.g., "essays", "notes")
+- .Type - Current page type (including taxonomy types like "topics", "tags")
+
+Features:
+- Highlights active menu item with class="active"
+- Complex active state logic handles multiple cases:
+  1. Direct match: current page URL equals menu item URL
+  2. Section match for /essays/: highlights when viewing essays, topic pages, or tag pages
+  3. Section match for /notes/: highlights when viewing notes or taxonomy pages
+- Accessibility: aria-label for context
+
+Important Notes:
+- Active state logic accounts for taxonomy pages (topics, tags) to highlight parent section
+- Example: /topics/bitcoin/ page highlights "Essays" nav item if on .com site
+- role="navigation" removed (redundant - HTML5 nav has implicit navigation role)
+*/}}
+
+<nav aria-label="Main navigation">
+    {{- $currentPage := . -}}
+    {{- range .Site.Menus.main -}}
+        {{- $isCurrentURL := eq $currentPage.RelPermalink .URL -}}
+        {{- $isTaxonomyPage := or (eq $currentPage.Type "topics") (eq $currentPage.Type "tags") -}}
+        {{- $isEssaysActive := and (eq .URL "/essays/") (or (eq $currentPage.Section "essays") $isTaxonomyPage) -}}
+        {{- $isNotesActive := and (eq .URL "/notes/") (or (eq $currentPage.Section "notes") $isTaxonomyPage) -}}
+        {{- $isActive := or $isCurrentURL $isEssaysActive $isNotesActive -}}
+    <a href="{{ .URL | relURL }}"{{ if $isActive }} class="active"{{ end }}>{{ .Name }}</a>
+    {{- end }}
+</nav>

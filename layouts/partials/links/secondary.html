@@ -1,0 +1,27 @@
+{{/*
+Purpose: Renders a secondary/download link (de-emphasized)
+
+Parameters (dict):
+  url      (string, required): Link destination
+  text     (string, required): Link text
+  event    (string, optional): Plausible analytics event name
+  class    (string, optional): Additional CSS classes
+
+Usage in templates:
+  {{ partial "links/secondary.html" (dict "url" "/file.pdf" "text" "Download PDF") }}
+
+Important Notes:
+- Gray color, less prominent than action links
+- No arrow icon
+*/}}
+
+{{- $url := .url -}}
+{{- $text := .text -}}
+{{- $event := .event | default "" -}}
+{{- $extraClass := .class | default "" -}}
+
+{{- $class := "secondary-link" -}}
+{{- if $extraClass }}{{ $class = printf "%s %s" $class $extraClass }}{{ end -}}
+{{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
+
+<a href="{{ $url }}" class="{{ $class }}">{{ $text }}</a>

@@ -1,0 +1,104 @@
+{{/*
+Purpose: Renders responsive images with AVIF/WebP support and lazy loading
+
+Parameters:
+- src (string, required): Image path (page bundle or site resources)
+- alt (string, required): Alt text for accessibility
+- variant (string, optional): CSS class for styling variants
+- lazy (string, optional): Enable lazy loading (default: "true")
+
+Context Expected:
+- .Page.Resources - Page bundle resources
+- resources.Get - Site-level resources
+
+Features:
+- Automatic AVIF and WebP conversion with fallback to original format
+- Responsive srcset with 3 sizes: 640px, 1024px, 1920px
+- HTML <picture> element for modern format support
+- Format priority: AVIF (smallest) → WebP (smaller) → Original (fallback)
+- Lazy loading by default
+- Width and height attributes for layout stability
+- Falls back to basic <img> if resource not found
+
+Usage:
+{{< image src="photo.jpg" alt="Description of photo" >}}
+{{< image src="photo.jpg" alt="Description" variant="full-width" >}}
+{{< image src="photo.jpg" alt="Description" lazy="false" >}}
+
+Important Notes:
+- Image must exist in page bundle or site resources
+- Hugo processes images automatically (creates AVIF, WebP, resizes)
+- AVIF provides 30-50% smaller file size vs WebP
+- Sizes attribute optimized for 700px max-width container
+- If image not found as resource, falls back to basic img with src path
+- Browser support: AVIF (90%+), WebP (96%+), original (100%)
+*/}}
+
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" -}}
+{{- $variant := .Get "variant" | default "" -}}
+{{- $lazy := .Get "lazy" | default "true" -}}
+
+{{- /* Validate required parameters */ -}}
+{{- if not $src -}}
+    {{- errorf "image shortcode: 'src' parameter is required in %s" .Position -}}
+{{- end -}}
+{{- if not $alt -}}
+    {{- errorf "image shortcode: 'alt' parameter is required for accessibility in %s" .Position -}}
+{{- end -}}
+
+{{- /* Try to get image resource for processing */ -}}
+{{- $image := .Page.Resources.GetMatch $src -}}
+{{- if not $image -}}
+  {{- /* Try site resources */ -}}
+  {{- $image = resources.Get $src -}}
+{{- end -}}
+
+{{- if $image -}}
+  {{- /* Hugo image processing with AVIF and WebP support */ -}}
+  {{- $small := $image.Resize "640x" -}}
+  {{- $medium := $image.Resize "1024x" -}}
+  {{- $large := $image.Resize "1920x" -}}
+  {{- $smallWebP := $image.Resize "640x webp" -}}
+  {{- $mediumWebP := $image.Resize "1024x webp" -}}
+  {{- $largeWebP := $image.Resize "1920x webp" -}}
+  {{- $smallAVIF := $image.Resize "640x avif" -}}
+  {{- $mediumAVIF := $image.Resize "1024x avif" -}}
+  {{- $largeAVIF := $image.Resize "1920x avif" -}}
+
+  <picture>
+    {{- /* AVIF - smallest file size, modern browser support */ -}}
+    <source
+      type="image/avif"
+      srcset="{{ $smallAVIF.RelPermalink }} 640w,
+              {{ $mediumAVIF.RelPermalink }} 1024w,
+              {{ $largeAVIF.RelPermalink }} 1920w"
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px">
+    {{- /* WebP - smaller file size, wide browser support */ -}}
+    <source
+      type="image/webp"
+      srcset="{{ $smallWebP.RelPermalink }} 640w,
+              {{ $mediumWebP.RelPermalink }} 1024w,
+              {{ $largeWebP.RelPermalink }} 1920w"
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px">
+    {{- /* Original format - universal fallback */ -}}
+    <img
+      src="{{ $medium.RelPermalink }}"
+      srcset="{{ $small.RelPermalink }} 640w,
+              {{ $medium.RelPermalink }} 1024w,
+              {{ $large.RelPermalink }} 1920w"
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px"
+      alt="{{ $alt }}"
+      width="{{ $medium.Width }}"
+      height="{{ $medium.Height }}"
+      {{- if eq $lazy "true" }} loading="lazy"{{ end }}
+      {{- if $variant }} class="{{ $variant }}"{{ end }}>
+  </picture>
+{{- else -}}
+  {{- /* Fallback to basic img tag with lazy loading */ -}}
+  <img
+    src="{{ $src }}"
+    alt="{{ $alt }}"
+    {{- if eq $lazy "true" }} loading="lazy"{{ end }}
+    {{- if $variant }} class="{{ $variant }}"{{ end }}>
+{{- end -}}

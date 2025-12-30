@@ -1,0 +1,52 @@
+{{/*
+Purpose: Renders privacy-friendly YouTube embed with click-to-play pattern
+
+Parameters:
+- id (string, required): YouTube video ID (can use positional parameter 0)
+- title (string, optional): Video title for accessibility (default: "YouTube video")
+
+Context Expected:
+- site.Config.Privacy.YouTube.PrivacyEnhanced - Privacy mode setting
+
+Features:
+- Click-to-play pattern: shows thumbnail until user clicks
+- No YouTube tracking until user interaction
+- Privacy-enhanced mode support (youtube-nocookie.com)
+- Lazy loading thumbnail image
+- Play button overlay with SVG icon
+- Autoplay on click
+- Inline JavaScript for standalone functionality
+- Responsive 16:9 aspect ratio
+
+Usage:
+{{< youtube-preview id="dQw4w9WgXcQ" >}}
+{{< youtube-preview id="dQw4w9WgXcQ" title="Rick Astley - Never Gonna Give You Up" >}}
+{{< youtube-preview "dQw4w9WgXcQ" >}}
+
+Important Notes:
+- Respects Hugo privacy config for enhanced privacy mode
+- Thumbnail loaded from YouTube's maxresdefault.jpg
+- Iframe created dynamically on click to avoid early loading
+- Styles defined in main.css (.youtube-preview-container, .play-button-overlay)
+- Autoplay enabled on click for better UX
+*/}}
+
+{{- $id := .Get "id" | default (.Get 0) -}}
+{{- $title := .Get "title" | default "YouTube video" -}}
+{{- $thumbnail := printf "https://img.youtube.com/vi/%s/maxresdefault.jpg" $id -}}
+
+{{- $host := "www.youtube.com" -}}
+{{- if site.Config.Privacy.YouTube.PrivacyEnhanced -}}
+  {{- $host = "www.youtube-nocookie.com" -}}
+{{- end -}}
+
+{{- $embedUrl := printf "https://%s/embed/%s?autoplay=1" $host $id -}}
+
+<div class="youtube-preview-container" data-embed-url="{{ $embedUrl }}" data-title="{{ $title }}" onclick="(function(el){var iframe=document.createElement('iframe');iframe.src=el.dataset.embedUrl;iframe.title=el.dataset.title;iframe.loading='eager';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allowFullscreen=true;el.innerHTML='';el.appendChild(iframe);el.style.cursor='default';})(this)">
+  <img src="{{ $thumbnail }}" alt="{{ $title }}" loading="lazy">
+  <div class="play-button-overlay">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+  </div>
+</div>

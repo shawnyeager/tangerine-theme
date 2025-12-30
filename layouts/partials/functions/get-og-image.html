@@ -1,0 +1,48 @@
+{{/*
+Purpose: Returns the Open Graph image URL for the current page
+
+Parameters: None (uses page context)
+
+Context Expected:
+- .Params.image - Custom OG image path in frontmatter
+- .Params.slug - Page slug for content-type-specific OG images
+- .Type - Content type ("essays", "notes", "page", etc.)
+- .Kind - Page kind ("section" for list pages, "page" for single pages)
+- .Site.Params.og_image - Fallback OG image (homepage)
+- .File.ContentBaseName - Filename without extension
+
+Returns: Absolute URL string for OG image
+
+Logic Flow:
+1. If page has custom image param → use it
+2. Else if section list page → /images/og-sections/{type}.png
+3. Else if type="essays" → /images/og-essays/{slug}.png
+4. Else if type="notes" → /images/og-notes/{slug}.png
+5. Else if regular page with file → /images/og-pages/{basename}.png
+6. Fallback to site default OG image (homepage)
+
+Usage:
+{{- $ogImageURL := partial "functions/get-og-image.html" . -}}
+*/}}
+
+{{- $ogImageURL := "" -}}
+{{- if .Params.image -}}
+  {{- $ogImageURL = .Params.image | absURL -}}
+{{- else if eq .Kind "section" -}}
+  {{- /* Section list pages (e.g., /essays/, /notes/) */ -}}
+  {{- $ogImageURL = (printf "/images/og-sections/%s.png" .Type) | absURL -}}
+{{- else if eq .Type "essays" -}}
+  {{- $slug := .Params.slug | default .File.ContentBaseName -}}
+  {{- $ogImageURL = (printf "/images/og-essays/%s.png" $slug) | absURL -}}
+{{- else if eq .Type "notes" -}}
+  {{- $slug := .Params.slug | default .File.ContentBaseName -}}
+  {{- $ogImageURL = (printf "/images/og-notes/%s.png" $slug) | absURL -}}
+{{- else if and .File .File.ContentBaseName -}}
+  {{- /* Regular pages (now, podcast, connect, etc.) */ -}}
+  {{- $basename := .File.ContentBaseName -}}
+  {{- $ogImageURL = (printf "/images/og-pages/%s.png" $basename) | absURL -}}
+{{- else if .Site.Params.og_image -}}
+  {{- /* Homepage and other pages without files */ -}}
+  {{- $ogImageURL = .Site.Params.og_image | absURL -}}
+{{- end -}}
+{{- return $ogImageURL -}}

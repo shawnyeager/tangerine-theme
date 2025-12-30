@@ -1,0 +1,23 @@
+{{/*
+Purpose: Plausible analytics integration
+
+Context Expected:
+- .Site.Params.plausible_script_id - Plausible script ID (optional)
+- .Kind - Page type (for 404 tracking)
+*/}}
+
+<!-- Privacy-friendly analytics by Plausible (optional) -->
+{{ if .Site.Params.plausible_script_id }}
+<link rel="dns-prefetch" href="https://plausible.io">
+<link rel="preconnect" href="https://plausible.io" crossorigin>
+<script async src="https://plausible.io/js/{{ .Site.Params.plausible_script_id }}.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+{{ end }}
+
+<!-- Track 404 pages in Plausible -->
+{{ if and (eq .Kind "404") .Site.Params.plausible_script_id }}
+<script>document.addEventListener('DOMContentLoaded', function () { plausible('404'); });</script>
+{{ end }}
