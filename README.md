@@ -302,7 +302,7 @@ This theme uses Hugo Modules imported from GitHub:
 **How it works:**
 - Sites specify `path = "github.com/shawnyeager/tangerine-theme"` in their `hugo.toml`
 - Netlify fetches from GitHub at the `go.mod` locked version
-- Local testing requires updating module version with `hugo mod get`
+- Local dev uses `theme-dev.sh` script (handles replace directive automatically)
 
 ### Making Theme Changes
 
@@ -349,8 +349,8 @@ gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
 gh pr list --repo shawnyeager/shawnyeager-notes --label theme-update
 
 # After merging, verify sites updated
-cd ~/Work/shawnyeager-com && git pull && grep tangerine-theme go.mod
-cd ~/Work/shawnyeager-notes && git pull && grep tangerine-theme go.mod
+cd ~/Work/shawnyeager/shawnyeager-com && git pull && grep tangerine-theme go.mod
+cd ~/Work/shawnyeager/shawnyeager-notes && git pull && grep tangerine-theme go.mod
 ```
 
 See `.github/workflows/auto-theme-update-pr.yml` in site repos for implementation details.
