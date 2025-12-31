@@ -539,16 +539,9 @@
                    y >= r.top && y <= r.bottom + ZONE_EXTEND;
         }
 
-        document.addEventListener('touchstart', (e) => {
-            if (window.innerWidth > 768) return;
-            const t = e.touches[0];
-            if (inHitZone(t.clientX, t.clientY)) {
-                touchStart = { x: t.clientX, y: t.clientY };
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-            if (window.innerWidth > 768 || !touchStart) return;
+        // Non-passive touchmove handler - only active during swipe gesture
+        // Kept as named function so we can add/remove it dynamically
+        function handleTouchMove(e) {
             const t = e.touches[0];
             const dx = t.clientX - touchStart.x;
             const dy = t.clientY - touchStart.y;
@@ -556,7 +549,22 @@
             if (angle >= ANGLE_MIN && angle <= ANGLE_MAX && dy > 5) {
                 e.preventDefault();
             }
-        }, { passive: false });
+        }
+
+        function cleanupTouchMove() {
+            document.removeEventListener('touchmove', handleTouchMove);
+            touchStart = null;
+        }
+
+        document.addEventListener('touchstart', (e) => {
+            if (window.innerWidth > 768) return;
+            const t = e.touches[0];
+            if (inHitZone(t.clientX, t.clientY)) {
+                touchStart = { x: t.clientX, y: t.clientY };
+                // Only add non-passive listener when touch starts in hit zone
+                document.addEventListener('touchmove', handleTouchMove, { passive: false });
+            }
+        }, { passive: true });
 
         document.addEventListener('touchend', (e) => {
             if (window.innerWidth > 768 || !touchStart) return;
@@ -565,7 +573,7 @@
             const dx = t.clientX - touchStart.x;
             const dy = t.clientY - touchStart.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            touchStart = null;
+            cleanupTouchMove();
 
             if (dist < MIN_DISTANCE) return;
 
@@ -577,7 +585,7 @@
             }
         });
 
-        document.addEventListener('touchcancel', () => { touchStart = null; });
+        document.addEventListener('touchcancel', cleanupTouchMove);
     }
 
     if (document.readyState === 'loading') {
