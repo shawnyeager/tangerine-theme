@@ -2,5 +2,8 @@ User-agent: *
 {{- if .Site.Params.noindex }}
 Disallow: /
 {{- else }}
+{{- range .Site.Params.robotsDisallow }}
+Disallow: {{ . }}
+{{- end }}
 Sitemap: {{ .Site.BaseURL }}sitemap.xml
 {{- end }}
