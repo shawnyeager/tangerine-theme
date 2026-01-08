@@ -19,6 +19,9 @@ URL Helper Standards:
     </div>
 
     <!-- Keyboard Shortcuts: d (theme), a (auto), j/k (scroll), gg/G (top/bottom), ? (help) -->
-    <script src="{{ "js/keyboard-shortcuts.js" | relURL }}" defer></script>
+    {{- $mempool := resources.Get "js/mempool.js" | minify | fingerprint -}}
+    {{- $js := resources.Get "js/keyboard-shortcuts.js" | minify | fingerprint -}}
+    <script>window.__mempoolJS = "{{ $mempool.RelPermalink }}";</script>
+    <script src="{{ $js.RelPermalink }}" defer></script>
 </body>
 </html>

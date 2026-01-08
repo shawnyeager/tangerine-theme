@@ -169,8 +169,8 @@
 
     // Initialize mobile trigger for easter egg (lazy-loaded)
     function initMobileTriggerIfNeeded() {
-        if (window.innerWidth <= 768) {
-            import('/js/mempool.js').then(m => m.initMobileTrigger());
+        if (window.innerWidth <= 768 && window.__mempoolJS) {
+            import(window.__mempoolJS).then(m => m.initMobileTrigger());
         }
     }
 
@@ -224,8 +224,8 @@
         }
 
         // Check for 'block' easter egg (lazy-loaded)
-        if (keySequence.endsWith('block')) {
-            import('/js/mempool.js').then(m => m.showMempoolBlock());
+        if (keySequence.endsWith('block') && window.__mempoolJS) {
+            import(window.__mempoolJS).then(m => m.showMempoolBlock());
             keySequence = '';
             return;
         }
