@@ -1,0 +1,20 @@
+{{/*
+Purpose: Builds CSS class string for link partials
+
+Parameters (dict):
+  base   (string, required): Base CSS class (e.g., "action-link", "back-link")
+  class  (string, optional): Additional CSS classes
+  event  (string, optional): Plausible analytics event name
+
+Returns: Complete class string
+
+Usage:
+  {{- $class := partial "functions/build-link-class.html" (dict "base" "action-link" "class" .class "event" .event) -}}
+*/}}
+{{- $base := .base -}}
+{{- $extra := .class | default "" -}}
+{{- $event := .event | default "" -}}
+{{- $class := $base -}}
+{{- if $extra }}{{ $class = printf "%s %s" $class $extra }}{{ end -}}
+{{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
+{{- return $class -}}

@@ -37,14 +37,7 @@ Important Notes:
   {{- with .Site.Params.podcast_image }}
   "image": "{{ . | absURL }}",
   {{- end }}
-  "author": {
-    "@type": "Person",
-    "name": "{{ .Site.Params.author.name }}",
-    "url": "{{ .Site.BaseURL }}"
-    {{- with .Site.Params.author.email -}}
-    ,"email": "{{ . }}"
-    {{- end -}}
-  }
+  "author": {{ partial "structured-data-author.html" . | safeJS }}
 }
 </script>
 {{- end -}}

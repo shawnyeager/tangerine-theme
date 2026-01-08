@@ -17,9 +17,6 @@ Important Notes:
 
 {{- $url := .url -}}
 {{- $text := .text -}}
-{{- $event := .event | default "" -}}
-
-{{- $class := "btn-ghost btn-ghost--primary" -}}
-{{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
+{{- $class := partial "functions/build-link-class.html" (dict "base" "btn-ghost btn-ghost--primary" "event" .event) -}}
 
 <a href="{{ $url }}" class="{{ $class }}"><span class="link-text">{{ $text }}</span><span class="arrow" aria-hidden="true">→</span></a>

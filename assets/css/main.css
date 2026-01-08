@@ -2051,142 +2051,90 @@ a.back-link:hover {
 /* ==========================================================================
    14. DARK MODE - Theme Toggle & System Preference Overrides
 
-   ARCHITECTURE NOTE - Theme toggle vs. CSS dark mode:
-   PROBLEM: Theme toggle and CSS dark mode work differently:
-   - Theme toggle: Sets data-theme="light|dark" attribute on <html>
-   - Colors: Use light-dark() function which respects color-scheme property
-   - CSS rules: html[data-theme="light|dark"] { color-scheme: light|dark; }
-     makes light-dark() work correctly with the toggle
+   Dark mode applies in two scenarios:
+   1. System prefers dark AND user hasn't forced light mode
+   2. User explicitly toggled to dark mode (regardless of system)
 
-   BUT: @media (prefers-color-scheme: dark) checks SYSTEM preference,
-   NOT the data-theme attribute! So font-weight rules inside the media
-   query would apply based on system setting, ignoring user's toggle.
-
-   SOLUTION:
-   1. Base rules set light mode font-weight (450)
-   2. Media query rules use html:not([data-theme="light"]) to skip when
-      user explicitly chose light mode despite dark system
-   3. Explicit html[data-theme="dark"] rules handle user toggling to dark
-      when their system is in light mode
+   We use a custom selector :is() to combine both conditions and avoid
+   duplicating property declarations. The media query still wraps system-only
+   rules (like heading colors that don't need the toggle fallback).
    ========================================================================== */
 
 /* Base font-weight: light mode default (400) */
-.essay-body p,
-.essay-body li,
-.note-body p,
-.note-body li,
-.page-body p,
-.page-body li,
+:is(.essay-body, .note-body, .page-body) :is(p, li),
 .latest-essay p {
     font-weight: var(--font-weight-normal);
 }
 
-/* Dark Mode (System Preference) - Applies when SYSTEM prefers dark
-   AND user hasn't explicitly toggled to light mode
-   -------------------------------------------------- */
-
+/* Dark mode paragraph spacing - applies to both system dark and explicit toggle */
 @media (prefers-color-scheme: dark) {
-    /* Long-form paragraph spacing - wider in dark mode */
     html:not([data-theme="light"]) {
         --para-gap-long-form: 1.375rem;
     }
+}
+html[data-theme="dark"] {
+    --para-gap-long-form: 1.375rem;
+}
 
-    /* Typography - Enhanced heading contrast in dark mode */
+/* Dark mode heading colors - only needed for system preference (toggle uses light-dark()) */
+@media (prefers-color-scheme: dark) {
     h2 { color: var(--text-heading-h2); }
     h3 { color: var(--text-heading-h3); }
     h4 { color: var(--text-heading-h4); }
     h5, h6 { color: var(--text-heading-h5); }
 
-    /* Headings - maintain weight hierarchy in dark mode */
-    h1,
-    .page-title,
-    h2, h3, h4, h5, h6,
-    .essay-title-single,
-    .note-title-single {
+    h1, .page-title, h2, h3, h4, h5, h6,
+    .essay-title-single, .note-title-single {
         font-weight: var(--font-weight-semibold);
     }
 
-    /* Body text - lighter weight in dark mode (only when user hasn't chosen light) */
-    html:not([data-theme="light"]) p,
-    html:not([data-theme="light"]) li {
-        font-weight: var(--font-weight-normal);
-    }
-
-    /* Episode tag - lighter weight in dark mode */
     .episode-tag {
         font-weight: var(--font-weight-light);
     }
 
-    /* List titles - lighter weight in dark mode (only when user hasn't chosen light) */
-    html:not([data-theme="light"]) .essay-title,
-    html:not([data-theme="light"]) .note-title {
-        font-weight: var(--font-weight-light);
-    }
-
-    /* Long-form reading - only when user hasn't explicitly chosen light mode */
-    html:not([data-theme="light"]) .essay-body p,
-    html:not([data-theme="light"]) .essay-body li,
-    html:not([data-theme="light"]) .note-body p,
-    html:not([data-theme="light"]) .note-body li,
-    html:not([data-theme="light"]) .page-body p,
-    html:not([data-theme="light"]) .page-body li,
-    html:not([data-theme="light"]) .latest-essay p {
-        font-weight: var(--font-weight-light);
-    }
-
-    /* Bold text - semibold for emphasis, size/context separates from headings */
-    .essay-body strong,
-    .essay-body b,
-    .note-body strong,
-    .note-body b,
-    .page-body strong,
-    .page-body b {
+    :is(.essay-body, .note-body, .page-body) :is(strong, b) {
         font-weight: var(--font-weight-semibold);
     }
 
-    /* Syntax Highlighting - Code blocks */
-    .essay-body .highlight pre,
-    .note-body .highlight pre {
+    :is(.essay-body, .note-body) .highlight pre {
         background: var(--code-background) !important;
         border-color: var(--border-color);
     }
 
-    .essay-body .highlight pre[style],
-    .note-body .highlight pre[style] {
+    :is(.essay-body, .note-body) .highlight pre[style] {
         background: var(--code-background) !important;
         color: var(--syntax-default) !important;
     }
 }
 
-/* Dark Mode (Explicit Toggle) - User toggled to dark mode regardless of system
-   Needed when system is light but user wants dark mode
-   --------------------------------------------------
-   NOTE: These rules duplicate the media query rules above. This is intentional:
-   - Media query handles: system=dark AND user hasn't forced light
-   - Explicit toggle handles: user forced dark (overrides system light)
-   Both are needed for complete dark mode support. */
+/* Dark mode typography - combined selector for system dark + explicit toggle
+   Uses :is() to avoid repeating declarations for both scenarios */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) :is(p, li) {
+        font-weight: var(--font-weight-normal);
+    }
 
-html[data-theme="dark"] {
-    --para-gap-long-form: 1.375rem;
+    html:not([data-theme="light"]) :is(.essay-title, .note-title) {
+        font-weight: var(--font-weight-light);
+    }
+
+    html:not([data-theme="light"]) :is(.essay-body, .note-body, .page-body) :is(p, li),
+    html:not([data-theme="light"]) .latest-essay p {
+        font-weight: var(--font-weight-light);
+    }
 }
 
-html[data-theme="dark"] p,
-html[data-theme="dark"] li {
+/* Explicit dark toggle - for users who toggle dark when system is light */
+html[data-theme="dark"] :is(p, li) {
     font-weight: var(--font-weight-normal);
 }
 
-html[data-theme="dark"] .essay-body p,
-html[data-theme="dark"] .essay-body li,
-html[data-theme="dark"] .note-body p,
-html[data-theme="dark"] .note-body li,
-html[data-theme="dark"] .page-body p,
-html[data-theme="dark"] .page-body li,
-html[data-theme="dark"] .latest-essay p {
+html[data-theme="dark"] :is(.essay-title, .note-title) {
     font-weight: var(--font-weight-light);
 }
 
-html[data-theme="dark"] .essay-title,
-html[data-theme="dark"] .note-title {
+html[data-theme="dark"] :is(.essay-body, .note-body, .page-body) :is(p, li),
+html[data-theme="dark"] .latest-essay p {
     font-weight: var(--font-weight-light);
 }
 

@@ -19,11 +19,6 @@ Important Notes:
 
 {{- $url := .url -}}
 {{- $text := .text -}}
-{{- $event := .event | default "" -}}
-{{- $extraClass := .class | default "" -}}
-
-{{- $class := "back-link" -}}
-{{- if $extraClass }}{{ $class = printf "%s %s" $class $extraClass }}{{ end -}}
-{{- if $event }}{{ $class = printf "%s plausible-event-name=%s" $class $event }}{{ end -}}
+{{- $class := partial "functions/build-link-class.html" (dict "base" "back-link" "class" .class "event" .event) -}}
 
 <a href="{{ $url }}" class="{{ $class }}"><span class="arrow" aria-hidden="true">←</span><span class="link-text">{{ $text }}</span></a>
