@@ -47,15 +47,17 @@ Context Expected:
 <link rel="sitemap" type="application/xml" href="{{ "sitemap.xml" | absURL }}" title="Sitemap">
 
 <!-- Favicons -->
+{{- $faviconStyle := .Site.Params.favicon_style | default "solid" -}}
+{{- $faviconPath := printf "favicons/%s" $faviconStyle -}}
 <!-- High-res PNG for Google Search (padded for circular crop on mobile) -->
-<link rel="icon" type="image/png" sizes="192x192" href="{{ "icon-192.png" | relURL }}">
+<link rel="icon" type="image/png" sizes="192x192" href="{{ printf "%s/icon-192.png" $faviconPath | relURL }}">
 <!-- SVG favicon for modern browsers (best quality, scalable) -->
-<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+<link rel="icon" type="image/svg+xml" href="{{ printf "favicon-%s.svg" $faviconStyle | relURL }}">
 <!-- PNG favicons for browser tabs -->
-<link rel="icon" type="image/png" sizes="96x96" href="{{ "favicon-96x96.png" | relURL }}">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ "favicon-32x32.png" | relURL }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ "favicon-16x16.png" | relURL }}">
+<link rel="icon" type="image/png" sizes="96x96" href="{{ printf "%s/favicon-96x96.png" $faviconPath | relURL }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ printf "%s/favicon-32x32.png" $faviconPath | relURL }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ printf "%s/favicon-16x16.png" $faviconPath | relURL }}">
 <!-- ICO fallback for legacy browsers -->
-<link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
-<link rel="apple-touch-icon" sizes="180x180" href="{{ "apple-touch-icon.png" | relURL }}">
+<link rel="icon" type="image/x-icon" href="{{ printf "%s/favicon.ico" $faviconPath | relURL }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ printf "%s/apple-touch-icon.png" $faviconPath | relURL }}">
 <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
