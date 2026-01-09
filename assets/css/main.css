@@ -2276,15 +2276,27 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     /* Keep header row layout, just tighten nav gap */
     nav { gap: var(--space-md); }
     .email-form input[type="email"] { max-width: none; }
-    /* Larger touch targets for footer links (44px minimum) */
+    /* Larger touch targets for footer links (48px minimum per Lighthouse)
+       Uses padding to expand tap area + negative margin to preserve visual spacing */
+    .footer-links {
+        margin-top: -6px;  /* Compensate for taller tap targets */
+    }
     .footer-links a {
-        padding: var(--space-sm);
-        margin: calc(-1 * var(--space-sm));
+        padding: var(--space-sm) var(--space-md);
+        margin: calc(-1 * var(--space-sm)) calc(-1 * var(--space-md));
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+    }
+    /* V4V icon needs square tap target */
+    .footer-links a[aria-label="Value for value"] {
+        padding: var(--space-md);
+        margin: calc(-1 * var(--space-md));
+        min-width: 48px;
+        justify-content: center;
     }
     .footer-links a[aria-label="Value for value"]::after {
-        content: "";
-        position: absolute;
-        inset: -16px -18px;
+        display: none;
     }
     .podcast-header { flex-direction: column; align-items: flex-start; }
     .podcast-art { width: var(--podcast-art-size-mobile); height: var(--podcast-art-size-mobile); }
