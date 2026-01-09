@@ -50,14 +50,49 @@ Context Expected:
 {{- $faviconStyle := .Site.Params.favicon_style | default "solid" -}}
 {{- $faviconPath := printf "favicons/%s" $faviconStyle -}}
 <!-- High-res PNG for Google Search (padded for circular crop on mobile) -->
-<link rel="icon" type="image/png" sizes="192x192" href="{{ printf "%s/icon-192.png" $faviconPath | relURL }}">
+{{- with resources.Get (printf "%s/icon-192.png" $faviconPath) }}
+  {{- with resources.Copy "icon-192.png" . }}
+<link rel="icon" type="image/png" sizes="192x192" href="{{ .RelPermalink }}">
+  {{- end }}
+{{- end }}
 <!-- SVG favicon for modern browsers (best quality, scalable) -->
-<link rel="icon" type="image/svg+xml" href="{{ printf "favicon-%s.svg" $faviconStyle | relURL }}">
+{{- with resources.Get (printf "%s/favicon.svg" $faviconPath) }}
+  {{- with resources.Copy "favicon.svg" . }}
+<link rel="icon" type="image/svg+xml" href="{{ .RelPermalink }}">
+  {{- end }}
+{{- end }}
 <!-- PNG favicons for browser tabs -->
-<link rel="icon" type="image/png" sizes="96x96" href="{{ printf "%s/favicon-96x96.png" $faviconPath | relURL }}">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ printf "%s/favicon-32x32.png" $faviconPath | relURL }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ printf "%s/favicon-16x16.png" $faviconPath | relURL }}">
+{{- with resources.Get (printf "%s/favicon-96x96.png" $faviconPath) }}
+  {{- with resources.Copy "favicon-96x96.png" . }}
+<link rel="icon" type="image/png" sizes="96x96" href="{{ .RelPermalink }}">
+  {{- end }}
+{{- end }}
+{{- with resources.Get (printf "%s/favicon-32x32.png" $faviconPath) }}
+  {{- with resources.Copy "favicon-32x32.png" . }}
+<link rel="icon" type="image/png" sizes="32x32" href="{{ .RelPermalink }}">
+  {{- end }}
+{{- end }}
+{{- with resources.Get (printf "%s/favicon-16x16.png" $faviconPath) }}
+  {{- with resources.Copy "favicon-16x16.png" . }}
+<link rel="icon" type="image/png" sizes="16x16" href="{{ .RelPermalink }}">
+  {{- end }}
+{{- end }}
 <!-- ICO fallback for legacy browsers -->
-<link rel="icon" type="image/x-icon" href="{{ printf "%s/favicon.ico" $faviconPath | relURL }}">
-<link rel="apple-touch-icon" sizes="180x180" href="{{ printf "%s/apple-touch-icon.png" $faviconPath | relURL }}">
+{{- with resources.Get (printf "%s/favicon.ico" $faviconPath) }}
+  {{- with resources.Copy "favicon.ico" . }}
+<link rel="icon" type="image/x-icon" href="{{ .RelPermalink }}">
+  {{- end }}
+{{- end }}
+{{- with resources.Get (printf "%s/apple-touch-icon.png" $faviconPath) }}
+  {{- with resources.Copy "apple-touch-icon.png" . }}
+<link rel="apple-touch-icon" sizes="180x180" href="{{ .RelPermalink }}">
+  {{- end }}
+{{- end }}
+<!-- Publish webmanifest icons (no link tags, just publish to root) -->
+{{- with resources.Get (printf "%s/icon-512.png" $faviconPath) }}
+  {{- $_ := (resources.Copy "icon-512.png" .).RelPermalink }}
+{{- end }}
+{{- with resources.Get (printf "%s/icon-maskable.png" $faviconPath) }}
+  {{- $_ := (resources.Copy "icon-maskable.png" .).RelPermalink }}
+{{- end }}
 <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
