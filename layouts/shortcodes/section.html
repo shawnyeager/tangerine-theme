@@ -1,0 +1,32 @@
+{{/*
+Purpose: Wraps content in a div with a specified CSS class
+
+Features:
+- Generic wrapper shortcode for styled sections
+- Replaces bio-section and contact-section with single flexible shortcode
+- Paired shortcode that wraps inner content
+
+Parameters:
+- class (required): CSS class name for the wrapper div
+
+Usage:
+{{< section class="bio-text" >}}
+{{< contact-method type="email" value="hello@example.com" >}}
+{{< /section >}}
+
+{{< section class="contact-section" >}}
+{{< contact-method type="signal" value="signal-link" display="signal-display" >}}
+{{< /section >}}
+
+Important Notes:
+- Inner content is rendered with Hugo's standard processing (no safeHTML)
+- CSS classes must be defined in theme CSS
+*/}}
+
+{{- $class := .Get "class" -}}
+{{- if not $class -}}
+    {{- errorf "section shortcode: 'class' parameter is required in %s" .Position -}}
+{{- end -}}
+<div class="{{ $class }}">
+{{ .Inner }}
+</div>

@@ -1,0 +1,55 @@
+{{/*
+Purpose: Dispatch to appropriate JSON-LD structured data schemas based on page context
+
+This is the main entry point for all structured data. It determines which schemas
+apply to the current page and calls the appropriate partials.
+
+Schema Selection Logic:
+- Homepage: WebSite + ProfilePage (if author is main focus)
+- Section/Taxonomy/Term: CollectionPage
+- Essays/Notes (single): BlogPosting
+- Podcast layout: ProfilePage + PodcastSeries + PodcastFAQ
+- Pages with FAQ frontmatter: FAQPage
+- All non-home pages: BreadcrumbList
+
+Note: Each partial handles its own conditions as a fallback, but this dispatcher
+provides the intended flow and avoids calling partials that won't render.
+*/}}
+
+{{- /* Always emit breadcrumbs for non-home pages */ -}}
+{{- if not .IsHome -}}
+  {{- partial "structured-data-breadcrumbs.html" . -}}
+{{- end -}}
+
+{{- /* Homepage: WebSite schema */ -}}
+{{- if .IsHome -}}
+  {{- partial "structured-data-website.html" . -}}
+{{- end -}}
+
+{{- /* Collection pages: sections, taxonomies, terms */ -}}
+{{- if and (not .IsHome) (or (eq .Kind "section") (eq .Kind "taxonomy") (eq .Kind "term")) -}}
+  {{- partial "structured-data-collection.html" . -}}
+{{- end -}}
+
+{{- /* Single content pages (essays, notes): BlogPosting */ -}}
+{{- if and .IsPage (or (eq .Type "essays") (eq .Type "notes")) -}}
+  {{- partial "structured-data.html" . -}}
+{{- end -}}
+
+{{- /* Profile pages (now, podcast, typed pages): ProfilePage */ -}}
+{{- if or (eq .Layout "now") (eq .Layout "podcast") (and (eq .Type "page") (ne .Layout "")) -}}
+  {{- partial "structured-data-profile.html" . -}}
+{{- end -}}
+
+{{- /* Podcast pages: PodcastSeries + FAQ */ -}}
+{{- if and (eq .Layout "podcast") .Site.Params.podcast_name -}}
+  {{- partial "structured-data-podcast.html" . -}}
+  {{- partial "structured-data-podcast-faq.html" . -}}
+{{- end -}}
+
+{{- /* Pages with FAQ frontmatter */ -}}
+{{- with .Params.faq -}}
+  {{- if gt (len .) 0 -}}
+    {{- partial "structured-data-faq.html" $ -}}
+  {{- end -}}
+{{- end -}}

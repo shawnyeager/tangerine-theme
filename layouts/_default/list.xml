@@ -9,8 +9,10 @@
 {{- if ge $limit 1 -}}
 {{- $pages = $pages | first $limit -}}
 {{- end -}}
+{{- /* Process feed.css through Hugo pipes for fingerprinting */ -}}
+{{- $feedCSS := resources.Get "css/feed.css" | minify | fingerprint -}}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-{{ printf "<?xml-stylesheet href=\"/css/feed.css\" type=\"text/css\"?>" | safeHTML }}
+{{ printf "<?xml-stylesheet href=%q type=\"text/css\"?>" $feedCSS.Permalink | safeHTML }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}</title>

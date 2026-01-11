@@ -227,6 +227,8 @@
     --underline-offset: 0.2em;
     --underline-thickness: 1px;
     --underline-opacity: 50%;
+    --underline-color-brand: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    --underline-color-muted: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
 
     /* Content Elevation */
     --shadow-content-light: light-dark(0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.4));
@@ -271,6 +273,29 @@
     --button-min-width-lg: 85px;
     --skip-link-max-width: 260px;
     --image-size-lg: 200px;
+
+    /* Layout Spacing Shortcuts (referenced in layout section) */
+    --section-gap: var(--space-2xl);          /* 48px - Interior section breaks */
+    --header-gap-below: var(--space-xl);      /* 32px - Frame edge: header to content */
+    --footer-gap-above: var(--space-xl);      /* 32px - Frame edge: content to footer HR */
+    --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
+    --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
+
+    /* Easter Egg: 3D Block face colors (mempool visualization) */
+    --block-face-top: color-mix(in srgb, var(--brand-orange), black 20%);
+    --block-face-left: color-mix(in srgb, var(--brand-orange), black 35%);
+
+    /* Component-specific tokens */
+    --home-square-size: 24px;
+    --focus-ring-width: 2px;
+    --focus-ring-offset: 2px;
+    --touch-target-min: 48px;
+    --dinkus-dot-size: 4px;
+    --hr-height: 1px;
+    --checkbox-border-width: 2px;
+
+    /* Border utilities */
+    --border-subtle: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
 
 /* Manual Theme Override - User can force light or dark mode via 'd' keyboard toggle
@@ -362,8 +387,8 @@ h1 {
 
 .home-square {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: var(--home-square-size);
+    height: var(--home-square-size);
     background-color: var(--brand-orange);
 }
 
@@ -470,7 +495,7 @@ a {
 a:hover {
     color: var(--brand-orange-hover);
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-color: var(--underline-color-brand);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
 }
@@ -497,8 +522,8 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-    outline: 2px solid var(--brand-orange);
-    outline-offset: 2px;
+    outline: var(--focus-ring-width) solid var(--brand-orange);
+    outline-offset: var(--focus-ring-offset);
     border-radius: var(--border-radius-sm);
 }
 
@@ -641,7 +666,7 @@ p .action-link {
 .pagination-prev:hover .link-text,
 .pagination-next:hover .link-text {
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-color: var(--underline-color-brand);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
 }
@@ -655,7 +680,7 @@ p .action-link {
     font-size: var(--font-base);
     font-weight: var(--font-weight-normal);
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
+    text-decoration-color: var(--underline-color-muted);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
     transition: color var(--transition-fast);
@@ -705,7 +730,7 @@ p .action-link {
 .link-grid a:hover {
     color: var(--brand-orange-hover);
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-color: var(--underline-color-brand);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
 }
@@ -727,17 +752,11 @@ body > .container:first-of-type {
     padding-bottom: 0;
 }
 
-/* Header/Footer Spacing Tokens - Frame edge spacing
+/* Header/Footer Spacing - Frame edge spacing
    Footer tight gap uses explicit padding because line-height extends ABOVE
    text, not between the HR and content.
+   Tokens defined in :root section above.
    -------------------------------------------------- */
-:root {
-    --section-gap: var(--space-2xl);          /* 48px - Interior section breaks */
-    --header-gap-below: var(--space-xl);      /* 32px - Frame edge: header to content */
-    --footer-gap-above: var(--space-xl);      /* 32px - Frame edge: content to footer HR */
-    --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
-    --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
-}
 
 /* Page-level site header spacing (not article headers) */
 body > .container > header {
@@ -835,7 +854,7 @@ body > .container > footer {
 .email-form input[type="email"] {
     padding: var(--space-xs) 0;  /* Compact vertical padding for inline form */
     border: none;
-    border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    border-bottom: var(--border-subtle);
     border-radius: 0;
     font-size: var(--font-sm);
     font-family: var(--font-body);
@@ -910,8 +929,8 @@ body > .container > footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 48px;
-    height: 48px;
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
 }
 
 /* ==========================================================================
@@ -1017,7 +1036,7 @@ body > .container > footer {
 .podcast {
     padding: var(--card-padding);
     background: transparent;
-    border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    border: var(--border-subtle);
     transition: background-color var(--transition-fast);
     contain: layout style paint;
     margin-bottom: var(--space-2xl);
@@ -1544,7 +1563,7 @@ html[data-theme="dark"] .essay-hero-image {
         background: var(--background-card);
         padding: 0.2em 0.4em;
         border-radius: var(--border-radius-code);
-        border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
+        border: var(--border-subtle);
         white-space: nowrap;
     }
 
@@ -1553,7 +1572,7 @@ html[data-theme="dark"] .essay-hero-image {
         margin: var(--space-xl) 0;
         padding: var(--space-lg);
         background: var(--background-card);
-        border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
+        border: var(--border-subtle);
         border-radius: var(--border-radius-code);
         overflow-x: auto;
         line-height: var(--line-height-body);
@@ -1601,7 +1620,7 @@ html[data-theme="dark"] .essay-hero-image {
     hr {
         margin: var(--space-2xl) 0;
         border: none;
-        height: 1px;
+        height: var(--hr-height);
         background: var(--border-color);
     }
 
@@ -1617,8 +1636,8 @@ html[data-theme="dark"] .essay-hero-image {
     .dinkus::after,
     .dinkus span {
         content: '';
-        width: 4px;
-        height: 4px;
+        width: var(--dinkus-dot-size);
+        height: var(--dinkus-dot-size);
         background: color-mix(in srgb, var(--text-primary) 40%, transparent);
     }
 
@@ -1634,7 +1653,7 @@ html[data-theme="dark"] .essay-hero-image {
             text-align: left;
             font-weight: var(--font-weight-semibold);
             background: var(--background-card);
-            border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
+            border: var(--border-subtle);
 
             &:last-child {
                 text-align: right;
@@ -1643,7 +1662,7 @@ html[data-theme="dark"] .essay-hero-image {
 
         td {
             padding: var(--table-cell-padding);
-            border: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
+            border: var(--border-subtle);
 
             &:last-child {
                 text-align: right;
@@ -1662,7 +1681,7 @@ html[data-theme="dark"] .essay-hero-image {
         appearance: none;
         width: 1.1em;
         height: 1.1em;
-        border: 2px solid var(--border-color);
+        border: var(--checkbox-border-width) solid var(--border-color);
         border-radius: var(--border-radius-code);
         background: var(--background-card);
         cursor: default;
@@ -1751,13 +1770,13 @@ html[data-theme="dark"] .essay-hero-image {
         a:not(.footnote-backref) {
             color: var(--text-meta);
             text-decoration: underline;
-            text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
+            text-decoration-color: var(--underline-color-muted);
             text-decoration-thickness: var(--underline-thickness);
             text-underline-offset: var(--underline-offset);
 
             &:hover {
                 color: var(--brand-orange-hover);
-                text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+                text-decoration-color: var(--underline-color-brand);
             }
         }
     }
@@ -1825,7 +1844,7 @@ html[data-theme="dark"] .essay-hero-image {
 .note-content .aside a {
     color: var(--text-meta);
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
+    text-decoration-color: var(--underline-color-muted);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
 }
@@ -1833,7 +1852,7 @@ html[data-theme="dark"] .essay-hero-image {
 .essay-content .aside a:hover,
 .note-content .aside a:hover {
     color: var(--brand-orange-hover);
-    text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+    text-decoration-color: var(--underline-color-brand);
 }
 
 /* Back Links - Navigation links for returning to parent context
@@ -1998,7 +2017,7 @@ a.back-link:hover {
     &:hover {
         color: var(--brand-orange-hover);
         text-decoration: underline;
-        text-decoration-color: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
+        text-decoration-color: var(--underline-color-brand);
         text-decoration-thickness: var(--underline-thickness);
         text-underline-offset: var(--underline-offset);
     }
@@ -2966,11 +2985,7 @@ a.qr-link:hover {
    3D block flies from home-square to center with real-time fee info.
    ========================================================================== */
 
-:root {
-    /* 3D face colors: darken brand orange via color-mix */
-    --block-face-top: color-mix(in srgb, var(--brand-orange), black 20%);
-    --block-face-left: color-mix(in srgb, var(--brand-orange), black 35%);
-}
+/* Block face tokens defined in :root section above */
 
 .mempool-block-fee {
     font-size: var(--font-base);
