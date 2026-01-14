@@ -4,30 +4,36 @@
  *
  * TABLE OF CONTENTS
  * -----------------
- * 1. FONTS           (line ~33)        - Web font loading (Satoshi, Inter)
- * 2. TOKENS          (line ~67)        - CSS custom properties, spacing system
- * 3. RESET           (line ~281)       - Base styles, brand bar
- * 4. TYPOGRAPHY      (line ~334)       - Heading hierarchy, body text
- * 5. LINKS           (line ~460)       - Link styles, focus states, link hierarchy
- * 6. LAYOUT          (line ~716)       - Container, header/footer spacing
- * 7. FOOTER          (line ~806)       - Site footer, newsletter signup
- * 8. HOMEPAGE        (line ~920)       - Homepage sections (bio, latest essay, podcast)
- * 9. COMPONENTS      (line ~997)       - Cards, link-grid, topic tags, cta-group
- * 10. ESSAYS         (line ~1215)      - Essay listings, single essay pages
- * 11. CONTENT BODY   (line ~1473)      - Reading content styles (CSS nesting)
- * 12. PAGE-SPECIFIC  (line ~1881)      - Page layouts, pagination, contact, skip links
- * 13. UTILITIES      (line ~2019)      - Helper classes (sr-only, hidden, etc)
- * 14. DARK MODE      (line ~2041)      - Theme toggle & system preference overrides
- * 15. PRINT          (line ~2184)      - Print styles
- * 16. MEDIA EMBEDS   (line ~2226)      - YouTube, video captions
- * 17. MOBILE         (line ~2307)      - Responsive breakpoints
- * 18. V4V PAGE       (line ~2348)      - Value for Value payment page
- * 19. LANDING PAGE   (line ~2761)      - Conversion page styles
- * 20. GHOST BUTTONS  (line ~2809)      - Ghost button base and variants
- * 21. KEYBOARD HELP  (line ~2868)      - Keyboard shortcuts modal
- * 22. BLOCK EASTER   (line ~2992)      - Mempool next block visualization
+ * 1. FONTS           (line ~40)        - Web font loading (Satoshi, Inter)
+ * 2. TOKENS          (line ~74)        - CSS custom properties, spacing system
+ * 3. RESET           (line ~328)       - Base styles, brand bar
+ * 4. TYPOGRAPHY      (line ~381)       - Heading hierarchy, body text
+ * 5. LINKS           (line ~507)       - Link styles, focus states, link hierarchy
+ * 6. LAYOUT          (line ~736)       - Container, header/footer spacing
+ * 7. FOOTER          (line ~820)       - Site footer, newsletter signup
+ * 8. HOMEPAGE        (line ~934)       - Homepage sections (bio, latest essay, podcast)
+ * 9. COMPONENTS      (line ~1011)      - Cards, link-grid, topic tags, cta-group
+ * 10. ESSAYS         (line ~1241)      - Essay listings, single essay pages
+ * 11. MARKDOWN       (line ~1494)      - Reading content styles (CSS nesting)
+ * 12. PAGE-SPECIFIC  (line ~1899)      - Page layouts, pagination, contact, skip links
+ * 13. UTILITIES      (line ~2037)      - Helper classes (sr-only, hidden, etc)
+ * 14. DARK MODE      (line ~2059)      - Theme toggle & system preference overrides
+ * 15. PRINT          (line ~2160)      - Print styles
+ * 16. MEDIA EMBEDS   (line ~2202)      - YouTube, video captions
+ * 17. MOBILE         (line ~2283)      - Responsive breakpoints
+ * 18. V4V PAGE       (line ~2336)      - Value for Value payment page
+ * 19. LANDING PAGE   (line ~2698)      - Conversion page styles
+ * 20. BUTTONS        (line ~2746)      - Ghost button system and variants
+ * 21. KEYBOARD HELP  (line ~2845)      - Keyboard shortcuts modal
+ * 22. BLOCK EASTER   (line ~2969)      - Mempool next block visualization
  *
  * Line numbers are approximate. Update when making significant structural changes.
+ *
+ * CASCADE LAYERS (for future refactoring):
+ * @layer tokens, reset, base, components, pages, utilities, dark-mode, print;
+ *
+ * Note: Layer declarations are documented but not yet implemented.
+ * Wrap sections in @layer blocks when splitting into partials.
  */
 
 /* ==========================================================================
@@ -223,7 +229,12 @@
     --opacity-medium: 0.6;
     --opacity-muted: 0.7;
 
-    /* Link Styling */
+    /* Link Styling
+       Underline pattern (use consistently):
+       text-decoration: underline;
+       text-decoration-color: var(--underline-color-brand|muted);
+       text-decoration-thickness: var(--underline-thickness);
+       text-underline-offset: var(--underline-offset); */
     --underline-offset: 0.2em;
     --underline-thickness: 1px;
     --underline-opacity: 50%;
@@ -287,12 +298,22 @@
 
     /* Component-specific tokens */
     --home-square-size: 24px;
+    --home-square-border-width: 3px;
     --focus-ring-width: 2px;
     --focus-ring-offset: 2px;
     --touch-target-min: 48px;
     --dinkus-dot-size: 4px;
     --hr-height: 1px;
     --checkbox-border-width: 2px;
+    --checkbox-indent: 1.5rem;
+    --footer-touch-compensation: 6px;
+
+    /* Opacity scale additions */
+    --opacity-high: 0.85;
+
+    /* Optical adjustments - font-specific baseline corrections */
+    --optical-arrow-lift: -0.076em;  /* Satoshi arrow baseline adjustment */
+    --video-caption-pull: calc(-1 * var(--space-md));  /* Pull caption closer to video */
 
     /* Border utilities */
     --border-subtle: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
@@ -394,7 +415,7 @@ h1 {
 
 .home-square--outlined {
     background-color: transparent;
-    border: 3px solid var(--brand-orange);
+    border: var(--home-square-border-width) solid var(--brand-orange);
 }
 
 .home-link:hover .home-square {
@@ -561,28 +582,17 @@ select:focus-visible,
    ========================================================================== */
 
 /* Shared transition for all branded links */
-.action-link,
-.back-link,
-.all-essays,
-.all-notes,
-.essay-footer a,
-.pagination-prev,
-.pagination-next,
-.secondary-link,
-.link-grid a {
+:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
+    .pagination-prev, .pagination-next, .secondary-link, .link-grid a) {
     text-decoration: none;
     transition: color var(--transition-fast);
 }
 
 /* Action Links - Primary action links WITH arrows (→)
-   Usage: "Read more →", "All essays →", "Subscribe to newsletter →" */
-.action-link,
-.back-link,
-.all-essays,
-.all-notes,
-.essay-footer a,
-.pagination-prev,
-.pagination-next {
+   Usage: "Read more →", "All essays →", "Subscribe to newsletter →"
+   Selector group: .cta-link-group (conceptual - these share CTA styling) */
+:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
+    .pagination-prev, .pagination-next) {
     font-family: var(--font-heading);
     font-size: var(--font-base);
     color: var(--brand-orange);
@@ -601,12 +611,8 @@ select:focus-visible,
 }
 
 /* Arrow spans in action links: prevent underline */
-.action-link span[aria-hidden="true"],
-.back-link span[aria-hidden="true"],
-.all-essays span[aria-hidden="true"],
-.all-notes span[aria-hidden="true"],
-.pagination-prev span[aria-hidden="true"],
-.pagination-next span[aria-hidden="true"] {
+:is(.action-link, .back-link, .all-essays, .all-notes,
+    .pagination-prev, .pagination-next) span[aria-hidden="true"] {
     text-decoration: none;
 }
 
@@ -647,24 +653,15 @@ p .action-link {
 }
 
 /* Hover state for all primary action links - no underline (arrows would be underlined) */
-.action-link:hover,
-.back-link:hover,
-.all-essays:hover,
-.all-notes:hover,
-.essay-footer a:hover,
-.pagination-prev:hover,
-.pagination-next:hover {
+:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
+    .pagination-prev, .pagination-next):hover {
     color: var(--brand-orange-hover);
     text-decoration: none;
 }
 
 /* Underline link text (not arrow) on hover */
-.action-link:hover .link-text,
-.all-essays:hover .link-text,
-.all-notes:hover .link-text,
-.essay-footer a:hover .link-text,
-.pagination-prev:hover .link-text,
-.pagination-next:hover .link-text {
+:is(.action-link, .all-essays, .all-notes, .essay-footer a,
+    .pagination-prev, .pagination-next):hover .link-text {
     text-decoration: underline;
     text-decoration-color: var(--underline-color-brand);
     text-decoration-thickness: var(--underline-thickness);
@@ -1236,8 +1233,7 @@ a.episode-title:hover {
 }
 
 /* CTA groups inside long-form content inherit paragraph rhythm */
-.essay-body .cta-group,
-.note-body .cta-group {
+:is(.essay-body, .note-body) .cta-group {
     gap: var(--para-gap-long-form);
 }
 
@@ -1305,7 +1301,7 @@ time.note-date,
     font-size: var(--font-sm);
     font-weight: var(--font-weight-normal);  /* Override body weight (450→400) */
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;  /* Tighten date spacing */
+    letter-spacing: var(--letter-spacing-tight-md);  /* Tighten date spacing */
     flex-shrink: 0;
     white-space: nowrap;
 }
@@ -1458,20 +1454,17 @@ html[data-theme="dark"] .essay-hero-image {
 /* Long-form paragraph spacing - 0.75× line box (18px × 1.45 = 26.1px line box)
    Light: 1.25rem (20px) = 0.77× line box
    Dark: 1.375rem (22px) = 0.85× line box (compensates for perceived density) */
-.essay-body p,
-.note-body p {
+:is(.essay-body, .note-body) p {
     margin-bottom: var(--para-gap-long-form);
 }
 
 /* Long-form stacked CTAs - match paragraph rhythm */
-.essay-body .action-link + .action-link,
-.essay-body .action-link + .secondary-link,
-.essay-body .secondary-link + .action-link,
-.essay-body .secondary-link + .secondary-link,
-.note-body .action-link + .action-link,
-.note-body .action-link + .secondary-link,
-.note-body .secondary-link + .action-link,
-.note-body .secondary-link + .secondary-link {
+:is(.essay-body, .note-body) :is(
+    .action-link + .action-link,
+    .action-link + .secondary-link,
+    .secondary-link + .action-link,
+    .secondary-link + .secondary-link
+) {
     margin-top: var(--para-gap-long-form);
 }
 
@@ -1484,8 +1477,7 @@ html[data-theme="dark"] .essay-hero-image {
 
 /* First heading after page header elements - reduce top margin to avoid excessive stacking
    Applies when meta/title/subtitle elements precede the first content heading */
-.essay-content > header + .essay-body > h2:first-child,
-.note-content > header + .note-body > h2:first-child {
+:is(.essay-content, .note-content) > header + :is(.essay-body, .note-body) > h2:first-child {
     margin-top: 0;  /* No top margin - header elements provide spacing */
 }
 
@@ -1494,8 +1486,7 @@ html[data-theme="dark"] .essay-hero-image {
 }
 
 /* Footer CTA spacing after essay/note content */
-.essay-body + footer,
-.note-body + footer {
+:is(.essay-body, .note-body) + footer {
     margin-top: var(--space-sm);  /* 12px - tight spacing after content body */
 }
 
@@ -1714,7 +1705,7 @@ html[data-theme="dark"] .essay-hero-image {
         }
 
         input[type="checkbox"] {
-            margin-left: -1.5rem;
+            margin-left: calc(-1 * var(--checkbox-indent));
             margin-right: var(--space-sm);
         }
     }
@@ -1831,28 +1822,25 @@ html[data-theme="dark"] .essay-hero-image {
 }
 
 /* Aside - acknowledgments after essay/note body */
-.essay-content .aside,
-.note-content .aside {
+:is(.essay-content, .note-content) .aside {
     color: var(--text-meta);
     font-style: italic;
     font-size: var(--font-base);
     margin-top: 0;  /* Preceding paragraph's margin-bottom provides spacing */
     margin-bottom: var(--para-gap-long-form);  /* Match paragraph rhythm */
-}
 
-.essay-content .aside a,
-.note-content .aside a {
-    color: var(--text-meta);
-    text-decoration: underline;
-    text-decoration-color: var(--underline-color-muted);
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
-}
+    a {
+        color: var(--text-meta);
+        text-decoration: underline;
+        text-decoration-color: var(--underline-color-muted);
+        text-decoration-thickness: var(--underline-thickness);
+        text-underline-offset: var(--underline-offset);
 
-.essay-content .aside a:hover,
-.note-content .aside a:hover {
-    color: var(--brand-orange-hover);
-    text-decoration-color: var(--underline-color-brand);
+        &:hover {
+            color: var(--brand-orange-hover);
+            text-decoration-color: var(--underline-color-brand);
+        }
+    }
 }
 
 /* Back Links - Navigation links for returning to parent context
@@ -1881,7 +1869,7 @@ a.back-link:hover {
 .pagination-prev span[aria-hidden="true"] {
     font-family: var(--font-heading);
     display: inline-block;
-    transform: translateY(-0.076em);
+    transform: translateY(var(--optical-arrow-lift));
 }
 
 /* ==========================================================================
@@ -2074,9 +2062,19 @@ a.back-link:hover {
    1. System prefers dark AND user hasn't forced light mode
    2. User explicitly toggled to dark mode (regardless of system)
 
-   We use a custom selector :is() to combine both conditions and avoid
-   duplicating property declarations. The media query still wraps system-only
-   rules (like heading colors that don't need the toggle fallback).
+   ARCHITECTURE NOTE:
+   CSS cannot combine @media queries with non-media selectors, so dark mode
+   rules that need both system preference AND manual toggle support must be
+   written twice. This is an inherent CSS limitation.
+
+   Pattern used:
+   @media (prefers-color-scheme: dark) {
+       html:not([data-theme="light"]) { ... }  // System dark
+   }
+   html[data-theme="dark"] { ... }  // Manual toggle
+
+   The light-dark() function (used in tokens) handles both cases automatically.
+   The duplication below is for non-token values like font-weight adjustments.
    ========================================================================== */
 
 /* Base font-weight: light mode default (400) */
@@ -2269,7 +2267,7 @@ div[style*="padding-bottom: 56.25%"] + p,
 .youtube-preview-container + p {
     font-size: var(--font-sm);
     color: var(--text-secondary);
-    margin-top: calc(var(--space-xl) * -0.5);  /* Pull caption closer to video */
+    margin-top: var(--video-caption-pull);  /* Pull caption closer to video */
     margin-bottom: var(--space-xl);
 }
 
@@ -2298,7 +2296,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     /* Larger touch targets for footer links (48px minimum per Lighthouse)
        Uses padding to expand tap area + negative margin to preserve visual spacing */
     .footer-links {
-        margin-top: -6px;  /* Compensate for taller tap targets */
+        margin-top: calc(-1 * var(--footer-touch-compensation));  /* Compensate for taller tap targets */
     }
     .footer-links a {
         padding: var(--space-sm) var(--space-md);
@@ -2459,25 +2457,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     opacity: 0.5;
 }
 
-.custom-amount-btn {
-    padding: var(--space-sm) var(--space-md);
-    background: transparent;
-    color: var(--text-meta);
-    border: var(--border-width) solid var(--text-meta);
-    border-radius: var(--border-radius-interactive);
-    font-family: var(--font-system);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.custom-amount-btn:hover {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
-}
+/* Note: .custom-amount-btn base styles consolidated in Button System section */
 
 .custom-amount-btn:active {
     transform: translateY(1px);
@@ -2520,23 +2500,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     margin-bottom: var(--space-lg);
 }
 
-.error-dismiss-btn {
-    background: none;
-    border: var(--border-width) solid var(--text-meta);
-    border-radius: var(--border-radius-interactive);
-    color: var(--text-meta);
-    cursor: pointer;
-    font-family: var(--font-system);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
-    padding: var(--space-xs) var(--space-md);
-    transition: all var(--transition-fast);
-}
-
-.error-dismiss-btn:hover {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
-}
+/* Note: .error-dismiss-btn base styles consolidated in Button System section */
 
 .qr-display {
     text-align: center;
@@ -2658,24 +2622,7 @@ a.qr-link:hover {
     color: var(--brand-orange);
 }
 
-.qr-cancel-btn {
-    background: none;
-    border: var(--border-width) solid var(--text-meta);
-    border-radius: var(--border-radius-interactive);
-    color: var(--text-meta);
-    cursor: pointer;
-    font-family: var(--font-system);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
-    text-decoration: none;
-    padding: var(--space-xs) var(--space-md);
-    transition: all var(--transition-fast);
-}
-
-.qr-cancel-btn:hover {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
-}
+/* Note: .qr-cancel-btn base styles consolidated in Button System section */
 
 .payment-status {
     text-align: center;
@@ -2802,16 +2749,61 @@ a.qr-link:hover {
    Variants: muted (newsletter) and primary (conversion CTA).
    ========================================================================== */
 
+/* ==========================================================================
+   Button System - Ghost buttons with variants
+
+   Base: .btn-ghost - transparent background with border
+   Variants:
+   - --muted: gray border/text, for subtle actions (newsletter, dismiss)
+   - --primary: orange border/text, for conversion CTAs
+   - --sm: small size (font-sm, compact padding)
+   - --lg: large size (font-xl, spacious padding)
+   ========================================================================== */
+
 /* Shared base */
-.btn-ghost {
+.btn-ghost,
+.custom-amount-btn,
+.error-dismiss-btn,
+.qr-cancel-btn {
     display: inline-block;
     background: transparent;
-    border: 1px solid;
-    border-radius: 0;
-    font-family: var(--font-heading);
+    border: var(--border-width) solid;
     cursor: pointer;
-    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    transition: all var(--transition-fast);
     text-decoration: none;
+}
+
+/* Ghost base defaults */
+.btn-ghost {
+    font-family: var(--font-heading);
+    border-radius: 0;
+}
+
+/* System font buttons (V4V page) */
+.custom-amount-btn,
+.error-dismiss-btn,
+.qr-cancel-btn {
+    font-family: var(--font-system);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--border-radius-interactive);
+    color: var(--text-meta);
+    border-color: var(--text-meta);
+}
+
+.custom-amount-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Shared hover for muted buttons */
+.btn-ghost--muted:hover,
+.custom-amount-btn:hover,
+.error-dismiss-btn:hover,
+.qr-cancel-btn:hover {
+    color: var(--brand-orange);
+    border-color: var(--brand-orange);
 }
 
 /* Muted variant (newsletter signup) */
@@ -2825,11 +2817,6 @@ a.qr-link:hover {
     border-radius: var(--border-radius-sm);
     white-space: nowrap;
     flex-shrink: 0;
-}
-
-.btn-ghost--muted:hover {
-    color: var(--brand-orange);
-    border-color: var(--brand-orange);
 }
 
 /* Primary variant (conversion CTA) */
@@ -2989,7 +2976,7 @@ a.qr-link:hover {
 
 .mempool-block-fee {
     font-size: var(--font-base);
-    margin-bottom: 2px;
+    margin-bottom: var(--space-label-gap);
 }
 
 .mempool-block-range {
@@ -3007,17 +2994,17 @@ a.qr-link:hover {
 
 .mempool-block-count {
     font-size: var(--font-sm);
-    opacity: 0.85;
+    opacity: var(--opacity-high);
     margin-bottom: var(--space-label-gap);
 }
 
 .mempool-block-time {
     font-size: var(--font-sm);
-    opacity: 0.85;
+    opacity: var(--opacity-high);
 }
 
 .mempool-block-height {
     font-size: var(--font-custom-32);
     font-weight: var(--font-weight-bold);
-    letter-spacing: -0.02em;
+    letter-spacing: var(--letter-spacing-tight-md);
 }
