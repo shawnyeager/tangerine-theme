@@ -18,24 +18,27 @@ Context Expected:
 <link rel="preload" href="{{ $avif.RelPermalink }}" as="image" type="image/avif">
   {{- end -}}
 {{- end -}}
-{{- $cssPath := "css/main.css" -}}
-{{- $css := resources.Get $cssPath -}}
-{{- if $css -}}
-  {{/* Minify once, then fingerprint */}}
-  {{- $cssMinified := $css | resources.Minify -}}
+{{/* Concatenate tokens + main CSS, then minify and fingerprint */}}
+{{- $tokens := resources.Get "css/_tokens.css" -}}
+{{- $main := resources.Get "css/main.css" -}}
+{{- if and $tokens $main -}}
+  {{- $combined := slice $tokens $main | resources.Concat "css/bundle.css" -}}
+  {{- $cssMinified := $combined | resources.Minify -}}
   {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
   <link rel="preload" href="{{ $cssFingerprinted.RelPermalink }}" as="style" integrity="{{ $cssFingerprinted.Data.Integrity }}">
 {{- else -}}
-  <link rel="preload" href="{{ $cssPath | relURL }}" as="style">
+  {{/* Fallback if files missing */}}
+  <link rel="preload" href="{{ "css/main.css" | relURL }}" as="style">
 {{- end -}}
 
 <!-- CSS -->
-{{- if $css -}}
-  {{- $cssMinified := $css | resources.Minify -}}
+{{- if and $tokens $main -}}
+  {{- $combined := slice $tokens $main | resources.Concat "css/bundle.css" -}}
+  {{- $cssMinified := $combined | resources.Minify -}}
   {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
   <link rel="stylesheet" href="{{ $cssFingerprinted.RelPermalink }}" integrity="{{ $cssFingerprinted.Data.Integrity }}">
 {{- else -}}
-  <link rel="stylesheet" href="{{ $cssPath | relURL }}">
+  <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
 {{- end -}}
 
 <!-- RSS Feed -->

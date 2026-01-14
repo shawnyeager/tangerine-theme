@@ -4,28 +4,27 @@
  *
  * TABLE OF CONTENTS
  * -----------------
- * 1. FONTS           (line ~40)        - Web font loading (Satoshi, Inter)
- * 2. TOKENS          (line ~74)        - CSS custom properties, spacing system
- * 3. RESET           (line ~328)       - Base styles, brand bar
- * 4. TYPOGRAPHY      (line ~381)       - Heading hierarchy, body text
- * 5. LINKS           (line ~507)       - Link styles, focus states, link hierarchy
- * 6. LAYOUT          (line ~736)       - Container, header/footer spacing
- * 7. FOOTER          (line ~820)       - Site footer, newsletter signup
- * 8. HOMEPAGE        (line ~934)       - Homepage sections (bio, latest essay, podcast)
- * 9. COMPONENTS      (line ~1011)      - Cards, link-grid, topic tags, cta-group
- * 10. ESSAYS         (line ~1241)      - Essay listings, single essay pages
- * 11. MARKDOWN       (line ~1494)      - Reading content styles (CSS nesting)
- * 12. PAGE-SPECIFIC  (line ~1899)      - Page layouts, pagination, contact, skip links
- * 13. UTILITIES      (line ~2037)      - Helper classes (sr-only, hidden, etc)
- * 14. DARK MODE      (line ~2059)      - Theme toggle & system preference overrides
- * 15. PRINT          (line ~2160)      - Print styles
- * 16. MEDIA EMBEDS   (line ~2202)      - YouTube, video captions
- * 17. MOBILE         (line ~2283)      - Responsive breakpoints
- * 18. V4V PAGE       (line ~2336)      - Value for Value payment page
- * 19. LANDING PAGE   (line ~2698)      - Conversion page styles
- * 20. BUTTONS        (line ~2746)      - Ghost button system and variants
- * 21. KEYBOARD HELP  (line ~2845)      - Keyboard shortcuts modal
- * 22. BLOCK EASTER   (line ~2969)      - Mempool next block visualization
+ * _tokens.css        (separate file)   - Fonts + CSS custom properties (importable standalone)
+ * 1. RESET           (line ~50)        - Base styles, brand bar
+ * 2. TYPOGRAPHY      (line ~100)       - Heading hierarchy, body text
+ * 3. LINKS           (line ~230)       - Link styles, focus states, link hierarchy
+ * 4. LAYOUT          (line ~460)       - Container, header/footer spacing
+ * 5. FOOTER          (line ~540)       - Site footer, newsletter signup
+ * 6. HOMEPAGE        (line ~660)       - Homepage sections (bio, latest essay, podcast)
+ * 7. COMPONENTS      (line ~730)       - Cards, link-grid, topic tags, cta-group
+ * 8. ESSAYS          (line ~960)       - Essay listings, single essay pages
+ * 9. MARKDOWN        (line ~1090)      - Reading content styles (CSS nesting)
+ * 10. PAGE-SPECIFIC  (line ~1520)      - Page layouts, pagination, contact, skip links
+ * 11. UTILITIES      (line ~1660)      - Helper classes (sr-only, hidden, etc)
+ * 12. DARK MODE      (line ~1680)      - Theme toggle & system preference overrides
+ * 13. PRINT          (line ~1780)      - Print styles
+ * 14. MEDIA EMBEDS   (line ~1820)      - YouTube, video captions
+ * 15. MOBILE         (line ~1900)      - Responsive breakpoints
+ * 16. V4V PAGE       (line ~1960)      - Value for Value payment page
+ * 17. LANDING PAGE   (line ~2320)      - Conversion page styles
+ * 18. BUTTONS        (line ~2370)      - Ghost button system and variants
+ * 19. KEYBOARD HELP  (line ~2470)      - Keyboard shortcuts modal
+ * 20. BLOCK EASTER   (line ~2590)      - Mempool next block visualization
  *
  * Line numbers are approximate. Update when making significant structural changes.
  *
@@ -37,295 +36,10 @@
  */
 
 /* ==========================================================================
-   1. FONTS - Web Font Loading
+   1. RESET - Base Styles & Browser Normalization
 
-   Dual-font system for visual hierarchy:
-   - Satoshi (43KB): Headings, nav, section labels - clear weight hierarchy
-   - Inter (352KB): Body text, lists, blockquotes - optimal readability
-
-   Strategy: font-display: swap ensures web fonts always render
-   ========================================================================== */
-
-@font-face {
-    font-family: 'Satoshi';
-    font-weight: 300 900;
-    font-style: normal;
-    font-display: swap;
-    src: url('/fonts/Satoshi-Variable.woff2') format('woff2-variations');
-}
-
-@font-face {
-    font-family: 'Inter';
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-    src: url('/fonts/Inter-Variable.woff2') format('woff2-variations');
-}
-
-@font-face {
-    font-family: 'Inter';
-    font-weight: 100 900;
-    font-style: italic;
-    font-display: swap;
-    src: url('/fonts/Inter-Italic-Variable.woff2') format('woff2-variations');
-}
-
-/* ==========================================================================
-   2. TOKENS - CSS Custom Properties (Design Tokens)
-
-   All design decisions tokenized for consistency and theming.
-   Uses CSS light-dark() for automatic dark mode support.
-
-   SPACING SCALE (8px base grid):
-   --space-xs:  8px  - Tight grouping within elements
-   --space-sm:  12px - Related elements (CTAs, internal spacing)
-   --space-md:  16px - Default spacing (paragraphs, list items)
-   --space-lg:  24px - Section internal spacing
-   --space-xl:  32px - Section breaks
-   --space-2xl: 48px - Major separations (header→main, main→footer)
-   --space-3xl: 64px - Page header element stacks
-
-   SPACING PHILOSOPHY:
-   - Frame edges (header/footer padding): --space-xl (32px)
-   - Section gaps: --space-2xl (48px)
-   - Interior spacing: varies by component semantics
-   - Mobile: interior scales down, frame/sections stay generous
-   ========================================================================== */
-
-:root {
-    /* Color Scheme - Signals browser to adapt UI elements (scrollbars, form controls) */
-    color-scheme: dark light;
-
-    /* Brand Colors - Trust Revolution Orange
-       Visual brand: #F84200 (used in brand bar, podcast art)
-       Text implementation: #d63900 light / #FF5733 dark (WCAG AA compliant) */
-    --brand-orange: light-dark(#d63900, #FF5733);
-    --brand-orange-hover: light-dark(#bf3300, #FF6B47);
-
-    /* Text Colors - WCAG AA compliant
-       Color Hierarchy:
-       - --text-primary: Main content, headings, body text
-       - --text-secondary: Descriptions, secondary info
-       - --text-meta: Dates, reading time, timestamps
-       - --text-subtle: Placeholder text, disabled states
-       - --text-bold: Bold/strong text emphasis
-
-       Link Colors:
-       - --brand-orange: Primary links (CTAs, action links)
-       - --text-secondary: Secondary links (footer, nav)
-       - --text-meta: Tertiary links (metadata, timestamps) */
-    --text-primary: light-dark(#1a1a1a, #f5f5f4);
-    --text-secondary: light-dark(#444, #c8c8c8);
-    --text-meta: light-dark(#666, #a8a8a8);
-    --text-subtle: light-dark(#767676, #b0b0b0);
-    --text-bold: light-dark(#1a1a1a, #ffffff);
-    --text-on-brand: #1a1a1a;  /* Dark text for brand-color backgrounds (skip-link, buttons on orange) */
-    --highlight-bg: light-dark(#fef3cd, #443818);  /* soft yellow / amber */
-    --border-color: light-dark(#d5d5d5, #505050);
-    --background-body: light-dark(#FDFCFA, #1a1a1a);
-    --background-card: light-dark(#f5f5f5, #262626);
-
-    /* Typography - Dual font system */
-    --font-heading: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-    --line-height-body: 1.5;
-    --line-height-title: 1.15;  /* Tight line-height for large display titles */
-    --line-height-heading: 1.3; /* Headings within content */
-    --line-height-reading: 1.45; /* Essay/note body - tighter than body default */
-    --line-height-none: 1; /* Single-line elements (badges, icons) */
-
-    /* Font Weights */
-    --font-weight-light: 300;     /* Lighter weight for dark mode */
-    --font-weight-normal: 400;
-    --font-weight-body: light-dark(300, 250);  /* Body text - light mode uses light weight, dark mode slightly lighter */
-    --font-weight-list-title: 450;  /* List titles - overridden to 300 in dark mode */
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-
-    /* Letter Spacing */
-    --letter-spacing-tight-xl: -0.03em;
-    --letter-spacing-tight-lg: -0.025em;
-    --letter-spacing-tight-md: -0.02em;
-    --letter-spacing-wide: 0.05em;
-    --letter-spacing-body: -0.01em;
-
-    /* =======================================================================
-       VERTICAL RHYTHM SYSTEM
-
-       Base unit: 8px grid
-       Philosophy: Balanced hierarchy without excessive whitespace
-       Design goal: Content > structure. Clear visual hierarchy that serves
-                    readability without feeling cramped or airy.
-
-       TOKEN HIERARCHY (Semantic Meaning):
-       --space-xs (8px):   Tight grouping within elements
-       --space-sm (12px):  Related elements (CTAs, internal spacing)
-       --space-md (16px):  Default spacing (paragraphs, list items, small headings)
-       --space-lg (24px):  Section internal spacing (meta groups, subsection headers)
-       --space-xl (32px):  Section breaks (page titles, content footers, back links)
-       --space-2xl (48px): Major separations (header→main, main→footer, homepage sections)
-       --space-3xl (64px): Page header element stacks (meta+title+first heading)
-
-       USAGE RULES:
-       1. Header-to-main gap: Always 2xl (48px) via header margin-bottom
-       2. Main-to-footer gap: Always 2xl (48px) via footer margin-top
-       3. Sections use margin-bottom: 0 (footer controls final gap)
-       4. Content headings: H2 (xl/32px top), H3 (lg/24px top), H4 (md/16px top)
-       5. First heading after page header: margin-top: 0 (header provides spacing)
-       6. Never stack margins - one element controls the gap
-       ======================================================================= */
-
-    /* Spacing Tokens */
-    --space-label-gap: 0.25rem;  /* 4px - Label-to-value gap in info pairs */
-    --space-xs: 0.5rem;          /* 8px - Tight grouping within elements */
-    --space-sm: 0.75rem;         /* 12px - Related elements (CTAs, internal spacing) */
-    --space-md: 1rem;            /* 16px - Default spacing (paragraphs, list items, small headings) */
-    --space-lg: 1.5rem;          /* 24px - Section internal spacing (meta groups, subsection headers) */
-    --space-xl: 2rem;            /* 32px - Section breaks (page titles, content footers, back links) */
-    --space-2xl: 3rem;           /* 48px - Major separations (header→main, main→footer, homepage sections) */
-    --space-3xl: 4rem;           /* 64px - Page header element stacks (meta+title+first heading sequences) */
-    --container-mobile-h-padding: 1.25rem;  /* 20px - Mobile horizontal edges */
-    --icon-optical-adjust: 0.25rem;         /* 4px - SVG/icon alignment nudges */
-
-    /* Typography spacing - heading proximity ratios (don't scale with viewport)
-       Headings need more space above to associate with content below */
-    --para-gap-long-form: 1.25rem;  /* Long-form paragraph spacing (light mode default) */
-    --heading-above-lg: 1.5rem;   /* 24px - h2 section breaks */
-    --heading-below-lg: 1rem;     /* 16px - maintains 1.5:1 ratio */
-    --heading-above-md: 1rem;     /* 16px - h3 subsection breaks */
-    --heading-below-md: 0.75rem;  /* 12px - maintains 1.33:1 ratio */
-    --heading-above-sm: 0.75rem;  /* 12px - h4 minor breaks */
-    --heading-below-sm: 0.5rem;   /* 8px - maintains 1.5:1 ratio */
-
-    /* Component Sizing */
-    --content-max-width: 700px;
-    --card-padding: var(--space-xl);
-    --border-radius-sm: 2px;
-    --border-radius-interactive: 4px;
-    --border-radius-code: 4px;
-    --border-radius-md: 8px;
-    --arrow-spacing: 0.15em;
-    --brand-bar-height: 3px;
-    --table-cell-padding: 0.75rem 1rem;
-    --qr-size: 250px;
-    --play-button-size: 80px;
-    --video-aspect-ratio: 56.25%;
-    --border-width-emphasis: 2px;
-
-    /* Z-index Scale */
-    --z-brand-bar: 9999;
-    --z-skip-link: 10000;
-    --z-modal: 10001;
-
-    /* Transitions */
-    --transition-fast: 0.3s ease;
-    --transition-base: 0.4s ease;
-
-    /* Opacity Scale */
-    --opacity-subtle: 0.5;
-    --opacity-medium: 0.6;
-    --opacity-muted: 0.7;
-
-    /* Link Styling
-       Underline pattern (use consistently):
-       text-decoration: underline;
-       text-decoration-color: var(--underline-color-brand|muted);
-       text-decoration-thickness: var(--underline-thickness);
-       text-underline-offset: var(--underline-offset); */
-    --underline-offset: 0.2em;
-    --underline-thickness: 1px;
-    --underline-opacity: 50%;
-    --underline-color-brand: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
-    --underline-color-muted: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
-
-    /* Content Elevation */
-    --shadow-content-light: light-dark(0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.4));
-
-    /* Syntax Highlighting */
-    --syntax-keyword: light-dark(#0066aa, #6cb6ff);
-    --syntax-function: light-dark(#6f42c1, #d2a8ff);
-    --syntax-string: light-dark(#aa5d00, #e9b872);
-    --syntax-operator: light-dark(#555555, #b0b0b0);
-    --syntax-default: light-dark(#1a1a1a, #d0d0d0);
-
-    /* Typography - Heading colors (enhanced contrast in dark mode) */
-    --text-heading-h2: light-dark(#1a1a1a, #ffffff);
-    --text-heading-h3: light-dark(#1a1a1a, #ebebeb);
-    --text-heading-h4: light-dark(#1a1a1a, #e0e0e0);
-    --text-heading-h5: light-dark(#1a1a1a, #d8d8d8);
-    --code-background: light-dark(#f5f5f5, #1e1e1e);
-
-    /* Typography Scale (Perfect Fourth: 1.333) */
-    --font-xs: 0.75rem;
-    --font-sm: 0.875rem;
-    --font-code: 0.9rem;          /* Monospace code */
-    --font-base: 1rem;
-    --font-lg: 1.125rem;
-    --font-lg-plus: 1.0625rem;    /* Bio/intro text (17px) */
-    --font-xl: 1.333rem;
-    --font-2xl: 1.777rem;
-
-    /* Custom Typography Sizes */
-    --font-custom-40: 2.5rem;     /* 40px - Landing page hero */
-    --font-custom-32: 2rem;
-    --font-custom-24: 1.5rem;
-
-    /* Border Width */
-    --border-width: 1px;
-    --border-width-accent: 4px;
-    --border-height-thin: 1px;
-
-    /* Content Element Sizing */
-    --podcast-art-size: 150px;
-    --podcast-art-size-mobile: 130px;
-    --button-min-width-lg: 85px;
-    --skip-link-max-width: 260px;
-    --image-size-lg: 200px;
-
-    /* Layout Spacing Shortcuts (referenced in layout section) */
-    --section-gap: var(--space-2xl);          /* 48px - Interior section breaks */
-    --header-gap-below: var(--space-xl);      /* 32px - Frame edge: header to content */
-    --footer-gap-above: var(--space-xl);      /* 32px - Frame edge: content to footer HR */
-    --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
-    --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
-
-    /* Easter Egg: 3D Block face colors (mempool visualization) */
-    --block-face-top: color-mix(in srgb, var(--brand-orange), black 20%);
-    --block-face-left: color-mix(in srgb, var(--brand-orange), black 35%);
-
-    /* Component-specific tokens */
-    --home-square-size: 24px;
-    --home-square-border-width: 3px;
-    --focus-ring-width: 2px;
-    --focus-ring-offset: 2px;
-    --touch-target-min: 48px;
-    --dinkus-dot-size: 4px;
-    --hr-height: 1px;
-    --checkbox-border-width: 2px;
-    --checkbox-indent: 1.5rem;
-    --footer-touch-compensation: 6px;
-
-    /* Opacity scale additions */
-    --opacity-high: 0.85;
-
-    /* Optical adjustments - font-specific baseline corrections */
-    --optical-arrow-lift: -0.076em;  /* Satoshi arrow baseline adjustment */
-    --video-caption-pull: calc(-1 * var(--space-md));  /* Pull caption closer to video */
-
-    /* Border utilities */
-    --border-subtle: var(--border-width) solid color-mix(in srgb, var(--border-color) 50%, transparent);
-}
-
-/* Manual Theme Override - User can force light or dark mode via 'd' keyboard toggle
-   The light-dark() function automatically selects values based on color-scheme */
-html[data-theme="light"] { color-scheme: light; }
-html[data-theme="dark"] { color-scheme: dark; }
-
-/* ==========================================================================
-   3. RESET - Base Styles & Browser Normalization
+   Note: Design tokens (_tokens.css) are concatenated by Hugo Pipes.
+   See layouts/partials/head/resources.html for the build pipeline.
    ========================================================================== */
 
 * {
