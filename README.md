@@ -13,6 +13,7 @@ Hugo theme module shared between shawnyeager.com and notes.shawnyeager.com. A mi
 - RSS feed support
 - Privacy-friendly analytics (Plausible)
 - Accessibility-focused (semantic HTML, ARIA labels, WCAG AA compliant)
+- V4V (Value for Value) Lightning payment page with cross-origin support
 
 ## Installation
 
@@ -130,6 +131,7 @@ Add these parameters to your site's `hugo.toml`:
 | `email` | string | Contact email (shows in footer). |
 | `secondary_site_url` | string | Cross-linked site URL (e.g., notes from essays). |
 | `secondary_site_name` | string | Display name for cross-linked site. |
+| `v4v_api_base` | string | Base URL for V4V API (empty for same-origin, absolute URL for cross-origin). |
 
 ## Template Structure
 
