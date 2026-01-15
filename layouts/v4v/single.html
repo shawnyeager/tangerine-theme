@@ -60,7 +60,7 @@
       <a id="qr-link" href="#" class="qr-link">
         <div id="qr-code" class="qr-code"></div>
       </a>
-      <div id="qr-details" class="qr-details hidden">
+      <div id="qr-details" class="qr-details qr-details--pending">
         <p class="qr-hint">
           <span class="qr-hint--mobile">Tap to open wallet or <button id="copy-invoice" class="qr-copy-link" type="button">copy invoice</button></span>
           <span class="qr-hint--desktop">Scan with Lightning wallet or <button id="copy-invoice-desktop" class="qr-copy-link" type="button">copy invoice</button></span>
@@ -321,8 +321,11 @@ async function renderQRCode(invoice) {
   const canvas = document.createElement('canvas');
   elements.qrCode.appendChild(canvas);
 
+  // Read size from CSS token for single source of truth
+  const qrSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--qr-size')) || 250;
+
   await QRCode.toCanvas(canvas, invoice.toUpperCase(), {
-    width: 300,
+    width: qrSize,
     margin: 2,
     color: { dark: '#000000', light: '#FFFFFF' },
     errorCorrectionLevel: 'M'
@@ -332,7 +335,7 @@ async function renderQRCode(invoice) {
 function displayQRSuccess(sats, invoice) {
   elements.amountDisplay.textContent = sats.toLocaleString();
   elements.qrLink.href = `lightning:${invoice}`;
-  elements.qrDetails.classList.remove('hidden');
+  elements.qrDetails.classList.remove('qr-details--pending');
   state.isGenerating = false;
   startPaymentPolling();
 }
@@ -447,7 +450,7 @@ function resetToAmountSelection() {
   resetState();
   hideValidationError();
   elements.qrDisplay.classList.add('hidden');
-  elements.qrDetails.classList.add('hidden');
+  elements.qrDetails.classList.add('qr-details--pending');
   elements.paymentStatus.classList.add('hidden');
   elements.errorDisplay.classList.add('hidden');
   elements.amountSelection.classList.remove('hidden');
@@ -568,7 +571,7 @@ document.addEventListener('visibilitychange', () => {
   // Show checking UI
   elements.amountSelection.classList.add('hidden');
   elements.qrCode.innerHTML = '<p class="qr-loading">Checking payment...</p>';
-  elements.qrDetails.classList.add('hidden');
+  elements.qrDetails.classList.add('qr-details--pending');
   elements.qrDisplay.classList.remove('hidden');
 
   // Check if already paid before resuming
@@ -591,7 +594,7 @@ document.addEventListener('visibilitychange', () => {
   elements.amountDisplay.textContent = saved.selectedAmount.toLocaleString();
   elements.qrLink.href = `lightning:${saved.currentInvoice}`;
   elements.qrCode.innerHTML = '<p class="qr-loading polling">Waiting for payment...</p>';
-  elements.qrDetails.classList.remove('hidden');
+  elements.qrDetails.classList.remove('qr-details--pending');
   startPaymentPolling();
 })();
 </script>

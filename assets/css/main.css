@@ -2224,6 +2224,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     margin-bottom: var(--space-xl);
     transition: background-color var(--transition-fast);
     animation: v4v-fadeIn var(--transition-base) ease-out;
+    position: relative;
 }
 
 @keyframes v4v-fadeIn {
@@ -2232,15 +2233,41 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 .qr-code {
-    min-height: var(--qr-size);
+    width: var(--qr-size);
+    height: var(--qr-size);
+    margin: 0 auto var(--space-lg);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.qr-code:has(canvas) {
-    margin-top: var(--space-sm);
-    margin-bottom: var(--space-lg);
+/* Center loading text in full card during loading state */
+.qr-display:has(.qr-details--pending) .qr-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Details always rendered, invisible until QR ready */
+.qr-details--pending {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.qr-details:not(.qr-details--pending) {
+    animation: v4v-slideIn var(--transition-base) ease-out;
+}
+
+@keyframes v4v-slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(var(--space-sm));
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .qr-loading {
@@ -2275,7 +2302,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
 a.qr-link,
 a.qr-link:hover {
-    display: block;
     cursor: pointer;
     text-decoration: none;
 }
@@ -2399,12 +2425,6 @@ a.qr-link:hover {
     .qr-display,
     .payment-status {
         padding: var(--space-xl);
-    }
-
-    /* !important required to override inline styles from QR library */
-    .qr-code canvas {
-        width: var(--qr-size) !important;
-        height: var(--qr-size) !important;
     }
 }
 
