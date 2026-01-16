@@ -295,9 +295,9 @@ select:focus-visible,
    - Orange, underline appears on hover
    ========================================================================== */
 
-/* Shared transition for all branded links */
+/* Shared transition for all branded links (excludes .secondary-link - it has its own underline) */
 :is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
-    .pagination-prev, .pagination-next, .secondary-link, .link-grid a) {
+    .pagination-prev, .pagination-next, .link-grid a) {
     text-decoration: none;
     transition: color var(--transition-fast);
 }
