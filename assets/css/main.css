@@ -2563,10 +2563,9 @@ a.qr-link:hover {
 }
 
 .btn-ghost--primary:hover {
-    border-width: var(--border-width-emphasis);
-    padding: calc(var(--space-sm) - 1px) calc(var(--space-lg) - 1px);
     color: var(--brand-orange-hover);
     border-color: var(--brand-orange-hover);
+    box-shadow: inset 0 0 0 1px var(--brand-orange-hover);
     text-decoration: none;
 }
 
