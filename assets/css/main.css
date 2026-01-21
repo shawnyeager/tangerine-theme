@@ -146,6 +146,12 @@ h1.display-title {
     letter-spacing: var(--letter-spacing-tight-lg);
 }
 
+@media (max-width: 600px) {
+    h1.display-title {
+        font-size: var(--font-custom-32);
+    }
+}
+
 /* Global headings - use typography tokens for tight, consistent spacing */
 h2 {
     font-size: var(--font-custom-24);
