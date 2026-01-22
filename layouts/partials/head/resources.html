@@ -52,11 +52,9 @@ Context Expected:
 <!-- Favicons -->
 {{- $faviconStyle := .Site.Params.favicon_style | default "solid" -}}
 {{- $faviconPath := printf "favicons/%s" $faviconStyle -}}
-<!-- High-res PNG for Google Search (padded for circular crop on mobile) -->
+<!-- Publish icon-192 for webmanifest (no link tag - has white padding that causes border in Firefox mobile) -->
 {{- with resources.Get (printf "%s/icon-192.png" $faviconPath) }}
-  {{- with resources.Copy "icon-192.png" . }}
-<link rel="icon" type="image/png" sizes="192x192" href="{{ .RelPermalink }}">
-  {{- end }}
+  {{- $_ := (resources.Copy "icon-192.png" .).RelPermalink }}
 {{- end }}
 <!-- SVG favicon for modern browsers (best quality, scalable) -->
 {{- with resources.Get (printf "%s/favicon.svg" $faviconPath) }}
