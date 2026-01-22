@@ -59,7 +59,7 @@ generate_pwa_icon() {
     local end=$((padding + square_size - 1))
 
     if [[ "$STYLE" == "solid" ]]; then
-        magick -size "${size}x${size}" xc:white \
+        magick -size "${size}x${size}" xc:none \
             -fill "$ORANGE" \
             -draw "rectangle $padding,$padding $end,$end" \
             "$output"
@@ -68,7 +68,7 @@ generate_pwa_icon() {
         local inner_padding=$((padding + half_stroke))
         local inner_end=$((end - half_stroke))
 
-        magick -size "${size}x${size}" xc:white \
+        magick -size "${size}x${size}" xc:none \
             -fill none \
             -stroke "$ORANGE" \
             -strokewidth "$stroke_width" \
