@@ -79,6 +79,38 @@ generate_pwa_icon() {
     echo "  Created: $output (${size}x${size}, padded for PWA)"
 }
 
+# Generate maskable icon with WHITE background (required by spec)
+# Same 55% square sizing, but solid white background for predictable masking
+generate_maskable_icon() {
+    local size=$1
+    local output=$2
+
+    local square_size=$((size * 11 / 20))
+    local padding=$(((size - square_size) / 2))
+    local stroke_width=$((size / 8))
+    local end=$((padding + square_size - 1))
+
+    if [[ "$STYLE" == "solid" ]]; then
+        magick -size "${size}x${size}" xc:white \
+            -fill "$ORANGE" \
+            -draw "rectangle $padding,$padding $end,$end" \
+            "$output"
+    else
+        local half_stroke=$((stroke_width / 2))
+        local inner_padding=$((padding + half_stroke))
+        local inner_end=$((end - half_stroke))
+
+        magick -size "${size}x${size}" xc:white \
+            -fill none \
+            -stroke "$ORANGE" \
+            -strokewidth "$stroke_width" \
+            -draw "rectangle $inner_padding,$inner_padding $inner_end,$inner_end" \
+            "$output"
+    fi
+
+    echo "  Created: $output (${size}x${size}, white background for masking)"
+}
+
 # Generate browser favicon with full bleed (no padding)
 # Matches the SVG: 28x28 square centered in 32x32 viewport (scaled proportionally)
 generate_favicon() {
@@ -124,7 +156,10 @@ echo "PWA icons (padded for circular crop):"
 generate_pwa_icon 180 "$OUTPUT_DIR/apple-touch-icon.png"
 generate_pwa_icon 192 "$OUTPUT_DIR/icon-192.png"
 generate_pwa_icon 512 "$OUTPUT_DIR/icon-512.png"
-generate_pwa_icon 512 "$OUTPUT_DIR/icon-maskable.png"
+
+echo ""
+echo "Maskable icon (white background for adaptive icons):"
+generate_maskable_icon 512 "$OUTPUT_DIR/icon-maskable.png"
 
 echo ""
 echo "Browser favicons (full bleed):"
