@@ -35,6 +35,19 @@ jobs:
             });
             console.log('Triggered shawnyeager-notes update workflow');
 
+      - name: Trigger shawnyeager-share update
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.SITES_UPDATE_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'shawnyeager',
+              repo: 'shawnyeager-share',
+              workflow_id: 'auto-theme-update-pr.yml',
+              ref: 'master'
+            });
+            console.log('Triggered shawnyeager-share update workflow');
+
       - name: Summary
         run: |
           echo "Theme pushed to master. Site update workflows triggered."
@@ -42,3 +55,4 @@ jobs:
           echo "PRs will be created in ~2-3 minutes:"
           echo "  - https://github.com/shawnyeager/shawnyeager-com/pulls"
           echo "  - https://github.com/shawnyeager/shawnyeager-notes/pulls"
+          echo "  - https://github.com/shawnyeager/shawnyeager-share/pulls"
