@@ -7,7 +7,7 @@
 #   ./generate-favicons.sh outlined /path/to/static/
 #
 # Generates:
-#   PWA icons (55% square for Google/PWA circular crop safe zone):
+#   PWA icons (45% square for Google/PWA circular crop safe zone):
 #   - apple-touch-icon.png (180x180)
 #   - icon-192.png (192x192)
 #   - icon-512.png (512x512)
@@ -42,14 +42,14 @@ fi
 
 echo "Generating $STYLE favicons in $OUTPUT_DIR"
 
-# Generate PWA icon with 55% square for Google/PWA circular crop safe zone
+# Generate PWA icon with 45% square for Google/PWA circular crop safe zone
 generate_pwa_icon() {
     local size=$1
     local output=$2
 
-    # Calculate dimensions (55% square, centered)
-    # 55% fits inside 80% safe zone circle: 80% * 1/sqrt(2) ≈ 56.5%
-    local square_size=$((size * 11 / 20))
+    # Calculate dimensions (45% square, centered)
+    # 45% gives generous breathing room inside circular crop
+    local square_size=$((size * 9 / 20))
     local padding=$(((size - square_size) / 2))
 
     # For outlined style, stroke width is 12.5% of canvas (matching SVG ratio of 4/32)
@@ -80,12 +80,12 @@ generate_pwa_icon() {
 }
 
 # Generate maskable icon with WHITE background (required by spec)
-# Same 55% square sizing, but solid white background for predictable masking
+# Same 45% square sizing, but solid white background for predictable masking
 generate_maskable_icon() {
     local size=$1
     local output=$2
 
-    local square_size=$((size * 11 / 20))
+    local square_size=$((size * 9 / 20))
     local padding=$(((size - square_size) / 2))
     local stroke_width=$((size / 8))
     local end=$((padding + square_size - 1))
