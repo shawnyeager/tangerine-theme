@@ -18,6 +18,8 @@ Context Expected:
 {{- $metaTitle := .Params.seo_title | default .Title -}}
 {{- if .IsHome -}}
   <title>{{ .Site.Title }}</title>
+{{- else if eq .Kind "404" -}}
+  <title>Not Found | {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- else if .Params.essay_title -}}
   {{- /* Per-essay V4V pages: mirror essay title format */ -}}
   <title>{{ .Params.essay_title }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
