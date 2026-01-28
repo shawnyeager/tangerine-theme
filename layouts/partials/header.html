@@ -18,6 +18,6 @@ Important Notes:
 */}}
 
 <header aria-label="Site header">
-    <a href="{{ "/" | relURL }}" class="home-link" aria-label="Home"><span class="home-square{{ if eq .Site.Params.favicon_style "outlined" }} home-square--outlined{{ end }}"></span></a>
+    <a href="{{ "/" | relURL }}" class="home-link" aria-label="Home"><span class="home-square{{ with .Site.Params.favicon_style }}{{ if ne . "solid" }} home-square--{{ . }}{{ end }}{{ end }}"></span></a>
     {{ partial "navigation.html" . }}
 </header>
