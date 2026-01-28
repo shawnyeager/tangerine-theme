@@ -12,14 +12,14 @@
    - Satoshi (43KB): Headings, nav, section labels - clear weight hierarchy
    - Inter (352KB): Body text, lists, blockquotes - optimal readability
 
-   Strategy: font-display: swap ensures web fonts always render
+   Strategy: font-display: optional with preload eliminates layout shift
    ========================================================================== */
 
 @font-face {
     font-family: 'Satoshi';
     font-weight: 300 900;
     font-style: normal;
-    font-display: swap;
+    font-display: optional;
     src: url('/fonts/Satoshi-Variable.woff2') format('woff2-variations');
 }
 
@@ -27,7 +27,7 @@
     font-family: 'Inter';
     font-weight: 100 900;
     font-style: normal;
-    font-display: swap;
+    font-display: optional;
     src: url('/fonts/Inter-Variable.woff2') format('woff2-variations');
 }
 
@@ -35,7 +35,7 @@
     font-family: 'Inter';
     font-weight: 100 900;
     font-style: italic;
-    font-display: swap;
+    font-display: optional;
     src: url('/fonts/Inter-Italic-Variable.woff2') format('woff2-variations');
 }
 
