@@ -14,8 +14,8 @@ Context Expected:
   {{- $img := resources.Get . -}}
   {{- if $img -}}
     {{- $medium := $img.Resize "1024x" -}}
-    {{- $avif := $medium.Process "avif q80" -}}
-<link rel="preload" href="{{ $avif.RelPermalink }}" as="image" type="image/avif" fetchpriority="high">
+    {{- $webp := $medium.Process "webp q85" -}}
+<link rel="preload" href="{{ $webp.RelPermalink }}" as="image" type="image/webp" fetchpriority="high">
   {{- end -}}
 {{- end -}}
 {{/* Concatenate tokens + main CSS, then minify and fingerprint */}}
