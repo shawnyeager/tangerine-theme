@@ -250,7 +250,15 @@
     --hr-height: 1px;
     --checkbox-border-width: 2px;
     --checkbox-indent: 1.5rem;
+    --checkbox-size: 1.1em;
     --footer-touch-compensation: 6px;
+    --kbd-min-width: 1.75rem;
+
+    /* Relative font sizes (em-based, scale with context) */
+    --font-code-inline: 0.9em;
+    --font-code-block: 0.875rem;
+    --font-sub-sup: 0.75em;
+    --font-checkbox-mark: 0.9em;
 
     /* Optical adjustments - font-specific baseline corrections */
     --optical-arrow-lift: -0.076em;  /* Satoshi arrow baseline adjustment */
