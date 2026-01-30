@@ -46,8 +46,10 @@ Context Expected:
 {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
 {{ end -}}
 
-<!-- Sitemap -->
+<!-- Sitemap (only for indexed sites) -->
+{{- if not .Site.Params.noindex }}
 <link rel="sitemap" type="application/xml" href="{{ "sitemap.xml" | absURL }}" title="Sitemap">
+{{- end }}
 
 <!-- Favicons -->
 {{- $faviconStyle := .Site.Params.favicon_style | default "solid" -}}

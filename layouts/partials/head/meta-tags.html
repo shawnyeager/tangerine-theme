@@ -37,7 +37,7 @@ Context Expected:
 <link rel="canonical" href="{{ .Permalink }}">
 
 <!-- Robots meta tag -->
-<meta name="robots" content="{{ if .Site.Params.noindex }}noindex, nofollow{{ else }}index, follow{{ end }}">
+<meta name="robots" content="{{ if .Site.Params.noindex }}noindex, nofollow{{ else }}index, follow, max-image-preview:large, max-snippet:-1{{ end }}">
 
 <!-- Apple web app title -->
 <meta name="apple-mobile-web-app-title" content="{{ .Site.Params.short_name | default .Site.Title }}">
