@@ -1140,22 +1140,16 @@ time.note-date,
     }
 }
 
-/* Dark mode: soft edge fade + subtle warm tint for brand cohesion
-   Uses same pattern as dark mode font-weight rules (section 14):
-   - Media query with :not([data-theme="light"]) for system dark
-   - Explicit html[data-theme="dark"] for user toggle to dark */
+/* Dark mode hero images: subtle warm tint for brand cohesion.
+   Note: mask-image removed - it blocked progressive rendering. */
 @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .essay-hero-image {
         filter: brightness(0.88) sepia(15%) saturate(1.1);
-        mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
-        -webkit-mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
     }
 }
 
 html[data-theme="dark"] .essay-hero-image {
     filter: brightness(0.88) sepia(15%) saturate(1.1);
-    mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 100% 95% at center, black 70%, transparent 100%);
 }
 
 .essay-body,
