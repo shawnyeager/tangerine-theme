@@ -181,7 +181,7 @@
        text-underline-offset: var(--underline-offset); */
     --underline-offset: 0.2em;
     --underline-thickness: 1px;
-    --underline-opacity: 50%;
+    --underline-opacity: 60%;
     --underline-color-brand: color-mix(in srgb, var(--brand-orange-hover) var(--underline-opacity), transparent);
     --underline-color-muted: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
 
