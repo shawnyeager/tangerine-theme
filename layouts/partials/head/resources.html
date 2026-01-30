@@ -13,13 +13,9 @@ Context Expected:
 {{- with .Params.hero_image -}}
   {{- $img := resources.Get . -}}
   {{- if $img -}}
-    {{- $small := $img.Resize "640x" -}}
     {{- $medium := $img.Resize "1024x" -}}
-    {{- $large := $img.Resize "1920x" -}}
-    {{- $avifSmall := $small.Process "avif q80" -}}
-    {{- $avifMedium := $medium.Process "avif q80" -}}
-    {{- $avifLarge := $large.Process "avif q80" -}}
-<link rel="preload" href="{{ $avifMedium.RelPermalink }}" as="image" type="image/avif" imagesrcset="{{ $avifSmall.RelPermalink }} 640w, {{ $avifMedium.RelPermalink }} 1024w, {{ $avifLarge.RelPermalink }} 1920w" imagesizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px" fetchpriority="high">
+    {{- $avif := $medium.Process "avif q80" -}}
+<link rel="preload" href="{{ $avif.RelPermalink }}" as="image" type="image/avif" fetchpriority="high">
   {{- end -}}
 {{- end -}}
 {{/* Concatenate tokens + main CSS, then minify and fingerprint */}}
