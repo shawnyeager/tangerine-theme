@@ -12,8 +12,13 @@
  * Note: FOUC prevention script runs earlier in <head> to apply theme before render
  */
 (function() {
-    // Cache system preference query
+    // Cache system preference queries
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function getScrollBehavior() {
+        return motionQuery.matches ? 'auto' : 'smooth';
+    }
 
     function getSystemPreference() {
         return mediaQuery.matches ? 'dark' : 'light';
@@ -131,21 +136,21 @@
         return helpModal && helpModal.getAttribute('data-visible') === 'true';
     }
 
-    // Vim-style navigation
+    // Vim-style navigation (respects prefers-reduced-motion)
     function scrollDown() {
-        window.scrollBy({ top: 100, behavior: 'smooth' });
+        window.scrollBy({ top: 100, behavior: getScrollBehavior() });
     }
 
     function scrollUp() {
-        window.scrollBy({ top: -100, behavior: 'smooth' });
+        window.scrollBy({ top: -100, behavior: getScrollBehavior() });
     }
 
     function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: getScrollBehavior() });
     }
 
     function scrollToBottom() {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        window.scrollTo({ top: document.body.scrollHeight, behavior: getScrollBehavior() });
     }
 
     // Key sequence tracking for multi-key shortcuts (gg, block)
