@@ -15,7 +15,7 @@ Context Expected:
   {{- if $img -}}
     {{- $medium := $img.Resize "1024x" -}}
     {{- $avif := $medium.Process "avif q80" -}}
-<link rel="preload" href="{{ $avif.RelPermalink }}" as="image" type="image/avif">
+<link rel="preload" href="{{ $avif.RelPermalink }}" as="image" type="image/avif" fetchpriority="high">
   {{- end -}}
 {{- end -}}
 {{/* Concatenate tokens + main CSS, then minify and fingerprint */}}
