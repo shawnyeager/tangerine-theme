@@ -118,6 +118,10 @@ h1 {
 .home-link {
     display: flex;
     align-items: center;
+    /* Touch target expansion: 24px square + 12px padding each side = 48px
+       Negative margin cancels padding visually, keeping layout unchanged */
+    padding: calc((var(--touch-target-min) - var(--home-square-size)) / 2);
+    margin: calc((var(--touch-target-min) - var(--home-square-size)) / -2);
 }
 
 .home-square {
@@ -547,6 +551,10 @@ nav a {
     color: var(--text-secondary);
     font-weight: var(--font-weight-medium);
     text-decoration: none;
+    /* Touch target: ensure 48px minimum height for mobile accessibility */
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target-min);
 
     &:hover,
     &.active {
