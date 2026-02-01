@@ -690,8 +690,7 @@ body > .container > footer {
     line-height: var(--line-height-reading);
 }
 
-.site-intro .action-link,
-.landing-page .action-link {
+.site-intro .action-link {
     display: block;
     margin-top: var(--space-md);
     font-size: inherit;
