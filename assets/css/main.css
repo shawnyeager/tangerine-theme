@@ -2533,7 +2533,7 @@ a.qr-link:hover {
 
 .sector-tags span {
     color: var(--text-subtle);
-    padding: 0 var(--space-sm);
+    padding: 0 0.4em;
 }
 
 /* Hero CTA */
@@ -3002,6 +3002,9 @@ a.qr-link:hover {
 
 /* Primary variant (conversion CTA) */
 .btn-ghost--primary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--arrow-spacing);
     padding: var(--space-sm) var(--space-lg);
     font-size: var(--font-lg);
     font-weight: var(--font-weight-semibold);
@@ -3017,7 +3020,7 @@ a.qr-link:hover {
 }
 
 .btn-ghost--primary .arrow {
-    margin-left: var(--arrow-spacing);
+    line-height: 1;
 }
 
 
