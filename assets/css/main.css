@@ -2455,12 +2455,385 @@ a.qr-link:hover {
 }
 
 /* ==========================================================================
-   19. LANDING PAGE - Conversion page with refined minimal drama
+   19. LANDING PAGE - Advisory conversion page components
+
+   Component hierarchy:
+   - .landing-hero: Full-height opening with headline + CTA
+   - .landing-section: Repeated content blocks with labels
+   - .proof-metrics: Large number callouts
+   - .offer-grid + .offer-card: Pricing/service cards
+   - .cta-banner: High-contrast conversion section
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Landing Page Container
+   -------------------------------------------------------------------------- */
 
 .landing-page {
     max-width: var(--content-max-width);
 }
+
+/* --------------------------------------------------------------------------
+   Hero Section - Opening statement with presence
+   -------------------------------------------------------------------------- */
+
+.landing-hero {
+    min-height: calc(100svh - var(--brand-bar-height) - var(--space-xl) * 2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-3xl) 0;
+}
+
+.landing-hero-content {
+    max-width: var(--content-max-width);
+}
+
+/* Hero headline - commanding, tight tracking */
+.landing-headline {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-title);
+    letter-spacing: var(--letter-spacing-tight-xl);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-lg) 0;
+}
+
+/* Hero subhead - supporting context */
+.landing-subhead {
+    font-family: var(--font-body);
+    font-size: var(--font-xl);
+    font-weight: var(--font-weight-light);
+    line-height: var(--line-height-heading);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-lg) 0;
+    max-width: 540px;
+}
+
+/* Sector tags - category markers */
+.sector-tags {
+    font-family: var(--font-heading);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-meta);
+    margin: 0 0 var(--space-xl) 0;
+}
+
+.sector-tags span {
+    color: var(--text-subtle);
+    padding: 0 var(--space-sm);
+}
+
+/* Hero CTA */
+.landing-hero .btn-ghost--primary {
+    margin-top: var(--space-md);
+}
+
+/* --------------------------------------------------------------------------
+   Landing Sections - Repeated content blocks
+   -------------------------------------------------------------------------- */
+
+.landing-section {
+    padding: var(--space-3xl) 0;
+    border-top: var(--border-width) solid var(--border-color);
+}
+
+.landing-section:first-of-type {
+    border-top: none;
+}
+
+/* Section label - small, uppercase, orange */
+.landing-section-label {
+    font-family: var(--font-heading);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--brand-orange);
+    margin: 0 0 var(--space-lg) 0;
+}
+
+/* Section content inherits body styles */
+.landing-section p {
+    font-size: var(--font-lg);
+    line-height: var(--line-height-reading);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.landing-section p:last-child {
+    margin-bottom: 0;
+}
+
+/* Emphasis line - standalone statement */
+.landing-emphasis {
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    margin-top: var(--space-lg);
+}
+
+/* List styling within sections */
+.landing-section ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-md) 0 0 0;
+}
+
+.landing-section li {
+    font-size: var(--font-lg);
+    line-height: var(--line-height-reading);
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+    padding-left: var(--space-lg);
+    position: relative;
+}
+
+.landing-section li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--text-meta);
+}
+
+/* --------------------------------------------------------------------------
+   Proof Metrics - Large number callouts
+   -------------------------------------------------------------------------- */
+
+.proof-metrics {
+    display: flex;
+    gap: var(--space-3xl);
+    margin: var(--space-xl) 0;
+    flex-wrap: wrap;
+}
+
+.proof-metric {
+    flex: 1;
+    min-width: 140px;
+}
+
+.proof-metric-value {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    letter-spacing: var(--letter-spacing-tight-lg);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: var(--space-xs);
+}
+
+.proof-metric-label {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+}
+
+/* Credentials list - flowing prose */
+.proof-credentials {
+    font-size: var(--font-lg);
+    line-height: var(--line-height-reading);
+    color: var(--text-secondary);
+    margin: var(--space-lg) 0;
+}
+
+/* --------------------------------------------------------------------------
+   Offer Grid - Pricing/service cards
+   -------------------------------------------------------------------------- */
+
+.offer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+    margin: var(--space-xl) 0;
+}
+
+/* Wider container for offers section */
+.landing-section--offers {
+    max-width: 900px;
+}
+
+.offer-card {
+    padding: var(--space-xl);
+    background: var(--background-card);
+    border: var(--border-width) solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Featured card treatment */
+.offer-card--featured {
+    border-color: var(--brand-orange);
+    border-width: var(--border-width-emphasis);
+    position: relative;
+}
+
+.offer-card--featured::before {
+    content: 'Most popular';
+    position: absolute;
+    top: 0;
+    left: var(--space-xl);
+    transform: translateY(-50%);
+    background: var(--brand-orange);
+    color: var(--text-on-brand);
+    font-family: var(--font-heading);
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    padding: var(--space-label-gap) var(--space-sm);
+}
+
+.offer-card-title {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight-md);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.offer-card-price {
+    font-family: var(--font-heading);
+    font-size: var(--font-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.offer-card-price span {
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-normal);
+    color: var(--text-meta);
+}
+
+.offer-card-description {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    margin: 0 0 var(--space-md) 0;
+    flex-grow: 1;
+}
+
+.offer-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-lg) 0;
+    flex-grow: 1;
+}
+
+.offer-card li {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    margin-bottom: var(--space-xs);
+    padding-left: var(--space-md);
+    position: relative;
+}
+
+.offer-card li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--text-meta);
+}
+
+.offer-card .action-link {
+    margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   CTA Banner - High-contrast conversion section
+   -------------------------------------------------------------------------- */
+
+.cta-banner {
+    background: var(--brand-orange);
+    padding: var(--space-3xl) var(--space-xl);
+    margin: var(--space-3xl) calc(-1 * var(--space-md));
+    text-align: center;
+}
+
+@media (min-width: 601px) {
+    .cta-banner {
+        margin-left: calc(-1 * var(--space-xl));
+        margin-right: calc(-1 * var(--space-xl));
+        padding: var(--space-3xl);
+    }
+}
+
+.cta-banner-headline {
+    font-family: var(--font-heading);
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-tight-lg);
+    color: var(--text-on-brand);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.cta-banner-body {
+    font-size: var(--font-lg);
+    line-height: var(--line-height-body);
+    color: var(--text-on-brand);
+    margin: 0 0 var(--space-lg) 0;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-banner-body:last-of-type {
+    margin-bottom: var(--space-xl);
+}
+
+/* CTA buttons on orange background */
+.cta-banner .btn-ghost--primary {
+    background: var(--background-body);
+    border-color: var(--background-body);
+    color: var(--brand-orange);
+}
+
+.cta-banner .btn-ghost--primary:hover {
+    background: transparent;
+    border-color: var(--text-on-brand);
+    color: var(--text-on-brand);
+    box-shadow: none;
+}
+
+.cta-banner-secondary {
+    display: block;
+    margin-top: var(--space-md);
+    font-size: var(--font-base);
+    color: var(--text-on-brand);
+    opacity: var(--opacity-high);
+}
+
+.cta-banner-secondary a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.cta-banner-secondary a:hover {
+    opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Essays Section (demoted on landing page)
+   -------------------------------------------------------------------------- */
+
+.landing-essays {
+    padding: var(--space-3xl) 0;
+    border-top: var(--border-width) solid var(--border-color);
+}
+
+.landing-essays .section-label-small {
+    margin-bottom: var(--space-md);
+}
+
+/* --------------------------------------------------------------------------
+   Legacy Landing Page Styles (preserved for backwards compatibility)
+   -------------------------------------------------------------------------- */
 
 /* Title - display with presence */
 .landing-title {
@@ -2499,6 +2872,33 @@ a.qr-link:hover {
 /* Separation between landing page content and CTAs */
 .landing-body .cta-group {
     margin-top: var(--space-xl);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Adjustments - Landing Page
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .landing-hero {
+        min-height: auto;
+        padding: var(--space-2xl) 0;
+    }
+
+    .landing-section {
+        padding: var(--space-2xl) 0;
+    }
+
+    .proof-metrics {
+        gap: var(--space-xl);
+    }
+
+    .offer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-banner {
+        padding: var(--space-2xl) var(--space-md);
+    }
 }
 
 
