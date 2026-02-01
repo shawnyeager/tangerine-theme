@@ -2490,7 +2490,7 @@ a.qr-link:hover {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--space-3xl) 0;
+    padding: var(--space-2xl) 0;
 }
 
 .landing-hero-content {
@@ -2558,7 +2558,7 @@ a.qr-link:hover {
    -------------------------------------------------------------------------- */
 
 .landing-section {
-    padding: var(--space-3xl) 0;
+    padding: var(--space-2xl) 0;
     border-top: var(--border-width) solid var(--border-color);
 }
 
@@ -2616,7 +2616,18 @@ a.qr-link:hover {
     content: '→';
     position: absolute;
     left: 0;
+    top: 0;  /* Align with first line of text */
     color: var(--text-meta);
+}
+
+/* Action and back links in landing sections - stacked vertically */
+.landing-section .action-link {
+    display: flex;  /* Block-level for stacking */
+}
+
+.landing-section .back-link {
+    display: flex;  /* Block-level for stacking */
+    margin-top: var(--space-sm);  /* Small gap between stacked links */
 }
 
 /* --------------------------------------------------------------------------
@@ -2829,10 +2840,12 @@ a.qr-link:hover {
 .cta-banner-secondary a {
     color: inherit;
     text-decoration: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
 }
 
 .cta-banner-secondary a:hover {
-    opacity: 1;
+    text-decoration: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -2840,7 +2853,7 @@ a.qr-link:hover {
    -------------------------------------------------------------------------- */
 
 .landing-essays {
-    padding: var(--space-3xl) 0;
+    padding: var(--space-2xl) 0;
     border-top: var(--border-width) solid var(--border-color);
 }
 
