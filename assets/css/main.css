@@ -1279,6 +1279,11 @@ html[data-theme="dark"] .essay-hero-image {
             }
         }
 
+        /* No bold inside blockquotes - italic is enough emphasis */
+        strong, b {
+            font-weight: inherit;
+        }
+
         /* Nested blockquotes */
         blockquote {
             margin: var(--space-md) 0;
@@ -2596,7 +2601,7 @@ a.qr-link:hover {
     border-left: var(--border-width-accent) solid var(--brand-orange);
     margin: var(--space-xl) 0;
     font-size: var(--font-2xl);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-normal);
     color: var(--text-primary);
 }
 
@@ -2786,8 +2791,8 @@ a.qr-link:hover {
 
 .cta-banner {
     background: var(--brand-orange);
-    padding: var(--space-3xl) var(--space-xl);
-    margin-top: var(--space-3xl);
+    padding: var(--space-2xl) var(--space-xl);
+    margin-top: var(--space-2xl);
     text-align: center;
     max-width: none;
     width: 100vw;
@@ -2798,25 +2803,28 @@ a.qr-link:hover {
 .cta-banner-headline {
     font-family: var(--font-heading);
     font-size: var(--font-2xl);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-normal);
     line-height: var(--line-height-heading);
     letter-spacing: var(--letter-spacing-tight-lg);
     color: var(--text-on-brand);
-    margin: 0 0 var(--space-md) 0;
+    margin: 0 0 var(--space-lg) 0;
+    white-space: nowrap;
 }
 
 .cta-banner-body {
-    font-size: var(--font-lg);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-normal);
     line-height: var(--line-height-body);
     color: var(--text-on-brand);
-    margin: 0 0 var(--space-lg) 0;
-    max-width: 480px;
+    opacity: var(--opacity-high);
+    margin: 0 0 var(--space-sm) 0;
+    max-width: 540px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .cta-banner-body:last-of-type {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
 }
 
 /* CTA buttons on orange background */

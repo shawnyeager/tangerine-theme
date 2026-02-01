@@ -88,7 +88,7 @@
     --text-meta: light-dark(#666, #a8a8a8);
     --text-subtle: light-dark(#767676, #b0b0b0);
     --text-bold: light-dark(#1a1a1a, #ffffff);
-    --text-on-brand: #1a1a1a;  /* Dark text for brand-color backgrounds (skip-link, buttons on orange) */
+    --text-on-brand: light-dark(#ffffff, #1a1a1a);  /* White text on orange in light mode, dark in dark mode */
     --highlight-bg: light-dark(#fef3cd, #443818);  /* soft yellow / amber */
     --border-color: light-dark(#d5d5d5, #505050);
     --background-body: light-dark(#FDFCFA, #1a1a1a);
