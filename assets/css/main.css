@@ -2589,11 +2589,15 @@ a.qr-link:hover {
     margin-bottom: 0;
 }
 
-/* Emphasis line - standalone statement */
+/* Emphasis line - visual callout with left border */
 .landing-emphasis {
-    font-weight: var(--font-weight-medium);
+    padding: var(--space-lg);
+    background: var(--background-card);
+    border-left: var(--border-width-accent) solid var(--brand-orange);
+    margin: var(--space-xl) 0;
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
-    margin-top: var(--space-lg);
 }
 
 /* List styling within sections */
@@ -2617,7 +2621,7 @@ a.qr-link:hover {
     position: absolute;
     left: 0;
     top: 0;  /* Align with first line of text */
-    color: var(--text-meta);
+    color: var(--brand-orange);
 }
 
 /* Action and back links in landing sections - stacked vertically */
@@ -2663,11 +2667,11 @@ a.qr-link:hover {
     line-height: var(--line-height-body);
 }
 
-/* Credentials list - flowing prose */
+/* Credentials list - supporting text */
 .proof-credentials {
     font-size: var(--font-lg);
     line-height: var(--line-height-reading);
-    color: var(--text-secondary);
+    color: var(--text-meta);
     margin: var(--space-lg) 0;
 }
 
