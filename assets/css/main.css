@@ -2473,12 +2473,21 @@ a.qr-link:hover {
     max-width: var(--content-max-width);
 }
 
+/* Allow offers section to be wider */
+.landing-page:has(.landing-section--offers) {
+    max-width: none;
+}
+
+.landing-page > *:not(.landing-section--offers):not(.cta-banner) {
+    max-width: var(--content-max-width);
+}
+
 /* --------------------------------------------------------------------------
    Hero Section - Opening statement with presence
    -------------------------------------------------------------------------- */
 
 .landing-hero {
-    min-height: calc(100svh - var(--brand-bar-height) - var(--space-xl) * 2);
+    min-height: min(70svh, 600px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2530,6 +2539,22 @@ a.qr-link:hover {
 /* Hero CTA */
 .landing-hero .btn-ghost--primary {
     margin-top: var(--space-md);
+}
+
+/* Offer page hero - shorter, with price display */
+.landing-hero--offer {
+    min-height: auto;
+    padding: var(--space-2xl) 0;
+}
+
+.landing-hero--offer .offer-card-price {
+    font-size: var(--font-2xl);
+    margin-top: var(--space-lg);
+}
+
+.landing-hero--offer .offer-card-price span {
+    font-size: var(--font-base);
+    color: var(--text-meta);
 }
 
 /* --------------------------------------------------------------------------
@@ -2751,16 +2776,12 @@ a.qr-link:hover {
 .cta-banner {
     background: var(--brand-orange);
     padding: var(--space-3xl) var(--space-xl);
-    margin: var(--space-3xl) calc(-1 * var(--space-md));
+    margin-top: var(--space-3xl);
     text-align: center;
-}
-
-@media (min-width: 601px) {
-    .cta-banner {
-        margin-left: calc(-1 * var(--space-xl));
-        margin-right: calc(-1 * var(--space-xl));
-        padding: var(--space-3xl);
-    }
+    max-width: none;
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 .cta-banner-headline {
