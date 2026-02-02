@@ -2522,6 +2522,7 @@ a.qr-link:hover {
 }
 
 /* Hero subhead - supporting context */
+/* Homepage hero uses 20px subhead with 32px margin */
 .landing-subhead {
     font-family: var(--font-body);
     font-size: 20px;
@@ -2529,6 +2530,22 @@ a.qr-link:hover {
     color: var(--text-secondary);
     margin: 0 0 32px 0;
     max-width: 540px;
+}
+
+/* Inner page headers use smaller headline and 18px paragraphs */
+.landing-hero--page .landing-headline {
+    font-size: 42px;
+    margin-bottom: 32px;
+}
+
+.landing-hero--page .landing-subhead {
+    font-size: 18px;
+    line-height: var(--line-height-body);
+    margin: 0 0 16px 0;
+}
+
+.landing-hero--page .landing-subhead:last-of-type {
+    margin-bottom: 0;
 }
 
 /* Hero proof line - immediate credibility */
@@ -2872,60 +2889,57 @@ a.qr-link:hover {
 
 .cta-banner {
     background: var(--brand-orange);
-    padding: var(--space-2xl) var(--space-xl);
-    margin-top: var(--space-2xl);
+    padding: 60px 0;
+    border-top: var(--border-width) solid var(--border-color);
     text-align: center;
     max-width: var(--content-max-width);
-    border-radius: var(--radius-lg);
 }
 
 .cta-banner-headline {
     font-family: var(--font-heading);
-    font-size: var(--font-2xl);
-    font-weight: var(--font-weight-normal);
+    font-size: var(--font-custom-24);
+    font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-heading);
-    letter-spacing: var(--letter-spacing-tight-lg);
-    color: var(--text-on-brand);
-    margin: 0 0 var(--space-lg) 0;
-    white-space: nowrap;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
 }
 
 .cta-banner-body {
-    font-size: var(--font-base);
+    font-size: 17px;
     font-weight: var(--font-weight-normal);
     line-height: var(--line-height-body);
-    color: var(--text-on-brand);
-    opacity: var(--opacity-high);
-    margin: 0 0 var(--space-sm) 0;
+    color: #1a1a1a;
+    opacity: 0.8;
+    margin: 0 0 24px 0;
     max-width: 540px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.cta-banner-body:last-of-type {
-    margin-bottom: var(--space-xl);
+/* CTA button on orange background - dark bg, white text */
+.cta-banner .btn-solid--inverted {
+    background: #1a1a1a;
+    border: none;
+    color: #ffffff;
+    padding: 14px 28px;
+    font-weight: var(--font-weight-semibold);
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* CTA buttons on orange background */
-.cta-banner .btn-ghost--primary {
-    background: #ffffff;
-    border-color: #ffffff;
-    color: var(--brand-orange);
-}
-
-.cta-banner .btn-ghost--primary:hover {
-    background: transparent;
-    border-color: var(--text-on-brand);
-    color: var(--text-on-brand);
-    box-shadow: none;
+.cta-banner .btn-solid--inverted:hover {
+    background: #333333;
 }
 
 .cta-banner-secondary {
     display: block;
     margin-top: var(--space-md);
     font-size: var(--font-base);
-    color: var(--text-on-brand);
-    opacity: var(--opacity-high);
+    color: #1a1a1a;
+    opacity: 0.8;
 }
 
 .cta-banner-secondary a {
@@ -3306,23 +3320,74 @@ a.qr-link:hover {
    -------------------------------------------------------------------------- */
 
 .page-header {
-    padding: var(--space-3xl) 0 var(--space-xl);
+    padding: 80px 0 60px;
 }
 
 .page-header h1 {
     font-family: var(--font-heading);
-    font-size: var(--font-custom-40);
+    font-size: 42px;
     font-weight: var(--font-weight-bold);
-    line-height: var(--line-height-title);
+    line-height: 1.1;
     letter-spacing: var(--letter-spacing-tight-xl);
     color: var(--text-primary);
-    margin: 0 0 var(--space-lg) 0;
+    margin: 0;
+}
+
+/* For headers with subhead, add margin below h1 */
+.page-header h1 + .page-subhead {
+    margin-top: 24px;
 }
 
 .page-subhead {
-    font-size: var(--font-lg);
+    font-size: 18px;
     color: var(--text-secondary);
     margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Essays List Page Sections
+   -------------------------------------------------------------------------- */
+
+.essays-topics-section {
+    padding: 40px 0;
+    border-top: var(--border-width) solid var(--border-color);
+}
+
+.essays-list-section {
+    padding: 60px 0;
+    border-top: var(--border-width) solid var(--border-color);
+}
+
+.essays-list-section .essay-item {
+    margin-bottom: 16px;
+}
+
+.essays-list-section .essay-item:last-child {
+    margin-bottom: 0;
+}
+
+.essays-list-section .essay-item a {
+    display: flex;
+    gap: 24px;
+    align-items: baseline;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.essays-list-section .essay-item a:hover {
+    color: var(--brand-orange);
+}
+
+.essays-list-section .essay-date {
+    font-size: 14px;
+    color: var(--text-meta);
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.essays-list-section .essay-title {
+    font-size: 17px;
+    font-weight: var(--font-weight-medium);
 }
 
 /* --------------------------------------------------------------------------
