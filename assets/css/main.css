@@ -2500,8 +2500,7 @@ a.qr-link:hover {
    -------------------------------------------------------------------------- */
 
 .landing-hero {
-    padding-top: calc(var(--space-3xl) + var(--space-xl));
-    padding-bottom: calc(var(--space-3xl) + var(--space-2xl));
+    padding: 80px 0 60px;
 }
 
 .landing-hero-content {
@@ -2511,10 +2510,11 @@ a.qr-link:hover {
 /* Hero headline - commanding, tight tracking */
 .landing-headline {
     font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-title);
+    font-size: 48px;
+    font-weight: var(--font-weight-bold);
+    line-height: 1.1;
     letter-spacing: var(--letter-spacing-tight-xl);
+    margin-bottom: 24px;
 }
 
 .headline-accent {
@@ -2524,11 +2524,10 @@ a.qr-link:hover {
 /* Hero subhead - supporting context */
 .landing-subhead {
     font-family: var(--font-body);
-    font-size: var(--font-xl);
-    font-weight: var(--font-weight-light);
+    font-size: 20px;
     line-height: var(--line-height-heading);
     color: var(--text-secondary);
-    margin: 0 0 var(--space-lg) 0;
+    margin: 0 0 32px 0;
     max-width: 540px;
 }
 
@@ -2638,40 +2637,36 @@ a.qr-link:hover {
    -------------------------------------------------------------------------- */
 
 .landing-section {
-    padding: var(--space-2xl) 0;
+    padding: 60px 0;
+    border-top: var(--border-width) solid var(--border-color);
 }
 
-/* Section label - small, uppercase, with orange accent */
+/* Section label - small, uppercase, gray */
 .landing-section-label {
     font-family: var(--font-heading);
     font-size: var(--font-sm);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
-    color: var(--brand-orange);
-    margin: 0 0 var(--space-md) 0;
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-}
-
-.landing-section-label::before {
-    content: '';
-    width: 12px;
-    height: 3px;
-    background: var(--brand-orange);
+    color: var(--text-meta);
+    margin: 0 0 var(--space-xs) 0;
 }
 
 /* Section content inherits body styles */
 .landing-section p {
     font-size: var(--font-lg);
     line-height: var(--line-height-reading);
-    color: var(--text-primary);
-    margin: 0 0 var(--space-md) 0;
+    color: var(--text-secondary);
+    margin: 0 0 20px 0;
 }
 
 .landing-section p:last-child {
     margin-bottom: 0;
+}
+
+.landing-section strong {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
 }
 
 /* Emphasis line - confident statement, not a whispered aside */
@@ -3040,6 +3035,438 @@ a.qr-link:hover {
 
 .essays-newsletter .email-form {
     max-width: 400px;
+}
+
+/* --------------------------------------------------------------------------
+   Homepage Redesign Patterns
+   -------------------------------------------------------------------------- */
+
+/* Sector tags in hero */
+.sector-tags {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    letter-spacing: 0.5px;
+    margin-top: var(--space-lg);
+}
+
+/* Section subhead - below section label */
+.section-subhead {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+}
+
+/* Horizontal essay list */
+.essay-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.essay-item {
+    display: flex;
+    gap: 16px;
+}
+
+.essay-date {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    min-width: 80px;
+    padding-top: 4px;
+    flex-shrink: 0;
+}
+
+.essay-content h3 {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.essay-content h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.essay-content h3 a:hover {
+    color: var(--brand-orange);
+}
+
+.essay-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    margin: 0;
+}
+
+/* All essays link */
+.essays-section .all-essays {
+    margin-top: 40px;
+}
+
+/* Assessment section */
+.assessment-section h2 {
+    font-family: var(--font-heading);
+    font-size: var(--font-custom-24);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0 0 12px 0;
+}
+
+.assessment-section p {
+    max-width: 540px;
+    margin-bottom: 20px;
+}
+
+/* Signup section */
+.signup-section p {
+    margin-bottom: var(--space-md);
+}
+
+.signup-form {
+    display: flex;
+    gap: var(--space-sm);
+    max-width: 400px;
+}
+
+.signup-form input[type="email"] {
+    flex: 1;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-base);
+    font-family: var(--font-body);
+    background: var(--background-input);
+    border: var(--border-width) solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.signup-form input[type="email"]::placeholder {
+    color: var(--text-meta);
+}
+
+.signup-form input[type="email"]:focus {
+    outline: none;
+    border-color: var(--brand-orange);
+}
+
+/* --------------------------------------------------------------------------
+   Work With Me Page Patterns
+   -------------------------------------------------------------------------- */
+
+/* Offer fit text */
+.offer-fit {
+    font-size: var(--font-sm);
+    font-style: italic;
+    color: var(--text-meta);
+    margin-top: var(--space-md);
+}
+
+/* Sprint detail section */
+.sprint-detail {
+    scroll-margin-top: var(--space-2xl);
+}
+
+.sprint-phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+}
+
+.sprint-phase h3 {
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.sprint-phase ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sprint-phase li {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    margin-bottom: var(--space-xs);
+    padding-left: var(--space-md);
+    position: relative;
+}
+
+.sprint-phase li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--text-meta);
+}
+
+/* Background section */
+.background-section .headshot {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.recent-work {
+    margin-top: var(--space-xl);
+}
+
+.recent-work h3 {
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-meta);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.recent-work ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recent-work li {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    padding-left: var(--space-md);
+    position: relative;
+    margin-bottom: var(--space-xs);
+}
+
+.recent-work li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--text-meta);
+}
+
+/* Testimonials */
+.testimonials-section .testimonial {
+    margin-bottom: var(--space-xl);
+}
+
+.testimonials-section .testimonial:last-child {
+    margin-bottom: 0;
+}
+
+.testimonials-section .testimonial p {
+    font-size: var(--font-base);
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.testimonials-section .testimonial cite {
+    font-size: var(--font-sm);
+    font-style: normal;
+    color: var(--text-meta);
+}
+
+/* Full-width CTA banner */
+.cta-banner--fullwidth {
+    max-width: none;
+    border-radius: 0;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+}
+
+.cta-banner--fullwidth .content-wrapper {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+}
+
+/* Inverted button for orange background */
+.btn-solid--inverted {
+    background: var(--background-dark);
+    color: var(--text-on-dark);
+    border: none;
+}
+
+.btn-solid--inverted:hover {
+    background: var(--text-meta);
+}
+
+/* --------------------------------------------------------------------------
+   Page Container - Shared wrapper for redesigned pages
+   -------------------------------------------------------------------------- */
+
+.page-container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   Page Header - Title + subhead pattern
+   -------------------------------------------------------------------------- */
+
+.page-header {
+    padding: var(--space-3xl) 0 var(--space-xl);
+}
+
+.page-header h1 {
+    font-family: var(--font-heading);
+    font-size: var(--font-custom-40);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-title);
+    letter-spacing: var(--letter-spacing-tight-xl);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-lg) 0;
+}
+
+.page-subhead {
+    font-size: var(--font-lg);
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Contact Form Section
+   -------------------------------------------------------------------------- */
+
+.contact-form-section {
+    padding: var(--space-xl) 0 var(--space-2xl);
+}
+
+.contact-form {
+    max-width: 100%;
+}
+
+.form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.form-group label {
+    display: block;
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-meta);
+    margin-bottom: var(--space-xs);
+}
+
+.form-group input,
+.form-group textarea {
+    display: block;
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-base);
+    font-family: var(--font-body);
+    background: var(--background-input);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: 0;
+    color: var(--text-primary);
+    line-height: var(--line-height-body);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-meta);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--brand-orange);
+}
+
+.form-group textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.submit-btn {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-body);
+    background: var(--brand-orange);
+    border: none;
+    border-radius: 0;
+    color: var(--text-on-brand);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.submit-btn:hover {
+    background: var(--brand-orange-hover);
+}
+
+/* Honeypot field - hidden from users */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Alternative Contact Section
+   -------------------------------------------------------------------------- */
+
+.alt-contact {
+    padding: var(--space-xl) 0 var(--space-2xl);
+    border-top: var(--border-width) solid var(--border-color);
+}
+
+.alt-contact h2 {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.alt-contact p {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.alt-contact .action-link {
+    color: var(--brand-orange);
+    text-decoration: none;
+    font-size: var(--font-base);
+}
+
+.alt-contact .action-link:hover {
+    text-decoration: underline;
+    text-underline-offset: var(--underline-offset);
+}
+
+/* Mobile adjustments for new patterns */
+@media (max-width: 768px) {
+    .essay-item {
+        flex-direction: column;
+        gap: var(--space-2xs);
+    }
+
+    .essay-date {
+        min-width: auto;
+    }
+
+    .sprint-phases {
+        grid-template-columns: 1fr;
+        gap: var(--space-xl);
+    }
+
+    .signup-form {
+        flex-direction: column;
+    }
+
+    .signup-form input[type="email"],
+    .signup-form button {
+        width: 100%;
+    }
 }
 
 /* --------------------------------------------------------------------------
