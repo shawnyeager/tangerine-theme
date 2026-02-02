@@ -158,6 +158,15 @@ h1 {
     opacity: 0.8;
 }
 
+/* Site name next to home square */
+.site-name {
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-left: var(--space-sm);
+}
+
 /* Homepage display title - large, prominent headline */
 h1.display-title {
     font-size: var(--font-custom-40);
@@ -2491,7 +2500,8 @@ a.qr-link:hover {
    -------------------------------------------------------------------------- */
 
 .landing-hero {
-    padding: var(--space-3xl) 0;
+    padding-top: calc(var(--space-3xl) + var(--space-xl));
+    padding-bottom: calc(var(--space-3xl) + var(--space-2xl));
 }
 
 .landing-hero-content {
@@ -2634,7 +2644,7 @@ a.qr-link:hover {
 /* Section label - small, uppercase, with orange accent */
 .landing-section-label {
     font-family: var(--font-heading);
-    font-size: var(--font-xs);
+    font-size: var(--font-sm);
     font-weight: var(--font-weight-bold);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
@@ -2753,7 +2763,7 @@ a.qr-link:hover {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--space-lg);
-    margin: var(--space-xl) 0;
+    margin-top: var(--space-xl);
 }
 
 /* Wider container for offers section */
@@ -2762,17 +2772,28 @@ a.qr-link:hover {
 }
 
 .offer-card {
+    position: relative;
     padding: var(--space-xl);
     background: var(--background-card);
     border: var(--border-width) solid var(--border-color);
     display: flex;
     flex-direction: column;
+    transition: border-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.offer-card:hover {
+    border-color: var(--brand-orange);
+    transform: translateY(-2px);
 }
 
 /* Featured card treatment - border emphasis only, badge is inline HTML */
 .offer-card--featured {
     border-color: var(--brand-orange);
     border-width: var(--border-width-emphasis);
+}
+
+.offer-card--featured:hover {
+    border-color: var(--brand-orange);
 }
 
 .offer-card-title {
@@ -2842,10 +2863,8 @@ a.qr-link:hover {
     padding: var(--space-2xl) var(--space-xl);
     margin-top: var(--space-2xl);
     text-align: center;
-    max-width: none;
-    width: 100vw;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    max-width: var(--content-max-width);
+    border-radius: var(--radius-lg);
 }
 
 .cta-banner-headline {
@@ -2877,8 +2896,8 @@ a.qr-link:hover {
 
 /* CTA buttons on orange background */
 .cta-banner .btn-ghost--primary {
-    background: var(--background-body);
-    border-color: var(--background-body);
+    background: #ffffff;
+    border-color: #ffffff;
     color: var(--brand-orange);
 }
 
@@ -2919,6 +2938,91 @@ a.qr-link:hover {
 
 .landing-essays .section-label-small {
     margin-bottom: var(--space-md);
+}
+
+/* Essay cards grid - featured + 2 supporting */
+.essay-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+}
+
+.essay-card {
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    transition: border-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.essay-card a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.essay-card:hover {
+    border-color: var(--brand-orange);
+    transform: translateY(-2px);
+}
+
+.essay-card-date {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    display: block;
+    margin-bottom: var(--space-xs);
+}
+
+.essay-card-title {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-heading);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.essay-card-excerpt {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    margin: 0;
+}
+
+/* Featured essay - first card spans full width */
+.essay-card--featured {
+    grid-column: 1 / -1;
+}
+
+.essay-card--featured .essay-card-title {
+    font-size: var(--font-xl);
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 768px) {
+    .essay-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* All essays link - match grid gap spacing */
+.landing-essays .all-essays {
+    margin-top: var(--space-lg);
+}
+
+/* Newsletter signup within essays section */
+.essays-newsletter {
+    margin-top: var(--space-xl);
+}
+
+.essays-newsletter-text {
+    font-size: var(--font-base);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.essays-newsletter .email-form {
+    max-width: 400px;
 }
 
 /* --------------------------------------------------------------------------
@@ -3015,7 +3119,8 @@ a.qr-link:hover {
 /* Sector Bar - Who this is for */
 .sector-bar {
     position: relative;
-    padding: var(--space-lg) 0;
+    padding: var(--space-xl) 0;
+    margin-bottom: var(--space-2xl);
 }
 
 .sector-bar::before {
@@ -3047,6 +3152,7 @@ a.qr-link:hover {
     color: var(--text-subtle);
     padding: 0 var(--space-sm);
 }
+
 
 /* Trust Bar - Social proof */
 .trust-bar {
@@ -3101,16 +3207,34 @@ a.qr-link:hover {
 .hero-secondary-link {
     font-size: var(--font-base);
     color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.hero-secondary-link .link-text {
     text-decoration: underline;
     text-decoration-color: var(--underline-color-muted);
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
-    transition: color var(--transition-fast);
 }
 
 .hero-secondary-link:hover {
     color: var(--text-primary);
+}
+
+.hero-secondary-link:hover .link-text {
     text-decoration-color: var(--text-primary);
+}
+
+.hero-secondary-link .arrow {
+    margin-left: var(--arrow-spacing);
+    display: inline-block;
+    transform: translateY(calc(var(--underline-offset) / -2));
+    transition: transform var(--transition-normal);
+}
+
+.hero-secondary-link:hover .arrow {
+    transform: translateY(calc(var(--underline-offset) / -2)) translateX(2px);
 }
 
 /* --------------------------------------------------------------------------
@@ -3169,6 +3293,30 @@ a.qr-link:hover {
 
 .testimonial-context {
     color: var(--text-subtle);
+}
+
+/* Inline testimonial - lighter treatment for contextual placement */
+.testimonial-inline {
+    max-width: var(--content-max-width);
+    margin: 0 0 var(--space-2xl) 0;
+    padding-left: var(--space-lg);
+    border-left: var(--border-width) solid var(--border-color);
+}
+
+.testimonial-inline p {
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-normal);
+    font-style: italic;
+    line-height: var(--line-height-reading);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.testimonial-inline cite {
+    font-size: var(--font-sm);
+    font-style: normal;
+    color: var(--text-meta);
 }
 
 /* --------------------------------------------------------------------------
@@ -3317,6 +3465,14 @@ a.qr-link:hover {
 
 .offer-cta:hover {
     color: var(--brand-orange-hover);
+    text-decoration: none;
+}
+
+/* Stretched link - makes entire card clickable */
+.offer-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
 }
 
 .offer-cta .arrow {
@@ -3486,8 +3642,8 @@ a.qr-link:hover {
 
 /* Inverted variant - on orange background */
 .btn-ghost--inverted {
-    background: var(--background-body);
-    border-color: var(--background-body);
+    background: #ffffff;
+    border-color: #ffffff;
     color: var(--brand-orange);
 }
 
