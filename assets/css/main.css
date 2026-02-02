@@ -2718,6 +2718,23 @@ a.qr-link:hover {
 }
 
 /* --------------------------------------------------------------------------
+   Proof Photo - Headshot in proof section
+   -------------------------------------------------------------------------- */
+
+.proof-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.proof-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: var(--space-lg);
+}
+
+/* --------------------------------------------------------------------------
    Proof Metrics - Large number callouts with visual punch
    -------------------------------------------------------------------------- */
 
