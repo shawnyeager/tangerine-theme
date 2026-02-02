@@ -1,32 +1,14 @@
 {{/*
 Purpose: Renders site footer with optional email signup form and navigation links
 
-Layout: Footer sits inside .container (matching header structure), so it inherits
-the container's max-width and padding. CSS targets `body > .container > footer`.
-
 Context Expected:
 - .Kind - Page kind (hides signup on 404 pages)
 - .Params.hide_footer_signup - Frontmatter flag to hide signup on specific pages
 - .Site.Params.show_email_signup - Global toggle for email signup feature
 - .Site.Params.email_signup_text - Subscription form intro text
-- .Site.Params.email_signup_action - Form submission URL (e.g., Buttondown API endpoint)
+- .Site.Params.email_signup_action - Form submission URL
 - .Site.Params.plausible_form_event - Analytics event name for form submission
-- .Site.Params.plausible_events.* - Event names for link tracking
-- .Site.Params.nostr, .github, .author.email - Social/contact links
-- .Site.Params.secondary_site_url/name - Cross-site navigation (.com ↔ .notes)
-- .Site.Params.v4v_url - V4V page URL (defaults to /v4v/, can be external)
-
-Features:
-- Conditionally displays email subscription form
-- Cross-site navigation with event tracking
-- Social and contact links
-- Plausible analytics integration for button/link clicks
-- Accessibility: sr-only label, aria-describedby, proper input types
-
-Important Notes:
-- Email form hidden on 404 pages and pages with hide_footer_signup: true
-- Plausible event tracking via class="plausible-event-name=EventName"
-- Form targets "popupwindow" for Buttondown compatibility
+- .Site.Params.nostr, .github, .linkedin, .author.email - Social/contact links
 */}}
 
 <footer aria-label="Site footer">
@@ -42,16 +24,13 @@ Important Notes:
     </section>
     {{ end }}
 
-    {{/* Footer links (supports both primary_site and secondary_site params) */}}
+    {{/* Footer links */}}
     <div class="footer-links">
         {{ with .Site.Params.nostr }}<a href="{{ . }}">Nostr</a>{{ end }}
         {{ with .Site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
-        {{ with .Site.Params.secondary_site_url }}
-            <a href="{{ . }}"{{ with $.Site.Params.plausible_events.cross_site_nav }} class="plausible-event-name={{ . }}"{{ end }}><span class="link-text">{{ $.Site.Params.secondary_site_name }}</span><span class="arrow" aria-hidden="true">→</span></a>
-        {{ end }}
+        {{ with .Site.Params.linkedin }}<a href="{{ . }}">LinkedIn</a>{{ end }}
         {{ with .Site.Params.author.email }}
             <a href="mailto:{{ . }}"{{ with $.Site.Params.plausible_events.contact_email }} class="plausible-event-name={{ . }}"{{ end }}>Email</a>
         {{ end }}
-        <a href="{{ .Site.Params.v4v_url | default "/v4v/" }}"{{ with .Site.Params.plausible_events.v4v_footer }} class="plausible-event-name={{ . }}"{{ end }} aria-label="Value for value"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg></a>
     </div>
 </footer>
