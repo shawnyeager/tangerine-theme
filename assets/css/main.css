@@ -2491,11 +2491,7 @@ a.qr-link:hover {
    -------------------------------------------------------------------------- */
 
 .landing-hero {
-    min-height: min(70svh, 600px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: var(--space-2xl) 0;
+    padding: var(--space-3xl) 0;
 }
 
 .landing-hero-content {
@@ -2509,8 +2505,10 @@ a.qr-link:hover {
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-title);
     letter-spacing: var(--letter-spacing-tight-xl);
-    color: var(--text-primary);
-    margin: 0 0 var(--space-lg) 0;
+}
+
+.headline-accent {
+    color: var(--brand-orange);
 }
 
 /* Hero subhead - supporting context */
@@ -2524,23 +2522,90 @@ a.qr-link:hover {
     max-width: 540px;
 }
 
-/* Sector tags - category markers */
-.sector-tags {
+/* Hero proof line - immediate credibility */
+.hero-proof {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-xs);
+    margin: 0 0 var(--space-lg) 0;
+    padding-left: var(--space-md);
+    border-left: 3px solid var(--brand-orange);
+}
+
+.hero-proof-value {
     font-family: var(--font-heading);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
-    color: var(--text-meta);
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.hero-proof-note {
+    font-family: var(--font-body);
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+}
+
+/* Hero sectors - integrated category chips */
+.hero-sectors {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
     margin: 0 0 var(--space-xl) 0;
 }
 
-.sector-tags span {
-    color: var(--text-subtle);
-    padding: 0 0.4em;
+.hero-sector {
+    font-family: var(--font-heading);
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-primary);
+    background: var(--background-card);
+    padding: var(--space-2xs) var(--space-sm);
+    border-radius: var(--radius-sm);
 }
 
-/* Hero CTA - no extra margin, sector-tags provides spacing above */
+.hero-sector-dot {
+    color: var(--text-subtle);
+    font-size: var(--font-xs);
+}
+
+/* Solid button for primary CTAs */
+.btn-solid {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-normal);
+}
+
+.btn-solid--primary {
+    background: var(--brand-orange);
+    color: white;
+}
+
+.btn-solid--primary:hover {
+    background: var(--brand-orange-hover);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.btn-solid--primary .arrow {
+    transition: transform var(--transition-normal);
+}
+
+.btn-solid--primary:hover .arrow {
+    transform: translateX(2px);
+}
 
 /* Offer page hero - shorter, with price display */
 .landing-hero--offer {
@@ -2564,22 +2629,27 @@ a.qr-link:hover {
 
 .landing-section {
     padding: var(--space-2xl) 0;
-    border-top: var(--border-width) solid var(--border-color);
 }
 
-.landing-section:first-of-type {
-    border-top: none;
-}
-
-/* Section label - small, uppercase, orange */
+/* Section label - small, uppercase, with orange accent */
 .landing-section-label {
     font-family: var(--font-heading);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-bold);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--brand-orange);
-    margin: 0 0 var(--space-lg) 0;
+    margin: 0 0 var(--space-md) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.landing-section-label::before {
+    content: '';
+    width: 12px;
+    height: 3px;
+    background: var(--brand-orange);
 }
 
 /* Section content inherits body styles */
@@ -2594,15 +2664,13 @@ a.qr-link:hover {
     margin-bottom: 0;
 }
 
-/* Emphasis line - visual callout with left border */
+/* Emphasis line - confident statement, not a whispered aside */
 .landing-emphasis {
-    padding: var(--space-lg);
-    background: var(--background-card);
-    border-left: var(--border-width-accent) solid var(--brand-orange);
-    margin: var(--space-xl) 0;
-    font-size: var(--font-2xl);
-    font-weight: var(--font-weight-normal);
-    color: var(--text-primary);
+    margin: var(--space-sm) 0 0 0;
+    font-family: var(--font-heading);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
 }
 
 /* List styling within sections */
@@ -2640,36 +2708,33 @@ a.qr-link:hover {
 }
 
 /* --------------------------------------------------------------------------
-   Proof Metrics - Large number callouts
+   Proof Metrics - Large number callouts with visual punch
    -------------------------------------------------------------------------- */
 
 .proof-metrics {
-    display: flex;
-    gap: var(--space-3xl);
-    margin: var(--space-xl) 0;
-    flex-wrap: wrap;
-}
-
-.proof-metric {
-    flex: 1;
-    min-width: 140px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: var(--border-width) solid var(--border-color);
+    margin-bottom: var(--space-lg);
 }
 
 .proof-metric-value {
     font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-size: var(--font-2xl);
     font-weight: var(--font-weight-bold);
-    line-height: 1;
+    line-height: 1.1;
     letter-spacing: var(--letter-spacing-tight-lg);
     color: var(--text-primary);
-    font-variant-numeric: tabular-nums;
     margin-bottom: var(--space-xs);
 }
 
 .proof-metric-label {
-    font-size: var(--font-base);
+    font-size: var(--font-sm);
     color: var(--text-secondary);
     line-height: var(--line-height-body);
+    max-width: 160px;
 }
 
 /* Credentials list - supporting text */
@@ -2704,27 +2769,10 @@ a.qr-link:hover {
     flex-direction: column;
 }
 
-/* Featured card treatment */
+/* Featured card treatment - border emphasis only, badge is inline HTML */
 .offer-card--featured {
     border-color: var(--brand-orange);
     border-width: var(--border-width-emphasis);
-    position: relative;
-}
-
-.offer-card--featured::before {
-    content: 'Most popular';
-    position: absolute;
-    top: 0;
-    left: var(--space-xl);
-    transform: translateY(-50%);
-    background: var(--brand-orange);
-    color: var(--text-on-brand);
-    font-family: var(--font-heading);
-    font-size: var(--font-xs);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
-    padding: var(--space-label-gap) var(--space-sm);
 }
 
 .offer-card-title {
@@ -2922,8 +2970,16 @@ a.qr-link:hover {
 
 @media (max-width: 600px) {
     .landing-hero {
-        min-height: auto;
         padding: var(--space-2xl) 0;
+    }
+
+    .hero-proof {
+        flex-direction: column;
+        gap: var(--space-2xs);
+    }
+
+    .hero-proof-value {
+        font-size: var(--font-xl);
     }
 
     .landing-section {
@@ -2931,7 +2987,16 @@ a.qr-link:hover {
     }
 
     .proof-metrics {
-        gap: var(--space-xl);
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+
+    .proof-metric-label {
+        max-width: none;
+    }
+
+    .landing-card {
+        padding: var(--space-lg);
     }
 
     .offer-grid {
@@ -2940,6 +3005,375 @@ a.qr-link:hover {
 
     .cta-banner {
         padding: var(--space-2xl) var(--space-md);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Trust Bar - Social proof company names
+   -------------------------------------------------------------------------- */
+
+/* Sector Bar - Who this is for */
+.sector-bar {
+    position: relative;
+    padding: var(--space-lg) 0;
+}
+
+.sector-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background: var(--background-card);
+    z-index: -1;
+}
+
+.sector-bar-label {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+}
+
+.sector-bar-list {
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    letter-spacing: var(--letter-spacing-tight-md);
+}
+
+.sector-bar-list span {
+    color: var(--text-subtle);
+    padding: 0 var(--space-sm);
+}
+
+/* Trust Bar - Social proof */
+.trust-bar {
+    position: relative;
+    padding: var(--space-md) 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm) var(--space-lg);
+}
+
+.trust-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background: var(--background-card);
+    z-index: -1;
+}
+
+.trust-label {
+    font-size: var(--font-xs);
+    color: var(--text-meta);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+    white-space: nowrap;
+}
+
+.trust-companies {
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    letter-spacing: var(--letter-spacing-tight-md);
+    white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Hero CTAs - Primary button + secondary text link
+   -------------------------------------------------------------------------- */
+
+.hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+.hero-secondary-link {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--underline-color-muted);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    transition: color var(--transition-fast);
+}
+
+.hero-secondary-link:hover {
+    color: var(--text-primary);
+    text-decoration-color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Alternating Section Backgrounds
+   -------------------------------------------------------------------------- */
+
+/* Landing card - content block with background */
+.landing-card {
+    background: var(--background-card);
+    padding: var(--space-xl);
+    margin-top: var(--space-md);
+}
+
+.landing-card .landing-emphasis {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: var(--border-width) solid var(--border-color);
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Testimonial Section - Social proof quote with visual weight
+   -------------------------------------------------------------------------- */
+
+.testimonial-section {
+    padding: var(--space-xl) var(--space-lg);
+    margin: var(--space-lg) 0;
+    background: var(--background-card);
+    border-left: var(--border-width-accent) solid var(--brand-orange);
+}
+
+.testimonial-quote {
+    margin: 0;
+    padding: 0;
+    max-width: var(--content-max-width);
+}
+
+.testimonial-quote p {
+    font-family: var(--font-heading);
+    font-size: var(--font-xl);
+    font-weight: var(--font-weight-medium);
+    font-style: normal;
+    line-height: var(--line-height-heading);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.testimonial-quote footer {
+    font-size: var(--font-sm);
+}
+
+.testimonial-quote cite {
+    font-style: normal;
+    color: var(--text-meta);
+}
+
+.testimonial-context {
+    color: var(--text-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   Credentials List - Structured company + note pairs
+   -------------------------------------------------------------------------- */
+
+.credentials-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-sm) var(--space-lg);
+}
+
+.credentials-list li {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    padding-left: 0;
+}
+
+.credentials-list li::before {
+    content: none;
+}
+
+.credentials-list strong {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Emphasis on alt backgrounds */
+/* Inverted emphasis inherits base styles, no changes needed */
+
+/* --------------------------------------------------------------------------
+   Outcome List - Solution section list with checkmarks
+   -------------------------------------------------------------------------- */
+
+.outcome-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-lg) 0 0 0;
+}
+
+.outcome-list li {
+    font-size: var(--font-lg);
+    line-height: var(--line-height-reading);
+    color: var(--text-primary);
+    margin-bottom: var(--space-sm);
+    padding-left: var(--space-xl);
+    position: relative;
+}
+
+.outcome-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--brand-orange);
+    font-weight: var(--font-weight-bold);
+}
+
+/* --------------------------------------------------------------------------
+   Offer Card Improvements - Badge, featured styling, CTAs
+   -------------------------------------------------------------------------- */
+
+.offer-badge {
+    display: inline-block;
+    background: var(--brand-orange);
+    color: var(--text-on-brand);
+    font-family: var(--font-heading);
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    padding: var(--space-label-gap) var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+/* Featured card gets more visual weight and spans full width */
+.offer-card--featured {
+    background: var(--background-body);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    grid-column: 1 / -1;
+}
+
+/* On desktop, featured card uses a horizontal layout */
+@media (min-width: 600px) {
+    .offer-card--featured {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "badge features"
+            "title features"
+            "price features"
+            "desc features"
+            "cta features";
+        gap: 0 var(--space-xl);
+        align-items: start;
+    }
+
+    .offer-card--featured .offer-badge {
+        grid-area: badge;
+    }
+
+    .offer-card--featured .offer-card-title {
+        grid-area: title;
+    }
+
+    .offer-card--featured .offer-card-price {
+        grid-area: price;
+    }
+
+    .offer-card--featured .offer-card-description {
+        grid-area: desc;
+        flex-grow: 0;
+    }
+
+    .offer-card--featured ul {
+        grid-area: features;
+        align-self: center;
+        margin: 0;
+        flex-grow: 0;
+    }
+
+    .offer-card--featured .offer-cta {
+        grid-area: cta;
+        margin-top: var(--space-md);
+    }
+}
+
+/* Offer CTAs - action-link style within cards */
+.offer-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--arrow-spacing);
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-orange);
+    text-decoration: none;
+    margin-top: auto;
+    transition: color var(--transition-fast);
+}
+
+.offer-cta:hover {
+    color: var(--brand-orange-hover);
+}
+
+.offer-cta .arrow {
+    transition: transform var(--transition-fast);
+}
+
+.offer-cta:hover .arrow {
+    transform: translateX(2px);
+}
+
+/* Featured offer CTA - more prominent */
+.offer-cta--featured {
+    padding: var(--space-xs) var(--space-md);
+    border: var(--border-width-emphasis) solid var(--brand-orange);
+    font-size: var(--font-lg);
+}
+
+.offer-cta--featured:hover {
+    background: var(--brand-orange);
+    color: var(--text-on-brand);
+}
+
+/* --------------------------------------------------------------------------
+   Essays Section Intro
+   -------------------------------------------------------------------------- */
+
+.essays-intro {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    max-width: 540px;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Adjustments - New Components
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .hero-ctas {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+    }
+
+    .trust-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+
+    .credentials-list {
+        grid-template-columns: 1fr;
+    }
+
+    .offer-badge {
+        position: static;
+        transform: none;
     }
 }
 
@@ -3042,6 +3476,26 @@ a.qr-link:hover {
 
 .btn-ghost--primary .arrow {
     line-height: 1;
+}
+
+/* Large variant - hero CTAs */
+.btn-ghost--lg {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-xl);
+}
+
+/* Inverted variant - on orange background */
+.btn-ghost--inverted {
+    background: var(--background-body);
+    border-color: var(--background-body);
+    color: var(--brand-orange);
+}
+
+.btn-ghost--inverted:hover {
+    background: transparent;
+    border-color: var(--text-on-brand);
+    color: var(--text-on-brand);
+    box-shadow: none;
 }
 
 
