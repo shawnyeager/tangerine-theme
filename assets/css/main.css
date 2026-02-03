@@ -3578,14 +3578,71 @@ a.qr-link:hover {
 }
 
 /* --------------------------------------------------------------------------
-   Mobile Adjustments - Landing Page
+   Mobile Adjustments - Landing Page & Redesigned Pages
+
+   Breakpoint: 600px (matches core mobile breakpoint)
+
+   Design principles:
+   - Logo square alone is enough brand recognition on mobile
+   - Scale typography proportionally (not just smaller)
+   - Maintain touch targets (48px minimum)
+   - Reduce padding but keep rhythm consistent
    -------------------------------------------------------------------------- */
 
 @media (max-width: 600px) {
-    .landing-hero {
-        padding: var(--space-2xl) 0;
+    /* ---- Header & Navigation ---- */
+
+    /* Hide site name on mobile - orange square is recognizable */
+    .site-name {
+        display: none;
     }
 
+    /* Tighter nav with smaller type */
+    nav {
+        gap: var(--space-sm);
+        font-size: 15px;
+    }
+
+    /* ---- Landing Hero ---- */
+
+    .landing-hero {
+        padding: 48px 0 40px;
+    }
+
+    /* Scale down hero headline dramatically for mobile */
+    .landing-headline {
+        font-size: 32px;
+        margin-bottom: 16px;
+    }
+
+    .landing-subhead {
+        font-size: 16px;
+        margin-bottom: 24px;
+    }
+
+    /* Inner page hero uses same scale */
+    .landing-hero--page .landing-headline {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .landing-hero--page .landing-subhead {
+        font-size: 16px;
+    }
+
+    /* Hero CTAs - full width on mobile */
+    .hero-cta-group {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .hero-cta-group .btn-solid,
+    .hero-cta-group .btn-ghost {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Proof metrics stack */
     .hero-proof {
         flex-direction: column;
         gap: var(--space-2xs);
@@ -3595,8 +3652,25 @@ a.qr-link:hover {
         font-size: var(--font-xl);
     }
 
+    /* Sector bar wraps naturally */
+    .sector-bar-list {
+        font-size: var(--font-sm);
+    }
+
+    /* ---- Landing Sections ---- */
+
     .landing-section {
-        padding: var(--space-2xl) 0;
+        padding: 40px 0;
+    }
+
+    .landing-section-label {
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
+
+    .landing-section p {
+        font-size: 16px;
+        margin-bottom: 16px;
     }
 
     .proof-metrics {
@@ -3612,12 +3686,125 @@ a.qr-link:hover {
         padding: var(--space-lg);
     }
 
+    /* ---- Offer Cards ---- */
+
     .offer-grid {
         grid-template-columns: 1fr;
+        gap: 24px;
     }
 
+    .offer-card {
+        padding: 24px;
+    }
+
+    .offer-card-title {
+        font-size: 18px;
+    }
+
+    .offer-card-price {
+        font-size: 15px;
+    }
+
+    .offer-card-description {
+        font-size: 15px;
+    }
+
+    .offer-card-features {
+        font-size: 14px;
+    }
+
+    /* ---- Page Header (Contact, Essays, etc) ---- */
+
+    .page-header {
+        padding: 48px 0 40px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .page-subhead {
+        font-size: 16px;
+    }
+
+    /* ---- CTA Banner ---- */
+
     .cta-banner {
-        padding: var(--space-2xl) var(--space-md);
+        padding: 40px var(--space-md);
+    }
+
+    .cta-banner-headline {
+        font-size: 20px;
+        white-space: normal;
+    }
+
+    .cta-banner-body {
+        font-size: 15px;
+    }
+
+    .cta-banner .btn-solid--inverted {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* ---- Essays List ---- */
+
+    .essays-list-section {
+        padding: 40px 0;
+    }
+
+    .essays-list-section .essay-item a {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .essays-list-section .essay-date {
+        min-width: auto;
+    }
+
+    /* ---- Contact Form ---- */
+
+    .contact-form-section {
+        padding: var(--space-lg) 0 var(--space-xl);
+    }
+
+    /* ---- Testimonials ---- */
+
+    .testimonial {
+        padding: 20px 0;
+    }
+
+    .testimonial p {
+        font-size: 16px;
+    }
+
+    .testimonial cite {
+        font-size: 14px;
+    }
+
+    /* ---- Assessment/Sprint Sections ---- */
+
+    .assessment-section h2 {
+        font-size: 20px;
+    }
+
+    .sprint-phases {
+        gap: 32px;
+    }
+
+    .sprint-phase h3 {
+        font-size: 16px;
+    }
+
+    /* ---- Background/Proof Section ---- */
+
+    .background-section {
+        padding: 40px 0;
+    }
+
+    .proof-photo {
+        width: 120px;
+        height: 120px;
     }
 }
 
