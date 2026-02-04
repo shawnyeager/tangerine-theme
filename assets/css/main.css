@@ -1349,9 +1349,10 @@ html[data-theme="dark"] .essay-hero-image {
     margin-top: var(--space-md);  /* 16px - tighter spacing for podcast layout */
 }
 
-/* Footer CTA spacing after essay/note content */
-:is(.essay-body, .note-body) + footer {
-    margin-top: var(--space-sm);  /* 12px - tight spacing after content body */
+/* Footer spacing after content-nav (essays/notes) uses paragraph rhythm
+   Frame edges use 32px, but content-nav flows into footer at 20px */
+body > .container > main:has(.content-nav) + footer {
+    margin-top: var(--para-gap-long-form);
 }
 
 /* ==========================================================================
@@ -1843,6 +1844,10 @@ a.back-link:hover {
 
 .page-body .btn-primary {
     margin-bottom: var(--space-lg);
+}
+
+.page-body .btn-primary:last-child {
+    margin-bottom: 0;
 }
 
 /* Podcast page images */
