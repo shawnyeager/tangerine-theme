@@ -188,10 +188,6 @@ h5, h6 {
 
 /* CTA + heading: let heading's natural margin provide spacing (no adjustment needed) */
 
-.podcast-content h3 {
-    margin-top: var(--space-2xl);
-}
-
 p {
     margin-bottom: var(--space-md);
     color: var(--text-secondary);
@@ -298,7 +294,7 @@ select:focus-visible,
    - Orange with arrows (→ or ←), color lightens on hover
    - Display: inline-flex with gap for arrow spacing
 
-   SECONDARY LINKS (.secondary-link, .link-grid a)
+   SECONDARY LINKS (.secondary-link)
    - Gray/secondary color, orange on hover
    - Underlined at rest, none on hover
 
@@ -308,7 +304,7 @@ select:focus-visible,
 
 /* Shared transition for all branded links (excludes .secondary-link - it has its own underline) */
 :is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
-    .pagination-prev, .pagination-next, .link-grid a) {
+    .pagination-prev, .pagination-next) {
     text-decoration: none;
     transition: color var(--transition-fast);
 }
@@ -363,7 +359,6 @@ p .action-link {
 }
 
 /* Action links inside container contexts: reset block-level properties */
-.podcast-links .action-link,
 .footer-links .action-link {
     display: inline-flex;
     width: auto;
@@ -372,7 +367,6 @@ p .action-link {
 }
 
 /* Adjacent action links in horizontal containers: no stacking margin */
-.podcast-links .action-link + .action-link,
 .footer-links .action-link + .action-link {
     margin-top: 0;
 }
@@ -435,26 +429,10 @@ p .action-link {
     margin-top: var(--space-lg);
 }
 
-/* Service Links - Orange, no arrows
-   Usage: Podcast platforms, social links */
-.link-grid a {
-    color: var(--brand-orange);
-    font-weight: var(--font-weight-medium);
-    font-size: var(--font-base);
-}
-
 /* Hover states */
 .secondary-link:hover {
     color: var(--brand-orange-hover);
     text-decoration: none;
-}
-
-.link-grid a:hover {
-    color: var(--brand-orange-hover);
-    text-decoration: underline;
-    text-decoration-color: var(--underline-color-brand);
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
 }
 
 /* ==========================================================================
@@ -723,8 +701,7 @@ body > .container > footer {
     margin-top: var(--space-lg);
 }
 
-.site-intro .action-link,
-.landing-page .action-link {
+.site-intro .action-link {
     display: block;
     margin-top: var(--space-md);
     font-size: inherit;
@@ -830,14 +807,13 @@ body > .container > footer {
 }
 
 /* ==========================================================================
-   9. COMPONENTS - Cards, Link-Grid, Topic Tags
+   9. COMPONENTS - Cards, Topic Tags
 
-   Reusable UI components: podcast card, link-grid, RSS card, topic tags.
+   Reusable UI components: RSS card, topic tags.
    Cards share base styling (padding, background, transitions).
    ========================================================================== */
 
-/* Base card styling shared by services and RSS cards */
-.link-grid-card,
+/* Base card styling for RSS feed card */
 .rss-feed-card {
     padding: var(--card-padding);
     background: var(--background-card);
@@ -849,21 +825,6 @@ body > .container > footer {
 /* RSS-specific: relative positioning for absolute copy button */
 .rss-feed-card {
     position: relative;
-}
-
-/* Podcast card - lighter weight than other cards */
-.podcast {
-    padding: var(--card-padding);
-    background: transparent;
-    border: var(--border-subtle);
-    transition: background-color var(--transition-fast);
-    contain: layout style paint;
-    margin-bottom: var(--space-2xl);
-
-    /* Prevent double spacing at card bottom edge */
-    > *:last-child {
-        margin-bottom: 0;
-    }
 }
 
 .rss-url {
@@ -887,109 +848,10 @@ body > .container > footer {
     padding: var(--space-xs) var(--space-sm);  /* Compact for inline context */
 }
 
-.podcast-header {
-    display: flex;
-    gap: var(--space-lg);
-    align-items: center;
-}
-
-.podcast-info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);  /* 12px - episode info + CTAs as action cluster */
-}
-
 /* Content images - systematic elevation */
 .page-body img {
     box-shadow: var(--shadow-content-light);
     transition: box-shadow var(--transition-fast);
-}
-
-.podcast-art {
-    width: var(--podcast-art-size);
-    height: var(--podcast-art-size);
-    flex-shrink: 0;
-    display: block;
-}
-
-.podcast img {
-    box-shadow: none;
-    border: none;
-    outline: none;
-}
-
-.episode-tag {
-    display: block;
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-normal);
-    letter-spacing: var(--letter-spacing-wide);
-    color: var(--text-meta);
-}
-
-.episode-title {
-    font-size: var(--font-lg);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-primary);
-    text-decoration: none;
-}
-
-a.episode-title:hover {
-    color: var(--brand-orange);
-}
-
-.podcast-info .episode-hook {
-    font-size: var(--font-base);
-    font-weight: var(--font-weight-body);
-    color: var(--text-primary);
-    margin: var(--space-xs) 0 0;
-    line-height: var(--line-height-body);
-}
-
-.episode-guest {
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-body);
-    color: var(--text-meta);
-}
-
-.podcast-info .episode-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.podcast-info .podcast-links {
-    margin-top: 0;  /* gap on .podcast-info handles spacing */
-}
-
-.podcast-info p {
-    color: var(--text-secondary);
-    font-size: var(--font-base);
-}
-
-.podcast-links {
-    display: flex;
-    gap: var(--space-md);
-    align-items: center;
-}
-
-.episode-meta {
-    display: block;
-}
-
-.episode-meta .episode-guest,
-.episode-meta .separator,
-.episode-meta .episode-tag {
-    display: inline;
-}
-
-.separator {
-    color: var(--text-meta);
-    padding: 0 var(--space-xs);
-}
-
-.link-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md);
 }
 
 /* Topic Tags - Browseable topic navigation
@@ -1090,7 +952,6 @@ a.episode-title:hover {
 
 /* Content containers: margin-top collapses with meta/subtitle margin-bottom when present */
 .page-body,
-.podcast-content,
 .topics,
 .recent-notes {
     margin-top: var(--space-lg);
@@ -1317,8 +1178,7 @@ html[data-theme="dark"] .essay-hero-image {
 
 /* Reading content uses primary color for optimal contrast */
 .page-body p,
-.latest-essay p,
-.podcast p {
+.latest-essay p {
     color: var(--text-primary);
 }
 
@@ -1326,16 +1186,6 @@ html[data-theme="dark"] .essay-hero-image {
    Applies when meta/title/subtitle elements precede the first content heading */
 :is(.essay-content, .note-content) > header + :is(.essay-body, .note-body) > h2:first-child {
     margin-top: 0;  /* No top margin - header elements provide spacing */
-}
-
-.podcast-content > h3:first-child {
-    margin-top: var(--space-md);  /* 16px - tighter spacing for podcast layout */
-}
-
-/* Footer spacing after content-nav (essays/notes) uses paragraph rhythm
-   Frame edges use 32px, but content-nav flows into footer at 20px */
-body > .container > main:has(.content-nav) + footer {
-    margin-top: var(--para-gap-long-form);
 }
 
 /* ==========================================================================
@@ -1750,39 +1600,6 @@ a.back-link:hover {
     max-width: var(--content-max-width);
 }
 
-/* Promo Block - inline question + action link */
-.promo-block {
-    margin: var(--space-lg) 0;
-}
-
-.promo-block__headline {
-    font-size: var(--font-base);
-    color: var(--text-secondary);
-    margin: 0;
-    display: inline;
-}
-
-.promo-block__cta {
-    color: var(--brand-orange);
-    text-decoration: none;
-    transition: color var(--transition-fast);
-}
-
-.promo-block__cta:hover {
-    color: var(--brand-orange-hover);
-    text-decoration: none;
-}
-
-.promo-block__cta::after {
-    content: ' \2192';
-}
-
-.promo-block__subtext {
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-    margin: var(--space-xs) 0 0 0;
-}
-
 /* Page body - HR and CTA closing section */
 .page-body hr {
     margin: var(--space-xl) 0 var(--space-lg) 0;
@@ -1801,20 +1618,6 @@ a.back-link:hover {
 
 .page-body .btn-primary:last-child {
     margin-bottom: 0;
-}
-
-/* Podcast page images */
-.podcast-content img {
-    margin: 0 0 var(--space-md) 0;
-    display: block;
-}
-
-.podcast-content > img:first-of-type,
-.podcast-content > picture:first-of-type img {
-    width: var(--podcast-art-size);
-    height: var(--podcast-art-size);
-    max-width: var(--podcast-art-size);
-    max-height: var(--podcast-art-size);
 }
 
 /* Image size utility - used via {{< image variant="img-lg" >}} shortcode
@@ -1983,10 +1786,6 @@ html[data-theme="dark"] {
         font-weight: var(--font-weight-semibold);
     }
 
-    .episode-tag {
-        font-weight: var(--font-weight-light);
-    }
-
     :is(.essay-body, .note-body, .page-body) :is(strong, b) {
         font-weight: var(--font-weight-semibold);
     }
@@ -2033,7 +1832,7 @@ html[data-theme="dark"] .latest-essay p {
 
 @media print {
     /* Hide non-content elements */
-    body::before, nav, footer, .podcast, .topic-tags,
+    body::before, nav, footer, .topic-tags,
     .skip-link, .keyboard-help-overlay, .copy-btn {
         display: none !important;
     }
@@ -2184,9 +1983,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .footer-links a[aria-label="Value for value"]::after {
         display: none;
     }
-    .podcast-header { flex-direction: column; align-items: flex-start; }
-    .podcast-art { width: var(--podcast-art-size-mobile); height: var(--podcast-art-size-mobile); }
-    .podcast-links { margin-top: 0; }
     .pagination { flex-direction: column; align-items: flex-start; }
     .info-pair code {
         white-space: pre-line;     /* Preserve newlines, wrap at spaces (fingerprints) */
@@ -2584,55 +2380,7 @@ a.qr-link:hover {
 }
 
 /* ==========================================================================
-   19. LANDING PAGE - Conversion page with refined minimal drama
-   ========================================================================== */
-
-.landing-page {
-    max-width: var(--content-max-width);
-}
-
-/* Title - display with presence */
-.landing-title {
-    font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-title);
-    letter-spacing: var(--letter-spacing-tight-lg);
-    margin: 0 0 var(--space-md) 0;
-}
-
-/* Subtitle - clear secondary hierarchy */
-.landing-subtitle {
-    font-size: var(--font-xl);
-    font-weight: var(--font-weight-body);
-    color: var(--text-secondary);
-    line-height: var(--line-height-heading);
-    margin: 0 0 var(--space-xl) 0;
-}
-
-/* Body content - primary color, persuasive copy */
-.landing-body {
-    margin-bottom: var(--space-xl);
-}
-
-.landing-body p {
-    font-size: var(--font-lg);
-    color: var(--text-primary);
-    line-height: var(--line-height-body);
-    margin: 0 0 var(--space-md) 0;
-}
-
-.landing-body p:last-child {
-    margin-bottom: 0;
-}
-
-/* Separation between landing page content and CTAs */
-.landing-body .cta-group {
-    margin-top: var(--space-xl);
-}
-
-
-/* ==========================================================================
-   19b. ADVISORY PAGE - Service tiers and credibility
+   19. ADVISORY PAGE - Service tiers and credibility
    ========================================================================== */
 
 /* Service Tiers Grid */
@@ -2771,41 +2519,10 @@ a.qr-link:hover {
     }
 }
 
-/* Stats Strip - Credibility metrics */
-.stat-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-lg) var(--space-xl);
-    padding: var(--space-lg) 0;
-    border-top: var(--border-subtle);
-    border-bottom: var(--border-subtle);
-    margin: var(--space-xl) 0;
-}
-
-.stat-item {
-    text-align: left;
-}
-
-.stat-item__value {
-    font-family: var(--font-heading);
-    font-size: var(--font-2xl);
-    font-weight: var(--font-weight-semibold);
-    color: var(--brand-orange);
-    line-height: var(--line-height-none);
-    display: block;
-}
-
-.stat-item__label {
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-    margin-top: var(--space-xs);
-    display: block;
-}
-
-/* Intro Headshot (homepage, advisory) */
-.intro-headshot {
-    width: 130px;
-    height: 130px;
+/* Headshot - floated avatar for bio sections */
+.headshot {
+    width: var(--avatar-size-lg);
+    height: var(--avatar-size-lg);
     object-fit: cover;
     float: right;
     margin-left: var(--space-lg);
@@ -2814,39 +2531,11 @@ a.qr-link:hover {
 }
 
 @media (max-width: 600px) {
-    .intro-headshot {
-        width: 100px;
-        height: 100px;
+    .headshot {
+        width: var(--avatar-size-lg-mobile);
+        height: var(--avatar-size-lg-mobile);
         margin-left: var(--space-md);
     }
-}
-
-/* Advisory Intro */
-.advisory-intro {
-    margin-bottom: var(--space-xl);
-}
-
-.advisory-intro__tagline {
-    font-family: var(--font-heading);
-    font-size: var(--font-custom-24);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-primary);
-    line-height: var(--line-height-heading);
-    margin: 0 0 var(--space-lg) 0;
-}
-
-.advisory-intro__body {
-    color: var(--text-secondary);
-    font-size: var(--font-base);
-    line-height: var(--line-height-body);
-}
-
-.advisory-intro__body p {
-    margin: 0 0 var(--space-md) 0;
-}
-
-.advisory-intro__body p:last-child {
-    margin-bottom: 0;
 }
 
 /* Section headers for advisory page */

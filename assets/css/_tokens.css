@@ -220,6 +220,8 @@
     /* Content Element Sizing */
     --podcast-art-size: 150px;
     --podcast-art-size-mobile: 130px;
+    --avatar-size-lg: 130px;
+    --avatar-size-lg-mobile: 100px;
     --button-min-width-lg: 85px;
     --skip-link-max-width: 260px;
     --image-size-lg: 200px;
