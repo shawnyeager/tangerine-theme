@@ -894,9 +894,14 @@ body > .container > footer {
         color: var(--text-meta);
         text-decoration: none;
         font-size: var(--font-sm);
+        background: var(--background-card);
+        padding: var(--space-xs) var(--space-sm);
+        border-radius: var(--border-radius-interactive);
+        transition: background var(--transition-fast), color var(--transition-fast);
 
         &:hover {
             color: var(--brand-orange);
+            background: color-mix(in srgb, var(--background-card) 80%, var(--brand-orange) 20%);
         }
     }
 }
@@ -1021,9 +1026,78 @@ time.note-date,
 
     .essay-title,
     .note-title {
-        font-size: var(--font-lg);
+        font-size: var(--font-xl);
         font-weight: var(--font-weight-medium);
     }
+}
+
+/* Recent quarter (first 3 essays) - prominent treatment */
+.full-list .essay-item.has-excerpt:nth-child(-n+3),
+.full-list .note-item.has-excerpt:nth-child(-n+3) {
+    margin-bottom: var(--space-2xl);  /* 48px - generous spacing */
+
+    .essay-title-link,
+    .note-title-link {
+        display: block;
+        color: var(--text-primary);
+        text-decoration: none;
+        margin-bottom: var(--space-sm);  /* 12px - gap before excerpt */
+
+        &:hover {
+            color: var(--brand-orange);
+        }
+    }
+
+    .essay-title,
+    .note-title {
+        font-size: var(--font-2xl);  /* 30px - larger for emphasis */
+        font-weight: var(--font-weight-semibold);  /* 600 - bolder */
+    }
+
+    .essay-excerpt,
+    .note-excerpt {
+        font-size: var(--font-base);  /* 16px vs 14px - more readable */
+    }
+}
+
+/* Archive (essay 4+) - compact treatment */
+.full-list .essay-item.has-excerpt:nth-child(n+4),
+.full-list .note-item.has-excerpt:nth-child(n+4) {
+    margin-bottom: var(--space-md);  /* 16px - tighter spacing */
+
+    .essay-title,
+    .note-title {
+        font-size: var(--font-lg);  /* 18px - smaller */
+    }
+}
+
+/* Hero images on listing pages (first 3 essays only) */
+.essay-hero-link,
+.note-hero-link {
+    display: block;
+    margin-bottom: var(--space-sm);  /* 12px - tighter connection to title */
+}
+
+.essay-list-hero,
+.note-list-hero {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;  /* Match single essay page hero images */
+    display: block;
+    border-radius: var(--border-radius-card);  /* 12px - matches card rounding */
+}
+
+/* Dark mode: Apply same warm tint filter as single essay pages */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .essay-list-hero,
+    html:not([data-theme="light"]) .note-list-hero {
+        filter: brightness(0.88) sepia(15%) saturate(1.1);
+    }
+}
+
+html[data-theme="dark"] .essay-list-hero,
+html[data-theme="dark"] .note-list-hero {
+    filter: brightness(0.88) sepia(15%) saturate(1.1);
 }
 
 .essay-excerpt,
