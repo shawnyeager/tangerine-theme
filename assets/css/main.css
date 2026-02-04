@@ -160,12 +160,12 @@ h1 {
 
 /* Homepage display title - large, prominent headline */
 h1.display-title {
-    font-size: var(--font-custom-40);
+    font-size: var(--font-custom-56);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-title);
     margin-top: 0;
     margin-bottom: var(--space-md);
-    letter-spacing: var(--letter-spacing-tight-lg);
+    letter-spacing: var(--letter-spacing-tight-xl);
 }
 
 @media (max-width: 600px) {
@@ -690,6 +690,51 @@ body > .container > footer {
     line-height: var(--line-height-reading);
 }
 
+/* Accent text - brand orange */
+.text-accent {
+    color: var(--brand-orange);
+}
+
+/* Tagline - prominent subheadline */
+.intro-tagline {
+    font-family: var(--font-heading);
+    font-size: var(--font-custom-24);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    line-height: var(--line-height-heading);
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+/* Sectors - subtle with divider line below */
+.intro-sectors {
+    font-family: var(--font-heading);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-meta);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    padding-bottom: var(--space-md);
+    border-bottom: var(--border-subtle);
+    margin-bottom: var(--space-lg);
+}
+
+/* Intro body paragraphs */
+.intro-body p {
+    margin-bottom: var(--space-lg);
+}
+
+.intro-body p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* CTA group in intro - inline buttons */
+.site-intro .cta-group {
+    flex-direction: row;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+}
+
 .site-intro .action-link,
 .landing-page .action-link {
     display: block;
@@ -713,7 +758,7 @@ body > .container > footer {
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--text-subtle);
-    margin-bottom: var(--space-sm);  /* 24px - connects header to content */
+    margin-bottom: var(--space-sm);
 
     /* Override margin-top for semantic headings (h1/h2/h3) */
     &:is(h1, h2, h3) {
@@ -1065,6 +1110,37 @@ time.note-date,
     margin-bottom: var(--space-md);
 }
 
+/* Essay/Note items with excerpts - stacked layout */
+.essay-item.has-excerpt,
+.note-item.has-excerpt {
+    margin-bottom: var(--space-lg);
+
+    a {
+        flex-direction: column;
+        gap: 0;
+        align-items: flex-start;
+    }
+
+    .essay-date,
+    .note-date {
+        font-size: var(--font-xs);
+        margin-bottom: var(--space-label-gap);
+    }
+
+    .essay-title,
+    .note-title {
+        font-size: var(--font-lg);
+        font-weight: var(--font-weight-medium);
+    }
+}
+
+.essay-excerpt,
+.note-excerpt {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    line-height: var(--line-height-body);
+    margin: var(--space-xs) 0 0 0;
+}
 
 /* Last item before CTA link doesn't need margin - CTA provides the gap */
 .essay-item:last-of-type,
