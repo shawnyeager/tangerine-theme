@@ -46,6 +46,8 @@ Important Notes:
     {{- partial "links/secondary.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- else if eq $variant "ghost" -}}
     {{- partial "links/ghost.html" (dict "url" $url "text" $text "event" $event) -}}
+{{- else if eq $variant "primary" -}}
+    {{- partial "links/primary.html" (dict "url" $url "text" $text "event" $event) -}}
 {{- else if eq $variant "button" -}}
     <button type="submit">{{ $text }}</button>
 {{- else -}}

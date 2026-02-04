@@ -415,9 +415,9 @@ p .action-link {
    Gray, underlined, less prominent than action links */
 .secondary-link {
     font-family: var(--font-heading);
-    color: var(--text-meta);
+    color: var(--text-secondary);
     font-size: var(--font-base);
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-medium);
     text-decoration: underline;
     text-decoration-color: var(--underline-color-muted);
     text-decoration-thickness: var(--underline-thickness);
@@ -720,6 +720,10 @@ body > .container > footer {
 }
 
 /* Intro body paragraphs */
+.site-intro .intro-body {
+    color: var(--text-meta);
+}
+
 .intro-body p {
     margin-bottom: var(--space-lg);
 }
@@ -1743,6 +1747,55 @@ a.back-link:hover {
     max-width: var(--content-max-width);
 }
 
+/* Promo Block - inline question + action link */
+.promo-block {
+    margin: var(--space-lg) 0;
+}
+
+.promo-block__headline {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    margin: 0;
+    display: inline;
+}
+
+.promo-block__cta {
+    color: var(--brand-orange);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.promo-block__cta:hover {
+    color: var(--brand-orange-hover);
+    text-decoration: none;
+}
+
+.promo-block__cta::after {
+    content: ' \2192';
+}
+
+.promo-block__subtext {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    margin: var(--space-xs) 0 0 0;
+}
+
+/* Page body - HR and CTA closing section */
+.page-body hr {
+    margin: var(--space-xl) 0 var(--space-lg) 0;
+    border: none;
+    height: var(--hr-height);
+    background: var(--border-color);
+}
+
+.page-body hr + p {
+    margin-bottom: var(--space-md);
+}
+
+.page-body .btn-primary {
+    margin-bottom: var(--space-lg);
+}
+
 /* Podcast page images */
 .podcast-content img {
     margin: 0 0 var(--space-md) 0;
@@ -1764,6 +1817,8 @@ a.back-link:hover {
     width: var(--image-size-lg) !important;
     height: var(--image-size-lg) !important;
     margin-bottom: var(--space-lg);
+    object-fit: cover;
+    border-radius: var(--border-radius-interactive);
 }
 
 /* Pagination
@@ -2579,6 +2634,245 @@ a.qr-link:hover {
 
 
 /* ==========================================================================
+   19b. ADVISORY PAGE - Service tiers and credibility
+   ========================================================================== */
+
+/* Service Tiers Grid */
+.service-tiers {
+    display: grid;
+    gap: var(--space-lg);
+    margin: var(--space-xl) 0;
+}
+
+/* Individual Service Tier - Accordion */
+.service-tier {
+    background: var(--background-card);
+    border-left: var(--border-width-accent) solid var(--brand-orange);
+}
+
+.service-tier__header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    cursor: pointer;
+    list-style: none;
+}
+
+.service-tier__header::-webkit-details-marker {
+    display: none;
+}
+
+.service-tier__header::after {
+    content: '+';
+    font-size: var(--font-base);
+    color: var(--text-meta);
+    margin-left: auto;
+}
+
+.service-tier[open] .service-tier__header::after {
+    content: '−';
+}
+
+.service-tier__name {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+}
+
+.service-tier__summary {
+    font-size: var(--font-base);
+    color: var(--text-meta);
+}
+
+.service-tier__price {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--brand-orange);
+    padding: var(--space-md) var(--space-lg) 0 var(--space-lg);
+    margin: 0 0 var(--space-md) 0;
+    border-top: var(--border-subtle);
+}
+
+.service-tier__details {
+    padding: 0 var(--space-lg);
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    line-height: var(--line-height-body);
+}
+
+.service-tier__details p {
+    margin: 0 0 var(--space-md) 0;
+}
+
+.service-tier__details p:last-child {
+    margin-bottom: 0;
+}
+
+.service-tier__details ul {
+    margin: 0 0 var(--space-md) 0;
+    padding-left: var(--space-lg);
+}
+
+.service-tier__details li {
+    margin-bottom: var(--space-xs);
+}
+
+.service-tier__fit {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    font-style: italic;
+    margin: var(--space-lg) 0 0 0;
+    padding: var(--space-md) var(--space-lg) var(--space-lg) var(--space-lg);
+    border-top: var(--border-subtle);
+}
+
+/* Stats Strip - Credibility metrics */
+.stat-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg) var(--space-xl);
+    padding: var(--space-lg) 0;
+    border-top: var(--border-subtle);
+    border-bottom: var(--border-subtle);
+    margin: var(--space-xl) 0;
+}
+
+.stat-item {
+    text-align: left;
+}
+
+.stat-item__value {
+    font-family: var(--font-heading);
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-orange);
+    line-height: var(--line-height-none);
+    display: block;
+}
+
+.stat-item__label {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    margin-top: var(--space-xs);
+    display: block;
+}
+
+/* Intro Headshot (homepage, advisory) */
+.intro-headshot {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    float: right;
+    margin-left: var(--space-lg);
+    margin-bottom: var(--space-sm);
+    border-radius: var(--border-radius-interactive);
+}
+
+/* Advisory Intro */
+.advisory-intro {
+    margin-bottom: var(--space-xl);
+}
+
+.advisory-intro__tagline {
+    font-family: var(--font-heading);
+    font-size: var(--font-custom-24);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    line-height: var(--line-height-heading);
+    margin: 0 0 var(--space-lg) 0;
+}
+
+.advisory-intro__body {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    line-height: var(--line-height-body);
+}
+
+.advisory-intro__body p {
+    margin: 0 0 var(--space-md) 0;
+}
+
+.advisory-intro__body p:last-child {
+    margin-bottom: 0;
+}
+
+/* Section headers for advisory page */
+.advisory-section-label {
+    font-family: var(--font-heading);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-meta);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    margin: var(--space-2xl) 0 var(--space-lg) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.advisory-section-label::before {
+    content: '';
+    width: 1.5rem;
+    height: 2px;
+    background: var(--brand-orange);
+}
+
+.advisory-section-label:first-child {
+    margin-top: 0;
+}
+
+/* Testimonials */
+.testimonial {
+    margin: var(--space-xl) 0;
+    padding: 0;
+    border: none;
+    border-left: var(--border-width-accent) solid var(--brand-orange);
+    padding-left: var(--space-lg);
+}
+
+.testimonial__quote {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.testimonial__attribution {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.testimonial__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--border-radius-interactive);
+    object-fit: cover;
+}
+
+.testimonial__person {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.testimonial__name {
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    font-size: var(--font-sm);
+}
+
+.testimonial__title {
+    color: var(--text-meta);
+    font-size: var(--font-sm);
+}
+
+
+/* ==========================================================================
    20. GHOST BUTTONS - Shared base and variants
 
    Ghost buttons: transparent background with border.
@@ -2614,6 +2908,32 @@ a.qr-link:hover {
     font-family: var(--font-heading);
     border-radius: 0;
 }
+
+/* Filled primary button - high visibility CTA */
+.btn-primary {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--brand-orange);
+    color: var(--text-on-brand);
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.btn-primary:hover {
+    background: var(--brand-orange-hover);
+    color: var(--text-on-brand);  /* Override link hover color */
+    text-decoration: none;        /* Override link hover underline */
+}
+
+.btn-primary::after {
+    content: ' →';
+}
+
 
 /* System font buttons (V4V page) */
 .custom-amount-btn,

@@ -1,0 +1,14 @@
+{{/*
+Primary filled button - high visibility CTA
+
+Parameters (via dict):
+- url: Link destination
+- text: Button text
+- event: Optional Plausible event name
+*/}}
+
+{{- $url := .url -}}
+{{- $text := .text -}}
+{{- $event := .event -}}
+
+<a href="{{ $url }}" class="btn-primary{{ with $event }} plausible-event-name={{ . }}{{ end }}">{{ $text }}</a>

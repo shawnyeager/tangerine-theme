@@ -1,0 +1,13 @@
+{{/*
+Purpose: Section label for advisory/service pages - small caps header
+
+Parameters:
+- text (string, required): The label text
+
+Usage:
+{{< section-label text="How I Work" >}}
+*/}}
+
+{{- $text := .Get "text" | default (.Get 0) -}}
+
+<p class="advisory-section-label">{{ $text }}</p>

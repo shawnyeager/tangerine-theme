@@ -1,0 +1,16 @@
+{{/*
+Purpose: Container for service tier cards - creates grid layout
+
+Inner Content:
+- One or more {{< service-tier >}} shortcodes
+
+Usage:
+{{< service-tiers >}}
+{{< service-tier name="Sprint" price="$20k" >}}Details{{< /service-tier >}}
+{{< service-tier name="Advisory" price="$10k/mo" >}}Details{{< /service-tier >}}
+{{< /service-tiers >}}
+*/}}
+
+<div class="service-tiers">
+    {{ .Inner }}
+</div>

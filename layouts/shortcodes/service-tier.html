@@ -1,0 +1,42 @@
+{{/*
+Purpose: Renders a service tier card with name, price, details, and optional fit line
+
+Parameters:
+- name (string, required): Tier name (e.g., "90-Day Revenue Sprint")
+- price (string, required): Price or range (e.g., "$20,000–$30,000")
+- fit (string, optional): "Best fit" description
+
+Inner Content:
+- Markdown details about the tier
+
+Usage:
+{{< service-tier name="90-Day Revenue Sprint" price="$20,000–$30,000" fit="Post-seed founders ready for structured engagement" >}}
+Three months to build your sales motion from scratch.
+
+- Deep customer discovery
+- Positioning and messaging
+- Sales process documentation
+{{< /service-tier >}}
+*/}}
+
+{{- $name := .Get "name" -}}
+{{- $price := .Get "price" -}}
+{{- $fit := .Get "fit" -}}
+{{- $inner := .Inner | strings.TrimSpace -}}
+{{- $parts := split $inner "\n\n" -}}
+{{- $summary := index $parts 0 -}}
+{{- $details := delimit (after 1 $parts) "\n\n" -}}
+
+<details class="service-tier">
+    <summary class="service-tier__header">
+        <span class="service-tier__name">{{ $name }}</span>
+        <span class="service-tier__summary">{{ $summary }}</span>
+    </summary>
+    <p class="service-tier__price">{{ $price }}</p>
+    <div class="service-tier__details">
+        {{- $details | markdownify -}}
+    </div>
+    {{- with $fit -}}
+    <p class="service-tier__fit">Best fit: {{ . }}</p>
+    {{- end -}}
+</details>

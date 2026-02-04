@@ -1,0 +1,18 @@
+{{/*
+Purpose: Single stat item for use within stat-strip
+
+Parameters:
+- value (string, required): The metric value (e.g., "30", "$300M")
+- label (string, required): Description of the metric
+
+Usage:
+{{< stat value="$300M" label="revenue generated" >}}
+*/}}
+
+{{- $value := .Get "value" -}}
+{{- $label := .Get "label" -}}
+
+<div class="stat-item">
+    <span class="stat-item__value">{{ $value }}</span>
+    <span class="stat-item__label">{{ $label }}</span>
+</div>

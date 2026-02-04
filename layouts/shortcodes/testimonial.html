@@ -1,0 +1,33 @@
+{{/*
+Purpose: Renders a testimonial with avatar, quote, and attribution
+
+Parameters:
+- name (string, required): Person's name
+- title (string, required): Role/company
+- image (string, optional): Avatar image path
+
+Inner Content:
+- The testimonial quote text
+
+Usage:
+{{< testimonial name="Austin Mitchell" title="Cofounder, Synota" image="/images/austin.webp" >}}
+Shawn is our go-to when it comes to business development and enterprise sales.
+{{< /testimonial >}}
+*/}}
+
+{{- $name := .Get "name" -}}
+{{- $title := .Get "title" -}}
+{{- $image := .Get "image" -}}
+
+<blockquote class="testimonial">
+    <p class="testimonial__quote">{{ .Inner | markdownify }}</p>
+    <footer class="testimonial__attribution">
+        {{- with $image -}}
+        <img src="{{ . }}" alt="{{ $name }}" class="testimonial__avatar">
+        {{- end -}}
+        <div class="testimonial__person">
+            <span class="testimonial__name">{{ $name }}</span>
+            <span class="testimonial__title">{{ $title }}</span>
+        </div>
+    </footer>
+</blockquote>
