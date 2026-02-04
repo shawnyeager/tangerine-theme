@@ -31,6 +31,7 @@ Important Notes:
         {{- $isEssaysActive := and (eq .URL "/essays/") (or (eq $currentPage.Section "essays") $isTaxonomyPage) -}}
         {{- $isNotesActive := and (eq .URL "/notes/") (or (eq $currentPage.Section "notes") $isTaxonomyPage) -}}
         {{- $isActive := or $isCurrentURL $isEssaysActive $isNotesActive -}}
-    <a href="{{ .URL | relURL }}"{{ if $isActive }} class="active"{{ end }}>{{ .Name }}</a>
+    {{- $isExternal := or (hasPrefix .URL "http://") (hasPrefix .URL "https://") -}}
+    <a href="{{ if $isExternal }}{{ .URL }}{{ else }}{{ .URL | relURL }}{{ end }}"{{ if $isActive }} class="active"{{ end }}{{ if $isExternal }} target="_blank" rel="noopener"{{ end }}>{{ .Name }}</a>
     {{- end }}
 </nav>

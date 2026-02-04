@@ -501,7 +501,7 @@ body > .container:first-of-type {
 body > .container > header {
     display: flex;
     justify-content: space-between;
-    align-items: last baseline;
+    align-items: center;
     margin-bottom: var(--header-gap-below);
 }
 
@@ -721,7 +721,7 @@ body > .container > footer {
 
 /* Intro body paragraphs */
 .site-intro .intro-body {
-    color: var(--text-meta);
+    color: var(--text-secondary);
 }
 
 .intro-body p {
@@ -735,6 +735,7 @@ body > .container > footer {
 /* CTA group in intro - inline buttons */
 .site-intro .cta-group {
     flex-direction: row;
+    align-items: baseline;
     gap: var(--space-md);
     margin-top: var(--space-lg);
 }
@@ -744,6 +745,43 @@ body > .container > footer {
     display: block;
     margin-top: var(--space-md);
     font-size: inherit;
+}
+
+/* Homepage intro mobile adjustments */
+@media (max-width: 600px) {
+    /* Navigation - smaller on mobile */
+    nav a {
+        font-size: var(--font-sm);
+    }
+
+    .site-intro {
+        margin-bottom: var(--space-2xl);
+        font-size: var(--font-base);
+    }
+
+    .intro-tagline {
+        font-size: var(--font-lg);
+        margin-bottom: var(--space-md);
+    }
+
+    .intro-sectors {
+        font-size: var(--font-xs);
+        letter-spacing: var(--letter-spacing-wide);
+        padding-bottom: var(--space-sm);
+        margin-bottom: var(--space-md);
+    }
+
+    .intro-body p {
+        margin-bottom: var(--space-md);
+    }
+
+    .site-intro .cta-group {
+        margin-top: var(--space-md);
+    }
+
+    .site-intro .secondary-link {
+        font-size: var(--font-sm);
+    }
 }
 
 /* Section Label Variants:
@@ -799,6 +837,12 @@ body > .container > footer {
         margin-bottom: var(--space-sm);
         font-size: var(--font-base);
         line-height: var(--line-height-body);
+    }
+}
+
+@media (max-width: 600px) {
+    .latest-essay h3 {
+        font-size: var(--font-xl);
     }
 }
 
@@ -2729,6 +2773,50 @@ a.qr-link:hover {
     border-top: var(--border-subtle);
 }
 
+/* Service tier mobile: stack header vertically */
+@media (max-width: 600px) {
+    .service-tiers {
+        gap: var(--space-md);
+    }
+
+    .service-tier__header {
+        position: relative;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+        padding-right: var(--space-2xl);
+    }
+
+    .service-tier__header::after {
+        position: absolute;
+        top: var(--space-lg);
+        right: var(--space-lg);
+        margin-left: 0;
+    }
+
+    .service-tier__name {
+        font-size: var(--font-base);
+    }
+
+    .service-tier__summary {
+        font-size: var(--font-sm);
+    }
+
+    .service-tier__price {
+        font-size: var(--font-base);
+        padding: var(--space-sm) var(--space-md) 0 var(--space-md);
+    }
+
+    .service-tier__details {
+        padding: 0 var(--space-md);
+        font-size: var(--font-sm);
+    }
+
+    .service-tier__fit {
+        padding: var(--space-sm) var(--space-md) var(--space-md) var(--space-md);
+    }
+}
+
 /* Stats Strip - Credibility metrics */
 .stat-strip {
     display: flex;
@@ -2769,6 +2857,14 @@ a.qr-link:hover {
     margin-left: var(--space-lg);
     margin-bottom: var(--space-sm);
     border-radius: var(--border-radius-interactive);
+}
+
+@media (max-width: 600px) {
+    .intro-headshot {
+        width: 100px;
+        height: 100px;
+        margin-left: var(--space-md);
+    }
 }
 
 /* Advisory Intro */
@@ -2934,7 +3030,6 @@ a.qr-link:hover {
     content: ' →';
 }
 
-
 /* System font buttons (V4V page) */
 .custom-amount-btn,
 .error-dismiss-btn,
@@ -2995,6 +3090,14 @@ a.qr-link:hover {
     margin-left: var(--arrow-spacing);
 }
 
+/* CTA buttons mobile - reduce height */
+@media (max-width: 600px) {
+    .btn-primary,
+    .btn-ghost--primary {
+        padding: var(--space-sm) var(--space-lg);
+        font-size: var(--font-base);
+    }
+}
 
 /* ==========================================================================
    21. KEYBOARD HELP - Accessible shortcut overlay
