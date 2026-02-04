@@ -136,23 +136,6 @@ h1 {
     border: var(--home-square-border-width) solid var(--brand-orange);
 }
 
-.home-square--dot {
-    background-color: transparent;
-    border: var(--home-square-border-width) solid var(--brand-orange);
-    position: relative;
-}
-
-.home-square--dot::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6px;
-    height: 6px;
-    background-color: var(--brand-orange);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-}
 
 .home-link:hover .home-square {
     opacity: 0.8;
