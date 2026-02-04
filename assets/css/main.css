@@ -1759,6 +1759,11 @@ a.back-link:hover {
     margin-top: 0;
 }
 
+/* Remove touch target from content-nav links so spacing matches paragraph rhythm */
+.content-nav a {
+    min-height: auto;
+}
+
 /* ==========================================================================
    12. PAGE-SPECIFIC - Page Layouts, Pagination, Contact, Skip Links
 

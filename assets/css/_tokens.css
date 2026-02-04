@@ -234,7 +234,7 @@
     /* Layout Spacing Shortcuts (referenced in layout section) */
     --section-gap: var(--space-2xl);          /* 48px - Interior section breaks */
     --header-gap-below: var(--space-xl);      /* 32px - Frame edge: header to content */
-    --footer-gap-above: var(--space-xl);      /* 32px - Frame edge: content to footer HR */
+    --footer-gap-above: var(--para-gap-long-form);  /* Match paragraph rhythm */
     --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
     --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
 
