@@ -26,9 +26,13 @@ Context Expected:
 <meta property="og:image" content="{{ $ogImageURL }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{{ if $metaTitle }}{{ $metaTitle }}{{ else }}{{ .Site.Title }}{{ end }}">
 <meta property="og:image" content="{{ $ogImageSquareURL }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{{ if $metaTitle }}{{ $metaTitle }}{{ else }}{{ .Site.Title }}{{ end }}">
 {{ end }}
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="{{ .Site.Title }}">

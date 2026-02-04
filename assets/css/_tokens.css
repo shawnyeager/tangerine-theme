@@ -188,13 +188,6 @@
     /* Content Elevation */
     --shadow-content-light: light-dark(0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.4));
 
-    /* Syntax Highlighting */
-    --syntax-keyword: light-dark(#0066aa, #6cb6ff);
-    --syntax-function: light-dark(#6f42c1, #d2a8ff);
-    --syntax-string: light-dark(#aa5d00, #e9b872);
-    --syntax-operator: light-dark(#555555, #b0b0b0);
-    --syntax-default: light-dark(#1a1a1a, #d0d0d0);
-
     /* Typography - Heading colors (enhanced contrast in dark mode) */
     --text-heading-h2: light-dark(#1a1a1a, #ffffff);
     --text-heading-h3: light-dark(#1a1a1a, #ebebeb);
@@ -227,14 +220,16 @@
     /* Content Element Sizing */
     --podcast-art-size: 150px;
     --podcast-art-size-mobile: 130px;
+    --avatar-size-lg: 130px;
+    --avatar-size-lg-mobile: 100px;
     --button-min-width-lg: 85px;
     --skip-link-max-width: 260px;
     --image-size-lg: 200px;
 
     /* Layout Spacing Shortcuts (referenced in layout section) */
     --section-gap: var(--space-2xl);          /* 48px - Interior section breaks */
-    --header-gap-below: var(--space-xl);      /* 32px - Frame edge: header to content */
-    --footer-gap-above: var(--space-xl);      /* 32px - Frame edge: content to footer HR */
+    --header-gap-below: var(--section-gap);   /* 48px - matches section gaps */
+    --footer-gap-above: var(--section-gap);   /* 48px - matches section gaps */
     --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
     --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
 

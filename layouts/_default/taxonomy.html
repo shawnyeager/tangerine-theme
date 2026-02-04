@@ -48,13 +48,41 @@ Important Notes:
     <h1 class="page-title">{{ .Title }}</h1>
     <div class="topic-count">{{ len $pages }} {{ if eq (len $pages) 1 }}{{ $singular }}{{ else }}{{ $contentType }}{{ end }} on this topic</div>
 
-    <section class="{{ $sectionClass }}">
-        {{ range $pages }}
-        <article class="{{ $itemClass }}">
-            <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}">
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="{{ $dateClass }}">{{ .Date.Format "2006 · 01" }}</time>
-                <span class="{{ $titleClass }}">{{ .Title }}</span>
-            </a>
+    <section class="{{ $sectionClass }} full-list">
+        {{ range $index, $page := $pages }}
+        <article class="{{ $itemClass }} has-excerpt">
+            {{/* Hero images for first 3 items (recent quarter) */}}
+            {{ if and (lt $index 3) .Params.hero_image }}
+                {{ $img := resources.Get .Params.hero_image }}
+                {{ if $img }}
+                    {{ $resized := $img.Resize "800x" }}
+                    {{ $webp := $resized.Process "webp q85" }}
+                    <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}" class="{{ printf "%s-hero-link" $singular }}">
+                        <img
+                            src="{{ $webp.RelPermalink }}"
+                            alt="{{ .Params.hero_alt | default .Title }}"
+                            class="{{ printf "%s-list-hero" $singular }}"
+                            {{ if eq $index 0 }}fetchpriority="high"{{ else }}loading="lazy"{{ end }}
+                            width="{{ $resized.Width }}"
+                            height="{{ $resized.Height }}"
+                        >
+                    </a>
+                {{ end }}
+            {{ end }}
+
+            {{ if and (lt $index 3) .Params.hero_image }}
+                {{/* First 3 with images: No date (recency implied by position) */}}
+                <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}" class="{{ printf "%s-title-link" $singular }}">
+                    <span class="{{ printf "%s-title" $singular }}">{{ .Title }}</span>
+                </a>
+            {{ else }}
+                {{/* Items 4+: Date before title (chronological archive) */}}
+                <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}">
+                    <time datetime="{{ .Date.Format "2006-01-02" }}" class="{{ $dateClass }}">{{ .Date.Format "2006 · 01" }}</time>
+                    <span class="{{ $titleClass }}">{{ .Title }}</span>
+                </a>
+            {{ end }}
+            {{ with .Params.description }}<p class="{{ printf "%s-excerpt" $singular }}">{{ . }}</p>{{ end }}
         </article>
         {{ end }}
     </section>

@@ -34,7 +34,7 @@ Important Notes:
 {{/* Resolve special URL values to site params */}}
 {{- $url := $urlParam -}}
 {{- if eq $urlParam "podcast" -}}
-    {{- $url = site.Params.podcast_url -}}
+    {{- $url = .Site.Params.podcast_url -}}
 {{- end -}}
 
 {{- if eq $style "back" -}}
