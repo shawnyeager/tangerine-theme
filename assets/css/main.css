@@ -1442,36 +1442,6 @@ body > .container > main:has(.content-nav) + footer {
         }
     }
 
-    /* Syntax highlighted code (Hugo default) */
-    .highlight {
-        margin: var(--space-xl) 0;
-
-        pre {
-            margin: 0;
-        }
-
-        /* Syntax highlight color overrides - match code highlighter output colors */
-        span[style*="color:#00a8c8"] {
-            color: var(--syntax-keyword) !important;
-        }
-
-        span[style*="color:#75af00"] {
-            color: var(--syntax-function) !important;
-        }
-
-        span[style*="color:#d88200"] {
-            color: var(--syntax-string) !important;
-        }
-
-        span[style*="color:#f92672"] {
-            color: var(--syntax-operator) !important;
-        }
-
-        span[style*="color:#111"] {
-            color: var(--syntax-default) !important;
-        }
-    }
-
     /* Horizontal Rules */
     hr {
         margin: var(--space-2xl) 0;
@@ -2038,15 +2008,6 @@ html[data-theme="dark"] {
         font-weight: var(--font-weight-semibold);
     }
 
-    :is(.essay-body, .note-body) .highlight pre {
-        background: var(--code-background) !important;
-        border-color: var(--border-color);
-    }
-
-    :is(.essay-body, .note-body) .highlight pre[style] {
-        background: var(--code-background) !important;
-        color: var(--syntax-default) !important;
-    }
 }
 
 /* Dark mode typography - combined selector for system dark + explicit toggle
