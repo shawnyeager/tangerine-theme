@@ -2511,6 +2511,36 @@ a.qr-link:hover {
     color: var(--text-primary);
 }
 
+.service-tier__price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: var(--border-subtle);
+}
+
+.service-tier__anchor {
+    opacity: 0;
+    color: var(--text-meta);
+    text-decoration: none;
+    font-weight: var(--font-weight-normal);
+    padding: var(--space-md) var(--space-lg);
+    transition: opacity 0.15s ease;
+}
+
+.service-tier__price-row:hover .service-tier__anchor {
+    opacity: 1;
+}
+
+.service-tier__anchor:hover {
+    color: var(--brand-orange);
+}
+
+@media (hover: none) {
+    .service-tier__anchor {
+        opacity: 1;
+    }
+}
+
 .service-tier__summary {
     font-size: var(--font-base);
     color: var(--text-meta);
@@ -2521,9 +2551,8 @@ a.qr-link:hover {
     font-size: var(--font-lg);
     font-weight: var(--font-weight-medium);
     color: var(--brand-orange);
-    padding: var(--space-md) var(--space-lg) 0 var(--space-lg);
-    margin: 0 0 var(--space-md) 0;
-    border-top: var(--border-subtle);
+    padding: var(--space-md) var(--space-lg);
+    margin: 0;
 }
 
 .service-tier__details {

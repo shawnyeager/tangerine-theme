@@ -5,6 +5,7 @@ Parameters:
 - name (string, required): Tier name (e.g., "90-Day Revenue Sprint")
 - price (string, required): Price or range (e.g., "$20,000–$30,000")
 - fit (string, optional): "Best fit" description
+- id (string, optional): Custom anchor ID (defaults to urlized name)
 
 Inner Content:
 - Markdown details about the tier
@@ -22,17 +23,21 @@ Three months to build your sales motion from scratch.
 {{- $name := .Get "name" -}}
 {{- $price := .Get "price" -}}
 {{- $fit := .Get "fit" -}}
+{{- $id := .Get "id" | default ($name | urlize) -}}
 {{- $inner := .Inner | strings.TrimSpace -}}
 {{- $parts := split $inner "\n\n" -}}
 {{- $summary := index $parts 0 -}}
 {{- $details := delimit (after 1 $parts) "\n\n" -}}
 
-<details class="service-tier">
+<details class="service-tier" id="{{ $id }}">
     <summary class="service-tier__header">
         <span class="service-tier__name">{{ $name }}</span>
         <span class="service-tier__summary">{{ $summary }}</span>
     </summary>
-    <p class="service-tier__price">{{ $price }}</p>
+    <div class="service-tier__price-row">
+        <p class="service-tier__price">{{ $price }}</p>
+        <a href="#{{ $id }}" class="service-tier__anchor" aria-label="Link to {{ $name }}">#</a>
+    </div>
     <div class="service-tier__details">
         {{- $details | markdownify -}}
     </div>
