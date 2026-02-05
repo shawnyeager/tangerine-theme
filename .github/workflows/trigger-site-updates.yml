@@ -1,9 +1,7 @@
 name: Trigger Site Updates
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:  # Manual trigger only - automatic triggers disabled
 
 jobs:
   trigger-updates:
