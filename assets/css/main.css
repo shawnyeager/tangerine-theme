@@ -132,6 +132,14 @@ h1 {
     height: var(--touch-target-min);
 }
 
+/* Home square image - uses favicon SVG */
+.home-square-img {
+    display: block;
+    width: var(--home-square-size);
+    height: var(--home-square-size);
+}
+
+/* Fallback CSS square (if SVG not found) */
 .home-square {
     display: block;
     width: var(--home-square-size);
@@ -139,12 +147,7 @@ h1 {
     background-color: var(--brand-orange);
 }
 
-.home-square--outlined {
-    background-color: transparent;
-    border: var(--home-square-border-width) solid var(--brand-orange);
-}
-
-
+.home-link:hover .home-square-img,
 .home-link:hover .home-square {
     opacity: 0.8;
 }

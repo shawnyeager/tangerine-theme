@@ -5,19 +5,28 @@ Parameters: None (uses page context)
 
 Context Expected:
 - .Site.Title - Site title (used in aria-label for accessibility)
+- .Site.Params.favicon_style - Favicon style ("solid", "outlined", or "dot")
 
 Features:
-- 24x24px solid orange square as home link
+- 24x24px home link using favicon SVG
 - Accessible via aria-label="Home"
 - Hover state: opacity 0.8
 - Flexbox layout with space-between
 
 Important Notes:
-- Square uses brand orange color
+- Uses actual favicon.svg from assets/favicons/{style}/
 - Navigation partial unchanged
 */}}
 
 <header aria-label="Site header">
-    <a href="{{ "/" | relURL }}" class="home-link" aria-label="Home"><span class="home-square{{ with .Site.Params.favicon_style }}{{ if ne . "solid" }} home-square--{{ . }}{{ end }}{{ end }}"></span></a>
+    <a href="{{ "/" | relURL }}" class="home-link" aria-label="Home">
+        {{- $faviconStyle := .Site.Params.favicon_style | default "solid" -}}
+        {{- $faviconPath := printf "favicons/%s/favicon.svg" $faviconStyle -}}
+        {{- with resources.Get $faviconPath -}}
+            <img src="{{ .RelPermalink }}" alt="" class="home-square-img" width="24" height="24">
+        {{- else -}}
+            <span class="home-square"></span>
+        {{- end -}}
+    </a>
     {{ partial "navigation.html" . }}
 </header>
