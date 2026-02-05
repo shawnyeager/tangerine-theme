@@ -118,10 +118,18 @@ h1 {
 .home-link {
     display: flex;
     align-items: center;
-    /* Touch target expansion: 24px square + 12px padding each side = 48px
-       Negative margin cancels padding visually, keeping layout unchanged */
-    padding: calc((var(--touch-target-min) - var(--home-square-size)) / 2);
-    margin: calc((var(--touch-target-min) - var(--home-square-size)) / -2);
+    position: relative;
+}
+
+/* Touch target expansion via pseudo-element - doesn't affect layout */
+.home-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
 }
 
 .home-square {
@@ -452,7 +460,8 @@ p .action-link {
 .container {
     max-width: var(--content-max-width);
     margin: 0 auto;
-    padding: var(--space-xl) var(--space-md) 0 var(--space-md);
+    /* Top padding adds brand-bar-height to compensate for overlay */
+    padding: calc(var(--space-xl) + var(--brand-bar-height)) var(--space-xl) 0;
 }
 
 /* Header & Navigation
@@ -472,7 +481,7 @@ body > .container:first-of-type {
 body > .container > header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: var(--header-gap-below);
 }
 
@@ -522,15 +531,24 @@ nav a {
     color: var(--text-secondary);
     font-weight: var(--font-weight-medium);
     text-decoration: none;
-    /* Touch target: ensure 48px minimum height for mobile accessibility */
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--touch-target-min);
+    /* Touch target via pseudo-element extending downward - text stays at top */
+    position: relative;
 
     &:hover,
     &.active {
         color: var(--brand-orange);
     }
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
 }
 
 /* ==========================================================================
@@ -2041,7 +2059,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 @media (max-width: 600px) {
     html { font-size: 16px; }
 
-    .container { padding: var(--space-lg) var(--container-mobile-h-padding) 0 var(--container-mobile-h-padding); }
+    .container { padding: calc(var(--container-mobile-h-padding) + var(--brand-bar-height)) var(--container-mobile-h-padding) 0; }
     /* Keep header row layout, just tighten nav gap */
     nav { gap: var(--space-md); }
     .email-form input[type="email"] { max-width: none; }
