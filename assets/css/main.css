@@ -2530,6 +2530,7 @@ a.qr-link:hover {
     font-size: var(--font-lg);
     font-weight: var(--font-weight-medium);
     color: var(--text-primary);
+    flex: 0 0 13rem;  /* Fixed width so descriptions align across rows */
 }
 
 .service-tier__price-row {
@@ -2632,6 +2633,7 @@ a.qr-link:hover {
 
     .service-tier__name {
         font-size: var(--font-base);
+        flex: 0 0 auto;  /* Reset fixed width for stacked layout */
     }
 
     .service-tier__summary {
