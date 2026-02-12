@@ -1202,7 +1202,7 @@ html[data-theme="dark"] .note-list-hero {
     line-height: var(--line-height-title);
     margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
     letter-spacing: var(--letter-spacing-tight-lg);
-    text-wrap: pretty;
+    text-wrap: balance;
 }
 
 /* ==========================================================================
