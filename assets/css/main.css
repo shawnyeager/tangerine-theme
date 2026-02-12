@@ -808,7 +808,7 @@ body > .container > footer {
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--text-subtle);
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-md);
 
     /* Override margin-top for semantic headings (h1/h2/h3) */
     &:is(h1, h2, h3) {
@@ -1012,16 +1012,16 @@ body > .container > footer {
 
 .essay-item,
 .note-item {
-    margin-bottom: var(--space-xs);
-    contain: layout style paint; /* Isolate list items for better performance */
+    margin-bottom: var(--space-lg);
+    contain: layout style paint;
 
     a {
         color: var(--text-primary);
         text-decoration: none;
         display: flex;
-        gap: var(--space-lg);
+        flex-direction: column;
+        gap: var(--space-label-gap);
         line-height: var(--line-height-body);
-        align-items: baseline;
 
         &:hover {
             color: var(--brand-orange);
@@ -1034,19 +1034,19 @@ time.note-date,
 .essay-date,
 .note-date {
     color: var(--text-meta);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-normal);  /* Override body weight (450→400) */
+    font-family: var(--font-heading);
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-medium);
     font-variant-numeric: tabular-nums;
-    letter-spacing: var(--letter-spacing-tight-md);  /* Tighten date spacing */
-    flex-shrink: 0;
-    white-space: nowrap;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
 }
 
 .essay-title,
 .note-title {
-    flex: 1;
     font-weight: var(--font-weight-list-title);
     font-size: var(--font-base);
+    line-height: var(--line-height-heading);
 }
 
 /* Full listing pages (/essays/, /notes/) - wider row spacing */
@@ -1164,7 +1164,7 @@ html[data-theme="dark"] .note-list-hero {
 
 .all-essays,
 .all-notes {
-    margin-top: var(--space-sm);  /* 12px - matches section label spacing above list */
+    margin-top: var(--space-md);  /* 16px - matches section heading spacing */
 }
 
 .topic-count {
@@ -2113,10 +2113,39 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     }
 }
 
-/* Desktop: spacious note list spacing (notes site only - .com keeps tight spacing for multi-section layout) */
+/* Desktop: inline date-title layout */
 @media (min-width: 601px) {
+    .essay-item,
     .note-item {
         margin-bottom: var(--space-md);
+    }
+
+    .essay-item a,
+    .note-item a {
+        flex-direction: row;
+        gap: var(--space-lg);
+        align-items: baseline;
+    }
+
+    time.essay-date,
+    time.note-date,
+    .essay-date,
+    .note-date {
+        font-family: var(--font-body);
+        font-size: var(--font-sm);
+        font-weight: var(--font-weight-normal);
+        letter-spacing: var(--letter-spacing-tight-md);
+        text-transform: none;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .essay-title,
+    .note-title {
+        flex: 1;
+        font-size: var(--font-base);
+        font-weight: var(--font-weight-list-title);
+        line-height: var(--line-height-body);
     }
 }
 
