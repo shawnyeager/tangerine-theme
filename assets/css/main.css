@@ -2084,6 +2084,13 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     /* Keep header row layout, just tighten nav gap */
     nav { gap: var(--space-md); }
     .email-form input[type="email"] { max-width: none; }
+
+    /* Homepage: show only 5 notes on mobile (items 6+ hidden) */
+    .recent-notes:not(.full-list) .note-item:nth-child(n+6),
+    .recent-essays:not(.full-list) .essay-item:nth-child(n+6) {
+        display: none;
+    }
+
     /* Larger touch targets for footer links (48px minimum per Lighthouse)
        Uses padding to expand tap area + negative margin to preserve visual spacing */
     .footer-links {
