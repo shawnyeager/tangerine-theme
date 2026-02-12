@@ -1012,16 +1012,16 @@ body > .container > footer {
 
 .essay-item,
 .note-item {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xs);
     contain: layout style paint;
 
     a {
         color: var(--text-primary);
         text-decoration: none;
         display: flex;
-        flex-direction: column;
-        gap: var(--space-label-gap);
+        gap: var(--space-lg);
         line-height: var(--line-height-body);
+        align-items: baseline;
 
         &:hover {
             color: var(--brand-orange);
@@ -1034,19 +1034,19 @@ time.note-date,
 .essay-date,
 .note-date {
     color: var(--text-meta);
-    font-family: var(--font-heading);
-    font-size: var(--font-xs);
-    font-weight: var(--font-weight-medium);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-normal);
     font-variant-numeric: tabular-nums;
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight-md);
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .essay-title,
 .note-title {
+    flex: 1;
     font-weight: var(--font-weight-list-title);
     font-size: var(--font-base);
-    line-height: var(--line-height-heading);
 }
 
 /* Full listing pages (/essays/, /notes/) - wider row spacing */
@@ -2085,10 +2085,26 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     nav { gap: var(--space-md); }
     .email-form input[type="email"] { max-width: none; }
 
-    /* Homepage: show only 5 notes on mobile (items 6+ hidden) */
-    .recent-notes:not(.full-list) .note-item:nth-child(n+6),
-    .recent-essays:not(.full-list) .essay-item:nth-child(n+6) {
+    /* Homepage: show 5 items on mobile (hide 6+) */
+    .recent-notes:not(.full-list) .note-item:nth-of-type(n+6),
+    .recent-essays:not(.full-list) .essay-item:nth-of-type(n+6) {
         display: none;
+    }
+
+    /* More generous spacing for note/essay lists on mobile */
+    .note-item,
+    .essay-item {
+        margin-bottom: var(--space-md);
+    }
+
+    /* Section header and CTA spacing - CTA accounts for last item's margin */
+    .section-label-small {
+        margin-bottom: var(--space-lg);
+    }
+
+    .all-essays,
+    .all-notes {
+        margin-top: var(--space-xs);
     }
 
     /* Larger touch targets for footer links (48px minimum per Lighthouse)
@@ -2120,39 +2136,10 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     }
 }
 
-/* Desktop: inline date-title layout */
+/* Desktop: spacious note list spacing (notes site only - .com keeps tight spacing for multi-section layout) */
 @media (min-width: 601px) {
-    .essay-item,
     .note-item {
         margin-bottom: var(--space-md);
-    }
-
-    .essay-item a,
-    .note-item a {
-        flex-direction: row;
-        gap: var(--space-lg);
-        align-items: baseline;
-    }
-
-    time.essay-date,
-    time.note-date,
-    .essay-date,
-    .note-date {
-        font-family: var(--font-body);
-        font-size: var(--font-sm);
-        font-weight: var(--font-weight-normal);
-        letter-spacing: var(--letter-spacing-tight-md);
-        text-transform: none;
-        flex-shrink: 0;
-        white-space: nowrap;
-    }
-
-    .essay-title,
-    .note-title {
-        flex: 1;
-        font-size: var(--font-base);
-        font-weight: var(--font-weight-list-title);
-        line-height: var(--line-height-body);
     }
 }
 
