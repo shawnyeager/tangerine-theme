@@ -2104,7 +2104,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
     .all-essays,
     .all-notes {
-        margin-top: var(--space-xs);
+        margin-top: var(--space-lg);  /* Collapses with last item's margin-bottom; must match section header */
     }
 
     /* Larger touch targets for footer links (48px minimum per Lighthouse)
