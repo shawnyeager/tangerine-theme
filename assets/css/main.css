@@ -2091,20 +2091,23 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         display: none;
     }
 
-    /* More generous spacing for note/essay lists on mobile */
+    /* More generous spacing for note/essay lists on mobile - including last item */
     .note-item,
-    .essay-item {
+    .essay-item,
+    .note-item:last-of-type,
+    .essay-item:last-of-type {
         margin-bottom: var(--space-md);
     }
 
-    /* Section header and CTA spacing - CTA accounts for last item's margin */
+    /* Section header spacing - match inter-item spacing */
     .section-label-small {
-        margin-bottom: var(--space-lg);
+        margin-bottom: var(--space-md);
     }
 
+    /* CTA has no extra margin - last visible item's margin provides the gap */
     .all-essays,
     .all-notes {
-        margin-top: var(--space-lg);  /* Collapses with last item's margin-bottom; must match section header */
+        margin-top: 0;
     }
 
     /* Larger touch targets for footer links (48px minimum per Lighthouse)
@@ -2136,9 +2139,10 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     }
 }
 
-/* Desktop: spacious note list spacing (notes site only - .com keeps tight spacing for multi-section layout) */
+/* Desktop: consistent list spacing for both sites */
 @media (min-width: 601px) {
-    .note-item {
+    .note-item,
+    .essay-item {
         margin-bottom: var(--space-md);
     }
 }
