@@ -1,43 +1,27 @@
 {{/*
-Purpose: Renders taxonomy pages (topics, tags) with parameterized content type support
+Purpose: Renders taxonomy pages (topics, tags) with per-page content type support
 
 Parameters: None (uses page and site context)
 
 Context Expected:
-- .Site.Params.content_type - "essays" or "notes" (default: "essays")
 - .Title - Taxonomy term name (e.g., "Bitcoin", "Sales")
 - .Pages - Pages tagged with this taxonomy term
 - .Draft - Draft status for filtering (production only)
 
 Features:
-- Parameterized for both essays and notes sites
-- Dynamic class names based on content type
+- Per-page CSS class derivation from .Type (supports mixed essays + notes)
+- Hero images for first 3 items that have them
 - Draft filtering in production (not in hugo server)
 - Item count with singular/plural handling
-- Back link to content section
-- Different heading styles for essays vs notes
-
-Content Type Variations:
-- Essays: section-label-small heading, shows count
-- Notes: page-title heading with "Notes tagged:" prefix
+- Back link to /writing/ or primary content section
 
 Important Notes:
 - Filters out drafts in production builds
-- CSS classes generated dynamically from content type
+- CSS classes generated per-page from .Type, not global content_type
 - Date format: "2006 · 01" (year · month)
-- Back link URLs differ: essays→/essays/, notes→/
 */}}
 
 {{ define "main" }}
-    {{/* Parameterized taxonomy template for topics/tags */}}
-    {{ $contentType := .Site.Params.content_type | default "essays" }}
-    {{ $singular := cond (eq $contentType "notes") "note" "essay" }}
-    {{ $sectionClass := printf "%s-list" $singular }}
-    {{ $itemClass := printf "%s-item" $singular }}
-    {{ $titleClass := cond (eq $contentType "notes") "note-title-link" (printf "%s-title" $singular) }}
-    {{ $dateClass := printf "%s-date" $singular }}
-    {{ $backLinkURL := cond (eq $contentType "notes") "/" (printf "/%s/" $contentType) }}
-
     {{/* Filter drafts in production (defined once, used throughout) */}}
     {{ $pages := .Pages }}
     {{ if not hugo.IsServer }}
@@ -46,18 +30,23 @@ Important Notes:
 
     {{/* Page title */}}
     <h1 class="page-title">{{ .Title }}</h1>
-    <div class="topic-count">{{ len $pages }} {{ if eq (len $pages) 1 }}{{ $singular }}{{ else }}{{ $contentType }}{{ end }} on this topic</div>
+    <div class="topic-count">{{ len $pages }} {{ if eq (len $pages) 1 }}piece{{ else }}pieces{{ end }} on this topic</div>
 
-    <section class="{{ $sectionClass }} full-list">
+    <section class="essay-list full-list">
         {{ range $index, $page := $pages }}
+        {{/* Derive CSS classes per-page from content type */}}
+        {{ $singular := cond (eq .Type "notes") "note" "essay" }}
+        {{ $itemClass := printf "%s-item" $singular }}
+        {{ $titleClass := printf "%s-title" $singular }}
+        {{ $dateClass := printf "%s-date" $singular }}
         <article class="{{ $itemClass }} has-excerpt">
-            {{/* Hero images for first 3 items (recent quarter) */}}
+            {{/* Hero images for first 3 items that have them */}}
             {{ if and (lt $index 3) .Params.hero_image }}
                 {{ $img := resources.Get .Params.hero_image }}
                 {{ if $img }}
                     {{ $resized := $img.Resize "800x" }}
                     {{ $webp := $resized.Process "webp q85" }}
-                    <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}" class="{{ printf "%s-hero-link" $singular }}">
+                    <a href="{{ .RelPermalink }}" class="{{ printf "%s-hero-link" $singular }}">
                         <img
                             src="{{ $webp.RelPermalink }}"
                             alt="{{ .Params.hero_alt | default .Title }}"
@@ -72,12 +61,12 @@ Important Notes:
 
             {{ if and (lt $index 3) .Params.hero_image }}
                 {{/* First 3 with images: No date (recency implied by position) */}}
-                <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}" class="{{ printf "%s-title-link" $singular }}">
-                    <span class="{{ printf "%s-title" $singular }}">{{ .Title }}</span>
+                <a href="{{ .RelPermalink }}" class="{{ printf "%s-title-link" $singular }}">
+                    <span class="{{ $titleClass }}">{{ .Title }}</span>
                 </a>
             {{ else }}
-                {{/* Items 4+: Date before title (chronological archive) */}}
-                <a href="{{ cond (eq $contentType "notes") .Permalink .RelPermalink }}">
+                {{/* Items without hero or 4+: Date before title */}}
+                <a href="{{ .RelPermalink }}">
                     <time datetime="{{ .Date.Format "2006-01-02" }}" class="{{ $dateClass }}">{{ .Date.Format "2006 · 01" }}</time>
                     <span class="{{ $titleClass }}">{{ .Title }}</span>
                 </a>
@@ -87,6 +76,14 @@ Important Notes:
         {{ end }}
     </section>
 
-    {{/* Back link */}}
-    {{- partial "content-nav.html" (dict "back_url" ($backLinkURL | relURL) "back_text" (printf "All %s" $contentType)) -}}
+    {{/* Back link — use /writing/ if it exists in the menu, otherwise primary content section */}}
+    {{ $backURL := printf "/%s/" (.Site.Params.content_type | default "essays") }}
+    {{ $backText := printf "All %s" (.Site.Params.content_type | default "essays") }}
+    {{ range .Site.Menus.main }}
+        {{ if eq .URL "/writing/" }}
+            {{ $backURL = "/writing/" }}
+            {{ $backText = "All writing" }}
+        {{ end }}
+    {{ end }}
+    {{- partial "content-nav.html" (dict "back_url" ($backURL | relURL) "back_text" $backText) -}}
 {{ end }}

@@ -5,11 +5,11 @@ Individual content (essays/notes): Always visible (content needs prominent title
 Section listings: Hidden (utility page, no visual noise)
 Pages: Conditional visibility via show_title frontmatter flag
   - Default: sr-only (screen-reader only, no visual noise)
-  - show_title: true → visible (for feature pages like /now, /podcast, /about)
+  - show_title: true → visible (for feature pages like /now, /about)
 
-Parameterized via .Site.Params.content_type ("essays" or "notes")
+Supports sites with multiple content types (essays + notes on same domain)
 */}}
-{{ if and (eq .Type .Site.Params.content_type) (ne .Kind "section") }}
+{{ if and (or (eq .Type "essays") (eq .Type "notes")) (ne .Kind "section") }}
     {{/* Individual content pages (essays or notes) */}}
     <h1 class="page-title">{{ .Title }}</h1>
 {{ else if .Params.show_title }}

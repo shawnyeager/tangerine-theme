@@ -17,7 +17,7 @@
   <channel>
     <title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}</title>
     <link>{{ .Permalink }}</link>
-    <description>{{ if eq .Title .Site.Title }}{{ .Site.Params.description }}{{ else }}{{ .Site.Params.content_type | default "Content" | title }} about {{ .Title | lower }} on {{ .Site.Title }}{{ end }}</description>
+    <description>{{ if eq .Title .Site.Title }}{{ .Site.Params.description }}{{ else }}{{ with .Title }}{{.}}{{ end }} on {{ .Site.Title }}{{ end }}</description>
     <generator>Hugo -- gohugo.io</generator>{{ with .Site.LanguageCode }}
     <language>{{.}}</language>{{end}}{{ with .Site.Params.author.email }}
     <managingEditor>{{.}}{{ with $.Site.Params.author.name }} ({{.}}){{end}}</managingEditor>{{end}}{{ with .Site.Params.author.email }}

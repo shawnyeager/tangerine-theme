@@ -11,26 +11,29 @@ Context Expected:
 
 Features:
 - Highlights active menu item with class="active"
-- Complex active state logic handles multiple cases:
+- Active state logic handles multiple cases:
   1. Direct match: current page URL equals menu item URL
-  2. Section match for /essays/: highlights when viewing essays, topic pages, or tag pages
-  3. Section match for /notes/: highlights when viewing notes or taxonomy pages
+  2. /writing/ link: highlights for essays, notes, and taxonomy pages
+  3. /essays/ link: highlights for essays and taxonomy pages (single-type sites)
+  4. /notes/ link: highlights for notes and taxonomy pages (single-type sites)
 - Accessibility: aria-label for context
 
 Important Notes:
-- Active state logic accounts for taxonomy pages (topics, tags) to highlight parent section
-- Example: /topics/bitcoin/ page highlights "Essays" nav item if on .com site
-- role="navigation" removed (redundant - HTML5 nav has implicit navigation role)
+- Supports both unified "Writing" nav (multi-type sites) and separate section nav
+- On multi-type sites with /writing/, taxonomy pages highlight "Writing"
+- On single-type sites, taxonomy pages highlight the content section
 */}}
 
 <nav aria-label="Main navigation">
     {{- $currentPage := . -}}
+    {{- $isTaxonomyPage := or (eq $currentPage.Type "topics") (eq $currentPage.Type "tags") -}}
+    {{- $isContentPage := or (eq $currentPage.Section "essays") (eq $currentPage.Section "notes") -}}
     {{- range .Site.Menus.main -}}
         {{- $isCurrentURL := eq $currentPage.RelPermalink .URL -}}
-        {{- $isTaxonomyPage := or (eq $currentPage.Type "topics") (eq $currentPage.Type "tags") -}}
+        {{- $isWritingActive := and (eq .URL "/writing/") (or $isContentPage $isTaxonomyPage) -}}
         {{- $isEssaysActive := and (eq .URL "/essays/") (or (eq $currentPage.Section "essays") $isTaxonomyPage) -}}
         {{- $isNotesActive := and (eq .URL "/notes/") (or (eq $currentPage.Section "notes") $isTaxonomyPage) -}}
-        {{- $isActive := or $isCurrentURL $isEssaysActive $isNotesActive -}}
+        {{- $isActive := or $isCurrentURL $isWritingActive $isEssaysActive $isNotesActive -}}
     {{- $isExternal := or (hasPrefix .URL "http://") (hasPrefix .URL "https://") -}}
     <a href="{{ if $isExternal }}{{ .URL }}{{ else }}{{ .URL | relURL }}{{ end }}"{{ if $isActive }} class="active"{{ end }}{{ if $isExternal }} target="_blank" rel="noopener"{{ end }}>{{ .Name }}</a>
     {{- end }}
