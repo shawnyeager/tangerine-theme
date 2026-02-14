@@ -862,36 +862,7 @@ body > .container > footer {
    Cards share base styling (padding, background, transitions).
    ========================================================================== */
 
-/* RSS feed card */
-.rss-feed-card {
-    position: relative;
-    padding: var(--card-padding);
-    background: var(--background-card);
-    transition: background-color var(--transition-fast);
-    contain: layout style paint;
-    margin-bottom: var(--space-xl);
-}
 
-.rss-url {
-    font-family: var(--font-monospace);
-    font-size: var(--font-code);
-    color: var(--text-primary);
-    display: block;
-    padding-right: var(--space-3xl);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* Positioning override for copy button in feed card context.
-   Visual styling inherited from .btn-ghost.btn-ghost--muted */
-.rss-copy-btn {
-    position: absolute;
-    right: var(--space-lg);
-    top: 50%;
-    transform: translateY(-50%);
-    padding: var(--space-xs) var(--space-sm);  /* Compact for inline context */
-}
 
 /* Content images - systematic elevation */
 .page-body img {
@@ -1997,14 +1968,14 @@ html[data-theme="dark"] .latest-essay p {
     margin-bottom: var(--space-lg);
 }
 
-/* Add spacing after YouTube embeds (both standard and preview versions) */
-div[style*="padding-bottom: 56.25%"],
-.youtube-preview-container {
+/* Add spacing after YouTube embeds (standard iframe version) */
+div[style*="padding-bottom: 56.25%"] {
     margin-bottom: var(--space-xl);
 }
 
 /* YouTube preview shortcode styles */
 .youtube-preview-container {
+    margin-bottom: var(--space-xl);
     position: relative;
     padding-bottom: var(--video-aspect-ratio);  /* 16:9 aspect ratio */
     height: 0;

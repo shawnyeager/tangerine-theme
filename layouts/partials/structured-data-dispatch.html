@@ -8,7 +8,6 @@ Schema Selection Logic:
 - Homepage: WebSite + ProfilePage (if author is main focus)
 - Section/Taxonomy/Term: CollectionPage
 - Essays/Notes (single): BlogPosting
-- Podcast layout: ProfilePage + PodcastSeries + PodcastFAQ
 - Pages with FAQ frontmatter: FAQPage
 - All non-home pages: BreadcrumbList
 
@@ -36,15 +35,9 @@ provides the intended flow and avoids calling partials that won't render.
   {{- partial "structured-data.html" . -}}
 {{- end -}}
 
-{{- /* Profile pages (now, podcast, typed pages): ProfilePage */ -}}
-{{- if or (eq .Layout "now") (eq .Layout "podcast") (and (eq .Type "page") (ne .Layout "")) -}}
+{{- /* Profile pages (now, typed pages): ProfilePage */ -}}
+{{- if or (eq .Layout "now") (and (eq .Type "page") (ne .Layout "")) -}}
   {{- partial "structured-data-profile.html" . -}}
-{{- end -}}
-
-{{- /* Podcast pages: PodcastSeries + FAQ */ -}}
-{{- if and (eq .Layout "podcast") .Site.Params.podcast_name -}}
-  {{- partial "structured-data-podcast.html" . -}}
-  {{- partial "structured-data-podcast-faq.html" . -}}
 {{- end -}}
 
 {{- /* Pages with FAQ frontmatter */ -}}
