@@ -4,27 +4,28 @@
  *
  * TABLE OF CONTENTS
  * -----------------
- * _tokens.css        (separate file)   - Fonts + CSS custom properties (importable standalone)
- * 1. RESET           (line ~50)        - Base styles, brand bar
- * 2. TYPOGRAPHY      (line ~100)       - Heading hierarchy, body text
- * 3. LINKS           (line ~230)       - Link styles, focus states, link hierarchy
- * 4. LAYOUT          (line ~460)       - Container, header/footer spacing
- * 5. FOOTER          (line ~540)       - Site footer, newsletter signup
- * 6. HOMEPAGE        (line ~660)       - Homepage sections (bio, latest essay, podcast)
- * 7. COMPONENTS      (line ~730)       - Cards, link-grid, topic tags, cta-group
- * 8. ESSAYS          (line ~960)       - Essay listings, single essay pages
- * 9. MARKDOWN        (line ~1090)      - Reading content styles (CSS nesting)
- * 10. PAGE-SPECIFIC  (line ~1520)      - Page layouts, pagination, contact, skip links
- * 11. UTILITIES      (line ~1660)      - Helper classes (sr-only, hidden, etc)
- * 12. DARK MODE      (line ~1680)      - Theme toggle & system preference overrides
- * 13. PRINT          (line ~1780)      - Print styles
- * 14. MEDIA EMBEDS   (line ~1820)      - YouTube, video captions
- * 15. MOBILE         (line ~1900)      - Responsive breakpoints
- * 16. V4V PAGE       (line ~1960)      - Value for Value payment page
- * 17. LANDING PAGE   (line ~2320)      - Conversion page styles
- * 18. BUTTONS        (line ~2370)      - Ghost button system and variants
- * 19. KEYBOARD HELP  (line ~2470)      - Keyboard shortcuts modal
- * 20. BLOCK EASTER   (line ~2590)      - Mempool next block visualization
+ * _tokens.css         (separate file)  - Fonts + CSS custom properties (importable standalone)
+ * 1.  RESET                            - Base styles, brand bar
+ * 2.  TYPOGRAPHY                       - Heading hierarchy, body text
+ * 3.  LINKS                            - Link styles, focus states, link hierarchy
+ * 4.  LAYOUT                           - Container, header/footer spacing
+ * 5.  FOOTER                           - Site footer, newsletter signup
+ * 6.  HOMEPAGE                         - Homepage sections (bio, latest essay, podcast)
+ * 7.  COMPONENTS                       - Cards, link-grid, topic tags, cta-group
+ * 8.  ESSAYS                           - Essay listings, single essay pages
+ * 9.  MARKDOWN                         - Reading content styles (CSS nesting)
+ * 10. PAGE-SPECIFIC                    - Page layouts, pagination, contact, skip links
+ * 11. UTILITIES                        - Helper classes (sr-only, hidden, etc)
+ * 12. DARK MODE                        - Theme toggle & system preference overrides
+ * 13. PRINT                            - Print styles
+ * 14. MEDIA EMBEDS                     - YouTube, video captions
+ * 15. MOBILE                           - Responsive breakpoints
+ * 16. V4V PAGE                         - Value for Value payment page
+ * 17. ADVISORY PAGE                    - Service tiers and credibility
+ * 18. CONVERSION COMPONENTS            - Low-friction CTAs
+ * 19. GHOST BUTTONS                    - Ghost button system and variants
+ * 20. KEYBOARD HELP                    - Keyboard shortcuts modal
+ * 21. BLOCK EASTER EGG                 - Mempool next block visualization
  *
  * Line numbers are approximate. Update when making significant structural changes.
  *
@@ -92,7 +93,7 @@ body::before {
 }
 
 /* ==========================================================================
-   4. TYPOGRAPHY - Heading Hierarchy & Body Text
+   2. TYPOGRAPHY - Heading Hierarchy & Body Text
    ========================================================================== */
 
 /*
@@ -263,7 +264,7 @@ mark {
 }
 
 /* ==========================================================================
-   5. LINKS - Link Styles, Focus States, Link Hierarchy
+   3. LINKS - Link Styles, Focus States, Link Hierarchy
    ========================================================================== */
 
 a {
@@ -474,7 +475,7 @@ p .action-link {
 }
 
 /* ==========================================================================
-   6. LAYOUT - Container, Header/Footer Spacing
+   4. LAYOUT - Container, Header/Footer Spacing
    ========================================================================== */
 
 .container {
@@ -572,7 +573,7 @@ nav a::after {
 }
 
 /* ==========================================================================
-   7. FOOTER - Site Footer & Newsletter Signup
+   5. FOOTER - Site Footer & Newsletter Signup
 
    Unified footer zone: email signup form + site links.
    Uses frame-edge spacing (footer-gap-above/below tokens).
@@ -686,7 +687,7 @@ body > .container > footer {
 }
 
 /* ==========================================================================
-   8. HOMEPAGE - Homepage Sections (Bio, Latest Essay, Podcast Card)
+   6. HOMEPAGE - Homepage Sections (Bio, Latest Essay, Podcast Card)
 
    Section spacing uses bottom-margin only (no top margins to avoid stacking).
    Sections connect to footer via margin-bottom: 0 on last section.
@@ -855,24 +856,20 @@ body > .container > footer {
 }
 
 /* ==========================================================================
-   9. COMPONENTS - Cards, Topic Tags
+   7. COMPONENTS - Cards, Topic Tags
 
    Reusable UI components: RSS card, topic tags.
    Cards share base styling (padding, background, transitions).
    ========================================================================== */
 
-/* Base card styling for RSS feed card */
+/* RSS feed card */
 .rss-feed-card {
+    position: relative;
     padding: var(--card-padding);
     background: var(--background-card);
     transition: background-color var(--transition-fast);
-    contain: layout style paint; /* Isolate rendering for better performance */
+    contain: layout style paint;
     margin-bottom: var(--space-xl);
-}
-
-/* RSS-specific: relative positioning for absolute copy button */
-.rss-feed-card {
-    position: relative;
 }
 
 .rss-url {
@@ -975,7 +972,7 @@ body > .container > footer {
 }
 
 /* ==========================================================================
-   10. ESSAYS - Essay/Note Listings & Single Pages
+   8. ESSAYS - Essay/Note Listings & Single Pages
 
    List items: date + title flex layout with baseline alignment.
    Single pages: title + meta + body structure.
@@ -1135,14 +1132,13 @@ time.note-date,
     border-radius: var(--border-radius-card);  /* 12px - matches card rounding */
 }
 
-/* Dark mode: Apply same warm tint filter as single essay pages */
+/* Dark mode: warm tint filter for list hero images */
 @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .essay-list-hero,
     html:not([data-theme="light"]) .note-list-hero {
         filter: brightness(0.88) sepia(15%) saturate(1.1);
     }
 }
-
 html[data-theme="dark"] .essay-list-hero,
 html[data-theme="dark"] .note-list-hero {
     filter: brightness(0.88) sepia(15%) saturate(1.1);
@@ -1312,7 +1308,7 @@ html[data-theme="dark"] .essay-hero-image {
 }
 
 /* ==========================================================================
-   11. MARKDOWN - Content Body Styles (CSS Nesting)
+   9. MARKDOWN - Content Body Styles (CSS Nesting)
 
    Styles for Markdown-generated content within .essay-body and .note-body.
    Uses CSS nesting for scoped element styling.
@@ -1692,7 +1688,7 @@ a.back-link:hover {
 }
 
 /* ==========================================================================
-   12. PAGE-SPECIFIC - Page Layouts, Pagination, Contact, Skip Links
+   10. PAGE-SPECIFIC - Page Layouts, Pagination, Contact, Skip Links
 
    Page-specific styling: /media bio boxes, /podcast images, pagination,
    contact display patterns, and skip link accessibility.
@@ -1838,7 +1834,7 @@ a.back-link:hover {
 }
 
 /* ==========================================================================
-   13. UTILITIES - Helper Classes
+   11. UTILITIES - Helper Classes
 
    Utility classes: screen-reader only, etc.
    ========================================================================== */
@@ -1860,7 +1856,7 @@ a.back-link:hover {
 }
 
 /* ==========================================================================
-   14. DARK MODE - Theme Toggle & System Preference Overrides
+   12. DARK MODE - Theme Toggle & System Preference Overrides
 
    Dark mode applies in two scenarios:
    1. System prefers dark AND user hasn't forced light mode
@@ -1948,7 +1944,7 @@ html[data-theme="dark"] .latest-essay p {
 
 
 /* ==========================================================================
-   15. PRINT - Print Stylesheet
+   13. PRINT - Print Stylesheet
 
    Minimal print styles: hide chrome, clean typography.
    ========================================================================== */
@@ -1990,7 +1986,7 @@ html[data-theme="dark"] .latest-essay p {
 }
 
 /* ==========================================================================
-   16. MEDIA EMBEDS - YouTube, Video Captions
+   14. MEDIA EMBEDS - YouTube, Video Captions
 
    Responsive video embeds (16:9 aspect ratio) and privacy-respecting
    preview thumbnails with play button overlay.
@@ -2071,7 +2067,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 /* ==========================================================================
-   17. MOBILE - Responsive Breakpoints
+   15. MOBILE - Responsive Breakpoints
 
    Mobile-first adjustments for screens < 600px.
    Note: Breakpoint is hardcoded because CSS variables don't work in media queries.
@@ -2148,7 +2144,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 /* ==========================================================================
-   18. V4V PAGE - Value for Value Payment Page
+   16. V4V PAGE - Value for Value Payment Page
 
    Bitcoin Lightning payment page with amount selection, QR generation,
    and payment status tracking.
@@ -2202,7 +2198,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     font-weight: var(--font-weight-semibold);
     font-variant-numeric: tabular-nums;
     color: var(--text-primary);
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), color var(--transition-fast);
 }
 
 .amount-btn:hover {
@@ -2530,7 +2526,7 @@ a.qr-link:hover {
 }
 
 /* ==========================================================================
-   19. ADVISORY PAGE - Service tiers and credibility
+   17. ADVISORY PAGE - Service tiers and credibility
    ========================================================================== */
 
 /* Service Tiers Grid */
@@ -2746,6 +2742,7 @@ a.qr-link:hover {
 
 /* Testimonials */
 .testimonial {
+    overflow: hidden;
     margin: var(--space-xl) 0;
     padding: 0;
     border: none;
@@ -2767,10 +2764,13 @@ a.qr-link:hover {
 }
 
 .testimonial__avatar {
-    width: var(--touch-target-min);
-    height: var(--touch-target-min);
+    float: right;
+    width: var(--avatar-size-sm);
+    height: var(--avatar-size-sm);
+    margin: 0 0 var(--space-xs) var(--space-md);
     border-radius: var(--border-radius-interactive);
     object-fit: cover;
+    filter: grayscale(1);
 }
 
 .testimonial__person {
@@ -2791,9 +2791,65 @@ a.qr-link:hover {
     font-size: var(--font-sm);
 }
 
+/* ==========================================================================
+   18. CONVERSION COMPONENTS - Low-friction CTAs
+
+   - diagnostic-cta: Low-commitment entry point
+   - what-to-expect: Plain numbered steps
+   ========================================================================== */
+
+/* Diagnostic CTA - Low-friction entry point */
+.diagnostic-cta {
+    margin: var(--space-xl) 0;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--background-main);
+    border: var(--border-width) solid var(--border-color);
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    text-wrap: pretty;
+}
+
+.diagnostic-cta p {
+    margin: 0;
+}
+
+.diagnostic-cta a {
+    color: var(--brand-orange);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    border-bottom: var(--border-width) solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.diagnostic-cta a:hover {
+    border-bottom-color: var(--brand-orange);
+}
+
+/* What to Expect - plain numbered list */
+.what-to-expect {
+    margin: var(--space-md) 0;
+}
+
+.what-to-expect ol {
+    margin: 0;
+    padding-left: var(--space-lg);
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+}
+
+.what-to-expect li {
+    margin-bottom: var(--space-xs);
+    line-height: var(--line-height-body);
+}
+
+@media (max-width: 600px) {
+    .diagnostic-cta {
+        padding: var(--space-sm) var(--space-md);
+    }
+}
 
 /* ==========================================================================
-   20. GHOST BUTTONS - Shared base and variants
+   19. GHOST BUTTONS - Shared base and variants
 
    Ghost buttons: transparent background with border.
    Variants: muted (newsletter) and primary (conversion CTA).
@@ -2819,7 +2875,7 @@ a.qr-link:hover {
     background: transparent;
     border: var(--border-width) solid;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), color var(--transition-fast);
     text-decoration: none;
 }
 
@@ -2924,7 +2980,7 @@ a.qr-link:hover {
 }
 
 /* ==========================================================================
-   21. KEYBOARD HELP - Accessible shortcut overlay
+   20. KEYBOARD HELP - Accessible shortcut overlay
 
    Triggered by pressing '?' key. Shows available keyboard shortcuts.
    Dismissible via Escape key or clicking outside the card.
@@ -3048,7 +3104,7 @@ a.qr-link:hover {
 
 
 /* ==========================================================================
-   22. BLOCK EASTER EGG - Mempool next block visualization
+   21. BLOCK EASTER EGG - Mempool next block visualization
 
    Hidden feature: type 'block' to show live mempool.space data.
    3D block flies from home-square to center with real-time fee info.

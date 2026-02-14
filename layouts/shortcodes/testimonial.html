@@ -20,11 +20,11 @@ Shawn is our go-to when it comes to business development and enterprise sales.
 {{- $image := .Get "image" -}}
 
 <blockquote class="testimonial">
+    {{- with $image -}}
+    <img src="{{ . }}" alt="{{ $name }}" class="testimonial__avatar">
+    {{- end -}}
     <p class="testimonial__quote">{{ .Inner | markdownify }}</p>
     <footer class="testimonial__attribution">
-        {{- with $image -}}
-        <img src="{{ . }}" alt="{{ $name }}" class="testimonial__avatar">
-        {{- end -}}
         <div class="testimonial__person">
             <span class="testimonial__name">{{ $name }}</span>
             <span class="testimonial__title">{{ $title }}</span>
