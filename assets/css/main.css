@@ -253,14 +253,18 @@ a {
     color: var(--brand-orange);
     text-decoration: none;
     transition: color var(--transition-fast);
-}
 
-a:hover {
-    color: var(--brand-orange-hover);
-    text-decoration: underline;
-    text-decoration-color: var(--underline-color-brand);
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
+    &:hover {
+        color: var(--brand-orange-hover);
+        text-decoration: underline;
+        text-decoration-color: var(--underline-color-brand);
+        text-decoration-thickness: var(--underline-thickness);
+        text-underline-offset: var(--underline-offset);
+    }
+
+    &:focus {
+        outline: none;
+    }
 }
 
 /* Navigation links - no underline on hover (clear navigation zones) */
@@ -272,11 +276,6 @@ header a:hover,
 
 /* Focus Indicators - Keyboard Navigation Accessibility
    -------------------------------------------------- */
-
-/* Remove default outline, replace with custom focus-visible styles */
-a:focus {
-    outline: none;
-}
 
 /* Visible focus indicators for keyboard navigation only */
 a:focus-visible,
@@ -418,6 +417,11 @@ p .action-link {
     display: block;
     width: fit-content;
     margin-top: var(--space-sm);
+
+    &:hover {
+        color: var(--brand-orange-hover);
+        text-decoration: none;
+    }
 }
 
 /* Stacked action links: default spacing for utility/landing pages */
@@ -442,12 +446,6 @@ p .action-link {
 /* Contact section spacing from intro text */
 .contact-section {
     margin-top: var(--space-lg);
-}
-
-/* Hover states */
-.secondary-link:hover {
-    color: var(--brand-orange-hover);
-    text-decoration: none;
 }
 
 /* ==========================================================================
@@ -616,35 +614,34 @@ body > .container > footer {
     &:hover {
         color: var(--brand-orange-hover);
     }
-}
 
-/* Footer arrows: use Satoshi to match CTA arrows */
-.footer-links a span[aria-hidden="true"] {
-    font-family: var(--font-heading);
-}
+    /* Arrow text: use Satoshi to match CTA arrows */
+    span[aria-hidden="true"] {
+        font-family: var(--font-heading);
+    }
 
-.footer-links a .arrow {
-    margin-left: var(--arrow-spacing);
-}
+    .arrow {
+        margin-left: var(--arrow-spacing);
+    }
 
-/* V4V icon tap target - pseudo-element creates 48x48 clickable area without affecting layout */
-.footer-links a[aria-label="Value for value"] {
-    position: relative;
-}
+    /* V4V icon - pseudo-element creates 48x48 tap target */
+    &[aria-label="Value for value"] {
+        position: relative;
 
-/* Optical alignment - nudge SVG up to align with text x-height */
-.footer-links a[aria-label="Value for value"] svg {
-    vertical-align: middle;
-}
+        svg {
+            vertical-align: middle;
+        }
 
-.footer-links a[aria-label="Value for value"]::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: var(--touch-target-min);
-    height: var(--touch-target-min);
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--touch-target-min);
+            height: var(--touch-target-min);
+        }
+    }
 }
 
 /* ==========================================================================
@@ -2212,10 +2209,10 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     color: var(--brand-orange);
     text-decoration: none;
     cursor: pointer;
-}
 
-#share-essay:hover {
-    text-decoration: underline;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .amount-selection {
@@ -2241,35 +2238,35 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     font-variant-numeric: tabular-nums;
     color: var(--text-primary);
     transition: border-color var(--transition-fast), color var(--transition-fast);
-}
 
-.amount-btn:hover {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
-}
+    &:hover {
+        border-color: var(--brand-orange);
+        color: var(--brand-orange);
+    }
 
-.amount-btn:active {
-    transform: translateY(1px);
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &:disabled {
+        opacity: var(--opacity-disabled);
+        cursor: not-allowed;
+
+        &:hover {
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+    }
 }
 
 .amount-btn--suggested {
     border-color: var(--brand-orange);
     color: var(--brand-orange);
-}
 
-.amount-btn:disabled {
-    opacity: var(--opacity-disabled);
-    cursor: not-allowed;
-}
-
-.amount-btn:disabled:hover {
-    border-color: var(--border-color);
-    color: var(--text-primary);
-}
-
-.amount-btn--suggested:disabled {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
+    &:disabled {
+        border-color: var(--brand-orange);
+        color: var(--brand-orange);
+    }
 }
 
 .custom-amount-label {
@@ -2298,37 +2295,39 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     width: calc((100% - 3 * var(--space-sm)) / 4);
     text-align: right;
     transition: border-color var(--transition-fast);
-}
 
-.custom-amount-input:focus {
-    outline: none;
-    border-bottom-color: var(--brand-orange);
-}
+    &:focus {
+        outline: none;
+        border-bottom-color: var(--brand-orange);
+    }
 
-.custom-amount-input::placeholder {
-    color: var(--text-meta);
-    opacity: var(--opacity-subtle);
+    &::placeholder {
+        color: var(--text-meta);
+        opacity: var(--opacity-subtle);
+    }
+
+    &:disabled {
+        opacity: var(--opacity-disabled);
+        cursor: not-allowed;
+    }
 }
 
 /* Note: .custom-amount-btn base styles consolidated in Button System section */
 
-.custom-amount-btn:active {
-    transform: translateY(1px);
-}
+.custom-amount-btn {
+    &:active {
+        transform: translateY(1px);
+    }
 
-.custom-amount-input:disabled {
-    opacity: var(--opacity-disabled);
-    cursor: not-allowed;
-}
+    &:disabled {
+        opacity: var(--opacity-disabled);
+        cursor: not-allowed;
 
-.custom-amount-btn:disabled {
-    opacity: var(--opacity-disabled);
-    cursor: not-allowed;
-}
-
-.custom-amount-btn:disabled:hover {
-    border-color: var(--text-meta);
-    color: var(--text-meta);
+        &:hover {
+            border-color: var(--text-meta);
+            color: var(--text-meta);
+        }
+    }
 }
 
 .validation-error {
@@ -2345,12 +2344,12 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     border-radius: var(--border-radius-md);
     margin-bottom: var(--space-xl);
     animation: v4v-fadeIn var(--transition-base) ease-out;
-}
 
-.error-display .error-message {
-    color: var(--brand-orange);
-    font-size: var(--font-base);
-    margin-bottom: var(--space-lg);
+    .error-message {
+        color: var(--brand-orange);
+        font-size: var(--font-base);
+        margin-bottom: var(--space-lg);
+    }
 }
 
 /* Note: .error-dismiss-btn base styles consolidated in Button System section */
@@ -2378,6 +2377,13 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     display: flex;
     align-items: center;
     justify-content: center;
+
+    canvas {
+        display: block;
+        margin: 0 auto;
+        box-shadow: var(--shadow-content-light);
+        transition: box-shadow var(--transition-fast);
+    }
 }
 
 /* Center loading text in full card during loading state */
@@ -2414,10 +2420,10 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     font-size: var(--font-base);
     margin: 0;
     text-decoration: none;
-}
 
-.qr-loading.polling {
-    animation: v4v-pulse 2s ease-in-out infinite;
+    &.polling {
+        animation: v4v-pulse 2s ease-in-out infinite;
+    }
 }
 
 @keyframes v4v-pulse {
@@ -2432,21 +2438,17 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     animation: v4v-pulse 2s ease-in-out infinite;
 }
 
-.qr-code canvas {
-    display: block;
-    margin: 0 auto;
-    box-shadow: var(--shadow-content-light);
-    transition: box-shadow var(--transition-fast);
-}
-
-a.qr-link,
-a.qr-link:hover {
+.qr-link {
     cursor: pointer;
     text-decoration: none;
-}
 
-.qr-link:hover .qr-code canvas {
-    box-shadow: 0 0 0 3px var(--brand-orange);
+    &:hover {
+        text-decoration: none;
+
+        .qr-code canvas {
+            box-shadow: 0 0 0 3px var(--brand-orange);
+        }
+    }
 }
 
 .qr-hint {
@@ -2495,10 +2497,10 @@ a.qr-link:hover {
     text-decoration: underline;
     padding: 0;
     transition: color var(--transition-fast);
-}
 
-.qr-copy-link:hover {
-    color: var(--brand-orange);
+    &:hover {
+        color: var(--brand-orange);
+    }
 }
 
 /* Note: .qr-cancel-btn base styles consolidated in Button System section */
@@ -2527,31 +2529,31 @@ a.qr-link:hover {
 
 .v4v-details {
     margin-top: var(--space-lg);
-}
 
-.v4v-details summary {
-    cursor: pointer;
-    font-size: var(--font-base);
-    color: var(--text-meta);
-    font-weight: var(--font-weight-medium);
-    transition: color var(--transition-fast);
-    list-style-position: outside;
-    list-style: none;
-}
+    summary {
+        cursor: pointer;
+        font-size: var(--font-base);
+        color: var(--text-meta);
+        font-weight: var(--font-weight-medium);
+        transition: color var(--transition-fast);
+        list-style-position: outside;
+        list-style: none;
 
-.v4v-details summary::marker {
-    display: none;
-}
+        &::marker {
+            display: none;
+        }
 
-.v4v-details summary:hover {
-    color: var(--brand-orange);
-}
+        &:hover {
+            color: var(--brand-orange);
+        }
+    }
 
-.v4v-details p {
-    margin-top: var(--space-md);
-    font-size: var(--font-base);
-    color: var(--text-secondary);
-    line-height: var(--line-height-body);
+    p {
+        margin-top: var(--space-md);
+        font-size: var(--font-base);
+        color: var(--text-secondary);
+        line-height: var(--line-height-body);
+    }
 }
 
 
