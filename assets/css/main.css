@@ -1233,6 +1233,21 @@ html[data-theme="dark"] .note-list-hero {
     vertical-align: baseline;
 }
 
+/* Mobile: move type label above title */
+@media (max-width: 600px) {
+    .writing-item-title {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .writing-item-type {
+        order: -1;
+        flex-basis: 100%;
+        margin-left: 0;
+        margin-bottom: var(--space-2xs);
+    }
+}
+
 .writing-item-desc {
     display: block;
     font-size: var(--font-base);
