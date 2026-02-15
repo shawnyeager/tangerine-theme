@@ -119,18 +119,10 @@ h1 {
 .home-link {
     display: flex;
     align-items: center;
+    justify-content: center;
     position: relative;
-}
-
-/* Touch target expansion via pseudo-element - doesn't affect layout */
-.home-link::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: var(--touch-target-min);
-    height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+    min-height: var(--touch-target-min);
 }
 
 /* Home square - solid orange (default for .com) */
@@ -600,7 +592,7 @@ body > .container > footer {
     display: flex;
     gap: var(--space-xs);
     align-items: stretch;
-    margin-bottom: var(--space-md);  /* 16px to footer links */
+    margin-bottom: var(--space-lg);  /* Clearance for footer link touch targets */
     flex-wrap: nowrap;
 }
 
