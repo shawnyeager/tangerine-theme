@@ -100,7 +100,6 @@ body::before {
  * Heading Letter-Spacing Strategy:
  * - Base: All headings use tight-md (-0.01em) for comfortable reading
  * - H1: Override to tight-lg (-0.02em) because larger text needs tighter spacing
- * - .site-title: Override to normal (0) for brand name readability
  */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
@@ -173,19 +172,9 @@ h1.display-title {
     letter-spacing: var(--letter-spacing-tight-xl);
 }
 
-/* Notes homepage - more casual, smaller title */
-.notes-homepage h1.display-title {
-    font-size: var(--font-custom-40);  /* 40px - less prominent than 56px */
-    font-weight: var(--font-weight-medium);  /* 500 */
-}
-
 @media (max-width: 600px) {
     h1.display-title {
         font-size: var(--font-custom-40);  /* 40px - more impactful hero on mobile */
-    }
-
-    .notes-homepage h1.display-title {
-        font-size: var(--font-custom-32);  /* 32px on mobile - casual but prominent */
     }
 }
 
@@ -342,8 +331,7 @@ select:focus-visible,
 }
 
 /* Action Links - Primary action links WITH arrows (→)
-   Usage: "Read more →", "All essays →", "Subscribe to newsletter →"
-   Selector group: .cta-link-group (conceptual - these share CTA styling) */
+   Usage: "Read more →", "All essays →", "Subscribe to newsletter →" */
 :is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
     .pagination-prev, .pagination-next) {
     font-family: var(--font-heading);
@@ -499,21 +487,6 @@ body > .container > header {
     margin-bottom: var(--header-gap-below);
 }
 
-.site-title {
-    margin: 0;
-    font-size: var(--font-lg);
-    font-weight: var(--font-weight-semibold);
-}
-
-.site-title a {
-    color: var(--text-primary);
-    text-decoration: none;
-}
-
-.site-title a:hover {
-    color: var(--brand-orange);
-}
-
 nav {
     font-family: var(--font-heading);
     font-size: var(--font-lg);  /* Match site-title size */
@@ -593,7 +566,7 @@ body > .container > footer {
     display: flex;
     gap: var(--space-xs);
     align-items: stretch;
-    margin-bottom: var(--space-lg);  /* Clearance for footer link touch targets */
+    margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
 }
 
@@ -788,13 +761,9 @@ body > .container > footer {
     }
 }
 
-/* Section Label Variants:
-   - .section-label-small: Subtle dividers (--font-sm, --text-subtle)
-     Use for: "Latest Essay", "Topics", "Recent Essays" headers
-   - .section-label-medium: Prominent groupings (--font-base, --text-secondary)
-     Use for: Year headers in essay/note lists
-
-   Both use: Satoshi, uppercase, wide letter-spacing, medium weight */
+/* Section Labels: Subtle dividers (--font-sm, --text-subtle)
+   Use for: "Latest Essay", "Topics", "Recent Essays" headers
+   Satoshi, uppercase, wide letter-spacing, medium weight */
 .essay-section-header,
 .section-label-small,
 .topics h4 {
@@ -877,9 +846,8 @@ body > .container > footer {
     margin-top: 0;
 }
 
-/* Keep section-label-medium different (year headers in notes) */
-.recent-notes h3,
-.section-label-medium {
+/* Year headers in notes section */
+.recent-notes h3 {
     font-family: var(--font-heading);
     font-size: var(--font-base);
     font-weight: var(--font-weight-medium);
@@ -890,8 +858,7 @@ body > .container > footer {
     margin-top: var(--space-xl);
 }
 
-.recent-notes h3:first-child,
-.section-label-medium:first-child {
+.recent-notes h3:first-child {
     margin-top: 0;
 }
 
@@ -1141,12 +1108,6 @@ html[data-theme="dark"] .note-list-hero {
     margin-top: var(--space-md);  /* 16px - matches section heading spacing */
 }
 
-.topic-count {
-    color: var(--text-meta);
-    font-size: var(--font-sm);
-    margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
-}
-
 /* Writing stream — uniform title-only list
    Topics: uppercase nav links at top
    -------------------------------------------------- */
@@ -1182,10 +1143,6 @@ html[data-theme="dark"] .note-list-hero {
         &:hover {
             color: var(--brand-orange);
         }
-    }
-
-    .topic-item:last-child .topic-sep {
-        display: none;
     }
 
     .topic-sep {
@@ -1811,13 +1768,6 @@ a.back-link:hover {
     margin-bottom: 0;
 }
 
-/* Page Content Wrappers
-   -------------------------------------------------- */
-
-.page-content {
-    max-width: var(--content-max-width);
-}
-
 /* Page body - HR and CTA closing section */
 .page-body hr {
     margin: var(--space-xl) 0 var(--space-lg) 0;
@@ -2051,7 +2001,7 @@ html[data-theme="dark"] .latest-essay p {
 @media print {
     /* Hide non-content elements */
     body::before, nav, footer, .topic-tags,
-    .skip-link, .keyboard-help-overlay, .copy-btn {
+    .skip-link, .keyboard-help-overlay {
         display: none !important;
     }
 
