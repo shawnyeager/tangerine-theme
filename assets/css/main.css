@@ -1184,21 +1184,20 @@ html[data-theme="dark"] .note-list-hero {
         &:hover {
             color: var(--brand-orange-hover);
         }
+    }
 
-        /* Dot separators between topics */
-        &:not(:last-child)::after {
-            content: "·";
-            margin-left: var(--space-xs);
-            color: var(--text-meta);
+    .topic-sep {
+        color: var(--text-meta);
+
+        &:last-of-type {
+            display: none;
         }
     }
 }
 
-/* Essay blocks — accent bar + large type */
+/* Essay blocks — large type, generous space */
 .writing-essay {
     margin-bottom: var(--space-2xl);
-    border-left: var(--border-width-accent) solid var(--brand-orange);
-    padding-left: var(--space-lg);
 }
 
 .writing-essay-title {
@@ -1241,33 +1240,9 @@ html[data-theme="dark"] .note-list-hero {
     margin-right: var(--space-sm);
 }
 
-.writing-essay-topics {
-    display: inline-flex;
-    gap: var(--space-xs);
-
-    &::before {
-        content: "·";
-        margin-right: var(--space-xs);
-    }
-
-    a {
-        font-size: var(--font-xs);
-        font-weight: var(--font-weight-medium);
-        letter-spacing: var(--letter-spacing-wide);
-        text-transform: uppercase;
-        color: var(--text-meta);
-        text-decoration: none;
-
-        &:hover {
-            color: var(--brand-orange);
-        }
-    }
-}
-
 /* Note cluster — card container for consecutive notes */
 .writing-notes-cluster {
     background: var(--background-card);
-    border-radius: var(--border-radius-card);
     padding: var(--space-lg);
     margin-bottom: var(--space-2xl);
 }
@@ -1309,28 +1284,7 @@ html[data-theme="dark"] .note-list-hero {
 
 /* Writing pagination */
 .writing-pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-top: var(--space-xl);
-    padding-top: var(--space-lg);
-    border-top: var(--border-subtle);
-
-    a {
-        font-family: var(--font-heading);
-        font-size: var(--font-sm);
-        color: var(--text-meta);
-        text-decoration: none;
-
-        &:hover {
-            color: var(--brand-orange);
-        }
-    }
-
-    .arrow {
-        display: inline-block;
-        margin-inline: var(--arrow-spacing);
-    }
 }
 
 /* Single Essay/Note Page
