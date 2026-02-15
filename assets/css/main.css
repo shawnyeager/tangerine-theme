@@ -785,6 +785,7 @@ body > .container > footer {
     }
 
     .site-intro .cta-group {
+        flex-direction: column;
         margin-top: var(--space-md);
     }
 
