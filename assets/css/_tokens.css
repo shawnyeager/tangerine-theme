@@ -170,6 +170,7 @@
     --transition-base: 0.4s ease;
 
     /* Opacity Scale */
+    --opacity-disabled: 0.4;
     --opacity-subtle: 0.5;
     --opacity-medium: 0.6;
     --opacity-muted: 0.7;

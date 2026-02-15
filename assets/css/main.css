@@ -100,7 +100,6 @@ body::before {
  * Heading Letter-Spacing Strategy:
  * - Base: All headings use tight-md (-0.01em) for comfortable reading
  * - H1: Override to tight-lg (-0.02em) because larger text needs tighter spacing
- * - .site-title: Override to normal (0) for brand name readability
  */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
@@ -160,7 +159,7 @@ h1 {
 }
 
 .home-link:hover .home-square {
-    opacity: 0.8;
+    opacity: var(--opacity-high);
 }
 
 /* Homepage display title - large, prominent headline */
@@ -173,19 +172,9 @@ h1.display-title {
     letter-spacing: var(--letter-spacing-tight-xl);
 }
 
-/* Notes homepage - more casual, smaller title */
-.notes-homepage h1.display-title {
-    font-size: var(--font-custom-40);  /* 40px - less prominent than 56px */
-    font-weight: var(--font-weight-medium);  /* 500 */
-}
-
 @media (max-width: 600px) {
     h1.display-title {
         font-size: var(--font-custom-40);  /* 40px - more impactful hero on mobile */
-    }
-
-    .notes-homepage h1.display-title {
-        font-size: var(--font-custom-32);  /* 32px on mobile - casual but prominent */
     }
 }
 
@@ -264,14 +253,18 @@ a {
     color: var(--brand-orange);
     text-decoration: none;
     transition: color var(--transition-fast);
-}
 
-a:hover {
-    color: var(--brand-orange-hover);
-    text-decoration: underline;
-    text-decoration-color: var(--underline-color-brand);
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
+    &:hover {
+        color: var(--brand-orange-hover);
+        text-decoration: underline;
+        text-decoration-color: var(--underline-color-brand);
+        text-decoration-thickness: var(--underline-thickness);
+        text-underline-offset: var(--underline-offset);
+    }
+
+    &:focus {
+        outline: none;
+    }
 }
 
 /* Navigation links - no underline on hover (clear navigation zones) */
@@ -283,11 +276,6 @@ header a:hover,
 
 /* Focus Indicators - Keyboard Navigation Accessibility
    -------------------------------------------------- */
-
-/* Remove default outline, replace with custom focus-visible styles */
-a:focus {
-    outline: none;
-}
 
 /* Visible focus indicators for keyboard navigation only */
 a:focus-visible,
@@ -322,7 +310,7 @@ select:focus-visible,
 
 /* Link Hierarchy System - Intent-based link categories
 
-   PRIMARY CTAs (.action-link, .back-link, .all-essays, .all-notes)
+   PRIMARY CTAs (.action-link, .back-link, .all-essays)
    - Orange with arrows (→ or ←), color lightens on hover
    - Display: inline-flex with gap for arrow spacing
 
@@ -334,17 +322,9 @@ select:focus-visible,
    - Orange, underline appears on hover
    ========================================================================== */
 
-/* Shared transition for all branded links (excludes .secondary-link - it has its own underline) */
-:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
-    .pagination-prev, .pagination-next) {
-    text-decoration: none;
-    transition: color var(--transition-fast);
-}
-
-/* Action Links - Primary action links WITH arrows (→)
-   Usage: "Read more →", "All essays →", "Subscribe to newsletter →"
-   Selector group: .cta-link-group (conceptual - these share CTA styling) */
-:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
+/* Action Links - Primary CTA links with arrows (→ or ←)
+   Usage: "Read more →", "All essays →", "← Back" */
+:is(.action-link, .back-link, .all-essays,
     .pagination-prev, .pagination-next) {
     font-family: var(--font-heading);
     font-size: var(--font-base);
@@ -353,6 +333,8 @@ select:focus-visible,
     display: inline-flex;
     align-items: center;
     gap: 0;
+    text-decoration: none;
+    transition: color var(--transition-fast);
 }
 
 /* Action links: block display for margin control */
@@ -364,7 +346,7 @@ select:focus-visible,
 }
 
 /* Arrow spans in action links: prevent underline */
-:is(.action-link, .back-link, .all-essays, .all-notes,
+:is(.action-link, .back-link, .all-essays,
     .pagination-prev, .pagination-next) span[aria-hidden="true"] {
     text-decoration: none;
 }
@@ -403,15 +385,15 @@ p .action-link {
     margin-top: 0;
 }
 
-/* Hover state for all primary action links - no underline (arrows would be underlined) */
-:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
+/* Hover state for all primary action links */
+:is(.action-link, .back-link, .all-essays,
     .pagination-prev, .pagination-next):hover {
     color: var(--brand-orange-hover);
     text-decoration: none;
 }
 
 /* Underline link text (not arrow) on hover */
-:is(.action-link, .all-essays, .all-notes, .essay-footer a,
+:is(.action-link, .all-essays,
     .pagination-prev, .pagination-next):hover .link-text {
     text-decoration: underline;
     text-decoration-color: var(--underline-color-brand);
@@ -435,6 +417,11 @@ p .action-link {
     display: block;
     width: fit-content;
     margin-top: var(--space-sm);
+
+    &:hover {
+        color: var(--brand-orange-hover);
+        text-decoration: none;
+    }
 }
 
 /* Stacked action links: default spacing for utility/landing pages */
@@ -459,12 +446,6 @@ p .action-link {
 /* Contact section spacing from intro text */
 .contact-section {
     margin-top: var(--space-lg);
-}
-
-/* Hover states */
-.secondary-link:hover {
-    color: var(--brand-orange-hover);
-    text-decoration: none;
 }
 
 /* ==========================================================================
@@ -497,21 +478,6 @@ body > .container > header {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: var(--header-gap-below);
-}
-
-.site-title {
-    margin: 0;
-    font-size: var(--font-lg);
-    font-weight: var(--font-weight-semibold);
-}
-
-.site-title a {
-    color: var(--text-primary);
-    text-decoration: none;
-}
-
-.site-title a:hover {
-    color: var(--brand-orange);
 }
 
 nav {
@@ -593,7 +559,7 @@ body > .container > footer {
     display: flex;
     gap: var(--space-xs);
     align-items: stretch;
-    margin-bottom: var(--space-lg);  /* Clearance for footer link touch targets */
+    margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
 }
 
@@ -623,7 +589,7 @@ body > .container > footer {
 
 .email-form input[type="email"]::placeholder {
     color: var(--text-meta);
-    opacity: 0.5;
+    opacity: var(--opacity-subtle);
 }
 
 /* Email form button now uses .btn-ghost.btn-ghost--muted */
@@ -648,35 +614,34 @@ body > .container > footer {
     &:hover {
         color: var(--brand-orange-hover);
     }
-}
 
-/* Footer arrows: use Satoshi to match CTA arrows */
-.footer-links a span[aria-hidden="true"] {
-    font-family: var(--font-heading);
-}
+    /* Arrow text: use Satoshi to match CTA arrows */
+    span[aria-hidden="true"] {
+        font-family: var(--font-heading);
+    }
 
-.footer-links a .arrow {
-    margin-left: var(--arrow-spacing);
-}
+    .arrow {
+        margin-left: var(--arrow-spacing);
+    }
 
-/* V4V icon tap target - pseudo-element creates 48x48 clickable area without affecting layout */
-.footer-links a[aria-label="Value for value"] {
-    position: relative;
-}
+    /* V4V icon - pseudo-element creates 48x48 tap target */
+    &[aria-label="Value for value"] {
+        position: relative;
 
-/* Optical alignment - nudge SVG up to align with text x-height */
-.footer-links a[aria-label="Value for value"] svg {
-    vertical-align: middle;
-}
+        svg {
+            vertical-align: middle;
+        }
 
-.footer-links a[aria-label="Value for value"]::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: var(--touch-target-min);
-    height: var(--touch-target-min);
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--touch-target-min);
+            height: var(--touch-target-min);
+        }
+    }
 }
 
 /* ==========================================================================
@@ -788,13 +753,9 @@ body > .container > footer {
     }
 }
 
-/* Section Label Variants:
-   - .section-label-small: Subtle dividers (--font-sm, --text-subtle)
-     Use for: "Latest Essay", "Topics", "Recent Essays" headers
-   - .section-label-medium: Prominent groupings (--font-base, --text-secondary)
-     Use for: Year headers in essay/note lists
-
-   Both use: Satoshi, uppercase, wide letter-spacing, medium weight */
+/* Section Labels: Subtle dividers (--font-sm, --text-subtle)
+   Use for: "Latest Essay", "Topics", "Recent Essays" headers
+   Satoshi, uppercase, wide letter-spacing, medium weight */
 .essay-section-header,
 .section-label-small,
 .topics h4 {
@@ -877,9 +838,8 @@ body > .container > footer {
     margin-top: 0;
 }
 
-/* Keep section-label-medium different (year headers in notes) */
-.recent-notes h3,
-.section-label-medium {
+/* Year headers in notes section */
+.recent-notes h3 {
     font-family: var(--font-heading);
     font-size: var(--font-base);
     font-weight: var(--font-weight-medium);
@@ -890,8 +850,7 @@ body > .container > footer {
     margin-top: var(--space-xl);
 }
 
-.recent-notes h3:first-child,
-.section-label-medium:first-child {
+.recent-notes h3:first-child {
     margin-top: 0;
 }
 
@@ -1136,15 +1095,8 @@ html[data-theme="dark"] .note-list-hero {
     margin-bottom: 0;
 }
 
-.all-essays,
-.all-notes {
+.all-essays {
     margin-top: var(--space-md);  /* 16px - matches section heading spacing */
-}
-
-.topic-count {
-    color: var(--text-meta);
-    font-size: var(--font-sm);
-    margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
 }
 
 /* Writing stream — uniform title-only list
@@ -1182,10 +1134,6 @@ html[data-theme="dark"] .note-list-hero {
         &:hover {
             color: var(--brand-orange);
         }
-    }
-
-    .topic-item:last-child .topic-sep {
-        display: none;
     }
 
     .topic-sep {
@@ -1286,7 +1234,7 @@ html[data-theme="dark"] .note-list-hero {
 }
 
 .page-meta-separator {
-    opacity: 0.5;
+    opacity: var(--opacity-subtle);
 }
 
 /* Essay/note titles - medium weight, size provides hierarchy */
@@ -1811,13 +1759,6 @@ a.back-link:hover {
     margin-bottom: 0;
 }
 
-/* Page Content Wrappers
-   -------------------------------------------------- */
-
-.page-content {
-    max-width: var(--content-max-width);
-}
-
 /* Page body - HR and CTA closing section */
 .page-body hr {
     margin: var(--space-xl) 0 var(--space-lg) 0;
@@ -2051,7 +1992,7 @@ html[data-theme="dark"] .latest-essay p {
 @media print {
     /* Hide non-content elements */
     body::before, nav, footer, .topic-tags,
-    .skip-link, .keyboard-help-overlay, .copy-btn {
+    .skip-link, .keyboard-help-overlay {
         display: none !important;
     }
 
@@ -2200,8 +2141,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     }
 
     /* CTA has no extra margin - last visible item's margin provides the gap */
-    .all-essays,
-    .all-notes {
+    .all-essays {
         margin-top: 0;
     }
 
@@ -2269,10 +2209,10 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     color: var(--brand-orange);
     text-decoration: none;
     cursor: pointer;
-}
 
-#share-essay:hover {
-    text-decoration: underline;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .amount-selection {
@@ -2298,35 +2238,35 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     font-variant-numeric: tabular-nums;
     color: var(--text-primary);
     transition: border-color var(--transition-fast), color var(--transition-fast);
-}
 
-.amount-btn:hover {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
-}
+    &:hover {
+        border-color: var(--brand-orange);
+        color: var(--brand-orange);
+    }
 
-.amount-btn:active {
-    transform: translateY(1px);
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &:disabled {
+        opacity: var(--opacity-disabled);
+        cursor: not-allowed;
+
+        &:hover {
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+    }
 }
 
 .amount-btn--suggested {
     border-color: var(--brand-orange);
     color: var(--brand-orange);
-}
 
-.amount-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.amount-btn:disabled:hover {
-    border-color: var(--border-color);
-    color: var(--text-primary);
-}
-
-.amount-btn--suggested:disabled {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
+    &:disabled {
+        border-color: var(--brand-orange);
+        color: var(--brand-orange);
+    }
 }
 
 .custom-amount-label {
@@ -2355,37 +2295,39 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     width: calc((100% - 3 * var(--space-sm)) / 4);
     text-align: right;
     transition: border-color var(--transition-fast);
-}
 
-.custom-amount-input:focus {
-    outline: none;
-    border-bottom-color: var(--brand-orange);
-}
+    &:focus {
+        outline: none;
+        border-bottom-color: var(--brand-orange);
+    }
 
-.custom-amount-input::placeholder {
-    color: var(--text-meta);
-    opacity: 0.5;
+    &::placeholder {
+        color: var(--text-meta);
+        opacity: var(--opacity-subtle);
+    }
+
+    &:disabled {
+        opacity: var(--opacity-disabled);
+        cursor: not-allowed;
+    }
 }
 
 /* Note: .custom-amount-btn base styles consolidated in Button System section */
 
-.custom-amount-btn:active {
-    transform: translateY(1px);
-}
+.custom-amount-btn {
+    &:active {
+        transform: translateY(1px);
+    }
 
-.custom-amount-input:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
+    &:disabled {
+        opacity: var(--opacity-disabled);
+        cursor: not-allowed;
 
-.custom-amount-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.custom-amount-btn:disabled:hover {
-    border-color: var(--text-meta);
-    color: var(--text-meta);
+        &:hover {
+            border-color: var(--text-meta);
+            color: var(--text-meta);
+        }
+    }
 }
 
 .validation-error {
@@ -2402,12 +2344,12 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     border-radius: var(--border-radius-md);
     margin-bottom: var(--space-xl);
     animation: v4v-fadeIn var(--transition-base) ease-out;
-}
 
-.error-display .error-message {
-    color: var(--brand-orange);
-    font-size: var(--font-base);
-    margin-bottom: var(--space-lg);
+    .error-message {
+        color: var(--brand-orange);
+        font-size: var(--font-base);
+        margin-bottom: var(--space-lg);
+    }
 }
 
 /* Note: .error-dismiss-btn base styles consolidated in Button System section */
@@ -2435,6 +2377,13 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     display: flex;
     align-items: center;
     justify-content: center;
+
+    canvas {
+        display: block;
+        margin: 0 auto;
+        box-shadow: var(--shadow-content-light);
+        transition: box-shadow var(--transition-fast);
+    }
 }
 
 /* Center loading text in full card during loading state */
@@ -2471,15 +2420,15 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     font-size: var(--font-base);
     margin: 0;
     text-decoration: none;
-}
 
-.qr-loading.polling {
-    animation: v4v-pulse 2s ease-in-out infinite;
+    &.polling {
+        animation: v4v-pulse 2s ease-in-out infinite;
+    }
 }
 
 @keyframes v4v-pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    50% { opacity: var(--opacity-subtle); }
 }
 
 .polling-status {
@@ -2489,21 +2438,17 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     animation: v4v-pulse 2s ease-in-out infinite;
 }
 
-.qr-code canvas {
-    display: block;
-    margin: 0 auto;
-    box-shadow: var(--shadow-content-light);
-    transition: box-shadow var(--transition-fast);
-}
-
-a.qr-link,
-a.qr-link:hover {
+.qr-link {
     cursor: pointer;
     text-decoration: none;
-}
 
-.qr-link:hover .qr-code canvas {
-    box-shadow: 0 0 0 3px var(--brand-orange);
+    &:hover {
+        text-decoration: none;
+
+        .qr-code canvas {
+            box-shadow: 0 0 0 3px var(--brand-orange);
+        }
+    }
 }
 
 .qr-hint {
@@ -2552,10 +2497,10 @@ a.qr-link:hover {
     text-decoration: underline;
     padding: 0;
     transition: color var(--transition-fast);
-}
 
-.qr-copy-link:hover {
-    color: var(--brand-orange);
+    &:hover {
+        color: var(--brand-orange);
+    }
 }
 
 /* Note: .qr-cancel-btn base styles consolidated in Button System section */
@@ -2584,31 +2529,31 @@ a.qr-link:hover {
 
 .v4v-details {
     margin-top: var(--space-lg);
-}
 
-.v4v-details summary {
-    cursor: pointer;
-    font-size: var(--font-base);
-    color: var(--text-meta);
-    font-weight: var(--font-weight-medium);
-    transition: color var(--transition-fast);
-    list-style-position: outside;
-    list-style: none;
-}
+    summary {
+        cursor: pointer;
+        font-size: var(--font-base);
+        color: var(--text-meta);
+        font-weight: var(--font-weight-medium);
+        transition: color var(--transition-fast);
+        list-style-position: outside;
+        list-style: none;
 
-.v4v-details summary::marker {
-    display: none;
-}
+        &::marker {
+            display: none;
+        }
 
-.v4v-details summary:hover {
-    color: var(--brand-orange);
-}
+        &:hover {
+            color: var(--brand-orange);
+        }
+    }
 
-.v4v-details p {
-    margin-top: var(--space-md);
-    font-size: var(--font-base);
-    color: var(--text-secondary);
-    line-height: var(--line-height-body);
+    p {
+        margin-top: var(--space-md);
+        font-size: var(--font-base);
+        color: var(--text-secondary);
+        line-height: var(--line-height-body);
+    }
 }
 
 
