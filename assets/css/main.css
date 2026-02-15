@@ -971,6 +971,18 @@ body > .container > footer {
     margin-bottom: var(--space-lg);
 }
 
+.page-intro {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    line-height: var(--line-height-body);
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-lg);
+
+    p {
+        margin: 0;
+    }
+}
+
 /* Content containers: margin-top collapses with meta/subtitle margin-bottom when present */
 .page-body,
 .topics,
@@ -1100,7 +1112,7 @@ time.note-date,
     height: auto;
     aspect-ratio: 16 / 9;  /* Match single essay page hero images */
     display: block;
-    border-radius: var(--border-radius-card);  /* 12px - matches card rounding */
+    border-radius: 0;  /* Sharp edges — matches single-page essay hero */
 }
 
 /* Dark mode: warm tint filter for list hero images */
@@ -1138,6 +1150,110 @@ html[data-theme="dark"] .note-list-hero {
     color: var(--text-meta);
     font-size: var(--font-sm);
     margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
+}
+
+/* Writing list — unified chronological listing (mixed essays + notes)
+   Two tiers: hero blocks (image + title + description) as visual anchors,
+   text-only rows (date + title) as scannable index entries.
+   -------------------------------------------------- */
+.writing-list {
+    margin-top: var(--space-lg);
+}
+
+/* Hero items — immersive visual blocks */
+.writing-list .essay-item.has-hero,
+.writing-list .note-item.has-hero {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-xl);
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    .essay-title-link,
+    .note-title-link {
+        display: block;
+        color: var(--text-primary);
+        text-decoration: none;
+        margin-bottom: var(--space-xs);
+
+        &:hover {
+            color: var(--brand-orange);
+        }
+    }
+
+    .essay-title,
+    .note-title {
+        font-size: var(--font-2xl);
+        font-weight: var(--font-weight-semibold);
+    }
+
+    .essay-excerpt,
+    .note-excerpt {
+        font-size: var(--font-base);
+    }
+}
+
+/* Text-only items — horizontal ruled index rows */
+.writing-list .essay-item:not(.has-hero),
+.writing-list .note-item:not(.has-hero) {
+    padding-block: var(--space-md);
+    margin-bottom: 0;
+    border-bottom: var(--border-subtle);
+
+    a {
+        flex-direction: row;
+        gap: var(--space-lg);
+        align-items: baseline;
+    }
+
+    .essay-date,
+    .note-date {
+        font-size: var(--font-sm);
+        margin-bottom: 0;
+        white-space: nowrap;
+    }
+
+    .essay-title,
+    .note-title {
+        font-size: var(--font-lg);
+        font-weight: var(--font-weight-medium);
+    }
+}
+
+/* Drop border when a text-only row precedes a hero block — clean transition */
+.writing-list article:not(.has-hero):has(+ .has-hero) {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Last item — clean finish */
+.writing-list .essay-item:last-child,
+.writing-list .note-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+/* Writing nav — topics + pagination
+   -------------------------------------------------- */
+.writing-nav {
+    display: block;
+    margin-top: var(--space-xl);
+    border-top: var(--border-subtle);
+    padding-top: var(--space-lg);
+}
+
+.writing-nav .topic-tags {
+    margin-bottom: var(--space-md);
+}
+
+.writing-nav-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-sm);
+    gap: var(--space-md);
 }
 
 /* Single Essay/Note Page
@@ -1725,7 +1841,7 @@ a.back-link:hover {
    -------------------------------------------------- */
 
 .pagination {
-    margin-top: var(--space-2xl);
+    margin-top: var(--space-lg);
     display: flex;
     justify-content: space-between;
     align-items: center;
