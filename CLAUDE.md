@@ -28,7 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Sites track master branch via Hugo Modules (no version tags required)
 - When making CSS fixes: commit to master → push to GitHub
 - "Ship it" for theme repo means: commit + push
-- GitHub Actions automatically runs `hugo mod get -u` in both consuming sites
+- After pushing, manually update consuming sites (create branch, `go get`, PR)
 
 **ALWAYS USE DESIGN TOKENS - NEVER HARDCODE VALUES**
 
@@ -266,7 +266,7 @@ Shawnyeager-notes (notes site):
 2. Make changes to theme files
 3. Refresh browser - changes appear instantly
 4. Commit theme changes when ready
-5. Push to master to trigger automated site updates
+5. Push to master, then manually update consuming sites
 
 **Important:** Never commit replace directives to site repos - they break Netlify builds.
 
@@ -339,18 +339,25 @@ cd ~/Work/shawnyeager/shawnyeager-com && git pull && grep tangerine-theme go.mod
 cd ~/Work/shawnyeager/shawnyeager-notes && git pull && grep tangerine-theme go.mod
 ```
 
-**Manual override ONLY if workflow fails:**
+**Updating consuming sites after theme push:**
 
-If workflow doesn't create PR:
-1. Check workflow status: `gh run list --repo shawnyeager/shawnyeager-com`
-2. If failed, manually update and commit go.mod in site repos
+In each site repo:
+```bash
+git checkout -b theme/description
+hugo mod clean
+GOPROXY=direct go get github.com/shawnyeager/tangerine-theme@<commit-hash>
+git add go.mod go.sum
+git commit -m "chore: update theme - description"
+git push -u origin theme/description
+```
+Then create PR via MCP.
 
 ### Version Management
 
 This theme tracks the master branch rather than using version tags:
-- **Deployment:** Sites automatically pull latest master branch changes via GitHub Actions
+- **Deployment:** Sites pull latest master branch changes manually via `go get`
 - **CSS Version Header:** The version comment in `assets/css/main.css` (line 4) can be updated optionally for major changes
-- **No Tagging Required:** Commits to master automatically propagate to consuming sites
+- **No Tagging Required:** Commits to master are pulled into consuming sites manually
 - **Simplicity:** No need to manage version numbers or git tags for routine changes
 
 ### Reverting Theme Changes
