@@ -1156,10 +1156,10 @@ html[data-theme="dark"] .note-list-hero {
     margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
 }
 
-/* Writing stream — Rhythm Break v2 (mixed essays + notes)
-   Essays: accent bar + large title + description — open, substantial
-   Notes: clustered in card containers — enclosed, compact
-   Topics: brand-orange discipline map
+/* Writing stream — mixed essays + notes
+   Essays: reuse .latest-essay h3/a pattern (shared rule above)
+   Notes: reuse .note-item pattern, scoped overrides in .writing-notes-cluster
+   Topics: uppercase nav links at top
    -------------------------------------------------- */
 .writing-stream {
     margin-top: var(--space-lg);
@@ -1224,6 +1224,14 @@ html[data-theme="dark"] .note-list-hero {
 
 .writing-notes-cluster {
     margin-bottom: var(--section-gap);
+
+    .note-item {
+        margin-bottom: var(--space-sm);
+    }
+
+    .note-title {
+        font-size: var(--font-lg);
+    }
 }
 
 .writing-pagination {
