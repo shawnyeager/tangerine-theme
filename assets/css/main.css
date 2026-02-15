@@ -1195,22 +1195,42 @@ html[data-theme="dark"] .note-list-hero {
     }
 }
 
-/* Writing stream items — uniform title-only list */
+/* Writing stream items — editorial index */
 .writing-item {
-    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    border-bottom: var(--border-subtle);
+
+    &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
 
     a {
-        font-family: var(--font-heading);
-        font-size: var(--font-xl);
-        font-weight: var(--font-weight-medium);
-        line-height: var(--line-height-heading);
-        color: var(--text-primary);
+        display: block;
         text-decoration: none;
 
-        &:hover {
+        &:hover .writing-item-title {
             color: var(--brand-orange);
         }
     }
+}
+
+.writing-item-title {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: var(--font-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-heading);
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.writing-item-desc {
+    display: block;
+    font-size: var(--font-base);
+    line-height: var(--line-height-body);
+    color: var(--text-secondary);
 }
 
 .writing-pagination {
