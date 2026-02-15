@@ -159,7 +159,7 @@ h1 {
 }
 
 .home-link:hover .home-square {
-    opacity: 0.8;
+    opacity: var(--opacity-high);
 }
 
 /* Homepage display title - large, prominent headline */
@@ -596,7 +596,7 @@ body > .container > footer {
 
 .email-form input[type="email"]::placeholder {
     color: var(--text-meta);
-    opacity: 0.5;
+    opacity: var(--opacity-subtle);
 }
 
 /* Email form button now uses .btn-ghost.btn-ghost--muted */
@@ -1243,7 +1243,7 @@ html[data-theme="dark"] .note-list-hero {
 }
 
 .page-meta-separator {
-    opacity: 0.5;
+    opacity: var(--opacity-subtle);
 }
 
 /* Essay/note titles - medium weight, size provides hierarchy */
@@ -2265,7 +2265,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 .amount-btn:disabled {
-    opacity: 0.4;
+    opacity: var(--opacity-disabled);
     cursor: not-allowed;
 }
 
@@ -2314,7 +2314,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
 .custom-amount-input::placeholder {
     color: var(--text-meta);
-    opacity: 0.5;
+    opacity: var(--opacity-subtle);
 }
 
 /* Note: .custom-amount-btn base styles consolidated in Button System section */
@@ -2324,12 +2324,12 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 .custom-amount-input:disabled {
-    opacity: 0.4;
+    opacity: var(--opacity-disabled);
     cursor: not-allowed;
 }
 
 .custom-amount-btn:disabled {
-    opacity: 0.4;
+    opacity: var(--opacity-disabled);
     cursor: not-allowed;
 }
 
@@ -2429,7 +2429,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
 @keyframes v4v-pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    50% { opacity: var(--opacity-subtle); }
 }
 
 .polling-status {
