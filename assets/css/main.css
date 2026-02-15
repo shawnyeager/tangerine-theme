@@ -115,14 +115,15 @@ h1 {
     letter-spacing: var(--letter-spacing-tight-lg);
 }
 
-/* Brand square in header - home link */
+/* Brand square in header - home link
+   Padding expands tap target to 48x48; negative margin cancels layout shift */
 .home-link {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    min-width: var(--touch-target-min);
-    min-height: var(--touch-target-min);
+    padding: var(--space-sm);
+    margin: calc(-1 * var(--space-sm));
 }
 
 /* Home square - solid orange (default for .com) */
