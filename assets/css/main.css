@@ -311,7 +311,7 @@ select:focus-visible,
 
 /* Link Hierarchy System - Intent-based link categories
 
-   PRIMARY CTAs (.action-link, .back-link, .all-essays, .all-notes)
+   PRIMARY CTAs (.action-link, .back-link, .all-essays)
    - Orange with arrows (→ or ←), color lightens on hover
    - Display: inline-flex with gap for arrow spacing
 
@@ -323,16 +323,9 @@ select:focus-visible,
    - Orange, underline appears on hover
    ========================================================================== */
 
-/* Shared transition for all branded links (excludes .secondary-link - it has its own underline) */
-:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
-    .pagination-prev, .pagination-next) {
-    text-decoration: none;
-    transition: color var(--transition-fast);
-}
-
-/* Action Links - Primary action links WITH arrows (→)
-   Usage: "Read more →", "All essays →", "Subscribe to newsletter →" */
-:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
+/* Action Links - Primary CTA links with arrows (→ or ←)
+   Usage: "Read more →", "All essays →", "← Back" */
+:is(.action-link, .back-link, .all-essays,
     .pagination-prev, .pagination-next) {
     font-family: var(--font-heading);
     font-size: var(--font-base);
@@ -341,6 +334,8 @@ select:focus-visible,
     display: inline-flex;
     align-items: center;
     gap: 0;
+    text-decoration: none;
+    transition: color var(--transition-fast);
 }
 
 /* Action links: block display for margin control */
@@ -352,7 +347,7 @@ select:focus-visible,
 }
 
 /* Arrow spans in action links: prevent underline */
-:is(.action-link, .back-link, .all-essays, .all-notes,
+:is(.action-link, .back-link, .all-essays,
     .pagination-prev, .pagination-next) span[aria-hidden="true"] {
     text-decoration: none;
 }
@@ -391,15 +386,15 @@ p .action-link {
     margin-top: 0;
 }
 
-/* Hover state for all primary action links - no underline (arrows would be underlined) */
-:is(.action-link, .back-link, .all-essays, .all-notes, .essay-footer a,
+/* Hover state for all primary action links */
+:is(.action-link, .back-link, .all-essays,
     .pagination-prev, .pagination-next):hover {
     color: var(--brand-orange-hover);
     text-decoration: none;
 }
 
 /* Underline link text (not arrow) on hover */
-:is(.action-link, .all-essays, .all-notes, .essay-footer a,
+:is(.action-link, .all-essays,
     .pagination-prev, .pagination-next):hover .link-text {
     text-decoration: underline;
     text-decoration-color: var(--underline-color-brand);
@@ -1103,8 +1098,7 @@ html[data-theme="dark"] .note-list-hero {
     margin-bottom: 0;
 }
 
-.all-essays,
-.all-notes {
+.all-essays {
     margin-top: var(--space-md);  /* 16px - matches section heading spacing */
 }
 
@@ -2150,8 +2144,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     }
 
     /* CTA has no extra margin - last visible item's margin provides the gap */
-    .all-essays,
-    .all-notes {
+    .all-essays {
         margin-top: 0;
     }
 
