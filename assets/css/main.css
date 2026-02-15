@@ -822,7 +822,8 @@ body > .container > footer {
     margin-bottom: var(--space-xs);  /* 8px - tight grouping with topic tags */
 }
 
-.latest-essay {
+.latest-essay,
+.writing-essay {
     margin-bottom: var(--section-gap);  /* 48px - gap to next section */
 
     /* Semantic heading: essay title (h3 under h2 section header) */
@@ -850,7 +851,8 @@ body > .container > footer {
 }
 
 @media (max-width: 600px) {
-    .latest-essay h3 {
+    .latest-essay h3,
+    .writing-essay h3 {
         font-size: var(--font-xl);
     }
 }
@@ -1195,38 +1197,16 @@ html[data-theme="dark"] .note-list-hero {
     }
 }
 
-/* Essay blocks — large type, generous space */
-.writing-essay {
-    margin-bottom: var(--space-2xl);
-}
-
-.writing-essay-title {
-    display: block;
-    font-family: var(--font-heading);
-    font-size: var(--font-2xl);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-title);
-    color: var(--text-primary);
-    text-decoration: none;
-    letter-spacing: var(--letter-spacing-tight-lg);
-
-    &:hover {
-        color: var(--brand-orange);
-    }
-}
-
+/* Writing page — only styles that don't exist elsewhere
+   Essay h3/a styles come from .latest-essay (shared rule above)
+   Note styles come from .note-item/.note-title/.note-date (shared rules above)
+   -------------------------------------------------- */
 .writing-essay-desc {
-    margin-top: var(--space-xs);
-    font-family: var(--font-body);
-    font-size: var(--font-base);
-    font-weight: var(--font-weight-body);
-    line-height: var(--line-height-body);
     color: var(--text-secondary);
 }
 
 .writing-essay-meta {
     margin-top: var(--space-sm);
-    font-family: var(--font-heading);
     font-size: var(--font-sm);
     color: var(--text-meta);
     display: flex;
@@ -1240,47 +1220,10 @@ html[data-theme="dark"] .note-list-hero {
     margin-right: var(--space-sm);
 }
 
-/* Note cluster — groups consecutive notes */
 .writing-notes-cluster {
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--section-gap);
 }
 
-/* Note rows — compact, clearly clickable */
-.writing-note {
-    &:not(:last-child) {
-        margin-bottom: var(--space-xs);
-    }
-
-    a {
-        display: flex;
-        align-items: baseline;
-        gap: var(--space-sm);
-        text-decoration: none;
-        transition: color var(--transition-fast);
-
-        &:hover .writing-note-title {
-            color: var(--brand-orange);
-        }
-    }
-
-    time {
-        font-family: var(--font-heading);
-        font-size: var(--font-sm);
-        color: var(--text-meta);
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-}
-
-.writing-note-title {
-    font-family: var(--font-heading);
-    font-size: var(--font-base);
-    font-weight: var(--font-weight-list-title);
-    color: var(--text-primary);
-    transition: color var(--transition-fast);
-}
-
-/* Writing pagination */
 .writing-pagination {
     margin-top: var(--space-xl);
 }
