@@ -1,28 +1,10 @@
 {{/*
-Purpose: Renders taxonomy pages (topics, tags) with per-page content type support
-
-Parameters: None (uses page and site context)
-
-Context Expected:
-- .Title - Taxonomy term name (e.g., "Bitcoin", "Sales")
-- .Pages - Pages tagged with this taxonomy term
-- .Draft - Draft status for filtering (production only)
-
-Features:
-- Per-page CSS class derivation from .Type (supports mixed essays + notes)
-- Hero images for first 3 items that have them
-- Draft filtering in production (not in hugo server)
-- Item count with singular/plural handling
-- Back link to /writing/ or primary content section
-
-Important Notes:
-- Filters out drafts in production builds
-- CSS classes generated per-page from .Type, not global content_type
-- Date format: "2006 · 01" (year · month)
+Purpose: Renders taxonomy pages (e.g., /topics/bitcoin/)
+Editorial index matching /writing/ — type label, title, description.
 */}}
 
 {{ define "main" }}
-    {{/* Filter drafts in production (defined once, used throughout) */}}
+    {{/* Filter drafts in production */}}
     {{ $pages := .Pages }}
     {{ if not hugo.IsServer }}
         {{ $pages = where $pages "Draft" false }}
@@ -30,60 +12,20 @@ Important Notes:
 
     {{/* Page title */}}
     <h1 class="page-title">{{ .Title }}</h1>
-    <div class="topic-count">{{ len $pages }} {{ if eq (len $pages) 1 }}piece{{ else }}pieces{{ end }} on this topic</div>
 
-    <section class="essay-list full-list">
-        {{ range $index, $page := $pages }}
-        {{/* Derive CSS classes per-page from content type */}}
-        {{ $singular := cond (eq .Type "notes") "note" "essay" }}
-        {{ $itemClass := printf "%s-item" $singular }}
-        {{ $titleClass := printf "%s-title" $singular }}
-        {{ $dateClass := printf "%s-date" $singular }}
-        <article class="{{ $itemClass }} has-excerpt">
-            {{/* Hero images for first 3 items that have them */}}
-            {{ if and (lt $index 3) .Params.hero_image }}
-                {{ $img := resources.Get .Params.hero_image }}
-                {{ if $img }}
-                    {{ $resized := $img.Resize "800x" }}
-                    {{ $webp := $resized.Process "webp q85" }}
-                    <a href="{{ .RelPermalink }}" class="{{ printf "%s-hero-link" $singular }}">
-                        <img
-                            src="{{ $webp.RelPermalink }}"
-                            alt="{{ .Params.hero_alt | default .Title }}"
-                            class="{{ printf "%s-list-hero" $singular }}"
-                            {{ if eq $index 0 }}fetchpriority="high"{{ else }}loading="lazy"{{ end }}
-                            width="{{ $resized.Width }}"
-                            height="{{ $resized.Height }}"
-                        >
-                    </a>
-                {{ end }}
-            {{ end }}
-
-            {{ if and (lt $index 3) .Params.hero_image }}
-                {{/* First 3 with images: No date (recency implied by position) */}}
-                <a href="{{ .RelPermalink }}" class="{{ printf "%s-title-link" $singular }}">
-                    <span class="{{ $titleClass }}">{{ .Title }}</span>
-                </a>
-            {{ else }}
-                {{/* Items without hero or 4+: Date before title */}}
-                <a href="{{ .RelPermalink }}">
-                    <time datetime="{{ .Date.Format "2006-01-02" }}" class="{{ $dateClass }}">{{ .Date.Format "2006 · 01" }}</time>
-                    <span class="{{ $titleClass }}">{{ .Title }}</span>
-                </a>
-            {{ end }}
-            {{ with .Params.description }}<p class="{{ printf "%s-excerpt" $singular }}">{{ . }}</p>{{ end }}
+    <section class="writing-stream">
+        {{ range $pages }}
+        <article class="writing-item">
+            <a href="{{ .RelPermalink }}">
+                <span class="writing-item-title">{{ .Title }} <span class="writing-item-type">{{ .Type | singularize }}</span></span>
+                {{ with .Params.description }}<span class="writing-item-desc">{{ . }}</span>{{ end }}
+            </a>
         </article>
         {{ end }}
     </section>
 
-    {{/* Back link — use /writing/ if it exists in the menu, otherwise primary content section */}}
-    {{ $backURL := printf "/%s/" (.Site.Params.content_type | default "essays") }}
-    {{ $backText := printf "All %s" (.Site.Params.content_type | default "essays") }}
-    {{ range .Site.Menus.main }}
-        {{ if eq .URL "/writing/" }}
-            {{ $backURL = "/writing/" }}
-            {{ $backText = "All writing" }}
-        {{ end }}
-    {{ end }}
+    {{/* Back link */}}
+    {{ $backURL := "/writing/" }}
+    {{ $backText := "All writing" }}
     {{- partial "content-nav.html" (dict "back_url" ($backURL | relURL) "back_text" $backText) -}}
 {{ end }}

@@ -978,7 +978,7 @@ body > .container > footer {
     font-size: var(--font-base);
     line-height: var(--line-height-body);
     margin-top: var(--space-xs);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
 
     p {
         margin: 0;
@@ -1161,6 +1161,10 @@ html[data-theme="dark"] .note-list-hero {
     margin-top: var(--space-lg);
 }
 
+.page-title + .writing-stream {
+    margin-top: var(--space-xl);
+}
+
 /* Topic navigation — brand-orange discipline map */
 .writing-topics {
     display: flex;
@@ -1199,7 +1203,7 @@ html[data-theme="dark"] .note-list-hero {
 .writing-item {
     padding-bottom: var(--space-lg);
     margin-bottom: var(--space-lg);
-    border-bottom: var(--border-subtle);
+    border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 25%, transparent);
 
     &:last-child {
         border-bottom: none;
@@ -1226,6 +1230,16 @@ html[data-theme="dark"] .note-list-hero {
     margin-bottom: var(--space-xs);
 }
 
+.writing-item-type {
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    margin-left: var(--space-sm);
+    vertical-align: baseline;
+}
+
 .writing-item-desc {
     display: block;
     font-size: var(--font-base);
@@ -1233,8 +1247,9 @@ html[data-theme="dark"] .note-list-hero {
     color: var(--text-secondary);
 }
 
-.writing-pagination {
-    margin-top: var(--space-xl);
+.writing-pagination,
+.writing-stream + .content-nav {
+    margin-top: var(--space-md);
 }
 
 /* Single Essay/Note Page
