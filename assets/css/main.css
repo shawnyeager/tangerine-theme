@@ -824,8 +824,7 @@ body > .container > footer {
     margin-bottom: var(--space-xs);  /* 8px - tight grouping with topic tags */
 }
 
-.latest-essay,
-.writing-essay {
+.latest-essay {
     margin-bottom: var(--section-gap);  /* 48px - gap to next section */
 
     /* Semantic heading: essay title (h3 under h2 section header) */
@@ -853,8 +852,7 @@ body > .container > footer {
 }
 
 @media (max-width: 600px) {
-    .latest-essay h3,
-    .writing-essay h3 {
+    .latest-essay h3 {
         font-size: var(--font-xl);
     }
 }
@@ -1156,9 +1154,7 @@ html[data-theme="dark"] .note-list-hero {
     margin-bottom: var(--space-lg);  /* 24px - clear separation to essay list */
 }
 
-/* Writing stream — mixed essays + notes
-   Essays: reuse .latest-essay h3/a pattern (shared rule above)
-   Notes: reuse .note-item pattern, scoped overrides in .writing-notes-cluster
+/* Writing stream — uniform title-only list
    Topics: uppercase nav links at top
    -------------------------------------------------- */
 .writing-stream {
@@ -1199,38 +1195,21 @@ html[data-theme="dark"] .note-list-hero {
     }
 }
 
-/* Writing page — only styles that don't exist elsewhere
-   Essay h3/a styles come from .latest-essay (shared rule above)
-   Note styles come from .note-item/.note-title/.note-date (shared rules above)
-   -------------------------------------------------- */
-.writing-essay-desc {
-    color: var(--text-secondary);
-}
+/* Writing stream items — uniform title-only list */
+.writing-item {
+    margin-bottom: var(--space-md);
 
-.writing-essay-meta {
-    margin-top: var(--space-sm);
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 var(--space-sm);
-    align-items: baseline;
-}
+    a {
+        font-family: var(--font-heading);
+        font-size: var(--font-xl);
+        font-weight: var(--font-weight-medium);
+        line-height: var(--line-height-heading);
+        color: var(--text-primary);
+        text-decoration: none;
 
-.writing-essay-readtime::before {
-    content: "·";
-    margin-right: var(--space-sm);
-}
-
-.writing-notes-cluster {
-    margin-bottom: var(--section-gap);
-
-    .note-item {
-        margin-bottom: var(--space-sm);
-    }
-
-    .note-title {
-        font-size: var(--font-lg);
+        &:hover {
+            color: var(--brand-orange);
+        }
     }
 }
 
