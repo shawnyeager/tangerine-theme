@@ -2119,7 +2119,12 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .container { padding: calc(var(--container-mobile-h-padding) + var(--brand-bar-height)) var(--container-mobile-h-padding) 0; }
     /* Keep header row layout, just tighten nav gap */
     nav { gap: var(--space-md); }
-    .email-form input[type="email"] { max-width: none; }
+    .email-form input[type="email"] {
+        max-width: none;
+        background: transparent;
+        padding-top: var(--space-lg);
+        margin-top: calc(var(--space-xs) - var(--space-lg));
+    }
 
     /* Homepage: show 5 items on mobile (hide 6+) */
     .recent-notes:not(.full-list) .note-item:nth-of-type(n+6),
