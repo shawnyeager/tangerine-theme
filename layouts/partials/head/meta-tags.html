@@ -30,7 +30,7 @@ Context Expected:
   {{- /* Individual pages: Use seo_title if set, else .Title */ -}}
   <title>{{ $metaTitle }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- end -}}
-<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Articles about %s by %s" .Title .Site.Params.author.name }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Writing about %s by %s" .Title .Site.Params.author.name }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <meta name="author" content="{{ .Site.Params.author.name }}">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">

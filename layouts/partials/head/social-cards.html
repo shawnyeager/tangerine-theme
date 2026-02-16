@@ -17,7 +17,7 @@ Context Expected:
 <!-- Open Graph / Social Media -->
 {{- $metaTitle := .Params.seo_title | default .Title -}}
 <meta property="og:title" content="{{ if $metaTitle }}{{ $metaTitle }}{{ else }}{{ .Site.Title }}{{ end }}">
-<meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Articles about %s by %s" .Title .Site.Params.author.name }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Writing about %s by %s" .Title .Site.Params.author.name }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 {{- $ogImageURL := partial "functions/get-og-image.html" . -}}
@@ -62,7 +62,7 @@ Context Expected:
 {{- end -}}
 <meta name="twitter:card" content="{{ $twitterCardType }}">
 <meta name="twitter:title" content="{{ if $metaTitle }}{{ $metaTitle }}{{ else }}{{ .Site.Title }}{{ end }}">
-<meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Articles about %s by %s" .Title .Site.Params.author.name }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Writing about %s by %s" .Title .Site.Params.author.name }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 {{ if $twitterImageURL }}
 <meta name="twitter:image" content="{{ $twitterImageURL }}">
 <meta name="twitter:image:alt" content="{{ if $metaTitle }}{{ $metaTitle }}{{ else }}{{ .Site.Title }}{{ end }}">
