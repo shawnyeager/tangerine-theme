@@ -44,6 +44,9 @@ Context Expected:
 {{- if .Params.topics -}}
 <meta property="article:section" content="{{ index .Params.topics 0 }}">
 {{- end -}}
+{{- range .Params.topics -}}
+<meta property="article:tag" content="{{ . }}">
+{{- end -}}
 {{- range .Params.tags -}}
 <meta property="article:tag" content="{{ . }}">
 {{- end -}}

@@ -30,14 +30,14 @@ Context Expected:
   {{- /* Individual pages: Use seo_title if set, else .Title */ -}}
   <title>{{ $metaTitle }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- end -}}
-<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Articles about %s by %s" .Title .Site.Params.author.name }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <meta name="author" content="{{ .Site.Params.author.name }}">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="{{ .Permalink }}">
 
 <!-- Robots meta tag -->
-<meta name="robots" content="{{ if .Site.Params.noindex }}noindex, nofollow{{ else }}index, follow, max-image-preview:large, max-snippet:-1{{ end }}">
+<meta name="robots" content="{{ if or .Site.Params.noindex .Params.noindex }}noindex, nofollow{{ else }}index, follow, max-image-preview:large, max-snippet:-1{{ end }}">
 
 <!-- Apple web app title -->
 <meta name="apple-mobile-web-app-title" content="{{ .Site.Params.short_name | default .Site.Title }}">
