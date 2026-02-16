@@ -1,6 +1,6 @@
 # Tangerine Theme
 
-Hugo theme module shared between shawnyeager.com and notes.shawnyeager.com. A minimal, flexible theme for essays and notes with clean typography, dark mode support, and parameterized templates.
+Hugo theme module for shawnyeager.com. A minimal, flexible theme for essays and notes with clean typography, dark mode support, and parameterized templates.
 
 ## Features
 
@@ -175,10 +175,6 @@ The theme includes a **`page-title.html` partial** that handles semantic H1 page
 - Essays listing: Hide H1 title (sr-only for accessibility)
 - Feature pages: Use `show_title: true` frontmatter to show title
 
-**Notes site (notes.shawnyeager.com):**
-- Individual notes: Show H1 title (visible)
-- Notes listing: Hide H1 title (sr-only for accessibility)
-
 **Customization:**
 Sites can override `layouts/partials/page-title.html` with custom logic to fit their content structure and accessibility needs.
 
@@ -234,36 +230,6 @@ your-site/
   podcast = "https://podcast.url"
 ```
 
-### Notes Site (notes. subdomain)
-
-```toml
-[params]
-  content_type = "notes"
-  favicon_style = "outlined"
-  noindex = false
-
-  copyright = "Copyright © 2025, Your Name"
-  twitter_handle = "yourhandle"
-
-  show_email_signup = false
-  nostr = "https://nostr.example.com"
-  github = "https://github.com/username"
-  secondary_site_url = "https://www.example.com"
-  secondary_site_name = "Essays"
-
-[params.author]
-  name = "Your Name"
-  email = "hello@example.com"
-  description = "Your professional description"
-  jobTitle = "Your Job Title"
-  image = "/images/author.jpg"
-
-[params.author.sameAs]
-  linkedin = "https://www.linkedin.com/in/username"
-  github = "https://github.com/username"
-  nostr = "https://nostr.example.com"
-```
-
 ## Design System
 
 ### Colors
@@ -316,7 +282,7 @@ Sites use PR-based workflow: preview builds for testing, production builds at me
    cd ~/Work/shawnyeager
    ./theme-dev.sh        # Start both sites
    ./theme-dev.sh com    # Start only Gallery (port 1313)
-   ./theme-dev.sh notes  # Start only Workshop (port 1316)
+   ./theme-dev.sh share  # Start only Portal (port 1319)
 
    # Edit theme files, refresh browser to see changes
    ```
@@ -334,7 +300,6 @@ Sites use PR-based workflow: preview builds for testing, production builds at me
    Theme repo automatically triggers site workflows. PRs appear with deploy previews.
    ```bash
    gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
-   gh pr list --repo shawnyeager/shawnyeager-notes --label theme-update
    ```
 
 4. **Review and merge PRs**:
@@ -348,11 +313,9 @@ Sites use PR-based workflow: preview builds for testing, production builds at me
 ```bash
 # Check PRs created
 gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
-gh pr list --repo shawnyeager/shawnyeager-notes --label theme-update
 
-# After merging, verify sites updated
+# After merging, verify site updated
 cd ~/Work/shawnyeager/shawnyeager-com && git pull && grep tangerine-theme go.mod
-cd ~/Work/shawnyeager/shawnyeager-notes && git pull && grep tangerine-theme go.mod
 ```
 
 See `.github/workflows/auto-theme-update-pr.yml` in site repos for implementation details.
@@ -360,7 +323,7 @@ See `.github/workflows/auto-theme-update-pr.yml` in site repos for implementatio
 ## Sites Using This Theme
 
 - [shawnyeager.com](https://shawnyeager.com) - The Gallery (finished work)
-- [notes.shawnyeager.com](https://notes.shawnyeager.com) - The Workshop (notes)
+- [share.shawnyeager.com](https://share.shawnyeager.com) - The Portal (private deliverables)
 
 ## License
 

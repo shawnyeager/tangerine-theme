@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **NEVER PUSH TO GITHUB WITHOUT EXPLICIT PERMISSION**
 
 - Do NOT run `git push` without the user explicitly saying "push" or "ship it"
-- This applies to ALL repositories: tangerine-theme, shawnyeager-com, shawnyeager-notes
+- This applies to ALL repositories: tangerine-theme, shawnyeager-com, shawnyeager-share
 - Commits are fine. But NEVER push without permission.
 - When the user says "ship it", that means push. Otherwise, ASK FIRST.
 
@@ -52,7 +52,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # tangerine-theme
 
-**Shared Hugo theme module for shawnyeager.com and shawnyeager.notes**
+**Shared Hugo theme module for shawnyeager.com and share.shawnyeager.com**
 
 ## Architecture Overview
 
@@ -62,7 +62,7 @@ This is a **Hugo theme module** - it cannot run standalone and has no content of
 - Common partials (header, footer, navigation, page-title)
 - Parameterized templates that adapt based on site configuration
 
-Both .com (The Gallery) and .notes (The Workshop) sites import this module via Hugo Modules.
+Both .com (The Gallery) and share (The Portal) sites import this module via Hugo Modules.
 
 **Key Architecture Pattern:**
 Templates use Hugo parameters to adapt behavior (e.g., `content_type` switches between "essays" and "notes" terminology). This allows one theme to serve multiple sites with different content types while maintaining consistent design.
@@ -166,7 +166,7 @@ The theme provides shared parameters that are automatically merged into consumin
 
 ## How Sites Use This Theme
 
-Both sites import this theme via Hugo Modules in their `hugo.toml`:
+Sites import this theme via Hugo Modules in their `hugo.toml`:
 
 ```toml
 [module]
@@ -213,11 +213,6 @@ Sites using this theme must configure these parameters in their `hugo.toml`:
 **.com site overrides:**
 - `layouts/index.html` - Custom homepage with bio, latest essay, podcast, topics
 - `layouts/essays/` - Essay-specific templates
-- `layouts/partials/page-title.html` - Override to show/hide page titles
-
-**.notes site overrides:**
-- `layouts/index.html` - Simple homepage with workshop intro
-- `layouts/notes/` - Note-specific templates
 - `layouts/partials/page-title.html` - Override to show/hide page titles
 
 ## Page Title Visibility System (page-title.html)
@@ -281,9 +276,9 @@ Shawnyeager-notes (notes site):
 ```bash
 # Start dev servers using the theme-dev.sh script
 cd ~/Work/shawnyeager
-./theme-dev.sh        # Start both sites
+./theme-dev.sh        # Start Gallery (port 1313)
 ./theme-dev.sh com    # Start only Gallery (port 1313)
-./theme-dev.sh notes  # Start only Workshop (port 1316)
+./theme-dev.sh share  # Start only Portal (port 1319)
 
 # Make changes to theme
 cd ~/Work/shawnyeager/tangerine-theme
@@ -311,7 +306,6 @@ git push origin master
 ```bash
 # Trigger in both sites (or wait for daily cron at 9am UTC)
 gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
-gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
 ```
 
 **GitHub Actions workflow:**
@@ -332,11 +326,9 @@ gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
 ```bash
 # Check workflow created PRs
 gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
-gh pr list --repo shawnyeager/shawnyeager-notes --label theme-update
 
 # After merging PRs, verify production updated
 cd ~/Work/shawnyeager/shawnyeager-com && git pull && grep tangerine-theme go.mod
-cd ~/Work/shawnyeager/shawnyeager-notes && git pull && grep tangerine-theme go.mod
 ```
 
 **Updating consuming sites after theme push:**
@@ -372,7 +364,6 @@ git push --force origin master
 
 # 2. Trigger PR workflows to update sites
 gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
-gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
 
 # 3. Review PRs with reverted theme
 # 4. Merge when satisfied
@@ -389,7 +380,7 @@ gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-notes
 When making CSS or layout changes:
 - ✅ Test light and dark mode
 - ✅ Test responsive (mobile, tablet, desktop)
-- ✅ Test both .com and .notes sites
+- ✅ Test .com site (and share site if applicable)
 - ✅ Verify WCAG AA contrast compliance for color changes
 - ✅ Verify page-title partial works with consuming site overrides
 
@@ -400,12 +391,6 @@ When making CSS or layout changes:
   - Imports this theme
   - Overrides: homepage, essays templates, page-title partial
 
-- **shawnyeager-notes**: The Workshop (notes/WIP)
-  - `github.com/shawnyeager/shawnyeager-notes`
-  - Imports this theme
-  - Overrides: homepage, notes templates, page-title partial
-  - Indexed by search engines (noindex = false)
-
 ## Testing Locally
 
 **This theme cannot be run standalone.** It must be tested through one of the sites that use it.
@@ -415,9 +400,9 @@ When making CSS or layout changes:
 ```bash
 # Start dev servers (handles replace directive and cache clearing)
 cd ~/Work/shawnyeager
-./theme-dev.sh        # Start both sites
+./theme-dev.sh        # Start Gallery (port 1313)
 ./theme-dev.sh com    # Start only Gallery (port 1313)
-./theme-dev.sh notes  # Start only Workshop (port 1316)
+./theme-dev.sh share  # Start only Portal (port 1319)
 
 # Make changes to theme files
 # Refresh browser - changes appear instantly

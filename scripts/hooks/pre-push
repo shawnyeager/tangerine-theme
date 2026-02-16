@@ -48,12 +48,12 @@ fi
 if [ "$BRANCH" = "master" ]; then
     echo -e "${GREEN}After push, GitHub Actions will automatically:${NC}"
     echo "  1. Trigger site update workflows"
-    echo "  2. Create PRs in shawnyeager-com and shawnyeager-notes"
+    echo "  2. Create PRs in shawnyeager-com and shawnyeager-share"
     echo "  3. Build FREE deploy previews"
     echo ""
     echo "Check PRs in ~3 minutes:"
     echo "  gh pr list --repo shawnyeager/shawnyeager-com --label theme-update"
-    echo "  gh pr list --repo shawnyeager/shawnyeager-notes --label theme-update"
+    echo "  gh pr list --repo shawnyeager/shawnyeager-share --label theme-update"
 fi
 
 echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
