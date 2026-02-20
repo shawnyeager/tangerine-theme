@@ -2,9 +2,10 @@
   V4V Page Template - layouts/v4v/single.html
   Bitcoin payment page with amount selection and QR generation
 
-  Works for both:
-  - General /v4v/ page (no essay context)
-  - Per-essay /essay-slug/v4v/ pages (with essay context from content adapter)
+  Works for:
+  - General /v4v/ page (no content context)
+  - Per-essay /essay-slug/v4v/ pages (content_type: essay)
+  - Per-note /notes/note-slug/v4v/ pages (content_type: note)
 
   Configuration:
   - Site param `v4v_api_base` controls API endpoint base URL
@@ -13,15 +14,16 @@
 */}}
 
 {{ define "main" }}
-{{ $essaySlug := .Params.essay_slug | default "" }}
-{{ $essayTitle := .Params.essay_title | default "" }}
-{{ $hasEssay := ne $essaySlug "" }}
+{{ $contentSlug := .Params.content_slug | default .Params.essay_slug | default "" }}
+{{ $contentTitle := .Params.content_title | default .Params.essay_title | default "" }}
+{{ $contentType := .Params.content_type | default "essay" }}
+{{ $hasContent := ne $contentSlug "" }}
 {{ $apiBase := .Site.Params.v4v_api_base | default "" }}
 
 <article class="v4v-page">
   <div class="v4v-content">
     <p class="v4v-intro">
-      {{ if $hasEssay }}Found value? Give value back—or <a href="#" id="share-essay">share it</a>.{{ else }}Found value? Give value back.{{ end }}
+      {{ if $hasContent }}Found value? Give value back—or <a href="#" id="share-essay">share it</a>.{{ else }}Found value? Give value back.{{ end }}
     </p>
 
     <!-- Amount Selection (replaced by QR when amount selected) -->
@@ -80,8 +82,10 @@
       <p class="payment-thanks">Thank you for supporting this work.</p>
     </div>
 
-    {{ if $hasEssay }}
-    {{- partial "content-nav.html" (dict "back_url" (printf "/%s/" $essaySlug) "back_text" "Back to essay") -}}
+    {{ if $hasContent }}
+    {{ $backUrl := cond (eq $contentType "note") (printf "/notes/%s/" $contentSlug) (printf "/%s/" $contentSlug) }}
+    {{ $backText := cond (eq $contentType "note") "Back to note" "Back to essay" }}
+    {{- partial "content-nav.html" (dict "back_url" $backUrl "back_text" $backText) -}}
     {{ end }}
 
     <!-- V4V Info -->
@@ -99,8 +103,9 @@
 import QRCode from 'https://esm.sh/qrcode@1.5.3';
 
 // Configuration
-const essaySlug = "{{ $essaySlug }}";
-const essayTitle = "{{ $essayTitle }}";
+const contentSlug = "{{ $contentSlug }}";
+const contentTitle = "{{ $contentTitle }}";
+const contentType = "{{ $contentType }}";
 const apiBase = "{{ $apiBase }}";
 const config = {
   lnurlEndpoint: `${apiBase}/.well-known/lnurlp/sats`,
@@ -123,8 +128,8 @@ let state = {
 };
 
 // Persist state to sessionStorage (survives mobile app switching)
-// Include essay slug in key so each V4V page has its own state
-const STORAGE_KEY = `v4v_payment_state_${essaySlug || 'general'}`;
+// Include content slug in key so each V4V page has its own state
+const STORAGE_KEY = `v4v_payment_state_${contentSlug || 'general'}`;
 
 function savePaymentState() {
   const persistedState = {
@@ -176,17 +181,19 @@ const elements = {
 
 // Share essay URL (Web Share API with clipboard fallback)
 // Always share to primary domain (shawnyeager.com)
-if (elements.shareBtn && essaySlug) {
-  const essayUrl = `https://shawnyeager.com/${essaySlug}/`;
+if (elements.shareBtn && contentSlug) {
+  const contentUrl = contentType === 'note'
+    ? `https://shawnyeager.com/notes/${contentSlug}/`
+    : `https://shawnyeager.com/${contentSlug}/`;
 
   elements.shareBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     if (navigator.share) {
       // Mobile/native share sheet
-      await navigator.share({ title: essayTitle, url: essayUrl });
+      await navigator.share({ title: contentTitle, url: contentUrl });
     } else {
       // Fallback: copy URL to clipboard with visual feedback
-      await navigator.clipboard.writeText(essayUrl);
+      await navigator.clipboard.writeText(contentUrl);
       elements.shareBtn.textContent = 'copied';
       setTimeout(() => elements.shareBtn.textContent = 'share it', 2000);
     }
@@ -252,8 +259,8 @@ async function generateInvoice(sats) {
   try {
     // Cache-bust to ensure fresh invoice each time
     const cacheBust = Date.now();
-    const lnurlUrl = essaySlug
-      ? `${config.lnurlEndpoint}?essay=${encodeURIComponent(essaySlug)}&title=${encodeURIComponent(essayTitle)}&_=${cacheBust}`
+    const lnurlUrl = contentSlug
+      ? `${config.lnurlEndpoint}?slug=${encodeURIComponent(contentSlug)}&title=${encodeURIComponent(contentTitle)}&type=${encodeURIComponent(contentType)}&_=${cacheBust}`
       : `${config.lnurlEndpoint}?_=${cacheBust}`;
     const lnurlResponse = await fetch(lnurlUrl, { cache: 'no-store' });
 
