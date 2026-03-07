@@ -10,7 +10,7 @@ Context Expected:
 - .Site.Params.author.description - Optional author bio
 - .Site.Params.author.jobTitle - Optional job title
 - .Site.Params.author.image - Optional profile image
-- .Site.Params.author.sameAs.* - Social profile URLs (fountain, github, linkedin, nostr, substack)
+- .Site.Params.author.sameAs.* - Social profile URLs (any key with a URL value)
 
 Output:
 - Hugo dict representing Person schema
@@ -32,11 +32,9 @@ Usage:
 {{- end -}}
 {{- with .Site.Params.author.sameAs -}}
   {{- $sameAs := slice -}}
-  {{- with .fountain -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
-  {{- with .github -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
-  {{- with .linkedin -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
-  {{- with .nostr -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
-  {{- with .substack -}}{{ $sameAs = $sameAs | append . }}{{- end -}}
+  {{- range $key, $url := . -}}
+    {{- $sameAs = $sameAs | append $url -}}
+  {{- end -}}
   {{- if gt (len $sameAs) 0 -}}
     {{- $author = merge $author (dict "sameAs" $sameAs) -}}
   {{- end -}}
