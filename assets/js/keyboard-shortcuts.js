@@ -12,6 +12,16 @@
  * Note: FOUC prevention script runs earlier in <head> to apply theme before render
  */
 (function() {
+    // Console greeting for curious devs
+    console.log(
+        '%cIf you\'re reading this, you\'re the kind of founder I work with.',
+        'font-size: 14px; font-weight: bold; color: #d63900;'
+    );
+    console.log(
+        '%cshawnyeager.com/advisory',
+        'font-size: 12px; color: #666;'
+    );
+
     // Cache system preference queries
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');

@@ -26,6 +26,7 @@
  * 19. GHOST BUTTONS                    - Ghost button system and variants
  * 20. KEYBOARD HELP                    - Keyboard shortcuts modal
  * 21. BLOCK EASTER EGG                 - Mempool next block visualization
+ * 22. READING PROGRESS                 - Brand bar as scroll progress indicator
  *
  * Line numbers are approximate. Update when making significant structural changes.
  *
@@ -2510,12 +2511,46 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
 /* Note: .qr-cancel-btn base styles consolidated in Button System section */
 
+/* Payment Confirmation — celebration animations */
+@keyframes v4v-celebrate-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes v4v-checkmark-draw {
+    to { stroke-dashoffset: 0; }
+}
+
 .payment-status {
     text-align: center;
     padding: var(--space-2xl);
     background: var(--background-card);
     margin-bottom: var(--space-xl);
     transition: background-color var(--transition-fast);
+}
+
+/* Entrance animation when payment is confirmed */
+.payment-status:not(.hidden) {
+    animation: v4v-celebrate-in 0.4s ease-out;
+}
+
+/* Checkmark SVG — draws itself on confirmation */
+.payment-checkmark {
+    display: block;
+    width: var(--space-xl);
+    height: var(--space-xl);
+    margin: 0 auto var(--space-md);
+}
+
+.payment-checkmark path {
+    stroke: var(--brand-orange);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: v4v-checkmark-draw 0.5s ease-out 0.2s forwards;
 }
 
 .payment-check {
@@ -2530,6 +2565,11 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     color: var(--text-secondary);
     font-size: var(--font-base);
     margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .payment-status:not(.hidden) { animation: none; }
+    .payment-checkmark path { animation: none; stroke-dashoffset: 0; }
 }
 
 .v4v-details {
@@ -2613,6 +2653,20 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
 .service-tier[open] .service-tier__header::after {
     content: '−';
+}
+
+/* Smooth reveal when tier opens */
+@keyframes service-tier-reveal {
+    from { opacity: 0; transform: translateY(calc(-1 * var(--space-xs))); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.service-tier[open] > :not(summary) {
+    animation: service-tier-reveal var(--transition-fast);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .service-tier[open] > :not(summary) { animation: none; }
 }
 
 .service-tier__name {
@@ -3194,4 +3248,44 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     font-size: var(--font-custom-32);
     font-weight: var(--font-weight-bold);
     letter-spacing: var(--letter-spacing-tight-md);
+}
+
+
+/* ==========================================================================
+   22. READING PROGRESS - Brand bar as scroll progress indicator
+
+   On essay/note pages, the brand bar dims and a progress overlay fills
+   left-to-right as the reader scrolls through the content.
+   Activated by reading-progress.js when .essay-body or .note-body exists.
+   ========================================================================== */
+
+/* Dim the brand bar when reading progress is active */
+.has-reading-progress::before {
+    opacity: 0.3;
+    transition: opacity var(--transition-fast);
+}
+
+/* Progress overlay — scaleX with linear transition for fluid scroll tracking */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--brand-bar-height);
+    background: var(--brand-orange);
+    z-index: var(--z-brand-bar);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.15s linear;
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* Reduced motion: still functional, just no smoothing */
+.reading-progress--no-motion {
+    transition: none;
+}
+
+@media print {
+    .reading-progress { display: none !important; }
 }

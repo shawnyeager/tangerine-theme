@@ -23,5 +23,9 @@ URL Helper Standards:
     {{- $js := resources.Get "js/keyboard-shortcuts.js" | minify | fingerprint -}}
     <script>window.__mempoolJS = "{{ $mempool.RelPermalink }}";</script>
     <script src="{{ $js.RelPermalink }}" defer></script>
+
+    <!-- Reading Progress: brand bar fills on essay/note pages -->
+    {{- $readingProgress := resources.Get "js/reading-progress.js" | minify | fingerprint -}}
+    <script src="{{ $readingProgress.RelPermalink }}" defer></script>
 </body>
 </html>

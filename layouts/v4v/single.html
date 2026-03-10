@@ -78,6 +78,9 @@
 
     <!-- Payment Status (hidden by default) -->
     <div id="payment-status" class="payment-status hidden">
+      <svg class="payment-checkmark" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 12.5 L9.5 18 L20 6"/>
+      </svg>
       <p class="payment-check"><span id="confirmed-amount"></span> sats received</p>
       <p class="payment-thanks">Thank you for supporting this work.</p>
     </div>
@@ -424,9 +427,31 @@ function startPaymentPolling() {
 
 function showPaymentConfirmation() {
   clearPaymentState();
-  elements.confirmedAmount.textContent = state.selectedAmount.toLocaleString();
   elements.qrDisplay.classList.add('hidden');
   elements.paymentStatus.classList.remove('hidden');
+
+  // Count up the sats amount for a satisfying reveal
+  var target = state.selectedAmount;
+  var duration = 600;
+  var start = performance.now();
+
+  // Respect reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    elements.confirmedAmount.textContent = target.toLocaleString();
+    return;
+  }
+
+  function tick(now) {
+    var elapsed = now - start;
+    var progress = Math.min(elapsed / duration, 1);
+    // Ease-out quad for natural deceleration
+    var eased = 1 - (1 - progress) * (1 - progress);
+    var current = Math.round(eased * target);
+    elements.confirmedAmount.textContent = current.toLocaleString();
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
 }
 
 function stopPaymentPolling() {
