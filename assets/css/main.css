@@ -917,6 +917,7 @@ body > .container > footer {
     margin-top: 0;
     margin-bottom: var(--space-xs);  /* Tight coupling to meta/subtitle; body controls gap via margin-top */
     letter-spacing: var(--letter-spacing-tight-xl);
+    overflow-wrap: break-word;
 }
 
 .page-subtitle {
@@ -1247,6 +1248,7 @@ html[data-theme="dark"] .note-list-hero {
     margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
     letter-spacing: var(--letter-spacing-tight-lg);
     text-wrap: balance;
+    overflow-wrap: break-word;
 }
 
 /* ==========================================================================

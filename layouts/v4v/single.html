@@ -103,7 +103,12 @@
 </article>
 
 <script type="module">
-import QRCode from 'https://esm.sh/qrcode@1.5.3';
+let QRCode;
+try {
+  ({ default: QRCode } = await import('https://esm.sh/qrcode@1.5.3'));
+} catch (e) {
+  console.error('QR library failed to load:', e);
+}
 
 // Configuration
 const contentSlug = "{{ $contentSlug }}";
@@ -135,13 +140,17 @@ let state = {
 const STORAGE_KEY = `v4v_payment_state_${contentSlug || 'general'}`;
 
 function savePaymentState() {
-  const persistedState = {
-    selectedAmount: state.selectedAmount,
-    currentInvoice: state.currentInvoice,
-    paymentHash: state.paymentHash,
-    startTime: state.startTime,
-  };
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(persistedState));
+  try {
+    const persistedState = {
+      selectedAmount: state.selectedAmount,
+      currentInvoice: state.currentInvoice,
+      paymentHash: state.paymentHash,
+      startTime: state.startTime,
+    };
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(persistedState));
+  } catch (e) {
+    // Storage unavailable or full — payment still works, only mobile-switch recovery is lost
+  }
 }
 
 function loadPaymentState() {
@@ -323,12 +332,21 @@ function displayLoadingState() {
 }
 
 function handleGenerationError() {
-  // Error display is handled by showError(), just reset state
   state.isGenerating = false;
+  setPaymentControlsDisabled(false);
 }
 
 async function renderQRCode(invoice) {
-  elements.qrCode.innerHTML = '';
+  while (elements.qrCode.firstChild) elements.qrCode.removeChild(elements.qrCode.firstChild);
+
+  if (!QRCode) {
+    var fallback = document.createElement('p');
+    fallback.className = 'qr-loading';
+    fallback.textContent = 'Copy the invoice below to pay:';
+    elements.qrCode.appendChild(fallback);
+    return;
+  }
+
   const canvas = document.createElement('canvas');
   elements.qrCode.appendChild(canvas);
 
@@ -481,6 +499,7 @@ function setPaymentControlsDisabled(disabled) {
 function resetToAmountSelection() {
   stopPaymentPolling();
   resetState();
+  setPaymentControlsDisabled(false);
   hideValidationError();
   elements.qrDisplay.classList.add('hidden');
   elements.qrDetails.classList.add('qr-details--pending');
@@ -501,6 +520,7 @@ function parseAmount(value) {
 
 elements.amountBtns.forEach(btn => {
   btn.addEventListener('click', () => {
+    setPaymentControlsDisabled(true);
     const amount = parseInt(btn.dataset.amount, 10);
     showQR(amount);
   });
@@ -520,6 +540,7 @@ elements.generateBtn.addEventListener('click', () => {
     elements.customInput.focus();
     return;
   }
+  setPaymentControlsDisabled(true);
   showQR(amount);
 });
 

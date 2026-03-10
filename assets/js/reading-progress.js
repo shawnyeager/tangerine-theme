@@ -42,12 +42,19 @@
         ticking = false;
     }
 
-    window.addEventListener('scroll', function() {
+    function scheduleUpdate() {
         if (!ticking) {
             requestAnimationFrame(updateProgress);
             ticking = true;
         }
-    }, { passive: true });
+    }
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+
+    // Recalculate when article height changes (images loading, embeds expanding)
+    if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(scheduleUpdate).observe(article);
+    }
 
     // Initial calculation
     updateProgress();
