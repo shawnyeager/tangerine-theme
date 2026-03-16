@@ -10,14 +10,6 @@ Context Expected:
 <!-- Preload critical resources -->
 <link rel="preload" href="{{ "fonts/Satoshi-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/Inter-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-{{- with .Params.hero_image -}}
-  {{- $img := resources.Get . -}}
-  {{- if $img -}}
-    {{- $medium := $img.Resize "1024x" -}}
-    {{- $webp := $medium.Process "webp q85" -}}
-<link rel="preload" href="{{ $webp.RelPermalink }}" as="image" type="image/webp" fetchpriority="high">
-  {{- end -}}
-{{- end -}}
 {{/* Concatenate tokens + main CSS, then minify and fingerprint */}}
 {{- $tokens := resources.Get "css/_tokens.css" -}}
 {{- $main := resources.Get "css/main.css" -}}

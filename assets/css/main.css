@@ -175,7 +175,7 @@ h1.display-title {
 
 @media (max-width: 600px) {
     h1.display-title {
-        font-size: var(--font-custom-40);  /* 40px - more impactful hero on mobile */
+        font-size: var(--font-custom-40);  /* 40px - display title on mobile */
     }
 }
 
@@ -1055,34 +1055,6 @@ time.note-date,
     }
 }
 
-/* Hero images on listing pages (first 3 essays only) */
-.essay-hero-link,
-.note-hero-link {
-    display: block;
-    margin-bottom: var(--space-sm);  /* 12px - tighter connection to title */
-}
-
-.essay-list-hero,
-.note-list-hero {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;  /* Match single essay page hero images */
-    display: block;
-    border-radius: 0;  /* Sharp edges — matches single-page essay hero */
-}
-
-/* Dark mode: warm tint filter for list hero images */
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .essay-list-hero,
-    html:not([data-theme="light"]) .note-list-hero {
-        filter: brightness(0.88) sepia(15%) saturate(1.1);
-    }
-}
-html[data-theme="dark"] .essay-list-hero,
-html[data-theme="dark"] .note-list-hero {
-    filter: brightness(0.88) sepia(15%) saturate(1.1);
-}
-
 .essay-excerpt,
 .note-excerpt {
     color: var(--text-secondary);
@@ -1249,44 +1221,6 @@ html[data-theme="dark"] .note-list-hero {
     letter-spacing: var(--letter-spacing-tight-lg);
     text-wrap: balance;
     overflow-wrap: break-word;
-}
-
-/* ==========================================================================
-   Essay Hero Images
-
-   Full-width hero treatment for essay feature images.
-   Refined spacing that integrates with the editorial aesthetic.
-   ========================================================================== */
-
-.essay-hero {
-    margin-bottom: var(--space-xl);
-}
-
-.essay-hero-image {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    display: block;
-    color: transparent;  /* Hide alt text during load, preserves screen reader access */
-}
-
-/* Mobile: tighter spacing */
-@media (max-width: 600px) {
-    .essay-hero {
-        margin-bottom: var(--space-lg);
-    }
-}
-
-/* Dark mode hero images: subtle warm tint for brand cohesion.
-   Note: mask-image removed - it blocked progressive rendering. */
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) .essay-hero-image {
-        filter: brightness(0.88) sepia(15%) saturate(1.1);
-    }
-}
-
-html[data-theme="dark"] .essay-hero-image {
-    filter: brightness(0.88) sepia(15%) saturate(1.1);
 }
 
 .essay-body,

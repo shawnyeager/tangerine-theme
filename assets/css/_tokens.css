@@ -207,9 +207,9 @@
     --font-2xl: 1.777rem;
 
     /* Custom Typography Sizes */
-    --font-custom-56: 3.5rem;     /* 56px - Homepage hero */
+    --font-custom-56: 3.5rem;     /* 56px - Homepage display title */
     --font-custom-48: 3rem;       /* 48px */
-    --font-custom-40: 2.5rem;     /* 40px - Landing page hero */
+    --font-custom-40: 2.5rem;     /* 40px - Display title (mobile) */
     --font-custom-32: 2rem;
     --font-custom-24: 1.5rem;
 
