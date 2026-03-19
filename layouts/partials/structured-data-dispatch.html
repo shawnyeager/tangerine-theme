@@ -20,9 +20,11 @@ provides the intended flow and avoids calling partials that won't render.
   {{- partial "structured-data-breadcrumbs.html" . -}}
 {{- end -}}
 
-{{- /* Homepage: WebSite schema */ -}}
+{{- /* Homepage: WebSite + Person + ProfessionalService schemas */ -}}
 {{- if .IsHome -}}
   {{- partial "structured-data-website.html" . -}}
+  {{- partial "structured-data-person.html" . -}}
+  {{- partial "structured-data-professional-service.html" . -}}
 {{- end -}}
 
 {{- /* Collection pages: sections, taxonomies, terms */ -}}

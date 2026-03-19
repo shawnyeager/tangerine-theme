@@ -1,0 +1,43 @@
+{{/*
+Purpose: Generates JSON-LD ProfessionalService schema for the homepage
+
+Parameters: None (uses site context)
+
+Context Expected:
+- .IsHome - Only renders on homepage
+- .Site.BaseURL - Service URL and Person @id reference
+- .Site.Params.service.name - Service offering name
+- .Site.Params.service.type - Service type (e.g. "Go-to-Market Advisory")
+- .Site.Params.service.description - Service description
+- .Site.Params.service.priceRange - Price range string (e.g. "$3,000–$30,000")
+- .Site.Params.service.areaServed - Geographic scope (e.g. "Worldwide")
+
+Features:
+- ProfessionalService schema signaling an advisory/consulting business
+- provider links to standalone Person via @id
+- Only renders when params.service is defined and on homepage
+
+Important Notes:
+- Requires [params.service] block in site hugo.toml to activate
+- areaServed defaults to "Worldwide" if not set
+*/}}
+
+{{- if and .IsHome .Site.Params.service -}}
+{{- $s := .Site.Params.service -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": {{ $s.name | jsonify }},
+  "description": {{ default .Site.Params.description $s.description | jsonify }},
+  "url": "{{ .Site.BaseURL }}",
+  "provider": {
+    "@type": "Person",
+    "@id": "{{ .Site.BaseURL }}#person"
+  },
+  "serviceType": {{ default "Advisory" $s.type | jsonify }},
+  "areaServed": {{ default "Worldwide" $s.areaServed | jsonify }}{{ with $s.priceRange }},
+  "priceRange": {{ . | jsonify }}{{ end }}
+}
+</script>
+{{- end -}}

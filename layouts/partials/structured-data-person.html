@@ -1,0 +1,30 @@
+{{/*
+Purpose: Generates standalone JSON-LD Person schema for the homepage
+
+Parameters: None (uses site context)
+
+Context Expected:
+- See partials/functions/build-author-dict.html for full context requirements
+- .Site.BaseURL - Used to construct @id for cross-referencing
+
+Features:
+- Standalone Person entity with @id for cross-referencing by other schemas
+- Only renders on homepage (.IsHome)
+- Rich entity: name, jobTitle, description, image, sameAs, knowsAbout
+- knowsAbout built from params.person.knowsAbout (optional)
+
+Important Notes:
+- @id uses /#person fragment for stable cross-reference by ProfessionalService, WebSite, etc.
+- Complements the nested Person in WebSite schema (search engines deduplicate via @id)
+*/}}
+
+{{- if .IsHome -}}
+{{- $author := partial "functions/build-author-dict.html" . -}}
+{{- $person := merge $author (dict "@id" (printf "%s#person" .Site.BaseURL)) -}}
+{{- with .Site.Params.person.knowsAbout -}}
+  {{- $person = merge $person (dict "knowsAbout" .) -}}
+{{- end -}}
+<script type="application/ld+json">
+{{ $person | jsonify (dict "indent" "  ") | safeHTML }}
+</script>
+{{- end -}}
