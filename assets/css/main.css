@@ -562,6 +562,7 @@ body > .container > footer {
     align-items: stretch;
     margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
+    max-width: 24rem;
 }
 
 .email-form input[type="email"] {
@@ -593,7 +594,17 @@ body > .container > footer {
     opacity: var(--opacity-subtle);
 }
 
-/* Email form button now uses .btn-ghost.btn-ghost--muted */
+/* Email form button — orange accent, prominent hover */
+.email-form .btn-ghost {
+    border-color: var(--brand-orange);
+    color: var(--brand-orange);
+}
+
+.email-form .btn-ghost:hover {
+    color: var(--brand-orange-hover);
+    border-color: var(--brand-orange-hover);
+    box-shadow: inset 0 0 0 1px var(--brand-orange-hover);
+}
 
 .footer-links {
     display: flex;
@@ -706,6 +717,11 @@ body > .container > footer {
     flex-direction: row;
     align-items: baseline;
     gap: var(--space-md);
+    margin-top: var(--space-lg);
+}
+
+/* Inline email signup in intro — spacing to match cta-group */
+.site-intro .inline-email-signup {
     margin-top: var(--space-lg);
 }
 
@@ -983,6 +999,42 @@ time.note-date,
     flex: 1;
     font-weight: var(--font-weight-list-title);
     font-size: var(--font-base);
+}
+
+/* Inline description in recent writing lists — aligns with title, not date */
+.recent-desc {
+    display: block;
+    flex-basis: 100%;
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-body);
+    color: var(--text-meta);
+    margin-top: var(--space-3xs, 2px);
+    padding-left: calc(4.5em + var(--space-lg));
+}
+
+/* Allow date/title row to wrap description below */
+.essay-item:has(.recent-desc) a,
+.note-item:has(.recent-desc) a {
+    flex-wrap: wrap;
+    row-gap: 0;
+}
+
+/* Keep description muted on hover — only title changes */
+.essay-item a:hover .recent-desc,
+.note-item a:hover .recent-desc {
+    color: var(--text-meta);
+}
+
+.essay-item:has(.recent-desc),
+.note-item:has(.recent-desc) {
+    margin-bottom: var(--space-md);
+}
+
+@media (max-width: 600px) {
+    .recent-desc {
+        padding-left: 0;
+    }
 }
 
 /* Full listing pages (/essays/, /notes/) - wider row spacing */
