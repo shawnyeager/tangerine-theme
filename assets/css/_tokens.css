@@ -218,8 +218,8 @@
     --border-width-accent: 4px;
     /* Content Element Sizing */
     --avatar-size-sm: 96px;
-    --avatar-size-lg: 130px;
-    --avatar-size-lg-mobile: 100px;
+    --avatar-size-lg: 200px;
+    --avatar-size-lg-mobile: 140px;
     --skip-link-max-width: 260px;
     --image-size-lg: 200px;
 

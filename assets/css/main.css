@@ -558,11 +558,11 @@ body > .container > footer {
 
 .email-form {
     display: flex;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
     align-items: stretch;
     margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
-    max-width: 24rem;
+    max-width: 18rem;
 }
 
 .email-form input[type="email"] {
@@ -686,7 +686,7 @@ body > .container > footer {
     margin-bottom: var(--space-lg);
 }
 
-/* Sectors - subtle with divider line below */
+/* Sectors - subtle, no divider */
 .intro-sectors {
     font-family: var(--font-heading);
     font-size: var(--font-sm);
@@ -694,9 +694,7 @@ body > .container > footer {
     color: var(--text-meta);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
-    padding-bottom: var(--space-md);
-    border-bottom: var(--border-subtle);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
 }
 
 /* Intro body paragraphs */
@@ -720,9 +718,9 @@ body > .container > footer {
     margin-top: var(--space-lg);
 }
 
-/* Inline email signup in intro — spacing to match cta-group */
+/* Inline email signup in intro — breathing room from body copy */
 .site-intro .inline-email-signup {
-    margin-top: var(--space-lg);
+    margin-top: var(--section-gap);
 }
 
 .site-intro .action-link {
@@ -788,6 +786,11 @@ body > .container > footer {
     &:is(h1, h2, h3) {
         margin-top: 0;
     }
+}
+
+/* Featured essay gets extra breathing room above */
+.essay-section-header {
+    margin-top: var(--space-xl);
 }
 
 /* Reduce spacing between section label and topic tags in topics section */
@@ -1249,6 +1252,7 @@ time.note-date,
 .note-content {
     max-width: var(--content-max-width);
 }
+
 
 .page-meta {
     margin-bottom: var(--space-xl);  /* Clear break before content begins */
