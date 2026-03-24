@@ -1,0 +1,29 @@
+{{/*
+Purpose: Renders email signup form with intro text
+
+Parameters (passed via dict):
+- id (string, required): Unique ID for the input element (accessibility)
+- intro (string, optional): Custom intro text (defaults to site param)
+- aria_describedby (string, optional): ID to use for aria-describedby on input
+
+Features:
+- Uses site params for form action and default text
+- Plausible analytics tracking
+- Accessible with proper labels
+- Reusable across footer, homepage, and shortcodes
+
+Usage:
+{{ partial "email-signup-form.html" (dict "id" "footer-email" "Site" .Site) }}
+{{ partial "email-signup-form.html" (dict "id" "home-email" "intro" "Custom text." "Site" .Site) }}
+*/}}
+
+{{- $id := .id | default "email-subscribe" -}}
+{{- $intro := .intro | default .Site.Params.email_signup_text | default "I send new essays and updates via email." -}}
+{{- $aria := .aria_describedby -}}
+
+<p{{ with $aria }} id="{{ . }}"{{ end }} class="email-signup-intro">{{ $intro }}</p>
+<form class="email-form" action="{{ .Site.Params.email_signup_action }}" method="post" target="popupwindow">
+    <label for="{{ $id }}" class="sr-only">Email address</label>
+    <input type="email" id="{{ $id }}" name="email" placeholder="you@example.com" required{{ with $aria }} aria-describedby="{{ . }}"{{ end }} autocomplete="email" inputmode="email" spellcheck="false">
+    <button type="submit" class="btn-ghost btn-ghost--muted{{ with .Site.Params.plausible_form_event }} plausible-event-name={{ . }}{{ end }}">Subscribe</button>
+</form>
