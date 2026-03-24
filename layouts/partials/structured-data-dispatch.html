@@ -37,8 +37,8 @@ provides the intended flow and avoids calling partials that won't render.
   {{- partial "structured-data.html" . -}}
 {{- end -}}
 
-{{- /* Profile pages (now, typed pages): ProfilePage */ -}}
-{{- if or (eq .Layout "now") (and (eq .Type "page") (ne .Layout "")) -}}
+{{- /* Profile pages (now, about, typed pages): ProfilePage */ -}}
+{{- if or (eq .Layout "now") (eq .Type "page") -}}
   {{- partial "structured-data-profile.html" . -}}
 {{- end -}}
 

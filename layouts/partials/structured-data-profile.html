@@ -23,7 +23,7 @@ Important Notes:
 - Helps search engines understand profile-related pages
 */}}
 
-{{- if or (eq .Layout "now") (eq .Layout "podcast") (and (eq .Type "page") (ne .Layout "")) -}}
+{{- if or (eq .Layout "now") (eq .Layout "podcast") (eq .Type "page") -}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
