@@ -217,9 +217,9 @@
     --border-width: 1px;
     --border-width-accent: 4px;
     /* Content Element Sizing */
-    --avatar-size-sm: 96px;
-    --avatar-size-lg: 200px;
-    --avatar-size-lg-mobile: 140px;
+    --avatar-size-sm: 120px;
+    --avatar-size-lg: 260px;
+    --avatar-size-lg-mobile: 160px;
     --skip-link-max-width: 260px;
     --image-size-lg: 200px;
 

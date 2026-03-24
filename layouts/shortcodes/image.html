@@ -54,34 +54,33 @@ Important Notes:
 {{- end -}}
 
 {{- if $image -}}
-  {{- /* Hugo image processing with WebP support */ -}}
-  {{- $small := $image.Resize "640x" -}}
-  {{- $medium := $image.Resize "1024x" -}}
-  {{- $large := $image.Resize "1920x" -}}
-  {{- $smallWebP := $image.Resize "640x webp" -}}
-  {{- $mediumWebP := $image.Resize "1024x webp" -}}
-  {{- $largeWebP := $image.Resize "1920x webp" -}}
+  {{- /* Determine image sizes based on variant */ -}}
+  {{- $isCompact := or (eq $variant "headshot") (eq $variant "portrait") -}}
+  {{- $small := $image.Resize (cond $isCompact "280x" "640x") -}}
+  {{- $medium := $image.Resize (cond $isCompact "560x" "1024x") -}}
+  {{- $large := $image.Resize (cond $isCompact "560x" "1920x") -}}
+  {{- $smallWebP := $image.Resize (cond $isCompact "280x webp" "640x webp") -}}
+  {{- $mediumWebP := $image.Resize (cond $isCompact "560x webp" "1024x webp") -}}
+  {{- $largeWebP := $image.Resize (cond $isCompact "560x webp" "1920x webp") -}}
+  {{- $sizes := cond $isCompact "280px" "(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px" -}}
 
-  <picture>
+  <picture{{ if $variant }} class="{{ $variant }}"{{ end }}>
     {{- /* WebP - smaller file size, wide browser support */ -}}
     <source
       type="image/webp"
-      srcset="{{ $smallWebP.RelPermalink }} 640w,
-              {{ $mediumWebP.RelPermalink }} 1024w,
-              {{ $largeWebP.RelPermalink }} 1920w"
-      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px">
+      srcset="{{ $smallWebP.RelPermalink }} {{ $smallWebP.Width }}w,
+              {{ $mediumWebP.RelPermalink }} {{ $mediumWebP.Width }}w"
+      sizes="{{ $sizes }}">
     {{- /* Original format - universal fallback */ -}}
     <img
-      src="{{ $medium.RelPermalink }}"
-      srcset="{{ $small.RelPermalink }} 640w,
-              {{ $medium.RelPermalink }} 1024w,
-              {{ $large.RelPermalink }} 1920w"
-      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px"
+      src="{{ $small.RelPermalink }}"
+      srcset="{{ $small.RelPermalink }} {{ $small.Width }}w,
+              {{ $medium.RelPermalink }} {{ $medium.Width }}w"
+      sizes="{{ $sizes }}"
       alt="{{ $alt }}"
-      width="{{ $medium.Width }}"
-      height="{{ $medium.Height }}"
-      {{- if eq $lazy "true" }} loading="lazy"{{ end }}
-      {{- if $variant }} class="{{ $variant }}"{{ end }}>
+      width="{{ $small.Width }}"
+      height="{{ $small.Height }}"
+      {{- if eq $lazy "true" }} loading="lazy"{{ end }}>
   </picture>
 {{- else -}}
   {{- /* Fallback to basic img tag with lazy loading */ -}}
