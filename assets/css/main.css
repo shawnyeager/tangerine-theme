@@ -52,6 +52,7 @@
 
 html {
     overflow-y: scroll; /* Prevent horizontal shift when scrollbar appears/disappears */
+    scroll-behavior: smooth;
 }
 
 body {
@@ -344,6 +345,7 @@ select:focus-visible,
     width: fit-content;
     margin-top: 0;
     margin-bottom: 0;  /* Following element's margin-top provides spacing */
+    transition: color 0.15s ease;
 }
 
 /* Arrow spans in action links: prevent underline */
@@ -355,6 +357,12 @@ select:focus-visible,
 /* Arrow spacing (no space character in HTML) */
 .action-link .arrow {
     margin-left: var(--arrow-spacing);
+    display: inline-block;
+    transition: transform 0.15s ease;
+}
+
+.action-link:hover .arrow {
+    transform: translateX(3px);
 }
 
 .back-link .arrow,
@@ -2992,7 +3000,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     border: none;
     text-decoration: none;
     cursor: pointer;
-    transition: background var(--transition-fast);
+    transition: background 0.15s ease;
 }
 
 .btn-primary:hover {
@@ -3063,6 +3071,12 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 
 .btn-ghost--primary .arrow {
     margin-left: var(--arrow-spacing);
+    display: inline-block;
+    transition: transform 0.15s ease;
+}
+
+.btn-ghost--primary:hover .arrow {
+    transform: translateX(3px);
 }
 
 /* CTA buttons mobile - reduce height */
