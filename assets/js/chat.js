@@ -69,7 +69,7 @@ export function showChat() {
   var inputEl = document.createElement('input');
   inputEl.className = 'chat-input';
   inputEl.type = 'text';
-  inputEl.placeholder = 'Pipeline, positioning, pricing...';
+  inputEl.placeholder = 'Positioning, pricing, pipeline...';
   inputEl.maxLength = 500;
   inputEl.setAttribute('autocomplete', 'off');
   inputEl.setAttribute('spellcheck', 'false');
