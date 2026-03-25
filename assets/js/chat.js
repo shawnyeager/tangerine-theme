@@ -69,7 +69,7 @@ export function showChat() {
   var inputEl = document.createElement('input');
   inputEl.className = 'chat-input';
   inputEl.type = 'text';
-  inputEl.placeholder = 'Ask about go-to-market strategy...';
+  inputEl.placeholder = 'Pipeline, positioning, pricing...';
   inputEl.maxLength = 500;
   inputEl.setAttribute('autocomplete', 'off');
   inputEl.setAttribute('spellcheck', 'false');
@@ -82,7 +82,7 @@ export function showChat() {
   overlay.appendChild(container);
   document.body.appendChild(overlay);
 
-  addMsg('assistant', 'Ask me anything about go-to-market strategy.');
+  addMsg('assistant', 'I\'m trained on the GTM Map framework. Ask me anything.');
   requestAnimationFrame(function() { inputEl.focus(); });
 
   // Warm up edge function so first real message is fast

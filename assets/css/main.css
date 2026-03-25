@@ -3615,10 +3615,11 @@ picture.portrait img {
         justify-content: center;
     }
     .chat-container {
-        width: 100%;
-        max-width: none;
+        width: calc(100vw - 2 * var(--space-sm));
+        max-width: calc(100vw - 2 * var(--space-sm));
         height: 60dvh;
-        max-height: 60dvh;
+        height: 60vh;
+        max-height: 60vh;
     }
 }
 
