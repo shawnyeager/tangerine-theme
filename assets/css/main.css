@@ -3450,6 +3450,13 @@ picture.portrait img {
     caret-color: var(--brand-orange);
 }
 
+.chat-input:focus,
+.chat-input:focus-visible {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
 .chat-input::placeholder {
     color: #444;
 }
