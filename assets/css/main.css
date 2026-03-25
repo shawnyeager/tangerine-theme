@@ -537,7 +537,7 @@ nav {
 
 @media (max-width: 600px) {
     .chat-header-trigger {
-        top: 3px;
+        top: 4px;
     }
 }
 
