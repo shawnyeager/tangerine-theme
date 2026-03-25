@@ -801,8 +801,7 @@ body > .container > footer {
     .intro-sectors {
         font-size: var(--font-xs);
         letter-spacing: var(--letter-spacing-wide);
-        padding-bottom: var(--space-sm);
-        margin-bottom: var(--space-md);
+        margin-bottom: var(--space-sm);
     }
 
     .intro-body p {
