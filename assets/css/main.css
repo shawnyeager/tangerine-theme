@@ -674,7 +674,7 @@ body > .container > footer {
 .site-intro {
     margin-bottom: calc(var(--section-gap) + var(--space-lg));
     color: var(--text-secondary);
-    font-size: var(--font-lg-plus);
+    font-size: var(--font-lg);
     line-height: var(--line-height-reading);
 }
 
@@ -3328,3 +3328,4 @@ picture.portrait img {
 @media print {
     .reading-progress { display: none !important; }
 }
+
