@@ -3491,31 +3491,26 @@ picture.portrait img {
     margin-top: 0.6em;
 }
 
-.chat-list {
-    margin: 0.4em 0;
-}
-
-.chat-list-item {
-    display: flex;
-    gap: 0.5em;
-    margin-bottom: 0.3em;
-}
-
-.chat-list-marker {
-    color: var(--text-subtle);
-    flex-shrink: 0;
-}
-
+.chat-list,
 .chat-msg--assistant ol {
     margin: 0.4em 0;
     padding-left: 1.8em;
-    list-style: decimal;
 }
 
+.chat-list li,
 .chat-msg--assistant ol li {
     margin-bottom: 0.3em;
 }
 
+.chat-list {
+    list-style: disc;
+}
+
+.chat-msg--assistant ol {
+    list-style: decimal;
+}
+
+.chat-list li::marker,
 .chat-msg--assistant ol li::marker {
     color: var(--text-subtle);
 }
