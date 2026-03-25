@@ -3462,6 +3462,21 @@ picture.portrait img {
     color: var(--text-subtle);
 }
 
+.chat-close {
+    background: none;
+    border: none;
+    color: var(--text-subtle);
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.chat-close:hover {
+    color: var(--text-primary);
+}
+
 .chat-messages {
     flex: 1;
     overflow-y: auto;
@@ -3596,14 +3611,14 @@ picture.portrait img {
 @media (max-width: 600px) {
     .chat-overlay {
         padding: var(--space-sm);
-        align-items: flex-start;
-        padding-top: var(--space-xl);
+        align-items: center;
+        justify-content: center;
     }
     .chat-container {
         width: auto;
         max-width: 100%;
-        height: 70dvh;
-        max-height: 70dvh;
+        height: 60dvh;
+        max-height: 60dvh;
     }
 }
 

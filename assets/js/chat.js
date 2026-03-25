@@ -42,9 +42,19 @@ export function showChat() {
   var titleEl = document.createElement('span');
   titleEl.className = 'chat-title';
   titleEl.textContent = 'gtm.shawnyeager.com';
+  var isMobile = window.matchMedia('(max-width: 600px)').matches;
   var hintEl = document.createElement('span');
   hintEl.className = 'chat-hint';
-  hintEl.textContent = 'Esc to close';
+  if (isMobile) {
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'chat-close';
+    closeBtn.textContent = '\u00d7';
+    closeBtn.setAttribute('aria-label', 'Close chat');
+    closeBtn.addEventListener('click', function() { dismiss(); });
+    hintEl.appendChild(closeBtn);
+  } else {
+    hintEl.textContent = 'Esc to close';
+  }
   hdr.appendChild(titleEl);
   hdr.appendChild(hintEl);
 
@@ -78,6 +88,15 @@ export function showChat() {
   // Warm up edge function so first real message is fast
   fetch('/api/chat', { method: 'HEAD' }).catch(function() {});
 
+  // Keep input visible when mobile keyboard opens
+  if (isMobile && window.visualViewport) {
+    var onResize = function() {
+      container.style.height = Math.min(window.visualViewport.height * 0.85, window.innerHeight * 0.55) + 'px';
+      msgArea.scrollTop = msgArea.scrollHeight;
+    };
+    window.visualViewport.addEventListener('resize', onResize);
+  }
+
   inputEl.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !busy) {
       var text = inputEl.value.trim();
@@ -90,6 +109,9 @@ export function showChat() {
   function dismiss() {
     overlay.remove();
     document.removeEventListener('keydown', onEsc);
+    if (isMobile && window.visualViewport && onResize) {
+      window.visualViewport.removeEventListener('resize', onResize);
+    }
   }
   function onEsc(e) { if (e.key === 'Escape') dismiss(); }
   document.addEventListener('keydown', onEsc);
