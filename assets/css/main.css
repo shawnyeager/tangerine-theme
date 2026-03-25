@@ -3329,3 +3329,165 @@ picture.portrait img {
     .reading-progress { display: none !important; }
 }
 
+/* ==========================================================================
+   23. CHAT EASTER EGG - TUI-style AI chat overlay
+
+   Triggered by typing "chat" on any page. Terminal aesthetic with
+   monospace font, dark background, blinking cursor.
+   ========================================================================== */
+
+.chat-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 560px;
+    max-height: 80vh;
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: var(--border-radius-interactive);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-xs) var(--space-md);
+    border-bottom: 1px solid #222;
+    color: #555;
+    font-size: 11px;
+}
+
+.chat-title {
+    color: var(--brand-orange);
+}
+
+.chat-hint {
+    color: #444;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-md);
+    min-height: 200px;
+}
+
+.chat-msg {
+    margin-bottom: var(--space-sm);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.chat-msg--user {
+    color: var(--brand-orange);
+}
+
+.chat-msg--user::before {
+    content: '> ';
+    color: #555;
+}
+
+.chat-msg--assistant {
+    color: #ccc;
+}
+
+.chat-msg--assistant a {
+    color: var(--brand-orange);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.chat-msg--assistant a:hover {
+    color: var(--brand-orange-hover);
+}
+
+.chat-msg--thinking {
+    color: #555;
+    animation: chat-blink 1s steps(2) infinite;
+}
+
+@keyframes chat-blink {
+    50% { opacity: 0; }
+}
+
+.chat-input-row {
+    display: flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-md);
+    border-top: 1px solid #222;
+    gap: var(--space-xs);
+}
+
+.chat-prompt {
+    color: var(--brand-orange);
+    flex-shrink: 0;
+}
+
+.chat-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ccc;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    caret-color: var(--brand-orange);
+}
+
+.chat-input::placeholder {
+    color: #444;
+}
+
+.chat-input:disabled {
+    color: #333;
+}
+
+/* Scrollbar styling for chat */
+.chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px;
+}
+
+@media (max-width: 600px) {
+    .chat-overlay {
+        padding: var(--space-sm);
+    }
+    .chat-container {
+        max-height: 90vh;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chat-msg--thinking {
+        animation: none;
+    }
+}
+
+@media print {
+    .chat-overlay { display: none !important; }
+}
+

@@ -14,7 +14,7 @@
 (function() {
     // Console greeting for curious devs
     console.log(
-        '%cYou look under the hood. I like that.\nTry typing "block" on any page.',
+        '%cYou look under the hood. I like that.\nTry typing "block" or "chat" on any page.',
         'font-size: 14px; font-weight: bold; color: #d63900;'
     );
 
@@ -237,6 +237,13 @@
         // Check for 'block' easter egg (lazy-loaded)
         if (keySequence.endsWith('block') && window.__mempoolJS) {
             import(window.__mempoolJS).then(m => m.showMempoolBlock());
+            keySequence = '';
+            return;
+        }
+
+        // Check for 'chat' easter egg (lazy-loaded)
+        if (keySequence.endsWith('chat') && window.__chatJS) {
+            import(window.__chatJS).then(m => m.showChat());
             keySequence = '';
             return;
         }

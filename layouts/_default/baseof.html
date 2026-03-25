@@ -20,8 +20,9 @@ URL Helper Standards:
 
     <!-- Keyboard Shortcuts: d (theme), a (auto), j/k (scroll), gg/G (top/bottom), ? (help) -->
     {{- $mempool := resources.Get "js/mempool.js" | minify | fingerprint -}}
+    {{- $chat := resources.Get "js/chat.js" | minify | fingerprint -}}
     {{- $js := resources.Get "js/keyboard-shortcuts.js" | minify | fingerprint -}}
-    <script>window.__mempoolJS = "{{ $mempool.RelPermalink }}";</script>
+    <script>window.__mempoolJS = "{{ $mempool.RelPermalink }}";window.__chatJS = "{{ $chat.RelPermalink }}";</script>
     <script src="{{ $js.RelPermalink }}" defer></script>
 
     <!-- Reading Progress: brand bar fills on essay/note pages -->
