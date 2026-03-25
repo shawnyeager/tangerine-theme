@@ -18,13 +18,11 @@ export function showChat() {
 
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var chatHistory = [];
-  var remaining = 5;
   var busy = false;
 
-  var sessionCount = parseInt(sessionStorage.getItem('chat_count') || '0', 10);
-  if (sessionCount >= 5) {
+  if (sessionStorage.getItem('chat_done') === '1') {
     console.log(
-      '%cYou\'ve used your 5 chat messages this session.\n%cTake the full assessment: gtm.shawnyeager.com',
+      '%cChat session limit reached.\n%cTake the full assessment: gtm.shawnyeager.com',
       'font-size: 14px; font-weight: bold; color: #d63900;',
       'font-size: 12px; color: #888;'
     );
@@ -212,11 +210,9 @@ export function showChat() {
         var reply = data.response || 'Something went wrong.';
         addMsg('assistant', reply);
         chatHistory.push({ role: 'assistant', content: reply });
-        remaining = data.remaining != null ? data.remaining : remaining - 1;
-        var c = parseInt(sessionStorage.getItem('chat_count') || '0', 10) + 1;
-        sessionStorage.setItem('chat_count', String(c));
         if (data.done) {
-          addMsg('assistant', 'That\'s my limit for this session. For a full diagnostic, take the GTM Map assessment: https://gtm.shawnyeager.com/map');
+          sessionStorage.setItem('chat_done', '1');
+          addMsg('assistant', 'That\'s my limit for this session. For a full diagnostic, take the GTM Map assessment: https://gtm.shawnyeager.com');
           inputEl.disabled = true;
           inputEl.placeholder = '';
           promptEl.textContent = '\u25A0';
