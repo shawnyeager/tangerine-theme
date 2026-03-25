@@ -82,7 +82,7 @@ export function showChat() {
   overlay.appendChild(container);
   document.body.appendChild(overlay);
 
-  addMsg('assistant', 'You found the chat. I\'m trained on the GTM Map diagnostic framework. Ask me about go-to-market strategy, or describe what\'s stuck.');
+  addMsg('assistant', 'I\'m trained on the GTM Map diagnostic framework. Ask me about go-to-market strategy, or describe what\'s stuck.');
   requestAnimationFrame(function() { inputEl.focus(); });
 
   // Warm up edge function so first real message is fast

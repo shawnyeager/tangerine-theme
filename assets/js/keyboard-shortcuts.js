@@ -241,7 +241,7 @@
             return;
         }
 
-        // Check for 'chat' easter egg (lazy-loaded)
+        // Check for 'chat' keyword trigger (lazy-loaded)
         if (keySequence.endsWith('chat') && window.__chatJS) {
             import(window.__chatJS).then(m => setTimeout(() => m.showChat(), 150));
             keySequence = '';
