@@ -143,9 +143,12 @@ export function showChat() {
         a.href = m[2]; a.textContent = m[1]; a.target = '_blank'; a.rel = 'noopener';
         el.appendChild(a);
       } else if (m[3]) {
+        var url = m[3].replace(/[.,;:!?)]+$/, '');
+        var trailing = m[3].slice(url.length);
         var a = document.createElement('a');
-        a.href = m[3]; a.textContent = m[3]; a.target = '_blank'; a.rel = 'noopener';
+        a.href = url; a.textContent = url; a.target = '_blank'; a.rel = 'noopener';
         el.appendChild(a);
+        if (trailing) { el.appendChild(document.createTextNode(trailing)); }
       } else if (m[4]) {
         var b = document.createElement('strong');
         b.textContent = m[4];

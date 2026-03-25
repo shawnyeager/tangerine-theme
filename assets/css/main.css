@@ -3483,6 +3483,14 @@ picture.portrait img {
     color: var(--text-secondary);
 }
 
+.chat-line {
+    display: block;
+}
+
+.chat-line + .chat-line {
+    margin-top: 0.6em;
+}
+
 .chat-msg--assistant a {
     color: var(--brand-orange);
     text-decoration: underline;
