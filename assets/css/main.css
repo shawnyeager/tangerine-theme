@@ -365,6 +365,15 @@ select:focus-visible,
     transform: translateX(3px);
 }
 
+.action-link .arrow:first-child {
+    margin-left: 0;
+    margin-right: var(--arrow-spacing);
+}
+
+.action-link:hover .arrow:first-child {
+    transform: translateX(-3px);
+}
+
 .back-link .arrow,
 .pagination-prev .arrow {
     margin-right: var(--arrow-spacing);
@@ -1296,6 +1305,17 @@ time.note-date,
 .writing-stream + .content-nav {
     margin-top: var(--space-md);
 }
+
+.writing-pagination {
+    display: flex;
+    justify-content: space-between;
+}
+
+.writing-pagination .action-link {
+    margin-top: 0;
+    width: auto;
+}
+
 
 /* Single Essay/Note Page
    -------------------------------------------------- */
@@ -3374,17 +3394,17 @@ picture.portrait img {
 }
 
 /* ==========================================================================
-   23. CHAT EASTER EGG - TUI-style AI chat overlay
+   23. CHAT — TUI-style AI chat overlay
 
-   Triggered by typing "chat" on any page. Terminal aesthetic with
-   monospace font, dark background, blinking cursor.
+   Triggered by header icon, typing "chat", or keyboard shortcut.
+   Theme-aware: adapts to light and dark mode via design tokens.
    ========================================================================== */
 
 .chat-overlay {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(0, 0, 0, 0.85);
+    background: light-dark(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.85));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3398,10 +3418,10 @@ picture.portrait img {
 
 .chat-container {
     width: 100%;
-    max-width: 560px;
-    max-height: 80vh;
-    background: #0a0a0a;
-    border: 1px solid #333;
+    width: clamp(360px, 42vw, 620px);
+    height: clamp(400px, 70vh, 700px);
+    background: light-dark(#fafaf9, #0a0a0a);
+    border: 1px solid light-dark(#ddd, #333);
     border-radius: var(--border-radius-interactive);
     display: flex;
     flex-direction: column;
@@ -3424,8 +3444,8 @@ picture.portrait img {
     justify-content: space-between;
     align-items: center;
     padding: var(--space-xs) var(--space-md);
-    border-bottom: 1px solid #222;
-    color: #555;
+    border-bottom: 1px solid light-dark(#e5e5e5, #222);
+    color: var(--text-meta);
     font-size: 11px;
 }
 
@@ -3434,7 +3454,7 @@ picture.portrait img {
 }
 
 .chat-hint {
-    color: #444;
+    color: var(--text-subtle);
 }
 
 .chat-messages {
@@ -3456,11 +3476,11 @@ picture.portrait img {
 
 .chat-msg--user::before {
     content: '> ';
-    color: #555;
+    color: var(--text-subtle);
 }
 
 .chat-msg--assistant {
-    color: #ccc;
+    color: var(--text-secondary);
 }
 
 .chat-msg--assistant a {
@@ -3474,7 +3494,7 @@ picture.portrait img {
 }
 
 .chat-msg--thinking {
-    color: #555;
+    color: var(--text-subtle);
     animation: chat-blink 1s steps(2) infinite;
 }
 
@@ -3486,7 +3506,7 @@ picture.portrait img {
     display: flex;
     align-items: center;
     padding: var(--space-xs) var(--space-md);
-    border-top: 1px solid #222;
+    border-top: 1px solid light-dark(#e5e5e5, #222);
     gap: var(--space-xs);
 }
 
@@ -3500,7 +3520,7 @@ picture.portrait img {
     background: transparent;
     border: none;
     outline: none;
-    color: #ccc;
+    color: var(--text-primary);
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
@@ -3515,11 +3535,11 @@ picture.portrait img {
 }
 
 .chat-input::placeholder {
-    color: #444;
+    color: var(--text-subtle);
 }
 
 .chat-input:disabled {
-    color: #333;
+    color: var(--text-meta);
 }
 
 /* Scrollbar styling for chat */
@@ -3532,16 +3552,21 @@ picture.portrait img {
 }
 
 .chat-messages::-webkit-scrollbar-thumb {
-    background: #333;
+    background: light-dark(#ccc, #333);
     border-radius: 2px;
 }
 
 @media (max-width: 600px) {
     .chat-overlay {
         padding: var(--space-sm);
+        align-items: flex-start;
+        padding-top: var(--space-xl);
     }
     .chat-container {
-        max-height: 90vh;
+        width: auto;
+        max-width: 100%;
+        height: 70dvh;
+        max-height: 70dvh;
     }
 }
 

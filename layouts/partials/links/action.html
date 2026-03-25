@@ -2,16 +2,18 @@
 Purpose: Renders a primary action link with arrow or custom icon
 
 Parameters (dict):
-  url      (string, required): Link destination
-  text     (string, required): Link text
-  event    (string, optional): Plausible analytics event name
-  class    (string, optional): Additional CSS classes
-  icon     (string, optional): "arrow" (default), "lightning", or "none"
+  url       (string, required): Link destination
+  text      (string, required): Link text
+  event     (string, optional): Plausible analytics event name
+  class     (string, optional): Additional CSS classes
+  icon      (string, optional): "arrow" (default), "lightning", or "none"
+  direction (string, optional): "forward" (default) or "back" — controls arrow placement
 
 Usage in templates:
   {{ partial "links/action.html" (dict "url" "/subscribe" "text" "Subscribe") }}
   {{ partial "links/action.html" (dict "url" .Permalink "text" "Read more" "event" "essay_cta") }}
   {{ partial "links/action.html" (dict "url" "/v4v/" "text" "Zap" "icon" "lightning") }}
+  {{ partial "links/action.html" (dict "url" "/writing/" "text" "Newer" "direction" "back") }}
 
 Important Notes:
 - Always outputs action-link class
@@ -22,6 +24,7 @@ Important Notes:
 {{- $url := .url -}}
 {{- $text := .text -}}
 {{- $icon := .icon | default "arrow" -}}
+{{- $direction := .direction | default "forward" -}}
 {{- $class := partial "functions/build-link-class.html" (dict "base" "action-link" "class" .class "event" .event) -}}
 
-<a href="{{ $url }}" class="{{ $class }}"><span class="link-text">{{ $text }}</span>{{ if eq $icon "lightning" }}&#8239;<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg>{{ else if eq $icon "arrow" }}<span class="arrow" aria-hidden="true">→</span>{{ end }}</a>
+<a href="{{ $url }}" class="{{ $class }}">{{ if and (eq $icon "arrow") (eq $direction "back") }}<span class="arrow" aria-hidden="true">←</span>{{ end }}<span class="link-text">{{ $text }}</span>{{ if eq $icon "lightning" }}&#8239;<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M7.5 0L0 9h5l-1.5 7L12 7H6.5L7.5 0z"/></svg>{{ else if and (eq $icon "arrow") (eq $direction "forward") }}<span class="arrow" aria-hidden="true">→</span>{{ end }}</a>

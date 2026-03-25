@@ -24,7 +24,7 @@ export function showChat() {
   var sessionCount = parseInt(sessionStorage.getItem('chat_count') || '0', 10);
   if (sessionCount >= 5) {
     console.log(
-      '%cYou\'ve used your 5 chat messages this session.\n%cTake the full diagnostic: gtm.shawnyeager.com/map',
+      '%cYou\'ve used your 5 chat messages this session.\n%cTake the full assessment: gtm.shawnyeager.com',
       'font-size: 14px; font-weight: bold; color: #d63900;',
       'font-size: 12px; color: #888;'
     );
@@ -95,18 +95,23 @@ export function showChat() {
   overlay.addEventListener('click', function(e) { if (e.target === overlay) dismiss(); });
 
   function linkifyDOM(el, text) {
-    var urlRe = /(https?:\/\/[^\s)]+)/g;
+    var linkRe = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)|(https?:\/\/[^\s)]+)/g;
     var last = 0;
     var m;
-    while ((m = urlRe.exec(text)) !== null) {
+    while ((m = linkRe.exec(text)) !== null) {
       if (m.index > last) el.appendChild(document.createTextNode(text.slice(last, m.index)));
       var a = document.createElement('a');
-      a.href = m[1];
-      a.textContent = m[1];
+      if (m[1]) {
+        a.href = m[2];
+        a.textContent = m[1];
+      } else {
+        a.href = m[3];
+        a.textContent = m[3];
+      }
       a.target = '_blank';
       a.rel = 'noopener';
       el.appendChild(a);
-      last = urlRe.lastIndex;
+      last = linkRe.lastIndex;
     }
     if (last < text.length) el.appendChild(document.createTextNode(text.slice(last)));
   }
