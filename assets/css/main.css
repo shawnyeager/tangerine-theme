@@ -489,12 +489,41 @@ body > .container > header {
     margin-bottom: var(--header-gap-below);
 }
 
+.header-right {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-lg);
+}
+
 nav {
     font-family: var(--font-heading);
-    font-size: var(--font-lg);  /* Match site-title size */
+    font-size: var(--font-lg);
     display: flex;
     gap: var(--space-lg);
     margin-bottom: 0;
+}
+
+.chat-header-trigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-meta);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 7px;
+    transition: color 0.15s ease;
+}
+
+.chat-header-trigger:hover {
+    color: var(--brand-orange);
+}
+
+.chat-header-trigger:focus-visible {
+    outline: var(--focus-ring-width) solid var(--brand-orange);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--border-radius-sm);
 }
 
 main .container {
