@@ -14,7 +14,7 @@
 (function() {
     // Console greeting for curious devs
     console.log(
-        '%cYou look under the hood. I like that.\nTry typing "block" or "chat" on any page.',
+        '%cYou look under the hood. I like that.\nTry typing "block" on any page.',
         'font-size: 14px; font-weight: bold; color: #d63900;'
     );
 
@@ -178,11 +178,10 @@
         }
     });
 
-    // Initialize mobile triggers for easter eggs (lazy-loaded)
+    // Initialize mobile trigger for block easter egg (lazy-loaded)
     function initMobileTriggerIfNeeded() {
         if (window.innerWidth <= 768) {
             if (window.__mempoolJS) import(window.__mempoolJS).then(m => m.initMobileTrigger());
-            if (window.__chatJS) import(window.__chatJS).then(m => m.initMobileTrigger());
         }
     }
 
