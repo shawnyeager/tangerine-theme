@@ -178,13 +178,11 @@ export function showChat() {
 
   function typeOut(el, text, i) {
     if (i < text.length) {
-      el.textContent += text[i];
+      el.textContent = '';
+      while (el.firstChild) el.removeChild(el.firstChild);
+      renderMarkdown(el, text.slice(0, i + 1));
       msgArea.scrollTop = msgArea.scrollHeight;
       setTimeout(function() { typeOut(el, text, i + 1); }, 12);
-    } else {
-      var full = el.textContent;
-      el.textContent = '';
-      renderMarkdown(el, full);
     }
   }
 
