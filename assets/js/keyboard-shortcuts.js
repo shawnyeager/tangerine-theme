@@ -14,12 +14,8 @@
 (function() {
     // Console greeting for curious devs
     console.log(
-        '%cIf you\'re reading this, you\'re the kind of founder I work with.',
+        '%cYou look under the hood. I like that.\nTry typing "block" on any page.',
         'font-size: 14px; font-weight: bold; color: #d63900;'
-    );
-    console.log(
-        '%cshawnyeager.com/advisory',
-        'font-size: 12px; color: #666;'
     );
 
     // Cache system preference queries
