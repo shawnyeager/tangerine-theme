@@ -89,12 +89,10 @@ export function showChat() {
   fetch('/api/chat', { method: 'HEAD' }).catch(function() {});
 
   // Keep input visible when mobile keyboard opens
-  if (isMobile && window.visualViewport) {
-    var onResize = function() {
-      container.style.height = Math.min(window.visualViewport.height * 0.85, window.innerHeight * 0.55) + 'px';
-      msgArea.scrollTop = msgArea.scrollHeight;
-    };
-    window.visualViewport.addEventListener('resize', onResize);
+  if (isMobile) {
+    inputEl.addEventListener('focus', function() {
+      setTimeout(function() { inputRow.scrollIntoView({ block: 'nearest' }); }, 300);
+    });
   }
 
   inputEl.addEventListener('keydown', function(e) {
@@ -109,9 +107,6 @@ export function showChat() {
   function dismiss() {
     overlay.remove();
     document.removeEventListener('keydown', onEsc);
-    if (isMobile && window.visualViewport && onResize) {
-      window.visualViewport.removeEventListener('resize', onResize);
-    }
   }
   function onEsc(e) { if (e.key === 'Escape') dismiss(); }
   document.addEventListener('keydown', onEsc);
