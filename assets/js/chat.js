@@ -77,6 +77,9 @@ export function showChat() {
   addMsg('assistant', 'You found the chat. I\'m trained on the GTM Map diagnostic framework. Ask me about go-to-market strategy, or describe what\'s stuck.');
   requestAnimationFrame(function() { inputEl.focus(); });
 
+  // Warm up edge function so first real message is fast
+  fetch('/api/chat', { method: 'HEAD' }).catch(function() {});
+
   inputEl.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !busy) {
       var text = inputEl.value.trim();
@@ -94,24 +97,65 @@ export function showChat() {
   document.addEventListener('keydown', onEsc);
   overlay.addEventListener('click', function(e) { if (e.target === overlay) dismiss(); });
 
-  function linkifyDOM(el, text) {
-    var linkRe = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)|(https?:\/\/[^\s)]+)/g;
+  function renderMarkdown(el, text) {
+    var lines = text.split('\n');
+    var inList = false;
+    var listEl = null;
+
+    for (var li = 0; li < lines.length; li++) {
+      var line = lines[li];
+      var olMatch = line.match(/^\d+\.\s+(.*)/);
+      var ulMatch = line.match(/^[-*]\s+(.*)/);
+
+      if (olMatch) {
+        if (!inList) { listEl = document.createElement('ol'); inList = true; }
+        var item = document.createElement('li');
+        renderInline(item, olMatch[1]);
+        listEl.appendChild(item);
+      } else if (ulMatch) {
+        if (!inList) { listEl = document.createElement('ul'); inList = true; }
+        var item = document.createElement('li');
+        renderInline(item, ulMatch[1]);
+        listEl.appendChild(item);
+      } else {
+        if (inList) { el.appendChild(listEl); inList = false; listEl = null; }
+        if (line.trim() === '') {
+          if (li > 0 && li < lines.length - 1) el.appendChild(document.createElement('br'));
+        } else {
+          var p = document.createElement('span');
+          p.className = 'chat-line';
+          renderInline(p, line);
+          el.appendChild(p);
+        }
+      }
+    }
+    if (inList) el.appendChild(listEl);
+  }
+
+  function renderInline(el, text) {
+    var re = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)|(https?:\/\/[^\s)]+)|\*\*(.+?)\*\*|\*(.+?)\*/g;
     var last = 0;
     var m;
-    while ((m = linkRe.exec(text)) !== null) {
+    while ((m = re.exec(text)) !== null) {
       if (m.index > last) el.appendChild(document.createTextNode(text.slice(last, m.index)));
-      var a = document.createElement('a');
       if (m[1]) {
-        a.href = m[2];
-        a.textContent = m[1];
-      } else {
-        a.href = m[3];
-        a.textContent = m[3];
+        var a = document.createElement('a');
+        a.href = m[2]; a.textContent = m[1]; a.target = '_blank'; a.rel = 'noopener';
+        el.appendChild(a);
+      } else if (m[3]) {
+        var a = document.createElement('a');
+        a.href = m[3]; a.textContent = m[3]; a.target = '_blank'; a.rel = 'noopener';
+        el.appendChild(a);
+      } else if (m[4]) {
+        var b = document.createElement('strong');
+        b.textContent = m[4];
+        el.appendChild(b);
+      } else if (m[5]) {
+        var em = document.createElement('em');
+        em.textContent = m[5];
+        el.appendChild(em);
       }
-      a.target = '_blank';
-      a.rel = 'noopener';
-      el.appendChild(a);
-      last = linkRe.lastIndex;
+      last = re.lastIndex;
     }
     if (last < text.length) el.appendChild(document.createTextNode(text.slice(last)));
   }
@@ -125,7 +169,7 @@ export function showChat() {
       msgArea.scrollTop = msgArea.scrollHeight;
       typeOut(el, text, 0);
     } else {
-      if (role === 'assistant') { linkifyDOM(el, text); }
+      if (role === 'assistant') { renderMarkdown(el, text); }
       else { el.textContent = text; }
       msgArea.appendChild(el);
       msgArea.scrollTop = msgArea.scrollHeight;
@@ -140,7 +184,7 @@ export function showChat() {
     } else {
       var full = el.textContent;
       el.textContent = '';
-      linkifyDOM(el, full);
+      renderMarkdown(el, full);
     }
   }
 
