@@ -88,11 +88,17 @@ export function showChat() {
   // Warm up edge function so first real message is fast
   fetch('/api/chat', { method: 'HEAD' }).catch(function() {});
 
-  // Keep input visible when mobile keyboard opens
-  if (isMobile) {
-    inputEl.addEventListener('focus', function() {
-      setTimeout(function() { inputRow.scrollIntoView({ block: 'nearest' }); }, 300);
-    });
+  // Keep chat visible when iOS keyboard opens (Visual Viewport API)
+  var onViewportResize = null;
+  if (isMobile && window.visualViewport) {
+    onViewportResize = function() {
+      var vv = window.visualViewport;
+      overlay.style.height = vv.height + 'px';
+      overlay.style.top = vv.offsetTop + 'px';
+      msgArea.scrollTop = msgArea.scrollHeight;
+    };
+    window.visualViewport.addEventListener('resize', onViewportResize);
+    window.visualViewport.addEventListener('scroll', onViewportResize);
   }
 
   inputEl.addEventListener('keydown', function(e) {
@@ -107,6 +113,10 @@ export function showChat() {
   function dismiss() {
     overlay.remove();
     document.removeEventListener('keydown', onEsc);
+    if (onViewportResize && window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', onViewportResize);
+      window.visualViewport.removeEventListener('scroll', onViewportResize);
+    }
   }
   function onEsc(e) { if (e.key === 'Escape') dismiss(); }
   document.addEventListener('keydown', onEsc);
