@@ -3491,6 +3491,36 @@ picture.portrait img {
     margin-top: 0.6em;
 }
 
+.chat-msg--assistant ul,
+.chat-msg--assistant ol {
+    margin: 0.4em 0;
+    padding-left: 1.8em;
+}
+
+.chat-msg--assistant li {
+    margin-bottom: 0.3em;
+}
+
+.chat-msg--assistant ul {
+    list-style: none;
+}
+
+.chat-msg--assistant ul li::before {
+    content: '\2014';
+    color: var(--text-subtle);
+    margin-left: -1.4em;
+    width: 1.4em;
+    display: inline-block;
+}
+
+.chat-msg--assistant ol {
+    list-style: decimal;
+}
+
+.chat-msg--assistant ol li::marker {
+    color: var(--text-subtle);
+}
+
 .chat-msg--assistant a {
     color: var(--brand-orange);
     text-decoration: underline;
