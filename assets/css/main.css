@@ -806,15 +806,15 @@ body > .container > footer {
     margin-bottom: var(--space-xs);  /* 8px - tight grouping with topic tags */
 }
 
-.latest-essay {
-    margin-bottom: var(--section-gap);  /* 48px - gap to next section */
+/* Featured block — shared pattern for featured sections (essay, project, etc.) */
+.featured-block {
+    margin-bottom: var(--section-gap);
 
-    /* Semantic heading: essay title (h3 under h2 section header) */
     h3 {
         font-size: var(--font-2xl);
         font-weight: var(--font-weight-medium);
         margin-top: 0;
-        margin-bottom: var(--space-sm);  /* 16px - title to description */
+        margin-bottom: var(--space-sm);
         line-height: var(--line-height-heading);
 
         a {
@@ -834,7 +834,7 @@ body > .container > footer {
 }
 
 @media (max-width: 600px) {
-    .latest-essay h3 {
+    .featured-block h3 {
         font-size: var(--font-xl);
     }
 }
@@ -931,10 +931,17 @@ body > .container > footer {
    Single pages: title + meta + body structure.
    ========================================================================== */
 
-/* Section lists have no bottom margin - footer/next section provides spacing */
+/* Featured project description — lighter weight than featured essay */
+.featured-project-desc {
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    line-height: var(--line-height-body);
+    margin-bottom: var(--space-sm);
+}
+
 .recent-essays,
 .recent-notes {
-    margin-bottom: 0;
+    margin-bottom: var(--section-gap);
 }
 
 .page-title {
@@ -1353,7 +1360,7 @@ time.note-date,
 
 /* Reading content uses primary color for optimal contrast */
 .page-body p,
-.latest-essay p {
+.featured-block p {
     color: var(--text-primary);
 }
 
@@ -1934,7 +1941,7 @@ picture.img-lg img {
 
 /* Base font-weight: light mode default (400) */
 :is(.essay-body, .note-body, .page-body) :is(p, li),
-.latest-essay p {
+.featured-block p {
     font-weight: var(--font-weight-normal);
 }
 
@@ -1978,7 +1985,7 @@ html[data-theme="dark"] {
     }
 
     html:not([data-theme="light"]) :is(.essay-body, .note-body, .page-body) :is(p, li),
-    html:not([data-theme="light"]) .latest-essay p {
+    html:not([data-theme="light"]) .featured-block p {
         font-weight: var(--font-weight-light);
     }
 }
@@ -1993,7 +2000,7 @@ html[data-theme="dark"] :is(.essay-title, .note-title) {
 }
 
 html[data-theme="dark"] :is(.essay-body, .note-body, .page-body) :is(p, li),
-html[data-theme="dark"] .latest-essay p {
+html[data-theme="dark"] .featured-block p {
     font-weight: var(--font-weight-light);
 }
 
@@ -3519,15 +3526,4 @@ picture.portrait img {
     .chat-overlay { display: none !important; }
 }
 
-/* GTM section — free tool mention on homepage */
-.gtm-section {
-    margin-top: var(--section-gap);
-}
-
-.gtm-section p {
-    color: var(--text-secondary);
-    font-size: var(--font-lg);
-    line-height: var(--line-height-reading);
-    margin-bottom: var(--space-md);
-}
 
