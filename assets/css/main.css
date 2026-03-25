@@ -3615,8 +3615,8 @@ picture.portrait img {
         justify-content: center;
     }
     .chat-container {
-        width: auto;
-        max-width: 100%;
+        width: 100%;
+        max-width: none;
         height: 60dvh;
         max-height: 60dvh;
     }
