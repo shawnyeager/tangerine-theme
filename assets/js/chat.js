@@ -111,9 +111,16 @@ export function showChat() {
         renderInline(item, olMatch[1]);
         listEl.appendChild(item);
       } else if (ulMatch) {
-        if (!inList) { listEl = document.createElement('ul'); inList = true; }
-        var item = document.createElement('li');
-        renderInline(item, ulMatch[1]);
+        if (!inList) { listEl = document.createElement('div'); listEl.className = 'chat-list'; inList = true; }
+        var item = document.createElement('div');
+        item.className = 'chat-list-item';
+        var marker = document.createElement('span');
+        marker.className = 'chat-list-marker';
+        marker.textContent = '\u2014';
+        item.appendChild(marker);
+        var content = document.createElement('span');
+        renderInline(content, ulMatch[1]);
+        item.appendChild(content);
         listEl.appendChild(item);
       } else {
         if (inList) { el.appendChild(listEl); inList = false; listEl = null; }

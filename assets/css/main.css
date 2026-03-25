@@ -3491,30 +3491,29 @@ picture.portrait img {
     margin-top: 0.6em;
 }
 
-.chat-msg--assistant ul,
-.chat-msg--assistant ol {
+.chat-list {
     margin: 0.4em 0;
-    padding-left: 1.8em;
 }
 
-.chat-msg--assistant li {
+.chat-list-item {
+    display: flex;
+    gap: 0.5em;
     margin-bottom: 0.3em;
 }
 
-.chat-msg--assistant ul {
-    list-style: none;
-}
-
-.chat-msg--assistant ul li::before {
-    content: '\2014';
+.chat-list-marker {
     color: var(--text-subtle);
-    margin-left: -1.4em;
-    width: 1.4em;
-    display: inline-block;
+    flex-shrink: 0;
 }
 
 .chat-msg--assistant ol {
+    margin: 0.4em 0;
+    padding-left: 1.8em;
     list-style: decimal;
+}
+
+.chat-msg--assistant ol li {
+    margin-bottom: 0.3em;
 }
 
 .chat-msg--assistant ol li::marker {
