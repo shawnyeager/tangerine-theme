@@ -535,6 +535,12 @@ nav {
     border-radius: var(--border-radius-sm);
 }
 
+@media (max-width: 600px) {
+    .chat-header-trigger {
+        top: 3px;
+    }
+}
+
 main .container {
     padding-top: 0;
 }
