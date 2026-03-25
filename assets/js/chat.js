@@ -216,6 +216,7 @@ export function showChat() {
         var c = parseInt(sessionStorage.getItem('chat_count') || '0', 10) + 1;
         sessionStorage.setItem('chat_count', String(c));
         if (data.done) {
+          addMsg('assistant', 'That\'s my limit for this session. For a full diagnostic, take the GTM Map assessment: https://gtm.shawnyeager.com/map');
           inputEl.disabled = true;
           inputEl.placeholder = '';
           promptEl.textContent = '\u25A0';
