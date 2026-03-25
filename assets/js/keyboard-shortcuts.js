@@ -178,10 +178,11 @@
         }
     });
 
-    // Initialize mobile trigger for easter egg (lazy-loaded)
+    // Initialize mobile triggers for easter eggs (lazy-loaded)
     function initMobileTriggerIfNeeded() {
-        if (window.innerWidth <= 768 && window.__mempoolJS) {
-            import(window.__mempoolJS).then(m => m.initMobileTrigger());
+        if (window.innerWidth <= 768) {
+            if (window.__mempoolJS) import(window.__mempoolJS).then(m => m.initMobileTrigger());
+            if (window.__chatJS) import(window.__chatJS).then(m => m.initMobileTrigger());
         }
     }
 
@@ -243,7 +244,7 @@
 
         // Check for 'chat' easter egg (lazy-loaded)
         if (keySequence.endsWith('chat') && window.__chatJS) {
-            import(window.__chatJS).then(m => m.showChat());
+            import(window.__chatJS).then(m => setTimeout(() => m.showChat(), 150));
             keySequence = '';
             return;
         }

@@ -570,7 +570,7 @@ body > .container > footer {
     align-items: stretch;
     margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
-    max-width: 18rem;
+    max-width: 22rem;
 }
 
 .email-form input[type="email"] {
@@ -1043,10 +1043,18 @@ time.note-date,
 }
 
 @media (max-width: 600px) {
+    .essay-item a,
+    .note-item a {
+        flex-direction: column;
+        gap: 0;
+        align-items: flex-start;
+    }
+
     .recent-desc {
         padding-left: 0;
     }
 }
+
 
 /* Full listing pages (/essays/, /notes/) - wider row spacing */
 .full-list .essay-item,
@@ -3345,6 +3353,11 @@ picture.portrait img {
     align-items: center;
     justify-content: center;
     padding: var(--space-lg);
+    animation: chat-fade-in 200ms ease-out both;
+}
+
+@keyframes chat-fade-in {
+    from { opacity: 0; }
 }
 
 .chat-container {
@@ -3360,6 +3373,14 @@ picture.portrait img {
     font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
     font-size: 13px;
     line-height: 1.6;
+    animation: chat-scale-in 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes chat-scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
 }
 
 .chat-header {
@@ -3496,5 +3517,17 @@ picture.portrait img {
 
 @media print {
     .chat-overlay { display: none !important; }
+}
+
+/* GTM section — free tool mention on homepage */
+.gtm-section {
+    margin-top: var(--section-gap);
+}
+
+.gtm-section p {
+    color: var(--text-secondary);
+    font-size: var(--font-lg);
+    line-height: var(--line-height-reading);
+    margin-bottom: var(--space-md);
 }
 

@@ -179,3 +179,59 @@ export function showChat() {
       });
   }
 }
+
+/**
+ * Mobile trigger: swipe right starting on/near the brand square.
+ * Block uses down-right diagonal, chat uses horizontal right.
+ */
+export function initMobileTrigger() {
+  var homeSquare = document.querySelector('.home-square');
+  if (!homeSquare) return;
+
+  var touchStart = null;
+  var MIN_DISTANCE = 40;
+  var ZONE_EXTEND = 60;
+
+  function inHitZone(x, y) {
+    var r = homeSquare.getBoundingClientRect();
+    return x >= r.left && x <= r.right + ZONE_EXTEND &&
+           y >= r.top - ZONE_EXTEND && y <= r.bottom + ZONE_EXTEND;
+  }
+
+  function handleTouchMove(e) {
+    if (!touchStart) return;
+    var t = e.touches[0];
+    var dx = t.clientX - touchStart.x;
+    if (dx > 5) e.preventDefault();
+  }
+
+  function cleanup() {
+    document.removeEventListener('touchmove', handleTouchMove);
+    touchStart = null;
+  }
+
+  document.addEventListener('touchstart', function(e) {
+    if (window.innerWidth > 768) return;
+    var t = e.touches[0];
+    if (inHitZone(t.clientX, t.clientY)) {
+      touchStart = { x: t.clientX, y: t.clientY };
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    if (window.innerWidth > 768 || !touchStart) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - touchStart.x;
+    var dy = Math.abs(t.clientY - touchStart.y);
+    cleanup();
+    if (dx < MIN_DISTANCE) return;
+    if (dx > dy) {
+      e.preventDefault();
+      if (navigator.vibrate) navigator.vibrate(15);
+      showChat();
+    }
+  });
+
+  document.addEventListener('touchcancel', cleanup);
+}
