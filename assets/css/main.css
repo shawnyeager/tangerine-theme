@@ -791,17 +791,18 @@ body > .container > footer {
     margin-top: var(--section-gap);
 }
 
-/* Homepage subscribe link — after featured essay */
-.featured-subscribe {
-    margin-top: var(--space-lg);
+/* In-article subscribe — lives inside essay/note, not footer */
+.essay-subscribe {
+    margin-top: var(--space-2xl);
 }
 
-/* Post-article subscribe CTA — conviction moment after reading */
-.post-article-signup {
-    margin-top: var(--space-2xl);
-    margin-bottom: var(--space-xl);
-    padding-top: var(--space-xl);
-    border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 25%, transparent);
+.essay-subscribe .email-signup-intro {
+    color: var(--text-meta);
+    font-size: var(--font-sm);
+}
+
+.essay-subscribe .email-form {
+    max-width: none;
 }
 
 .site-intro .action-link {

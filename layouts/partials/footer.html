@@ -33,7 +33,7 @@ Important Notes:
 
 <footer aria-label="Site footer">
     {{/* Email subscription form (parameterized) */}}
-    {{ if and .Site.Params.show_email_signup (ne .Kind "404") (not .Params.hide_footer_signup) }}
+    {{ if and .Site.Params.show_email_signup (ne .Kind "404") (not .Params.hide_footer_signup) (not (in (slice "essays" "notes") .Type)) }}
     <section id="subscribe" class="email-subscription" aria-label="Newsletter signup">
         {{ partial "email-signup-form.html" (dict "id" "footer-email-subscribe" "aria_describedby" "footer-email-intro" "Site" .Site) }}
     </section>
