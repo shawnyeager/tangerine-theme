@@ -791,18 +791,89 @@ body > .container > footer {
     margin-top: var(--section-gap);
 }
 
-/* In-article subscribe — lives inside essay/note, not footer */
-.essay-subscribe {
+/* ==========================================================================
+   Post-Article Subscribe CTA
+
+   Purpose-built for the conviction moment after reading.
+   NOT the footer form — different component, different intent.
+   The footer form recedes. This one asks.
+   ========================================================================== */
+
+.subscribe-cta {
     margin-top: var(--space-2xl);
+    padding-bottom: var(--space-xl);
+    margin-bottom: var(--space-xs);
+    border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 25%, transparent);
 }
 
-.essay-subscribe .email-signup-intro {
-    color: var(--text-meta);
+.subscribe-cta label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    margin-bottom: var(--space-sm);
+}
+
+.subscribe-cta-fields {
+    display: flex;
+    gap: var(--space-sm);
+    max-width: 24rem;
+}
+
+.subscribe-cta input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-body);
     font-size: var(--font-sm);
+    color: var(--text-primary);
+    background: transparent;
+    border: var(--border-width) solid var(--border-color);
+    padding: var(--space-xs) var(--space-sm);
+    transition: border-color var(--transition-fast);
 }
 
-.essay-subscribe .email-form {
-    max-width: none;
+.subscribe-cta input[type="email"]:focus {
+    outline: none;
+    border-color: var(--brand-orange);
+}
+
+.subscribe-cta input[type="email"]::placeholder {
+    color: var(--text-meta);
+    opacity: var(--opacity-subtle);
+}
+
+.subscribe-cta button {
+    font-family: var(--font-heading);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--brand-orange);
+    background: transparent;
+    border: var(--border-width) solid var(--brand-orange);
+    padding: var(--space-xs) var(--space-lg);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.subscribe-cta button:hover {
+    color: var(--brand-orange-hover);
+    border-color: var(--brand-orange-hover);
+    box-shadow: inset 0 0 0 1px var(--brand-orange-hover);
+}
+
+.subscribe-cta button:focus-visible {
+    outline: var(--focus-ring-width) solid var(--brand-orange);
+    outline-offset: var(--focus-ring-offset);
+}
+
+@media (max-width: 600px) {
+    .subscribe-cta-fields {
+        max-width: none;
+    }
+    .subscribe-cta input[type="email"] {
+        font-size: 16px; /* iOS auto-zoom prevention */
+    }
 }
 
 .site-intro .action-link {
