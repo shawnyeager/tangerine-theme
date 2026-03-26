@@ -163,7 +163,7 @@ export function showChat() {
   });
 
   // --- Initial message + focus ---
-  addMsg('assistant', 'I\'m trained on the GTM Map framework. Ask me anything about go-to-market.');
+  addMsg('assistant', 'Hey — I know go-to-market. What are you working on?');
   requestAnimationFrame(function() { inputEl.focus(); });
 
   // Warm up edge function so first real message is fast
@@ -396,7 +396,7 @@ export function showChat() {
         chatHistory.push({ role: 'assistant', content: reply });
         if (data.done) {
           sessionStorage.setItem('chat_done', '1');
-          addMsg('assistant', 'That\'s my limit for this session. For a full diagnostic, take the GTM Map assessment: https://gtm.shawnyeager.com');
+          addMsg('assistant', 'That\'s all for this session. Want a full GTM diagnostic? It takes 5 minutes: https://gtm.shawnyeager.com');
           inputEl.disabled = true;
           inputEl.placeholder = '';
           promptEl.textContent = '\u25A0';
@@ -406,7 +406,7 @@ export function showChat() {
       })
       .catch(function() {
         dots.remove();
-        addMsg('assistant', 'Connection failed. Try again.');
+        addMsg('assistant', 'Couldn\'t connect. Your message is still in the input — hit send to retry.');
         inputEl.value = text;
         if (sendBtn) sendBtn.disabled = false;
         busy = false;
