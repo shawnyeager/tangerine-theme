@@ -747,11 +747,11 @@ body > .container > footer {
 .intro-tagline {
     font-family: var(--font-heading);
     font-size: var(--font-custom-24);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-primary);
+    font-weight: var(--font-weight-normal);
+    color: var(--text-secondary);
     line-height: var(--line-height-heading);
-    margin-top: var(--space-sm);
-    margin-bottom: var(--space-lg);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
 }
 
 /* Sectors - subtle, no divider */
@@ -810,8 +810,8 @@ body > .container > footer {
     }
 
     .intro-tagline {
-        font-size: var(--font-lg);
-        margin-bottom: var(--space-md);
+        font-size: var(--font-xl);
+        margin-bottom: var(--space-xs);
     }
 
     .intro-sectors {
