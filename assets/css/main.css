@@ -354,24 +354,35 @@ select:focus-visible,
     text-decoration: none;
 }
 
-/* Arrow spacing (no space character in HTML) */
-.action-link .arrow {
-    margin-left: var(--arrow-spacing);
+/* Arrow animation — shared across all CTA arrow types */
+:is(.action-link, .back-link, .all-essays,
+    .pagination-prev, .pagination-next,
+    .btn-ghost--primary, .footer-links a) .arrow {
     display: inline-block;
     transition: transform 0.15s ease;
 }
 
-.action-link:hover .arrow {
+/* Forward arrows (→): nudge right on hover */
+:is(.action-link, .all-essays,
+    .pagination-next,
+    .btn-ghost--primary, .footer-links a):hover .arrow {
     transform: translateX(3px);
+}
+
+/* Back arrows (←): nudge left on hover */
+:is(.action-link, .back-link,
+    .pagination-prev):hover .arrow:first-child {
+    transform: translateX(-3px);
+}
+
+/* Arrow spacing — per-element margins */
+.action-link .arrow {
+    margin-left: var(--arrow-spacing);
 }
 
 .action-link .arrow:first-child {
     margin-left: 0;
     margin-right: var(--arrow-spacing);
-}
-
-.action-link:hover .arrow:first-child {
-    transform: translateX(-3px);
 }
 
 .back-link .arrow,
@@ -3120,6 +3131,12 @@ picture.portrait img {
 
 .btn-primary::after {
     content: ' →';
+    display: inline-block;
+    transition: transform 0.15s ease;
+}
+
+.btn-primary:hover::after {
+    transform: translateX(3px);
 }
 
 /* System font buttons (V4V page) */
@@ -3180,12 +3197,6 @@ picture.portrait img {
 
 .btn-ghost--primary .arrow {
     margin-left: var(--arrow-spacing);
-    display: inline-block;
-    transition: transform 0.15s ease;
-}
-
-.btn-ghost--primary:hover .arrow {
-    transform: translateX(3px);
 }
 
 /* CTA buttons mobile - reduce height */
