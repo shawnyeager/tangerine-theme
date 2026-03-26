@@ -801,9 +801,7 @@ body > .container > footer {
 
 .subscribe-cta {
     margin-top: var(--space-2xl);
-    padding-bottom: var(--space-xl);
-    margin-bottom: var(--space-xs);
-    border-bottom: var(--border-width) solid color-mix(in srgb, var(--border-color) 25%, transparent);
+    margin-bottom: var(--space-lg);
 }
 
 .subscribe-cta label {
