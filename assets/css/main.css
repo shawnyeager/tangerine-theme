@@ -791,6 +791,19 @@ body > .container > footer {
     margin-top: var(--section-gap);
 }
 
+/* Homepage subscribe link — after featured essay */
+.featured-subscribe {
+    margin-top: var(--space-lg);
+}
+
+/* Post-article subscribe CTA — conviction moment after reading */
+.post-article-signup {
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 25%, transparent);
+}
+
 .site-intro .action-link {
     display: block;
     margin-top: var(--space-md);
