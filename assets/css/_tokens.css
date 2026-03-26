@@ -150,12 +150,10 @@
 
     /* Component Sizing */
     --content-max-width: 700px;
-    --card-padding: var(--space-xl);
     --border-radius-sm: 2px;
     --border-radius-interactive: 4px;
     --border-radius-code: 4px;
     --border-radius-md: 8px;
-    --border-radius-card: 12px;
     --arrow-spacing: 0.15em;
     --brand-bar-height: 3px;
     --table-cell-padding: 0.75rem 1rem;
@@ -212,7 +210,6 @@
 
     /* Custom Typography Sizes */
     --font-custom-56: 3.5rem;     /* 56px - Homepage display title */
-    --font-custom-48: 3rem;       /* 48px */
     --font-custom-40: 2.5rem;     /* 40px - Display title (mobile) */
     --font-custom-32: 2rem;
     --font-custom-24: 1.5rem;
