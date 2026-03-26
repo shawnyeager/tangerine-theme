@@ -1172,73 +1172,6 @@ time.note-date,
 }
 
 
-/* Full listing pages (/essays/, /notes/) - wider row spacing */
-.full-list .essay-item,
-.full-list .note-item {
-    margin-bottom: var(--space-md);
-}
-
-/* Essay/Note items with excerpts - stacked layout */
-.essay-item.has-excerpt,
-.note-item.has-excerpt {
-    margin-bottom: var(--space-lg);
-
-    a {
-        flex-direction: column;
-        gap: 0;
-        align-items: flex-start;
-    }
-
-    .essay-date,
-    .note-date {
-        font-size: var(--font-xs);
-        margin-bottom: var(--space-label-gap);
-    }
-
-    .essay-title,
-    .note-title {
-        font-size: var(--font-xl);
-        font-weight: var(--font-weight-medium);
-    }
-}
-
-/* Recent quarter (first 3 essays) - prominent treatment */
-.full-list .essay-item.has-excerpt:nth-child(-n+3),
-.full-list .note-item.has-excerpt:nth-child(-n+3) {
-    margin-bottom: var(--space-2xl);  /* 48px - generous spacing */
-
-    .essay-title-link,
-    .note-title-link {
-        display: block;
-        color: var(--text-primary);
-        text-decoration: none;
-        margin-bottom: var(--space-sm);  /* 12px - gap before excerpt */
-
-        &:hover {
-            color: var(--brand-orange);
-        }
-    }
-
-    .essay-title,
-    .note-title {
-        font-size: var(--font-2xl);  /* 30px - larger for emphasis */
-        font-weight: var(--font-weight-semibold);  /* 600 - bolder */
-    }
-
-}
-
-/* Archive (essay 4+) - compact treatment */
-.full-list .essay-item.has-excerpt:nth-child(n+4),
-.full-list .note-item.has-excerpt:nth-child(n+4) {
-    margin-bottom: var(--space-md);  /* 16px - tighter spacing */
-
-    .essay-title,
-    .note-title {
-        font-size: var(--font-lg);  /* 18px - smaller */
-    }
-}
-
-
 /* Last item before CTA link doesn't need margin - CTA provides the gap */
 .essay-item:last-of-type,
 .note-item:last-of-type {
@@ -2258,8 +2191,8 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     }
 
     /* Homepage: show 5 items on mobile (hide 6+) */
-    .recent-notes:not(.full-list) .note-item:nth-of-type(n+6),
-    .recent-essays:not(.full-list) .essay-item:nth-of-type(n+6) {
+    .recent-notes .note-item:nth-of-type(n+6),
+    .recent-essays .essay-item:nth-of-type(n+6) {
         display: none;
     }
 
