@@ -36,10 +36,10 @@ Important Notes:
     {{- if $index }},{{ end }}
     {
       "@type": "Question",
-      "name": {{ $item.question | jsonify }},
+      "name": "{{ $item.question | strings.TrimPrefix `\"` | strings.TrimSuffix `\"` | safeJS }}",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": {{ $item.answer | jsonify }}
+        "text": "{{ $item.answer | strings.TrimPrefix `\"` | strings.TrimSuffix `\"` | safeJS }}"
       }
     }
     {{- end -}}
