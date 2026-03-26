@@ -547,11 +547,13 @@ nav {
 }
 
 @media (max-width: 600px) {
+    .header-right {
+        gap: var(--space-md); /* Match nav gap on mobile (16px vs desktop 24px) */
+    }
     .chat-header-trigger {
         top: 4px;
-        min-width: 44px;
-        min-height: 44px;
-        justify-content: center;
+        padding: 10px;
+        margin: -10px;
     }
 }
 
@@ -3502,6 +3504,11 @@ picture.portrait img {
     margin-bottom: var(--space-sm);
     word-wrap: break-word;
     overflow-wrap: break-word;
+    min-width: 0;
+}
+
+.chat-msg a {
+    word-break: break-all;
 }
 
 .chat-msg--user {
@@ -3658,6 +3665,7 @@ picture.portrait img {
         padding-left: calc(var(--space-md) + env(safe-area-inset-left, 0px));
         padding-right: calc(var(--space-md) + env(safe-area-inset-right, 0px));
         overscroll-behavior: contain;
+        min-height: 0; /* Override desktop 200px — let flex shrink for keyboard */
     }
     .chat-input-row {
         padding-bottom: calc(var(--space-xs) + env(safe-area-inset-bottom, 0px));
@@ -3668,8 +3676,8 @@ picture.portrait img {
         font-size: 16px; /* iOS requires ≥16px to prevent auto-zoom on focus */
     }
     .chat-close {
-        min-width: 44px;
-        min-height: 44px;
+        min-width: var(--touch-target-min);
+        min-height: var(--touch-target-min);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -3679,8 +3687,8 @@ picture.portrait img {
         display: flex;
         align-items: center;
         justify-content: center;
-        min-width: 44px;
-        min-height: 44px;
+        min-width: var(--touch-target-min);
+        min-height: var(--touch-target-min);
         background: none;
         border: none;
         color: var(--brand-orange);
@@ -3689,7 +3697,7 @@ picture.portrait img {
         cursor: pointer;
         flex-shrink: 0;
         padding: 0;
-        opacity: 0.4;
+        opacity: var(--opacity-disabled);
         transition: opacity 0.15s ease;
     }
     .chat-send:not(:disabled) {

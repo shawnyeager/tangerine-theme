@@ -348,7 +348,7 @@ export function showChat() {
   }
 
   function typeOut(el, text, i) {
-    if (i >= text.length) return;
+    if (i >= text.length || dismissed) return;
     // Advance multiple characters per frame for longer responses
     var charsPerFrame = text.length > 200 ? 3 : 1;
     var next = Math.min(i + charsPerFrame, text.length);
@@ -385,7 +385,10 @@ export function showChat() {
       credentials: 'same-origin',
       body: JSON.stringify({ message: text, history: chatHistory.slice(-8) }),
     })
-      .then(function(res) { return res.json(); })
+      .then(function(res) {
+        if (!res.ok) throw new Error(res.status);
+        return res.json();
+      })
       .then(function(data) {
         dots.remove();
         var reply = data.response || 'Something went wrong.';
