@@ -163,7 +163,7 @@ export function showChat() {
   });
 
   // --- Initial message + focus ---
-  addMsg('assistant', 'Hey — I know go-to-market. What are you working on?');
+  addMsg('assistant', 'Hey. I know go-to-market. What are you working on?');
   requestAnimationFrame(function() { inputEl.focus(); });
 
   // Warm up edge function so first real message is fast
