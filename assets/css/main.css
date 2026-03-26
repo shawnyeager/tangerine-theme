@@ -1422,6 +1422,14 @@ time.note-date,
 
 .essay-body,
 .note-body {
+    /* Inline links — underline at rest for WCAG link distinguishability */
+    a:not(.action-link):not(.back-link) {
+        text-decoration: underline;
+        text-decoration-color: var(--underline-color-brand);
+        text-decoration-thickness: var(--underline-thickness);
+        text-underline-offset: var(--underline-offset);
+    }
+
     /* Ordered Lists */
     ol {
         margin: var(--space-lg) 0;
@@ -1668,7 +1676,9 @@ time.note-date,
     .footnote-backref {
         margin-left: var(--space-xs);
         font-size: var(--font-base);
+        color: var(--text-meta);
         opacity: var(--opacity-medium);
+        text-decoration: none;
     }
 
     .footnote-backref:hover {
