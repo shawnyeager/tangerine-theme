@@ -3678,6 +3678,9 @@ picture.portrait img {
         padding-left: calc(var(--space-md) + env(safe-area-inset-left, 0px));
         padding-right: calc(var(--space-md) + env(safe-area-inset-right, 0px));
     }
+    .chat-container {
+        font-size: 14px; /* Bump from 13px desktop — readable at arm's length */
+    }
     .chat-input {
         font-size: 16px; /* iOS requires ≥16px to prevent auto-zoom on focus */
     }
