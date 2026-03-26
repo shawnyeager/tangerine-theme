@@ -46,6 +46,8 @@
    Uses CSS light-dark() for automatic dark mode support.
 
    SPACING SCALE (8px base grid):
+   --space-3xs: 2px  - Optical nudges, near-zero gaps
+   --space-2xs: 4px  - Label gaps, tight row gaps
    --space-xs:  8px  - Tight grouping within elements
    --space-sm:  12px - Related elements (CTAs, internal spacing)
    --space-md:  16px - Default spacing (paragraphs, list items)
@@ -123,7 +125,9 @@
     --letter-spacing-body: -0.01em;
 
     /* Spacing Tokens */
-    --space-label-gap: 0.25rem;  /* 4px - Label-to-value gap in info pairs */
+    --space-3xs: 0.125rem;       /* 2px - Optical nudges, near-zero gaps */
+    --space-2xs: 0.25rem;        /* 4px - Label gaps, tight row gaps in wrapped layouts */
+    --space-label-gap: var(--space-2xs);  /* Alias — label-to-value gap in info pairs */
     --space-xs: 0.5rem;          /* 8px - Tight grouping within elements */
     --space-sm: 0.75rem;         /* 12px - Related elements (CTAs, internal spacing) */
     --space-md: 1rem;            /* 16px - Default spacing (paragraphs, list items, small headings) */

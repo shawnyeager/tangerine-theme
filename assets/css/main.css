@@ -552,7 +552,7 @@ nav {
     }
     .chat-header-trigger {
         top: 4px;
-        padding: 10px;
+        padding: 10px;  /* Derived: (touch-target-min - 18px icon) / 2, not a token */
         margin: -10px;
     }
 }
@@ -1086,7 +1086,7 @@ time.note-date,
     font-weight: var(--font-weight-normal);
     line-height: var(--line-height-body);
     color: var(--text-meta);
-    margin-top: var(--space-3xs, 2px);
+    margin-top: var(--space-3xs);
     padding-left: calc(4.5em + var(--space-lg));
 }
 
