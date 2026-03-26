@@ -541,12 +541,10 @@ nav {
     }
 }
 
-/* Hide chat bubble on iOS Safari — keyboard breaks fixed overlay (issue #452) */
-@supports (-webkit-touch-callout: none) {
-    @media (max-width: 600px) {
-        .chat-header-trigger {
-            display: none;
-        }
+/* Hide chat on mobile — keyboard breaks fixed overlay */
+@media (max-width: 600px) {
+    .chat-header-trigger {
+        display: none;
     }
 }
 
