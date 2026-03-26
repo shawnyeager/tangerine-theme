@@ -55,7 +55,7 @@ export function showChat() {
   var titleEl = document.createElement('span');
   titleEl.className = 'chat-title';
   titleEl.id = 'chat-dialog-title';
-  titleEl.textContent = 'gtm.shawnyeager.com';
+  titleEl.textContent = 'AI GTM Advisor';
   overlay.setAttribute('aria-labelledby', 'chat-dialog-title');
 
   var hintEl = document.createElement('span');

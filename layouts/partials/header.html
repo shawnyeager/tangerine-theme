@@ -22,6 +22,6 @@ Important Notes:
     <a href="{{ "/" | relURL }}" class="home-link" aria-label="Home"><span class="home-square{{ with .Site.Params.favicon_style }}{{ if ne . "solid" }} home-square--{{ . }}{{ end }}{{ end }}"></span></a>
     <div class="header-right">
         {{ partial "navigation.html" . }}
-        <button class="chat-header-trigger" onclick="if(window.__chatJS){import(window.__chatJS).then(function(m){m.showChat()})}" aria-label="Open chat"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 -0.15 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+        <button class="chat-header-trigger" title="GTM advisor" onclick="if(window.__chatJS){import(window.__chatJS).then(function(m){m.showChat()})}" aria-label="GTM advisor chat"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 -0.15 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
     </div>
 </header>
