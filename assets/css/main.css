@@ -3424,7 +3424,7 @@ picture.portrait img {
 .chat-overlay {
     position: fixed;
     inset: 0;
-    z-index: 9999;
+    z-index: var(--z-modal);
     background: light-dark(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.85));
     display: flex;
     align-items: center;
@@ -3447,7 +3447,7 @@ picture.portrait img {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-family: var(--font-monospace);
     font-size: 13px;
     line-height: 1.6;
     animation: chat-scale-in 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -3491,6 +3491,12 @@ picture.portrait img {
 
 .chat-close:hover {
     color: var(--text-primary);
+}
+
+.chat-close:focus-visible {
+    outline: var(--focus-ring-width) solid var(--brand-orange);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--border-radius-sm);
 }
 
 .chat-messages {
@@ -3706,12 +3712,18 @@ picture.portrait img {
     .chat-send:disabled {
         cursor: default;
     }
+    .chat-send:focus-visible {
+        outline: var(--focus-ring-width) solid var(--brand-orange);
+        outline-offset: var(--focus-ring-offset);
+        border-radius: var(--border-radius-sm);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .chat-msg--thinking {
         animation: none;
     }
+    .chat-overlay,
     .chat-container {
         animation: none;
     }
