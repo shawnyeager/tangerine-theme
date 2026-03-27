@@ -1,5 +1,5 @@
 /**
- * AI Chat — GTM advisor powered by Claude
+ * AI Chat — Go-to-Market Advisor powered by Claude
  *
  * TUI-style overlay triggered by header icon or typing "chat".
  * Calls /api/chat edge function (Claude proxy with GTM Map context).
@@ -55,7 +55,7 @@ export function showChat() {
   var titleEl = document.createElement('span');
   titleEl.className = 'chat-title';
   titleEl.id = 'chat-dialog-title';
-  titleEl.textContent = 'AI GTM Advisor';
+  titleEl.textContent = 'Go-to-Market Advisor';
   overlay.setAttribute('aria-labelledby', 'chat-dialog-title');
 
   var hintEl = document.createElement('span');
