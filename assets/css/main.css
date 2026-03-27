@@ -1727,6 +1727,18 @@ time.note-date,
     }
 }
 
+/* Page body inline links — same underline treatment as essays/notes */
+.page-body > p a:not(.action-link):not(.back-link) {
+    text-decoration: underline;
+    text-decoration-color: var(--underline-color-brand);
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
 /* Aside - acknowledgments after essay/note body */
 :is(.essay-content, .note-content) .aside {
     color: var(--text-meta);
