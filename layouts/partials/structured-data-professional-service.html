@@ -36,7 +36,16 @@ Important Notes:
     "@id": "{{ .Site.BaseURL }}#person"
   },
   "serviceType": {{ default "Advisory" $s.type | jsonify | safeJS }},
-  "areaServed": {{ default "Worldwide" $s.areaServed | jsonify | safeJS }}{{ with $s.priceRange }},
+  "areaServed": {{ default "Worldwide" $s.areaServed | jsonify | safeJS }}{{ with $s.image }},
+  "image": "{{ . | absURL }}"{{ end }}{{ with $s.address }},
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ .street }}",
+    "addressLocality": "{{ .city }}",
+    "addressRegion": "{{ .state }}",
+    "postalCode": "{{ .zip }}",
+    "addressCountry": "{{ .country }}"
+  }{{ end }}{{ with $s.priceRange }},
   "priceRange": {{ . | jsonify | safeJS }}{{ end }}
 }
 </script>
