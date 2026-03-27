@@ -28,16 +28,16 @@ Important Notes:
 {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  "name": {{ $s.name | jsonify }},
-  "description": {{ default .Site.Params.description $s.description | jsonify }},
+  "name": {{ $s.name | jsonify | safeJS }},
+  "description": {{ default .Site.Params.description $s.description | jsonify | safeJS }},
   "url": "{{ .Site.BaseURL }}",
   "provider": {
     "@type": "Person",
     "@id": "{{ .Site.BaseURL }}#person"
   },
-  "serviceType": {{ default "Advisory" $s.type | jsonify }},
-  "areaServed": {{ default "Worldwide" $s.areaServed | jsonify }}{{ with $s.priceRange }},
-  "priceRange": {{ . | jsonify }}{{ end }}
+  "serviceType": {{ default "Advisory" $s.type | jsonify | safeJS }},
+  "areaServed": {{ default "Worldwide" $s.areaServed | jsonify | safeJS }}{{ with $s.priceRange }},
+  "priceRange": {{ . | jsonify | safeJS }}{{ end }}
 }
 </script>
 {{- end -}}

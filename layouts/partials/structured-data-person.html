@@ -20,11 +20,11 @@ Important Notes:
 
 {{- if .IsHome -}}
 {{- $author := partial "functions/build-author-dict.html" . -}}
-{{- $person := merge $author (dict "@id" (printf "%s#person" .Site.BaseURL)) -}}
+{{- $person := merge $author (dict "@context" "https://schema.org" "@id" (printf "%s#person" .Site.BaseURL)) -}}
 {{- with .Site.Params.person.knowsAbout -}}
   {{- $person = merge $person (dict "knowsAbout" .) -}}
 {{- end -}}
 <script type="application/ld+json">
-{{ $person | jsonify (dict "indent" "  ") | safeHTML }}
+{{ $person | jsonify (dict "indent" "  ") | safeJS }}
 </script>
 {{- end -}}
