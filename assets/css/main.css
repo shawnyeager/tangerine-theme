@@ -1200,6 +1200,8 @@ time.note-date,
     align-items: baseline;
     column-gap: var(--space-xs);
     row-gap: var(--space-2xs);
+    line-height: var(--line-height-none);
+    margin-top: var(--space-sm);
     margin-bottom: var(--space-xl);
     padding-bottom: var(--space-lg);
     border-bottom: var(--border-subtle);

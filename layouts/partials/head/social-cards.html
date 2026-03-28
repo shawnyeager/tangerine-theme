@@ -18,7 +18,7 @@ Context Expected:
 {{- $metaTitle := .Params.seo_title | default .Title -}}
 <meta property="og:title" content="{{ if $metaTitle }}{{ $metaTitle }}{{ else }}{{ .Site.Title }}{{ end }}">
 <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Essays and notes on %s — go-to-market strategy, AI, Bitcoin, and what changes when technology outgrows the market." .Title }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:type" content="{{ if and .IsPage (or (eq .Type "essays") (eq .Type "notes")) }}article{{ else }}website{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 {{- $ogImageURL := partial "functions/get-og-image.html" . -}}
 {{- $ogImageSquareURL := replace $ogImageURL ".png" "-square.png" -}}
