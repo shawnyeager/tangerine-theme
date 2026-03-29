@@ -1215,7 +1215,7 @@ time.note-date,
         text-decoration-color: var(--underline-color-muted);
         text-decoration-thickness: var(--underline-thickness);
         text-underline-offset: var(--underline-offset);
-        transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+        transition: color var(--transition-fast);
 
         &:hover {
             color: var(--brand-orange);
