@@ -1723,6 +1723,7 @@ time.note-date,
     );
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
+    transition: color var(--transition-fast);
 
     &:hover {
         color: var(--brand-orange);
