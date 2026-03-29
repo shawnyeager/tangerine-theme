@@ -44,16 +44,13 @@ if [ -n "$(git status --porcelain)" ]; then
     echo ""
 fi
 
-# Info about what happens next
+# Remind to create theme update PRs manually
 if [ "$BRANCH" = "master" ]; then
-    echo -e "${GREEN}After push, GitHub Actions will automatically:${NC}"
-    echo "  1. Trigger site update workflows"
-    echo "  2. Create PRs in shawnyeager-com and shawnyeager-share"
-    echo "  3. Build FREE deploy previews"
-    echo ""
-    echo "Check PRs in ~3 minutes:"
-    echo "  gh pr list --repo shawnyeager/shawnyeager-com --label theme-update"
-    echo "  gh pr list --repo shawnyeager/shawnyeager-share --label theme-update"
+    echo -e "${YELLOW}NEXT: Create theme update PRs manually in each site repo${NC}"
+    echo "  1. git checkout -b theme/description"
+    echo "  2. hugo mod clean && GOPROXY=direct go get github.com/shawnyeager/tangerine-theme@<commit>"
+    echo "  3. git add go.mod go.sum && git commit && git push"
+    echo "  4. gh pr create"
 fi
 
 echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
