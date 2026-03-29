@@ -1225,11 +1225,6 @@ time.note-date,
     }
 }
 
-@media (max-width: 600px) {
-    .writing-topics {
-        justify-content: center;
-    }
-}
 
 /* Writing stream items — editorial index */
 .writing-item {
