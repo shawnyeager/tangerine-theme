@@ -1424,18 +1424,6 @@ time.note-date,
 
 .essay-body,
 .note-body {
-    /* Inline links — underline at rest for WCAG link distinguishability.
-       Underline present at rest, removed on hover (inverse of nav links). */
-    > :not(.footnotes) a:not(.action-link):not(.back-link) {
-        text-decoration: underline;
-        text-decoration-color: var(--underline-color-brand);
-        text-decoration-thickness: var(--underline-thickness);
-        text-underline-offset: var(--underline-offset);
-
-        &:hover {
-            text-decoration: none;
-        }
-    }
 
     /* Ordered Lists */
     ol {
@@ -1729,8 +1717,10 @@ time.note-date,
     }
 }
 
-/* Page body inline links — same underline treatment as essays/notes */
-.page-body > p a:not(.action-link):not(.back-link) {
+/* Prose content inline links — underline at rest for WCAG link distinguishability.
+   Underline present at rest, removed on hover (inverse of nav links).
+   Covers all content containers: essays, notes, pages, homepage intro. */
+:is(.essay-body, .note-body, .page-body, .intro-body) > :not(.footnotes) a:not(.action-link):not(.back-link):not(.btn-primary) {
     text-decoration: underline;
     text-decoration-color: var(--underline-color-brand);
     text-decoration-thickness: var(--underline-thickness);
@@ -3128,8 +3118,9 @@ picture.portrait img {
 }
 
 .btn-primary::after {
-    content: ' →';
+    content: '→';
     display: inline-block;
+    margin-left: var(--arrow-spacing);
     transition: transform 0.15s ease;
 }
 
