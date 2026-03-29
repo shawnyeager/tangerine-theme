@@ -1227,8 +1227,7 @@ time.note-date,
 
 @media (max-width: 600px) {
     .writing-topics {
-        display: block;
-        text-wrap: balance;
+        justify-content: center;
     }
 }
 
