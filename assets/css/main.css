@@ -1208,21 +1208,20 @@ time.note-date,
 
     a {
         font-family: var(--font-heading);
-        font-size: var(--font-sm);
+        font-size: var(--font-base);
         font-weight: var(--font-weight-medium);
-        letter-spacing: var(--letter-spacing-wide);
-        text-transform: uppercase;
         color: var(--text-meta);
-        text-decoration: none;
-        transition: color var(--transition-fast);
+        text-decoration: underline;
+        text-decoration-color: var(--underline-color-muted);
+        text-decoration-thickness: var(--underline-thickness);
+        text-underline-offset: var(--underline-offset);
+        transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
 
         &:hover {
             color: var(--brand-orange);
+            text-decoration-color: var(--underline-color-brand);
         }
-    }
 
-    .topic-sep {
-        color: var(--text-meta);
     }
 }
 
