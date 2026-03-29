@@ -1712,15 +1712,21 @@ time.note-date,
 
 /* Prose content inline links — underline at rest for WCAG link distinguishability.
    Underline present at rest, removed on hover (inverse of nav links).
-   Covers all content containers: essays, notes, pages, homepage intro. */
+   Covers all content containers: essays, notes, pages, homepage intro.
+   Uses text-primary color so links blend with prose; underline provides affordance. */
 :is(.essay-body, .note-body, .page-body, .intro-body) > :not(.footnotes) a:not(.action-link):not(.back-link):not(.btn-primary) {
+    color: inherit;
     text-decoration: underline;
-    text-decoration-color: var(--underline-color-brand);
+    text-decoration-color: light-dark(
+        color-mix(in srgb, var(--text-meta) 70%, transparent),
+        var(--text-meta)
+    );
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
 
     &:hover {
-        text-decoration: none;
+        color: var(--brand-orange);
+        text-decoration-color: var(--brand-orange);
     }
 }
 
