@@ -3431,7 +3431,7 @@ picture.portrait img {
 
 .chat-container {
     width: 100%;
-    width: clamp(360px, 42vw, 620px);
+    width: clamp(22.5rem, 42vw, 38.75rem);
     height: clamp(400px, 70vh, 700px);
     background: light-dark(#fafaf9, #0a0a0a);
     border: 1px solid light-dark(#ddd, #333);
@@ -3440,7 +3440,7 @@ picture.portrait img {
     flex-direction: column;
     overflow: hidden;
     font-family: var(--font-monospace);
-    font-size: 13px;
+    font-size: 0.8125rem;
     line-height: 1.6;
     animation: chat-scale-in 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -3459,7 +3459,7 @@ picture.portrait img {
     padding: var(--space-xs) var(--space-md);
     border-bottom: 1px solid light-dark(#e5e5e5, #222);
     color: var(--text-meta);
-    font-size: 11px;
+    font-size: 0.6875rem;
 }
 
 .chat-title {
@@ -3474,9 +3474,9 @@ picture.portrait img {
     background: none;
     border: none;
     color: var(--text-subtle);
-    font-size: 20px;
+    font-size: 1.25rem;
     line-height: 1;
-    padding: 4px 8px;
+    padding: 0.25rem 0.5rem;
     cursor: pointer;
     transition: color 0.15s ease;
 }
@@ -3495,7 +3495,7 @@ picture.portrait img {
     flex: 1;
     overflow-y: auto;
     padding: var(--space-md);
-    min-height: 200px;
+    min-height: 12.5rem;
 }
 
 .chat-msg {

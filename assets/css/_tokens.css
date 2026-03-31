@@ -236,7 +236,7 @@
     --block-face-left: color-mix(in srgb, var(--brand-orange), black 35%);
 
     /* Component-specific tokens */
-    --home-square-size: 24px;
+    --home-square-size: 1.5rem;      /* 24px at 16px root, scales with root font-size */
     --home-square-border-width: 3px;
     --focus-ring-width: 2px;
     --focus-ring-offset: 2px;
