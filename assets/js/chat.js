@@ -40,6 +40,9 @@ export function showChat() {
     return;
   }
 
+  // --- Analytics ---
+  if (typeof plausible === 'function') plausible('chat-open');
+
   // --- Build DOM ---
 
   var overlay = document.createElement('div');
