@@ -51,6 +51,7 @@
 }
 
 html {
+    font-size: clamp(1rem, 0.965rem + 0.15vw, 1.09rem); /* 16px → 17.5px fluid */
     overflow-y: scroll; /* Prevent horizontal shift when scrollbar appears/disappears */
     scroll-behavior: smooth;
 }
