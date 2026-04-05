@@ -2887,6 +2887,7 @@ picture.headshot {
     width: var(--avatar-size-lg);
     height: var(--avatar-size-lg);
     float: right;
+    margin-top: var(--float-cap-offset);
     margin-left: var(--space-lg);
     margin-bottom: var(--space-sm);
 }
@@ -2979,7 +2980,7 @@ picture.portrait img {
     float: right;
     width: var(--avatar-size-sm);
     height: var(--avatar-size-sm);
-    margin: 0 0 var(--space-xs) var(--space-md);
+    margin: var(--float-cap-offset) 0 var(--space-xs) var(--space-md);
     border-radius: var(--border-radius-interactive);
     object-fit: cover;
     filter: grayscale(1);

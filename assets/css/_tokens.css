@@ -217,6 +217,11 @@
     /* Border Width */
     --border-width: 1px;
     --border-width-accent: 4px;
+    /* Float-to-text cap alignment
+       Offsets a float's top edge to align with adjacent text cap line.
+       Derived: (line-height 1.5 - Inter cap ratio 1490/2048) / 2 = 0.3865em */
+    --float-cap-offset: 0.3865em;
+
     /* Content Element Sizing */
     --avatar-size-sm: 7.5rem;       /* 120px at 16px root, scales with root font-size */
     --avatar-size-lg: 16.25rem;     /* 260px at 16px root */
