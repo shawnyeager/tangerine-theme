@@ -46,7 +46,7 @@ Context Expected:
 <!-- Favicons -->
 {{- $faviconStyle := .Site.Params.favicon_style | default "solid" -}}
 {{- $faviconPath := printf "favicons/%s" $faviconStyle -}}
-<!-- High-res PNG for Google Search (padded for circular crop on mobile) -->
+<!-- High-res PNG for Google Search (full-bleed orange for circular crop on mobile) -->
 {{- with resources.Get (printf "%s/icon-192.png" $faviconPath) }}
   {{- with resources.Copy "icon-192.png" . }}
 <link rel="icon" type="image/png" sizes="192x192" href="{{ .RelPermalink }}">
