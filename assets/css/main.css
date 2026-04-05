@@ -3433,8 +3433,8 @@ picture.portrait img {
     width: 100%;
     width: clamp(22.5rem, 42vw, 38.75rem);
     height: clamp(400px, 70vh, 700px);
-    background: light-dark(#fafaf9, #0a0a0a);
-    border: 1px solid light-dark(#ddd, #333);
+    background: var(--background-body);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius-interactive);
     display: flex;
     flex-direction: column;
@@ -3457,7 +3457,7 @@ picture.portrait img {
     justify-content: space-between;
     align-items: center;
     padding: var(--space-xs) var(--space-md);
-    border-bottom: 1px solid light-dark(#e5e5e5, #222);
+    border-bottom: 1px solid var(--border-color);
     color: var(--text-meta);
     font-size: 0.6875rem;
 }
@@ -3577,7 +3577,7 @@ picture.portrait img {
     display: flex;
     align-items: center;
     padding: var(--space-xs) var(--space-md);
-    border-top: 1px solid light-dark(#e5e5e5, #222);
+    border-top: 1px solid var(--border-color);
     gap: var(--space-xs);
 }
 
@@ -3623,7 +3623,7 @@ picture.portrait img {
 }
 
 .chat-messages::-webkit-scrollbar-thumb {
-    background: light-dark(#ccc, #333);
+    background: var(--border-color);
     border-radius: 2px;
 }
 
