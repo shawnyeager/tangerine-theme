@@ -17,7 +17,7 @@ Editorial index matching /writing/ — type label, title, description.
         {{ range $pages }}
         <article class="writing-item">
             <a href="{{ .RelPermalink }}">
-                <span class="writing-item-meta"><time datetime="{{ .Date.Format "2006-01-02" }}" class="writing-item-date">{{ .Date.Format "Jan 2006" }}</time><span class="writing-item-sep">·</span><span class="writing-item-type">{{ .Type | singularize }}</span></span>
+                <span class="writing-item-meta"><time datetime="{{ .Date.Format "2006-01-02" }}" class="writing-item-date">{{ .Date.Format "Jan 2006" }}</time><span class="page-meta-separator">·</span><span class="writing-item-type">{{ .Type | singularize }}</span></span>
                 <span class="writing-item-title">{{ .Title }}</span>
                 {{ with .Params.description }}<span class="writing-item-desc">{{ . }}</span>{{ end }}
             </a>

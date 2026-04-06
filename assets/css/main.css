@@ -1304,14 +1304,16 @@ time.note-date,
         }
 
         &:hover .writing-item-date,
-        &:hover .writing-item-sep {
+        &:hover .page-meta-separator {
             color: var(--text-meta);
         }
     }
 }
 
 .writing-item-meta {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
     margin-bottom: var(--space-3xs);
 }
 
@@ -1321,10 +1323,6 @@ time.note-date,
     font-variant-numeric: tabular-nums;
 }
 
-.writing-item-sep {
-    color: var(--text-meta);
-    margin: 0 var(--space-xs);
-}
 
 .writing-item-type {
     font-size: var(--font-xs);
