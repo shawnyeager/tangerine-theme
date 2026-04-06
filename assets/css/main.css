@@ -870,6 +870,9 @@ body > .container > footer {
    Reuses essay-item/note-item patterns. Sits between subscribe CTA and content-nav. */
 
 .related-reading {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--font-base);
     margin-top: var(--space-2xl);
 }
 
