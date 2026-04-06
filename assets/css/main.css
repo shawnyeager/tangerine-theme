@@ -1308,7 +1308,19 @@ time.note-date,
         &:hover .writing-item-title {
             color: var(--brand-orange);
         }
+
+        &:hover .writing-item-date {
+            color: var(--text-meta);
+        }
     }
+}
+
+.writing-item-date {
+    display: block;
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: var(--space-3xs);
 }
 
 .writing-item-title {
