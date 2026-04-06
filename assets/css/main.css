@@ -867,17 +867,56 @@ body > .container > footer {
 }
 
 /* Related Reading: topic-based recommendations at essay/note footers
-   Reuses essay-item/note-item patterns. Sits between subscribe CTA and content-nav. */
+   Title + description per item. Recedes visually — secondary to the essay. */
 
 .related-reading {
     display: block;
     font-family: var(--font-body);
     font-size: var(--font-base);
     margin-top: var(--space-2xl);
+    margin-bottom: var(--space-lg);
 }
 
 .related-reading .section-label-small {
     margin-bottom: var(--space-md);
+}
+
+.related-item {
+    display: block;
+    text-decoration: none;
+    color: var(--text-primary);
+    padding: var(--space-sm) 0;
+    border-top: var(--border-width) solid var(--border-color);
+    transition: color var(--transition-fast);
+}
+
+.related-item:last-child {
+    border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.related-item:hover {
+    color: var(--brand-orange);
+}
+
+.related-item:hover .related-item-desc {
+    color: var(--text-meta);
+}
+
+.related-item-title {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-heading);
+}
+
+.related-item-desc {
+    display: block;
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    line-height: var(--line-height-body);
+    margin-top: var(--space-3xs);
+    transition: color var(--transition-fast);
 }
 
 .site-intro .action-link {
