@@ -866,6 +866,17 @@ body > .container > footer {
     }
 }
 
+/* Related Reading: topic-based recommendations at essay/note footers
+   Reuses essay-item/note-item patterns. Sits between subscribe CTA and content-nav. */
+
+.related-reading {
+    margin-top: var(--space-2xl);
+}
+
+.related-reading .section-label-small {
+    margin-bottom: var(--space-md);
+}
+
 .site-intro .action-link {
     display: block;
     margin-top: var(--space-md);

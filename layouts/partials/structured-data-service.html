@@ -1,0 +1,55 @@
+{{/*
+Purpose: Generates JSON-LD Service schema with individual Offer items
+
+Context Expected:
+- .Params.service_offers - Array of offer objects, each with:
+  - name: Offer name (e.g. "90-Day Revenue Sprint")
+  - price_range: Price string (e.g. "$20,000–$30,000")
+  - description: Brief description
+- .Site.Params.service.name - Service name (falls back to site title)
+- .Site.Params.service.type - Service type
+- .Site.Params.service.description - Service description
+- .Site.BaseURL - For provider @id reference
+
+Features:
+- Service schema with hasOfferCatalog containing individual Offers
+- provider links to standalone Person via @id
+- Only renders when service_offers frontmatter is present
+*/}}
+
+{{- $s := .Site.Params.service -}}
+{{- $offers := .Params.service_offers -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": {{ default .Site.Title $s.name | jsonify | safeJS }},
+  "description": {{ default .Description $s.description | jsonify | safeJS }},
+  "url": "{{ .Permalink }}",
+  "provider": {
+    "@type": "Person",
+    "@id": "{{ .Site.BaseURL }}#person"
+  },
+  "serviceType": {{ default "Advisory" $s.type | jsonify | safeJS }},
+  "areaServed": {{ default "Worldwide" $s.areaServed | jsonify | safeJS }},
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Advisory Engagements",
+    "itemListElement": [
+      {{- range $i, $offer := $offers -}}
+      {{ if $i }},{{ end }}
+      {
+        "@type": "Offer",
+        "name": {{ $offer.name | jsonify | safeJS }},
+        "description": {{ $offer.description | jsonify | safeJS }},
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "USD",
+          "description": {{ $offer.price_range | jsonify | safeJS }}
+        }
+      }
+      {{- end }}
+    ]
+  }
+}
+</script>

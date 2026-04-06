@@ -1,0 +1,67 @@
+{{/*
+Purpose: Related reading section for essay and note footers
+
+Shows up to 3 related pieces based on shared topics. Falls back to most recent
+writing if no topic overlap exists. Excludes the current page.
+
+Context Expected:
+- . (page context) - current page with .Params.topics, .Type, .Permalink
+- .Site.Taxonomies.topics - topic taxonomy for finding related content
+
+Output: A "Related" section with linked titles and dates, or nothing if < 2 pieces exist.
+*/}}
+
+{{- $current := . -}}
+{{- $related := slice -}}
+
+{{/* Collect pages sharing topics with current page, scored by overlap */}}
+{{- with .Params.topics -}}
+  {{- $seen := dict -}}
+  {{- range $topic := . -}}
+    {{- with index $current.Site.Taxonomies.topics $topic -}}
+      {{- range .Pages -}}
+        {{- if ne .Permalink $current.Permalink -}}
+          {{- if not (index $seen .Permalink) -}}
+            {{- $seen = merge $seen (dict .Permalink true) -}}
+            {{- $related = $related | append . -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* If insufficient topic matches, fill from recent writing */}}
+{{- if lt (len $related) 3 -}}
+  {{- $essays := where .Site.RegularPages "Type" "essays" -}}
+  {{- $notes := where .Site.RegularPages "Type" "notes" -}}
+  {{- $all := union $essays $notes -}}
+  {{- $all = sort $all "Date" "desc" -}}
+  {{- $seen := dict -}}
+  {{- range $related -}}
+    {{- $seen = merge $seen (dict .Permalink true) -}}
+  {{- end -}}
+  {{- range $all -}}
+    {{- if and (ne .Permalink $current.Permalink) (not (index $seen .Permalink)) -}}
+      {{- if lt (len $related) 3 -}}
+        {{- $related = $related | append . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Only render if we have at least 2 related pieces */}}
+{{- if ge (len $related) 2 -}}
+<nav class="related-reading" aria-label="Related reading">
+    <h2 class="section-label-small">Related</h2>
+    {{- range first 3 $related -}}
+    {{- $singular := cond (eq .Type "notes") "note" "essay" -}}
+    <article class="{{ $singular }}-item">
+        <a href="{{ .RelPermalink }}">
+            <time datetime="{{ .Date.Format "2006-01-02" }}" class="{{ $singular }}-date">{{ .Date.Format "2006 · 01" }}</time>
+            <span class="{{ $singular }}-title">{{ .Title }}</span>
+        </a>
+    </article>
+    {{- end }}
+</nav>
+{{- end -}}

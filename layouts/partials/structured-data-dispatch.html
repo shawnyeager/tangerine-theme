@@ -42,6 +42,11 @@ provides the intended flow and avoids calling partials that won't render.
   {{- partial "structured-data-profile.html" . -}}
 {{- end -}}
 
+{{- /* Service pages with offers frontmatter */ -}}
+{{- with .Params.service_offers -}}
+  {{- partial "structured-data-service.html" $ -}}
+{{- end -}}
+
 {{- /* Pages with FAQ frontmatter */ -}}
 {{- with .Params.faq -}}
   {{- if gt (len .) 0 -}}
