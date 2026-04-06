@@ -1303,8 +1303,7 @@ time.note-date,
             color: var(--brand-orange);
         }
 
-        &:hover .writing-item-date,
-        &:hover .page-meta-separator {
+        &:hover .writing-item-date {
             color: var(--text-meta);
         }
     }
@@ -1384,6 +1383,7 @@ time.note-date,
 }
 
 .page-meta-separator {
+    color: var(--text-meta);
     opacity: var(--opacity-subtle);
 }
 
