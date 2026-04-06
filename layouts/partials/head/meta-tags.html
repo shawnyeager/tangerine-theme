@@ -16,6 +16,13 @@ Context Expected:
 <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content{{ if .Site.Params.viewport_fit_cover }}, viewport-fit=cover{{ end }}">
 <meta name="color-scheme" content="dark light">
 {{- $metaTitle := .Params.seo_title | default .Title -}}
+{{- /* Detect paginated list pages (e.g., /writing/page/2/) */ -}}
+{{- $pageNumStr := replaceRE `.*/page/(\d+)/?$` "$1" .RelPermalink -}}
+{{- $isPaginated := ne $pageNumStr .RelPermalink -}}
+{{- $pageSuffix := "" -}}
+{{- if $isPaginated -}}
+  {{- $pageSuffix = printf " - Page %s" $pageNumStr -}}
+{{- end -}}
 {{- if .IsHome -}}
   <title>{{ .Site.Title }}</title>
 {{- else if eq .Kind "404" -}}
@@ -25,12 +32,23 @@ Context Expected:
   <title>{{ .Params.essay_title }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- else if eq .Kind "section" -}}
   {{- /* List pages */ -}}
-  <title>{{ $metaTitle }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
+  <title>{{ $metaTitle }}{{ $pageSuffix }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- else -}}
   {{- /* Individual pages: Use seo_title if set, else .Title */ -}}
-  <title>{{ $metaTitle }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
+  <title>{{ $metaTitle }}{{ $pageSuffix }} | {{ default .Site.Title .Site.Params.site_display_name }}</title>
 {{- end -}}
-<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Essays and notes on %s — go-to-market strategy, AI, Bitcoin, and what changes when technology outgrows the market." .Title }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{- $metaDesc := "" -}}
+{{- if .Description -}}
+  {{- $metaDesc = .Description -}}
+{{- else if eq .Kind "term" -}}
+  {{- $metaDesc = printf "Essays and notes on %s — go-to-market strategy, AI, Bitcoin, and what changes when technology outgrows the market." .Title -}}
+{{- else -}}
+  {{- $metaDesc = .Site.Params.description -}}
+{{- end -}}
+{{- if $isPaginated -}}
+  {{- $metaDesc = printf "%s (Page %s)" $metaDesc $pageNumStr -}}
+{{- end -}}
+<meta name="description" content="{{ $metaDesc }}">
 <meta name="author" content="{{ .Site.Params.author.name }}">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
