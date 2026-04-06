@@ -1313,6 +1313,7 @@ time.note-date,
     display: flex;
     align-items: center;
     gap: var(--space-xs);
+    font-size: var(--font-sm);
     margin-bottom: var(--space-3xs);
 }
 
