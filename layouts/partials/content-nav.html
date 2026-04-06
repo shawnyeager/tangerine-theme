@@ -26,5 +26,7 @@ Usage:
     {{- if and .action_url .action_text }}
         {{- partial "links/action.html" (dict "url" .action_url "text" .action_text "icon" (.action_icon | default "arrow") "event" .action_event) }}
     {{- end }}
-    {{- partial "links/back.html" (dict "url" .back_url "text" .back_text "event" .back_event) }}
+    {{- if and .back_url .back_text }}
+        {{- partial "links/back.html" (dict "url" .back_url "text" .back_text "event" .back_event) }}
+    {{- end }}
 </nav>

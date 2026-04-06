@@ -361,13 +361,13 @@ select:focus-visible,
 :is(.action-link, .all-essays,
     .pagination-next,
     .btn-ghost--primary, .footer-links a):hover .arrow {
-    transform: translateX(3px);
+    transform: translateX(var(--arrow-nudge));
 }
 
-/* Back arrows (←): nudge left on hover */
+/* Back arrows (←): nudge left on hover, preserve optical Y lift */
 :is(.action-link, .back-link,
     .pagination-prev):hover .arrow:first-child {
-    transform: translateX(-3px);
+    transform: translateX(calc(-1 * var(--arrow-nudge))) translateY(var(--optical-arrow-lift, 0px));
 }
 
 /* Arrow spacing — per-element margins */
@@ -867,47 +867,34 @@ body > .container > footer {
 }
 
 /* Related Reading: topic-based recommendations at essay/note footers
-   Title + description per item. Recedes visually — secondary to the essay. */
+   Title + description, no dates. Sits after content-nav at essay/note bottom. */
 
 .related-reading {
-    display: block;
-    font-family: var(--font-body);
-    font-size: var(--font-base);
-    margin-top: var(--space-2xl);
-    margin-bottom: var(--space-lg);
-}
-
-.related-reading .section-label-small {
-    margin-bottom: var(--space-md);
+    margin-top: var(--section-gap);
 }
 
 .related-item {
+    margin-bottom: var(--space-md);
+}
+
+.related-item a {
     display: block;
-    text-decoration: none;
     color: var(--text-primary);
-    padding: var(--space-sm) 0;
-    border-top: var(--border-width) solid var(--border-color);
+    text-decoration: none;
     transition: color var(--transition-fast);
 }
 
-.related-item:last-child {
-    border-bottom: var(--border-width) solid var(--border-color);
-}
-
-.related-item:hover {
+.related-item a:hover {
     color: var(--brand-orange);
 }
 
-.related-item:hover .related-item-desc {
+.related-item a:hover .related-item-desc {
     color: var(--text-meta);
 }
 
 .related-item-title {
     display: block;
-    font-family: var(--font-heading);
-    font-size: var(--font-base);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-list-title);
 }
 
 .related-item-desc {
@@ -3199,7 +3186,7 @@ picture.portrait img {
 }
 
 .btn-primary:hover::after {
-    transform: translateX(3px);
+    transform: translateX(var(--arrow-nudge));
 }
 
 /* System font buttons (V4V page) */

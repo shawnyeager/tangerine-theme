@@ -4,20 +4,19 @@ Purpose: Related reading section for essay and note footers
 Shows up to 3 related pieces based on shared topics. Falls back to most recent
 writing if no topic overlap exists. Excludes the current page.
 
-Each item shows title + description so the reader has context for why
-to click, not just a date-ordered list of names.
+Matches the homepage "Recent Writing" pattern: date + title + description.
 
 Context Expected:
 - . (page context) - current page with .Params.topics, .Type, .Permalink
 - .Site.Taxonomies.topics - topic taxonomy for finding related content
 
-Output: A "Keep reading" section with titles and descriptions, or nothing if < 2 pieces exist.
+Output: A "Keep reading" section, or nothing if < 2 pieces exist.
 */}}
 
 {{- $current := . -}}
 {{- $related := slice -}}
 
-{{/* Collect pages sharing topics with current page, scored by overlap */}}
+{{/* Collect pages sharing topics with current page */}}
 {{- with .Params.topics -}}
   {{- $seen := dict -}}
   {{- range $topic := . -}}
@@ -55,15 +54,15 @@ Output: A "Keep reading" section with titles and descriptions, or nothing if < 2
 
 {{/* Only render if we have at least 2 related pieces */}}
 {{- if ge (len $related) 2 -}}
-<nav class="related-reading" aria-label="Related reading">
+<section class="related-reading" aria-label="Related reading">
     <h2 class="section-label-small">Keep reading</h2>
     {{- range first 3 $related }}
-    <a href="{{ .RelPermalink }}" class="related-item">
-        <span class="related-item-title">{{ .Title }}</span>
-        {{- with .Description }}
-        <span class="related-item-desc">{{ . }}</span>
-        {{- end }}
-    </a>
+    <article class="related-item">
+        <a href="{{ .RelPermalink }}">
+            <span class="related-item-title">{{ .Title }}</span>
+            {{- with .Description }}<span class="related-item-desc">{{ . }}</span>{{ end }}
+        </a>
+    </article>
     {{- end }}
-</nav>
+</section>
 {{- end -}}
