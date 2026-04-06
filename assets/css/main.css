@@ -481,6 +481,9 @@ p .action-link {
     margin: 0 auto;
     /* Top padding adds brand-bar-height to compensate for overlay */
     padding: calc(var(--space-xl) + var(--brand-bar-height)) var(--space-xl) 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
 }
 
 /* Header & Navigation
@@ -556,19 +559,9 @@ main .container {
     padding-top: 0;
 }
 
-/* Adaptive footer positioning for short pages
- *
- * Data sources:
- * - Statcounter: 1920×1080 (23%), 1366×768 common viewport heights
- * - Nielsen Norman: 57% viewing time above fold (~600-800px)
- *
- * Values:
- * - Floor 420px: mobile/small laptop minimum (600px viewport - 80px header - buffer)
- * - Preferred 70dvh: scales with dynamic viewport (adapts to mobile browser chrome)
- * - Ceiling 620px: keeps footer at fold line (~700px - 80px header)
- */
+/* Main grows to fill viewport on short pages; base size is content height */
 main {
-    min-height: clamp(420px, 70dvh, 620px);
+    flex: 1 0 auto;
 }
 
 nav a {
@@ -603,6 +596,7 @@ nav a::after {
    ========================================================================== */
 
 body > .container > footer {
+    flex-shrink: 0;
     margin-top: var(--footer-gap-above);
     padding-top: var(--footer-gap-tight);
     padding-bottom: var(--footer-gap-below);
@@ -1315,12 +1309,24 @@ time.note-date,
     }
 }
 
-.writing-item-date {
+.writing-item-meta {
     display: block;
+    margin-bottom: var(--space-3xs);
+}
+
+.writing-item-date {
     font-size: var(--font-sm);
     color: var(--text-meta);
     font-variant-numeric: tabular-nums;
-    margin-bottom: var(--space-3xs);
+    margin-right: var(--space-xs);
+}
+
+.writing-item-type {
+    font-size: var(--font-xs);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-subtle);
 }
 
 .writing-item-title {
@@ -1331,31 +1337,6 @@ time.note-date,
     line-height: var(--line-height-heading);
     color: var(--text-primary);
     margin-bottom: var(--space-xs);
-}
-
-.writing-item-type {
-    font-size: var(--font-xs);
-    font-weight: var(--font-weight-normal);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
-    color: var(--text-subtle);
-    margin-left: var(--space-sm);
-    vertical-align: baseline;
-}
-
-/* Mobile: move type label above title */
-@media (max-width: 600px) {
-    .writing-item-title {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .writing-item-type {
-        order: -1;
-        flex-basis: 100%;
-        margin-left: 0;
-        margin-bottom: var(--space-2xs);
-    }
 }
 
 .writing-item-desc {
@@ -2303,9 +2284,8 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         margin-bottom: var(--space-md);
     }
 
-    /* CTA has no extra margin - last visible item's margin provides the gap */
     .all-essays {
-        margin-top: 0;
+        margin-top: var(--space-md);
     }
 
     /* Larger touch targets for footer links (48px minimum per Lighthouse)
