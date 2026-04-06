@@ -481,9 +481,6 @@ p .action-link {
     margin: 0 auto;
     /* Top padding adds brand-bar-height to compensate for overlay */
     padding: calc(var(--space-xl) + var(--brand-bar-height)) var(--space-xl) 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
 }
 
 /* Header & Navigation
@@ -559,9 +556,13 @@ main .container {
     padding-top: 0;
 }
 
-/* Main grows to fill viewport on short pages; base size is content height */
+/* Adaptive footer positioning: push footer below fold on short pages.
+ * Preferred: 100dvh minus ~320px for header+footer+padding.
+ * Floor 280px: prevents collapse on very small viewports.
+ * Ceiling 620px: prevents void on tall desktops.
+ * Long pages: content exceeds min-height, no effect. */
 main {
-    flex: 1 0 auto;
+    min-height: clamp(280px, 100dvh - 20rem, 620px);
 }
 
 nav a {
@@ -596,7 +597,6 @@ nav a::after {
    ========================================================================== */
 
 body > .container > footer {
-    flex-shrink: 0;
     margin-top: var(--footer-gap-above);
     padding-top: var(--footer-gap-tight);
     padding-bottom: var(--footer-gap-below);
@@ -1303,7 +1303,8 @@ time.note-date,
             color: var(--brand-orange);
         }
 
-        &:hover .writing-item-date {
+        &:hover .writing-item-date,
+        &:hover .writing-item-sep {
             color: var(--text-meta);
         }
     }
@@ -1318,7 +1319,11 @@ time.note-date,
     font-size: var(--font-sm);
     color: var(--text-meta);
     font-variant-numeric: tabular-nums;
-    margin-right: var(--space-xs);
+}
+
+.writing-item-sep {
+    color: var(--text-meta);
+    margin: 0 var(--space-xs);
 }
 
 .writing-item-type {
