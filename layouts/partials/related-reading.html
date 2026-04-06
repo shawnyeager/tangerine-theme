@@ -57,12 +57,7 @@ Output: A "Keep reading" section, or nothing if < 2 pieces exist.
 <section class="related-reading" aria-label="Related reading">
     <h2 class="section-label-small">Keep reading</h2>
     {{- range first 3 $related }}
-    <article class="related-item">
-        <a href="{{ .RelPermalink }}">
-            <span class="related-item-title">{{ .Title }}</span>
-            {{- with .Description }}<span class="related-item-desc">{{ . }}</span>{{ end }}
-        </a>
-    </article>
+    {{- partial "content-card.html" . -}}
     {{- end }}
 </section>
 {{- end -}}

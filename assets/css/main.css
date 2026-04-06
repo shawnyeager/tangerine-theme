@@ -877,6 +877,10 @@ body > .container > footer {
     margin-bottom: var(--space-md);
 }
 
+.related-item:last-of-type {
+    margin-bottom: 0;
+}
+
 .related-item a {
     display: block;
     color: var(--text-primary);

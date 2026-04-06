@@ -1,0 +1,17 @@
+{{/*
+Purpose: Single content card — title + description link block
+
+Used by: homepage recent writing, related reading, any content listing
+that shows title + description without dates.
+
+Context Expected:
+- .RelPermalink - Link URL
+- .Title - Display title
+- .Description - Optional description text
+*/}}
+<article class="related-item">
+    <a href="{{ .RelPermalink }}">
+        <span class="related-item-title">{{ .Title }}</span>
+        {{- with .Description }}<span class="related-item-desc">{{ . }}</span>{{ end }}
+    </a>
+</article>
