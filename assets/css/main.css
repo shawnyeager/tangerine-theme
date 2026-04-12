@@ -1462,16 +1462,22 @@ time.note-date,
     color: var(--text-primary);
 }
 
-/* Lead text — larger introductory body text.
-   Extracted from .site-intro typography for standalone reuse.
-   .site-intro shares these same properties on the homepage hero;
-   future refactor can have .site-intro consume .lead directly. */
+/* Lead text — larger introductory text for page openers.
+   Used by the {{< intro >}} shortcode. Not related to .site-intro
+   despite similar properties — .site-intro is a layout container,
+   .lead is a standalone text treatment. */
 .lead {
     font-size: var(--font-xl);
     color: var(--text-secondary);
     line-height: var(--line-height-reading);
     text-wrap: balance;
     margin-bottom: var(--space-xl);
+}
+
+@media (max-width: 600px) {
+    .lead {
+        font-size: var(--font-lg);
+    }
 }
 
 /* First heading after page header elements - reduce top margin to avoid excessive stacking
