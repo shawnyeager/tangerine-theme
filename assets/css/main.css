@@ -3341,7 +3341,7 @@ picture.portrait img {
     flex-direction: column;
     overflow: hidden;
     font-family: var(--font-monospace);
-    font-size: 0.8125rem;
+    font-size: var(--font-chat);
     line-height: var(--line-height-reading);
     animation: chat-scale-in 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -3358,9 +3358,9 @@ picture.portrait img {
     justify-content: space-between;
     align-items: center;
     padding: var(--space-xs) var(--space-md);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: var(--border-width) solid var(--border-color);
     color: var(--text-meta);
-    font-size: 0.6875rem;
+    font-size: var(--font-chat-header);
 }
 
 .chat-title {
@@ -3375,7 +3375,7 @@ picture.portrait img {
     background: none;
     border: none;
     color: var(--text-subtle);
-    font-size: 1.25rem;
+    font-size: var(--font-xl);
     line-height: var(--line-height-none);
     padding: 0.25rem 0.5rem;
     cursor: pointer;
