@@ -78,13 +78,13 @@ Important Notes:
       alt="{{ $alt }}"
       width="{{ $small.Width }}"
       height="{{ $small.Height }}"
-      {{- if eq $lazy "true" }} loading="lazy"{{ end }}>
+      {{- if eq $lazy "true" }} loading="lazy"{{ else }} fetchpriority="high"{{ end }}>
   </picture>
 {{- else -}}
   {{- /* Fallback to basic img tag with lazy loading */ -}}
   <img
     src="{{ $src }}"
     alt="{{ $alt }}"
-    {{- if eq $lazy "true" }} loading="lazy"{{ end }}
+    {{- if eq $lazy "true" }} loading="lazy"{{ else }} fetchpriority="high"{{ end }}
     {{- if $variant }} class="{{ $variant }}"{{ end }}>
 {{- end -}}
