@@ -967,6 +967,7 @@ body > .container > footer {
     h3 {
         font-size: var(--font-2xl);
         font-weight: var(--font-weight-medium);
+        text-wrap: balance;
         margin-top: 0;
         margin-bottom: var(--space-sm);
 
