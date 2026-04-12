@@ -1462,6 +1462,18 @@ time.note-date,
     color: var(--text-primary);
 }
 
+/* Lead text — larger introductory body text.
+   Extracted from .site-intro typography for standalone reuse.
+   .site-intro shares these same properties on the homepage hero;
+   future refactor can have .site-intro consume .lead directly. */
+.lead {
+    font-size: var(--font-lg);
+    color: var(--text-secondary);
+    line-height: var(--line-height-reading);
+    text-wrap: balance;
+    margin-bottom: var(--space-xl);
+}
+
 /* First heading after page header elements - reduce top margin to avoid excessive stacking
    Applies when meta/title/subtitle elements precede the first content heading */
 :is(.essay-content, .note-content) > header + :is(.essay-body, .note-body) > h2:first-child {
@@ -2991,8 +3003,8 @@ picture.portrait img {
 .advisory-section-label {
     font-family: var(--font-heading);
     font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-meta);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     margin: var(--space-2xl) 0 var(--space-lg) 0;
@@ -3015,11 +3027,16 @@ picture.portrait img {
 /* Testimonials */
 .testimonial {
     overflow: hidden;
-    margin: var(--space-xl) 0;
+    margin: var(--space-lg) 0;
     padding: 0;
     border: none;
     border-left: var(--border-width-accent) solid var(--brand-orange);
     padding-left: var(--space-lg);
+}
+
+/* First testimonial after section label needs no extra top margin */
+.advisory-section-label + .testimonial {
+    margin-top: var(--space-lg);
 }
 
 .testimonial__quote {

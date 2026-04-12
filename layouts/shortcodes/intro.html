@@ -1,0 +1,9 @@
+{{/*
+Purpose: Renders intro text in the same typographic treatment as the homepage hero body
+         Larger than body text, secondary color, balanced line wrapping
+
+Usage:
+{{< intro >}}Statement text here.{{< /intro >}}
+*/}}
+
+<p class="lead">{{ .Inner | markdownify }}</p>
