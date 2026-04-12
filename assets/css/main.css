@@ -877,6 +877,10 @@ body > .container > footer {
     font-weight: var(--font-weight-list-title);
 }
 
+.recent-essays .related-item-desc {
+    color: var(--text-meta);
+}
+
 .related-item-desc {
     display: block;
     font-size: var(--font-sm);
