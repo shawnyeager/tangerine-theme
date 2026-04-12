@@ -111,7 +111,7 @@
     /* Font Weights */
     --font-weight-light: 300;     /* Lighter weight for dark mode */
     --font-weight-normal: 400;
-    --font-weight-body: 300;  /* Body text - dark mode overridden to 250 in main.css */
+    --font-weight-body: 300;  /* Body text - dark mode overridden to 325 in main.css */
     --font-weight-list-title: 500;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;

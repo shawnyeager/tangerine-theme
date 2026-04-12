@@ -880,7 +880,7 @@ body > .container > footer {
 .related-item-desc {
     display: block;
     font-size: var(--font-sm);
-    color: var(--text-meta);
+    color: var(--text-secondary);
     line-height: var(--line-height-body);
     margin-top: var(--space-3xs);
     transition: color var(--transition-fast);
@@ -1251,7 +1251,8 @@ body > .container > footer {
 
 .page-meta-separator {
     color: var(--text-meta);
-    opacity: var(--opacity-subtle);
+    font-size: 1.3em;
+    line-height: 0;
 }
 
 /* Essay/note titles - medium weight, size provides hierarchy */
@@ -1672,14 +1673,14 @@ body > .container > footer {
 
 /* Aside - acknowledgments after essay/note body */
 :is(.essay-content, .note-content) .aside {
-    color: var(--text-meta);
+    color: var(--text-secondary);
     font-style: italic;
     font-size: var(--font-base);
     margin-top: 0;  /* Preceding paragraph's margin-bottom provides spacing */
     margin-bottom: var(--para-gap-long-form);  /* Match paragraph rhythm */
 
     a {
-        color: var(--text-meta);
+        color: var(--text-secondary);
         text-decoration: underline;
         text-decoration-color: var(--underline-color-muted);
         text-decoration-thickness: var(--underline-thickness);
@@ -1941,13 +1942,13 @@ picture.img-lg img {
 /* Dark mode token overrides */
 @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) {
-        --font-weight-body: 250;
+        --font-weight-body: 325;
         --para-gap-long-form: 1.375rem;
         --shadow-content-light: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 }
 html[data-theme="dark"] {
-    --font-weight-body: 250;
+    --font-weight-body: 325;
     --para-gap-long-form: 1.375rem;
     --shadow-content-light: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
@@ -2892,7 +2893,7 @@ picture.portrait img {
 }
 
 .testimonial__title {
-    color: var(--text-meta);
+    color: var(--text-secondary);
     font-size: var(--font-sm);
 }
 
