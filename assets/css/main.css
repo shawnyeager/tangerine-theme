@@ -1,6 +1,6 @@
 /*
  * TANGERINE THEME - Main Stylesheet
- * Shared design system for shawnyeager.com and notes.shawnyeager.com
+ * Shared design system for shawnyeager.com and share.shawnyeager.com
  *
  * TABLE OF CONTENTS
  * -----------------
@@ -10,31 +10,26 @@
  * 3.  LINKS                            - Link styles, focus states, link hierarchy
  * 4.  LAYOUT                           - Container, header/footer spacing
  * 5.  FOOTER                           - Site footer, newsletter signup
- * 6.  HOMEPAGE                         - Homepage sections (bio, latest essay, podcast)
- * 7.  COMPONENTS                       - Cards, link-grid, topic tags, cta-group
- * 8.  ESSAYS                           - Essay listings, single essay pages
- * 9.  MARKDOWN                         - Reading content styles (CSS nesting)
- * 10. PAGE-SPECIFIC                    - Page layouts, pagination, contact, skip links
- * 11. UTILITIES                        - Helper classes (sr-only, hidden, etc)
- * 12. DARK MODE                        - Theme toggle & system preference overrides
- * 13. PRINT                            - Print styles
- * 14. MEDIA EMBEDS                     - YouTube, video captions
- * 15. MOBILE                           - Responsive breakpoints
- * 16. V4V PAGE                         - Value for Value payment page
- * 17. ADVISORY PAGE                    - Service tiers and credibility
- * 18. CONVERSION COMPONENTS            - Low-friction CTAs
- * 19. GHOST BUTTONS                    - Ghost button system and variants
- * 20. KEYBOARD HELP                    - Keyboard shortcuts modal
- * 21. BLOCK EASTER EGG                 - Mempool next block visualization
- * 22. READING PROGRESS                 - Brand bar as scroll progress indicator
- *
- * Line numbers are approximate. Update when making significant structural changes.
- *
- * CASCADE LAYERS (for future refactoring):
- * @layer tokens, reset, base, components, pages, utilities, dark-mode, print;
- *
- * Note: Layer declarations are documented but not yet implemented.
- * Wrap sections in @layer blocks when splitting into partials.
+ * 6.  HOMEPAGE                         - Homepage sections (bio, latest essay)
+ * 7.  POST-ARTICLE SUBSCRIBE           - In-essay email signup CTA
+ * 8.  COMPONENTS                       - Cards, topic tags, cta-group
+ * 9.  ESSAYS                           - Writing stream, single pages, lead text
+ * 10. MARKDOWN                         - Reading content styles (CSS nesting)
+ * 11. CONTENT NAVIGATION               - End-of-content link container
+ * 12. PAGE-SPECIFIC                    - Page layouts, pagination, contact, skip links
+ * 13. UTILITIES                        - Helper classes (sr-only, hidden, etc)
+ * 14. DARK MODE                        - Theme toggle & system preference overrides
+ * 15. PRINT                            - Print styles
+ * 16. MEDIA EMBEDS                     - YouTube, video captions
+ * 17. MOBILE                           - Responsive breakpoints
+ * 18. V4V PAGE                         - Value for Value payment page
+ * 19. ADVISORY PAGE                    - Service tiers, testimonials, credibility
+ * 20. CONVERSION COMPONENTS            - Low-friction CTAs
+ * 21. GHOST BUTTONS                    - Ghost button system and variants
+ * 22. KEYBOARD HELP                    - Keyboard shortcuts modal
+ * 23. BLOCK EASTER EGG                 - Mempool next block visualization
+ * 24. READING PROGRESS                 - Brand bar as scroll progress indicator
+ * 25. CHAT                             - TUI-style AI chat overlay
  */
 
 /* ==========================================================================
@@ -136,24 +131,6 @@ h1 {
     background-color: var(--brand-orange);
 }
 
-/* Home square - dot in square (share site) */
-.home-square--dot {
-    background-color: transparent;
-    border: var(--home-square-border-width) solid var(--brand-orange);
-    position: relative;
-}
-
-.home-square--dot::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6px;
-    height: 6px;
-    background-color: var(--brand-orange);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-}
 
 .home-link:hover .home-square {
     opacity: var(--opacity-high);
@@ -1038,21 +1015,6 @@ body > .container > footer {
     margin-top: 0;
 }
 
-/* Year headers in notes section */
-.recent-notes h3 {
-    font-family: var(--font-heading);
-    font-size: var(--font-base);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-md);
-    margin-top: var(--space-xl);
-}
-
-.recent-notes h3:first-child {
-    margin-top: 0;
-}
 
 .topic-tags {
     display: flex;
@@ -1103,15 +1065,6 @@ body > .container > footer {
    Single pages: title + meta + body structure.
    ========================================================================== */
 
-.recent-essays,
-.recent-notes {
-    margin-bottom: var(--section-gap);
-}
-
-.recent-notes {
-    margin-top: var(--space-lg);
-}
-
 .page-title {
     font-size: var(--font-custom-32);
     font-weight: var(--font-weight-semibold);
@@ -1145,95 +1098,6 @@ body > .container > footer {
 .page-body,
 .topics {
     margin-top: var(--space-lg);
-}
-
-.essay-item,
-.note-item {
-    margin-bottom: var(--space-xs);
-    contain: layout style paint;
-
-    a {
-        color: var(--text-primary);
-        text-decoration: none;
-        display: flex;
-        gap: var(--space-lg);
-        line-height: var(--line-height-body);
-        align-items: baseline;
-
-        &:hover {
-            color: var(--brand-orange);
-        }
-    }
-}
-
-time.essay-date,
-time.note-date,
-.essay-date,
-.note-date {
-    color: var(--text-meta);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-normal);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: var(--letter-spacing-tight-md);
-    flex-shrink: 0;
-    white-space: nowrap;
-}
-
-.essay-title,
-.note-title {
-    flex: 1;
-    font-weight: var(--font-weight-list-title);
-    font-size: var(--font-base);
-}
-
-/* Inline description in recent writing lists — aligns with title, not date */
-.recent-desc {
-    display: block;
-    flex-basis: 100%;
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-normal);
-    line-height: var(--line-height-body);
-    color: var(--text-meta);
-    margin-top: var(--space-3xs);
-    padding-left: calc(4.5em + var(--space-lg));
-}
-
-/* Allow date/title row to wrap description below */
-.essay-item:has(.recent-desc) a,
-.note-item:has(.recent-desc) a {
-    flex-wrap: wrap;
-    row-gap: 0;
-}
-
-/* Keep description muted on hover — only title changes */
-.essay-item a:hover .recent-desc,
-.note-item a:hover .recent-desc {
-    color: var(--text-meta);
-}
-
-.essay-item:has(.recent-desc),
-.note-item:has(.recent-desc) {
-    margin-bottom: var(--space-md);
-}
-
-@media (max-width: 600px) {
-    .essay-item a,
-    .note-item a {
-        flex-direction: column;
-        gap: 0;
-        align-items: flex-start;
-    }
-
-    .recent-desc {
-        padding-left: 0;
-    }
-}
-
-
-/* Last item before CTA link doesn't need margin - CTA provides the gap */
-.essay-item:last-of-type,
-.note-item:last-of-type {
-    margin-bottom: 0;
 }
 
 .all-essays {
@@ -2287,20 +2151,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         margin-top: calc(var(--space-xs) - var(--space-lg));
     }
 
-    /* Homepage: show 5 items on mobile (hide 6+) */
-    .recent-notes .note-item:nth-of-type(n+6),
-    .recent-essays .essay-item:nth-of-type(n+6) {
-        display: none;
-    }
-
-    /* More generous spacing for note/essay lists on mobile - including last item */
-    .note-item,
-    .essay-item,
-    .note-item:last-of-type,
-    .essay-item:last-of-type {
-        margin-bottom: var(--space-md);
-    }
-
     /* Section header spacing - match inter-item spacing */
     .section-label-small {
         margin-bottom: var(--space-md);
@@ -2336,14 +2186,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     .info-pair code {
         white-space: pre-line;     /* Preserve newlines, wrap at spaces (fingerprints) */
         overflow-wrap: break-word; /* Break long words if needed (npubs, keys) */
-    }
-}
-
-/* Desktop: consistent list spacing for both sites */
-@media (min-width: 601px) {
-    .note-item,
-    .essay-item {
-        margin-bottom: var(--space-md);
     }
 }
 
