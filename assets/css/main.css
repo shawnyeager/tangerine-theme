@@ -986,12 +986,6 @@ body > .container > footer {
     }
 }
 
-@media (max-width: 600px) {
-    .featured-block h3 {
-        font-size: var(--font-xl);
-    }
-}
-
 /* ==========================================================================
    7. COMPONENTS - Cards, Topic Tags
 
