@@ -1336,6 +1336,7 @@ body > .container > footer {
     line-height: var(--line-height-reading);
     text-wrap: balance;
     margin-bottom: var(--space-xl);
+    overflow: hidden;
 }
 
 @media (max-width: 600px) {
