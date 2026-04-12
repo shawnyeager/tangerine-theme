@@ -1467,7 +1467,7 @@ time.note-date,
    .site-intro shares these same properties on the homepage hero;
    future refactor can have .site-intro consume .lead directly. */
 .lead {
-    font-size: var(--font-lg);
+    font-size: var(--font-xl);
     color: var(--text-secondary);
     line-height: var(--line-height-reading);
     text-wrap: balance;
