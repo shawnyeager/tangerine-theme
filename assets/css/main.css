@@ -1134,7 +1134,7 @@ body > .container > footer {
     a {
         font-family: var(--font-heading);
         font-size: var(--font-base);
-        font-weight: var(--font-weight-medium);
+        font-weight: var(--font-weight-normal);
         color: var(--text-meta);
         text-decoration: underline;
         text-decoration-color: var(--underline-color-muted);
@@ -1967,19 +1967,11 @@ html[data-theme="light"] {
         :is(.essay-body, .note-body, .page-body) :is(strong, b) {
             font-weight: var(--font-weight-semibold);
         }
-
-        .writing-item-title {
-            font-weight: var(--font-weight-light);
-        }
     }
 }
 html[data-theme="dark"] {
     :is(.essay-body, .note-body, .page-body) :is(strong, b) {
         font-weight: var(--font-weight-semibold);
-    }
-
-    .writing-item-title {
-        font-weight: var(--font-weight-light);
     }
 }
 
