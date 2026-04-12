@@ -1336,7 +1336,6 @@ body > .container > footer {
     line-height: var(--line-height-reading);
     text-wrap: balance;
     margin-bottom: var(--space-xl);
-    overflow: hidden;
 }
 
 @media (max-width: 600px) {
@@ -1939,24 +1938,26 @@ picture.img-lg img {
    }
    html[data-theme="dark"] { ... }  // Manual toggle
 
-   The light-dark() function (used in tokens) handles both cases automatically.
-   The duplication below is for non-token values like font-weight adjustments.
+   Token overrides for dark mode are below — light-dark() only works for
+   <color> values, so font-weight and box-shadow need explicit overrides.
    ========================================================================== */
 
-/* Base font-weight: light mode default (400) */
-:is(.essay-body, .note-body, .page-body) :is(p, li),
-.featured-block p {
-    font-weight: var(--font-weight-normal);
-}
-
-/* Dark mode paragraph spacing - applies to both system dark and explicit toggle */
+/* Dark mode token overrides */
 @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) {
+        --font-weight-body: 250;
         --para-gap-long-form: 1.375rem;
+        --shadow-content-light: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 }
 html[data-theme="dark"] {
+    --font-weight-body: 250;
     --para-gap-long-form: 1.375rem;
+    --shadow-content-light: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+html[data-theme="light"] {
+    --font-weight-body: 300;
+    --shadow-content-light: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 /* Dark mode heading colors - only needed for system preference (toggle uses light-dark()) */
@@ -1974,37 +1975,15 @@ html[data-theme="dark"] {
     :is(.essay-body, .note-body, .page-body) :is(strong, b) {
         font-weight: var(--font-weight-semibold);
     }
-
 }
 
-/* Dark mode typography - combined selector for system dark + explicit toggle
-   Uses :is() to avoid repeating declarations for both scenarios */
+/* Dark mode list title weight */
 @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) :is(p, li) {
-        font-weight: var(--font-weight-normal);
-    }
-
     html:not([data-theme="light"]) :is(.essay-title, .note-title) {
         font-weight: var(--font-weight-light);
     }
-
-    html:not([data-theme="light"]) :is(.essay-body, .note-body, .page-body) :is(p, li),
-    html:not([data-theme="light"]) .featured-block p {
-        font-weight: var(--font-weight-light);
-    }
 }
-
-/* Explicit dark toggle - for users who toggle dark when system is light */
-html[data-theme="dark"] :is(p, li) {
-    font-weight: var(--font-weight-normal);
-}
-
 html[data-theme="dark"] :is(.essay-title, .note-title) {
-    font-weight: var(--font-weight-light);
-}
-
-html[data-theme="dark"] :is(.essay-body, .note-body, .page-body) :is(p, li),
-html[data-theme="dark"] .featured-block p {
     font-weight: var(--font-weight-light);
 }
 

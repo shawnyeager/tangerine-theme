@@ -111,7 +111,7 @@
     /* Font Weights */
     --font-weight-light: 300;     /* Lighter weight for dark mode */
     --font-weight-normal: 400;
-    --font-weight-body: light-dark(300, 250);  /* Body text - light mode uses light weight, dark mode slightly lighter */
+    --font-weight-body: 300;  /* Body text - dark mode overridden to 250 in main.css */
     --font-weight-list-title: 450;  /* List titles - overridden to 300 in dark mode */
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
@@ -193,7 +193,7 @@
     --underline-color-muted: color-mix(in srgb, var(--text-meta) var(--underline-opacity), transparent);
 
     /* Content Elevation */
-    --shadow-content-light: light-dark(0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.4));
+    --shadow-content-light: 0 1px 3px rgba(0, 0, 0, 0.15);  /* Dark mode overridden in main.css */
 
     /* Typography - Heading colors (enhanced contrast in dark mode) */
     --text-heading-h2: light-dark(#1a1a1a, #ffffff);
