@@ -107,7 +107,8 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
     margin-bottom: var(--space-xl);
     letter-spacing: var(--letter-spacing-tight-lg);
 }
@@ -139,7 +140,7 @@ h1 {
 /* Homepage display title - large, prominent headline */
 h1.display-title {
     font-size: var(--font-custom-56);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-title);
     margin-top: 0;
     margin-bottom: var(--space-md);
@@ -156,13 +157,15 @@ h1.display-title {
 h2 {
     font-size: var(--font-custom-24);
     font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
     margin-top: var(--heading-above-lg);
     margin-bottom: var(--heading-below-lg);
 }
 
 h3 {
-    font-size: var(--font-lg);
+    font-size: var(--font-xl);
     font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
     margin-top: var(--heading-above-md);
     margin-bottom: var(--heading-below-md);
 }
@@ -170,6 +173,7 @@ h3 {
 h4 {
     font-size: var(--font-lg);
     font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
     margin-top: var(--heading-above-sm);
     margin-bottom: var(--heading-below-sm);
 }
@@ -177,6 +181,7 @@ h4 {
 h5, h6 {
     font-size: var(--font-base);
     font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
     margin-top: var(--space-lg);
     margin-bottom: var(--space-xs);
 }
@@ -710,7 +715,7 @@ body > .container > footer {
 .intro-tagline {
     font-family: var(--font-heading);
     font-size: var(--font-custom-24);
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-medium);
     color: var(--text-secondary);
     line-height: var(--line-height-heading);
     margin-top: var(--space-lg);
@@ -721,7 +726,7 @@ body > .container > footer {
 .intro-sectors {
     font-family: var(--font-heading);
     font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     color: var(--text-meta);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
@@ -933,7 +938,7 @@ body > .container > footer {
 .topics h4 {
     font-family: var(--font-heading);
     font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--text-subtle);
@@ -961,10 +966,8 @@ body > .container > footer {
 
     h3 {
         font-size: var(--font-2xl);
-        font-weight: var(--font-weight-medium);
         margin-top: 0;
         margin-bottom: var(--space-sm);
-        line-height: var(--line-height-heading);
 
         a {
             color: var(--text-primary);
@@ -1200,8 +1203,7 @@ body > .container > footer {
     display: block;
     font-family: var(--font-heading);
     font-size: var(--font-xl);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-list-title);
     color: var(--text-primary);
     margin-bottom: var(--space-xs);
 }
@@ -1256,10 +1258,10 @@ body > .container > footer {
 .essay-title-single,
 .note-title-single {
     font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-title);
     margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
-    letter-spacing: var(--letter-spacing-tight-lg);
+    letter-spacing: var(--letter-spacing-tight-xl);
     text-wrap: balance;
     overflow-wrap: break-word;
 }
@@ -1272,7 +1274,7 @@ body > .container > footer {
     /* Paragraphs */
     p {
         margin-bottom: var(--space-md);
-        font-weight: var(--font-weight-normal);
+        font-weight: var(--font-weight-body);
         color: var(--text-primary);
     }
 
@@ -1285,7 +1287,7 @@ body > .container > footer {
     /* List items */
     li {
         margin-bottom: var(--space-xs);
-        font-weight: var(--font-weight-normal);
+        font-weight: var(--font-weight-body);
         color: var(--text-primary);
     }
 
@@ -1336,12 +1338,6 @@ body > .container > footer {
     line-height: var(--line-height-reading);
     text-wrap: balance;
     margin-bottom: var(--space-xl);
-}
-
-@media (max-width: 600px) {
-    .lead {
-        font-size: var(--font-lg);
-    }
 }
 
 /* First heading after page header elements - reduce top margin to avoid excessive stacking
@@ -1840,7 +1836,7 @@ picture.img-lg img {
     /* Monospace code elements for fingerprints and keys - plain text, not links */
     code {
         font-family: var(--font-monospace);
-        font-size: 0.9em;
+        font-size: var(--font-code-inline);
         color: var(--text-primary);
         cursor: text;
     }
@@ -1960,31 +1956,31 @@ html[data-theme="light"] {
     --shadow-content-light: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-/* Dark mode heading colors - only needed for system preference (toggle uses light-dark()) */
+/* Dark mode heading colors and weights */
 @media (prefers-color-scheme: dark) {
-    h2 { color: var(--text-heading-h2); }
-    h3 { color: var(--text-heading-h3); }
-    h4 { color: var(--text-heading-h4); }
-    h5, h6 { color: var(--text-heading-h5); }
+    html:not([data-theme="light"]) {
+        h2 { color: var(--text-heading-h2); }
+        h3 { color: var(--text-heading-h3); }
+        h4 { color: var(--text-heading-h4); }
+        h5, h6 { color: var(--text-heading-h5); }
 
-    h1, .page-title, h2, h3, h4, h5, h6,
-    .essay-title-single, .note-title-single {
-        font-weight: var(--font-weight-semibold);
+        :is(.essay-body, .note-body, .page-body) :is(strong, b) {
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .writing-item-title {
+            font-weight: var(--font-weight-light);
+        }
     }
-
+}
+html[data-theme="dark"] {
     :is(.essay-body, .note-body, .page-body) :is(strong, b) {
         font-weight: var(--font-weight-semibold);
     }
-}
 
-/* Dark mode list title weight */
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) :is(.essay-title, .note-title) {
+    .writing-item-title {
         font-weight: var(--font-weight-light);
     }
-}
-html[data-theme="dark"] :is(.essay-title, .note-title) {
-    font-weight: var(--font-weight-light);
 }
 
 
@@ -3346,7 +3342,7 @@ picture.portrait img {
     overflow: hidden;
     font-family: var(--font-monospace);
     font-size: 0.8125rem;
-    line-height: 1.6;
+    line-height: var(--line-height-reading);
     animation: chat-scale-in 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -3380,7 +3376,7 @@ picture.portrait img {
     border: none;
     color: var(--text-subtle);
     font-size: 1.25rem;
-    line-height: 1;
+    line-height: var(--line-height-none);
     padding: 0.25rem 0.5rem;
     cursor: pointer;
     transition: color 0.15s ease;
@@ -3576,7 +3572,7 @@ picture.portrait img {
         padding-right: calc(var(--space-md) + env(safe-area-inset-right, 0px));
     }
     .chat-container {
-        font-size: 14px; /* Bump from 13px desktop — readable at arm's length */
+        font-size: var(--font-sm); /* Bump from 13px desktop — readable at arm's length */
     }
     .chat-input {
         font-size: 16px; /* iOS requires ≥16px to prevent auto-zoom on focus */
@@ -3587,7 +3583,7 @@ picture.portrait img {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
+        font-size: var(--font-custom-24);
     }
     .chat-send {
         display: flex;
@@ -3599,7 +3595,7 @@ picture.portrait img {
         border: none;
         color: var(--brand-orange);
         font-family: inherit;
-        font-size: 18px;
+        font-size: var(--font-lg);
         cursor: pointer;
         flex-shrink: 0;
         padding: 0;
