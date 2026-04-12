@@ -3080,6 +3080,30 @@ picture.portrait img {
     font-size: var(--font-sm);
 }
 
+/* FAQ Section */
+.essay-faq {
+    margin-top: var(--space-2xl);
+}
+
+.faq-item {
+    margin-bottom: var(--space-md);
+}
+
+.faq-question {
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-base);
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: var(--space-sm) 0;
+}
+
+.faq-answer {
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    padding-bottom: var(--space-md);
+}
+
 /* ==========================================================================
    18. CONVERSION COMPONENTS - Low-friction CTAs
 
