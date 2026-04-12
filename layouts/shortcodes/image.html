@@ -58,14 +58,20 @@ Important Notes:
   {{- $isCompact := or (eq $variant "headshot") (eq $variant "portrait") -}}
   {{- $small := $image.Resize (cond $isCompact "280x" "640x") -}}
   {{- $medium := $image.Resize (cond $isCompact "560x" "1024x") -}}
-  {{- $large := $image.Resize (cond $isCompact "560x" "1920x") -}}
+  {{- $smallAVIF := $image.Resize (cond $isCompact "280x avif" "640x avif") -}}
+  {{- $mediumAVIF := $image.Resize (cond $isCompact "560x avif" "1024x avif") -}}
   {{- $smallWebP := $image.Resize (cond $isCompact "280x webp" "640x webp") -}}
   {{- $mediumWebP := $image.Resize (cond $isCompact "560x webp" "1024x webp") -}}
-  {{- $largeWebP := $image.Resize (cond $isCompact "560x webp" "1920x webp") -}}
   {{- $sizes := cond $isCompact "280px" "(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px" -}}
 
   <picture{{ if $variant }} class="{{ $variant }}"{{ end }}>
-    {{- /* WebP - smaller file size, wide browser support */ -}}
+    {{- /* AVIF - smallest file size, modern browser support */ -}}
+    <source
+      type="image/avif"
+      srcset="{{ $smallAVIF.RelPermalink }} {{ $smallAVIF.Width }}w,
+              {{ $mediumAVIF.RelPermalink }} {{ $mediumAVIF.Width }}w"
+      sizes="{{ $sizes }}">
+    {{- /* WebP - wide browser support fallback */ -}}
     <source
       type="image/webp"
       srcset="{{ $smallWebP.RelPermalink }} {{ $smallWebP.Width }}w,

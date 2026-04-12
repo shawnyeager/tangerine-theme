@@ -10,6 +10,7 @@ Context Expected:
 <!-- Preload critical resources -->
 <link rel="preload" href="{{ "fonts/Satoshi-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/Inter-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/Inter-Italic-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 {{/* Concatenate tokens + main CSS, then minify and fingerprint */}}
 {{- $tokens := resources.Get "css/_tokens.css" -}}
 {{- $main := resources.Get "css/main.css" -}}
@@ -18,18 +19,9 @@ Context Expected:
   {{- $cssMinified := $combined | resources.Minify -}}
   {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
   <link rel="preload" href="{{ $cssFingerprinted.RelPermalink }}" as="style" integrity="{{ $cssFingerprinted.Data.Integrity }}">
-{{- else -}}
-  {{/* Fallback if files missing */}}
-  <link rel="preload" href="{{ "css/main.css" | relURL }}" as="style">
-{{- end -}}
-
-<!-- CSS -->
-{{- if and $tokens $main -}}
-  {{- $combined := slice $tokens $main | resources.Concat "css/bundle.css" -}}
-  {{- $cssMinified := $combined | resources.Minify -}}
-  {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
   <link rel="stylesheet" href="{{ $cssFingerprinted.RelPermalink }}" integrity="{{ $cssFingerprinted.Data.Integrity }}">
 {{- else -}}
+  <link rel="preload" href="{{ "css/main.css" | relURL }}" as="style">
   <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
 {{- end -}}
 
