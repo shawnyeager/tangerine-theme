@@ -86,9 +86,9 @@
        - --text-secondary: Secondary links (footer, nav)
        - --text-meta: Tertiary links (metadata, timestamps) */
     --text-primary: light-dark(#1a1a1a, #f5f8fc);
-    --text-secondary: light-dark(#444, #c9d1d9);
+    --text-secondary: light-dark(#444, #b9c1c9);
     --text-meta: light-dark(#666, #8b949e);
-    --text-subtle: light-dark(#767676, #7d8590);
+    --text-subtle: light-dark(#767676, #737b85);
     --text-bold: light-dark(#1a1a1a, #ffffff);
     --text-on-brand: light-dark(#ffffff, #181b1f);  /* Contrasting text for brand-color backgrounds (buttons on orange) */
     --highlight-bg: light-dark(#fef3cd, #24272b);  /* soft yellow / cool charcoal */

@@ -966,6 +966,7 @@ body > .container > footer {
 
     h3 {
         font-size: var(--font-2xl);
+        font-weight: var(--font-weight-medium);
         margin-top: 0;
         margin-bottom: var(--space-sm);
 
@@ -1968,11 +1969,25 @@ html[data-theme="light"] {
         :is(.essay-body, .note-body, .page-body) :is(strong, b) {
             font-weight: var(--font-weight-semibold);
         }
+
+        .essay-section-header,
+        .section-label-small,
+        .advisory-section-label {
+            color: var(--text-subtle);
+            font-weight: var(--font-weight-medium);
+        }
     }
 }
 html[data-theme="dark"] {
     :is(.essay-body, .note-body, .page-body) :is(strong, b) {
         font-weight: var(--font-weight-semibold);
+    }
+
+    .essay-section-header,
+    .section-label-small,
+    .advisory-section-label {
+        color: var(--text-subtle);
+        font-weight: var(--font-weight-medium);
     }
 }
 
