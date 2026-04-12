@@ -156,7 +156,7 @@ h1.display-title {
 /* Global headings - use typography tokens for tight, consistent spacing */
 h2 {
     font-size: var(--font-custom-24);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-medium);
     line-height: var(--line-height-heading);
     margin-top: var(--heading-above-lg);
     margin-bottom: var(--heading-below-lg);
@@ -1971,8 +1971,7 @@ html[data-theme="light"] {
         }
 
         .essay-section-header,
-        .section-label-small,
-        .advisory-section-label {
+        .section-label-small {
             color: var(--text-subtle);
             font-weight: var(--font-weight-medium);
         }
@@ -1984,8 +1983,7 @@ html[data-theme="dark"] {
     }
 
     .essay-section-header,
-    .section-label-small,
-    .advisory-section-label {
+    .section-label-small {
         color: var(--text-subtle);
         font-weight: var(--font-weight-medium);
     }
