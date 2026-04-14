@@ -349,7 +349,7 @@ select:focus-visible,
 /* Back arrows (←): nudge left on hover, preserve optical Y lift */
 :is(.action-link, .back-link,
     .pagination-prev):hover .arrow:first-child {
-    transform: translateX(calc(-1 * var(--arrow-nudge))) translateY(var(--optical-arrow-lift, 0px));
+    transform: translateX(calc(-1 * var(--arrow-nudge))) translateY(var(--optical-arrow-lift));
 }
 
 /* Arrow spacing — per-element margins */
@@ -1715,6 +1715,7 @@ a.back-link:hover {
 }
 
 /* Back arrows (←): lift to baseline (Satoshi ← yMin is -76/1000em) */
+.action-link .arrow:first-child,
 .back-link span[aria-hidden="true"],
 .pagination-prev span[aria-hidden="true"] {
     font-family: var(--font-heading);
