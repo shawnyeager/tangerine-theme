@@ -158,7 +158,7 @@ h1.display-title {
 /* Global headings - use typography tokens for tight, consistent spacing */
 h2 {
     font-size: var(--font-custom-24);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-heading);
     margin-top: var(--heading-above-lg);
     margin-bottom: var(--heading-below-lg);
@@ -1945,13 +1945,13 @@ picture.img-lg img {
 /* Dark mode token overrides */
 @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) {
-        --font-weight-body: 325;
+        --font-weight-body: 300;
         --para-gap-long-form: 1.375rem;
         --shadow-content-light: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 }
 html[data-theme="dark"] {
-    --font-weight-body: 325;
+    --font-weight-body: 300;
     --para-gap-long-form: 1.375rem;
     --shadow-content-light: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
