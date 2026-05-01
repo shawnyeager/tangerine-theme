@@ -6,30 +6,28 @@
  * -----------------
  * _tokens.css         (separate file)  - Fonts + CSS custom properties (importable standalone)
  * 1.  RESET                            - Base styles, brand bar
- * 2.  TYPOGRAPHY                       - Heading hierarchy, body text
+ * 2.  TYPOGRAPHY                       - Heading hierarchy, body text, text-wrap defaults
  * 3.  LINKS                            - Link styles, focus states, link hierarchy
  * 4.  LAYOUT                           - Container, header/footer spacing
  * 5.  FOOTER                           - Site footer, newsletter signup
- * 6.  HOMEPAGE                         - Homepage sections (bio, latest essay)
- * 7.  POST-ARTICLE SUBSCRIBE           - In-essay email signup CTA
- * 8.  COMPONENTS                       - Cards, topic tags, cta-group
- * 9.  ESSAYS                           - Writing stream, single pages, lead text
- * 10. MARKDOWN                         - Reading content styles (CSS nesting)
- * 11. CONTENT NAVIGATION               - End-of-content link container
- * 12. PAGE-SPECIFIC                    - Page layouts, pagination, contact, skip links
- * 13. UTILITIES                        - Helper classes (sr-only, hidden, etc)
- * 14. DARK MODE                        - Theme toggle & system preference overrides
- * 15. PRINT                            - Print styles
- * 16. MEDIA EMBEDS                     - YouTube, video captions
- * 17. MOBILE                           - Responsive breakpoints
- * 18. V4V PAGE                         - Value for Value payment page
- * 19. ADVISORY PAGE                    - Service tiers, testimonials, credibility
- * 20. CONVERSION COMPONENTS            - Low-friction CTAs
- * 21. GHOST BUTTONS                    - Ghost button system and variants
- * 22. KEYBOARD HELP                    - Keyboard shortcuts modal
- * 23. BLOCK EASTER EGG                 - Mempool next block visualization
- * 24. READING PROGRESS                 - Brand bar as scroll progress indicator
- * 25. CHAT                             - TUI-style AI chat overlay
+ * 6.  HOMEPAGE                         - Bio, featured essay, related-reading, post-article subscribe
+ * 7.  COMPONENTS                       - Topic tags, cta-group, content image elevation
+ * 8.  ESSAYS                           - Writing stream, single pages, lead text
+ * 9.  MARKDOWN                         - Reading content styles, end-of-content navigation (CSS nesting)
+ * 10. PAGE-SPECIFIC                    - Page layouts, bio boxes, pagination, contact, skip links
+ * 11. UTILITIES                        - Helper classes (sr-only, hidden)
+ * 12. DARK MODE                        - Theme toggle & system preference overrides
+ * 13. PRINT                            - Print styles
+ * 14. MEDIA EMBEDS                     - YouTube, video captions
+ * 15. MOBILE                           - Global responsive breakpoint adjustments
+ * 16. V4V PAGE                         - Value for Value payment page
+ * 17. ADVISORY PAGE                    - Service tiers, testimonials, credibility
+ * 18. CONVERSION COMPONENTS            - Low-friction CTAs
+ * 19. GHOST BUTTONS                    - Ghost button system and variants
+ * 20. KEYBOARD HELP                    - Keyboard shortcuts modal
+ * 21. BLOCK EASTER EGG                 - Mempool next block visualization
+ * 22. READING PROGRESS                 - Brand bar as scroll progress indicator
+ * 23. CHAT                             - TUI-style AI chat overlay
  */
 
 /* ==========================================================================
@@ -363,7 +361,7 @@ select:focus-visible,
     width: fit-content;
     margin-top: 0;
     margin-bottom: 0;  /* Following element's margin-top provides spacing */
-    transition: color 0.15s ease;
+    transition: color var(--transition-instant);
 }
 
 /* Arrow spans in action links: prevent underline */
@@ -377,7 +375,7 @@ select:focus-visible,
     .pagination-prev, .pagination-next,
     .btn-ghost--primary, .footer-links a) .arrow {
     display: inline-block;
-    transition: transform 0.15s ease;
+    transition: transform var(--transition-instant);
 }
 
 /* Forward arrows (→): nudge right on hover */
@@ -551,17 +549,11 @@ nav {
     align-items: center;
     position: relative;
     top: 7px;
-    transition: color 0.15s ease;
+    transition: color var(--transition-instant);
 }
 
 .chat-header-trigger:hover {
     color: var(--brand-orange);
-}
-
-.chat-header-trigger:focus-visible {
-    outline: var(--focus-ring-width) solid var(--brand-orange);
-    outline-offset: var(--focus-ring-offset);
-    border-radius: var(--border-radius-sm);
 }
 
 @media (max-width: 600px) {
@@ -683,7 +675,7 @@ body > .container > footer {
 .email-form .btn-ghost:hover {
     color: var(--brand-orange-hover);
     border-color: var(--brand-orange-hover);
-    box-shadow: inset 0 0 0 1px var(--brand-orange-hover);
+    box-shadow: inset 0 0 0 var(--border-width) var(--brand-orange-hover);
 }
 
 .footer-links {
@@ -866,12 +858,7 @@ body > .container > footer {
 .subscribe-cta button:hover {
     color: var(--brand-orange-hover);
     border-color: var(--brand-orange-hover);
-    box-shadow: inset 0 0 0 1px var(--brand-orange-hover);
-}
-
-.subscribe-cta button:focus-visible {
-    outline: var(--focus-ring-width) solid var(--brand-orange);
-    outline-offset: var(--focus-ring-offset);
+    box-shadow: inset 0 0 0 var(--border-width) var(--brand-orange-hover);
 }
 
 @media (max-width: 600px) {
@@ -2590,11 +2577,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     margin-bottom: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .payment-status:not(.hidden) { animation: none; }
-    .payment-checkmark path { animation: none; stroke-dashoffset: 0; }
-}
-
 .v4v-details {
     margin-top: var(--space-lg);
 
@@ -2688,10 +2670,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     animation: service-tier-reveal var(--transition-fast);
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .service-tier[open] > :not(summary) { animation: none; }
-}
-
 .service-tier__name {
     font-family: var(--font-heading);
     font-size: var(--font-lg);
@@ -2713,7 +2691,7 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     text-decoration: none;
     font-weight: var(--font-weight-normal);
     padding: var(--space-md) var(--space-lg);
-    transition: opacity 0.15s ease;
+    transition: opacity var(--transition-instant);
 }
 
 .service-tier__price-row:hover .service-tier__anchor {
@@ -3010,14 +2988,7 @@ picture.portrait img {
 /* ==========================================================================
    19. GHOST BUTTONS - Shared base and variants
 
-   Ghost buttons: transparent background with border.
-   Variants: muted (newsletter) and primary (conversion CTA).
-   ========================================================================== */
-
-/* ==========================================================================
-   Button System - Ghost buttons with variants
-
-   Base: .btn-ghost - transparent background with border
+   Base: .btn-ghost - transparent background with border.
    Variants:
    - --muted: gray border/text, for subtle actions (newsletter, dismiss)
    - --primary: orange border/text, for conversion CTAs
@@ -3056,7 +3027,7 @@ picture.portrait img {
     border: none;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: background var(--transition-instant);
 }
 
 .btn-primary:hover {
@@ -3069,7 +3040,7 @@ picture.portrait img {
     content: '→';
     display: inline-block;
     margin-left: var(--arrow-spacing);
-    transition: transform 0.15s ease;
+    transition: transform var(--transition-instant);
 }
 
 .btn-primary:hover::after {
@@ -3128,7 +3099,7 @@ picture.portrait img {
 .btn-ghost--primary:hover {
     color: var(--brand-orange-hover);
     border-color: var(--brand-orange-hover);
-    box-shadow: inset 0 0 0 1px var(--brand-orange-hover);
+    box-shadow: inset 0 0 0 var(--border-width) var(--brand-orange-hover);
     text-decoration: none;
 }
 
@@ -3256,16 +3227,8 @@ picture.portrait img {
 
 .keyboard-help-dismiss kbd {
     font-size: var(--font-xs);
-    padding: 0.125rem var(--space-label-gap);
+    padding: var(--space-3xs) var(--space-label-gap);
     min-width: auto;
-}
-
-/* Reduced motion - instant transitions */
-@media (prefers-reduced-motion: reduce) {
-    .keyboard-help-overlay,
-    .keyboard-help-card {
-        transition: none;
-    }
 }
 
 
@@ -3381,7 +3344,7 @@ picture.portrait img {
     width: clamp(22.5rem, 42vw, 38.75rem);
     height: clamp(400px, 70vh, 700px);
     background: var(--background-body);
-    border: 1px solid var(--border-color);
+    border: var(--border-width) solid var(--border-color);
     border-radius: var(--border-radius-interactive);
     display: flex;
     flex-direction: column;
@@ -3423,19 +3386,13 @@ picture.portrait img {
     color: var(--text-subtle);
     font-size: var(--font-xl);
     line-height: var(--line-height-none);
-    padding: 0.25rem 0.5rem;
+    padding: var(--space-2xs) var(--space-xs);
     cursor: pointer;
-    transition: color 0.15s ease;
+    transition: color var(--transition-instant);
 }
 
 .chat-close:hover {
     color: var(--text-primary);
-}
-
-.chat-close:focus-visible {
-    outline: var(--focus-ring-width) solid var(--brand-orange);
-    outline-offset: var(--focus-ring-offset);
-    border-radius: var(--border-radius-sm);
 }
 
 .chat-messages {
@@ -3524,7 +3481,7 @@ picture.portrait img {
     display: flex;
     align-items: center;
     padding: var(--space-xs) var(--space-md);
-    border-top: 1px solid var(--border-color);
+    border-top: var(--border-width) solid var(--border-color);
     gap: var(--space-xs);
 }
 
@@ -3571,7 +3528,7 @@ picture.portrait img {
 
 .chat-messages::-webkit-scrollbar-thumb {
     background: var(--border-color);
-    border-radius: 2px;
+    border-radius: var(--border-radius-sm);
 }
 
 /* Send button — visible on mobile only */
@@ -3646,28 +3603,13 @@ picture.portrait img {
         flex-shrink: 0;
         padding: 0;
         opacity: var(--opacity-disabled);
-        transition: opacity 0.15s ease;
+        transition: opacity var(--transition-instant);
     }
     .chat-send:not(:disabled) {
         opacity: 1;
     }
     .chat-send:disabled {
         cursor: default;
-    }
-    .chat-send:focus-visible {
-        outline: var(--focus-ring-width) solid var(--brand-orange);
-        outline-offset: var(--focus-ring-offset);
-        border-radius: var(--border-radius-sm);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .chat-msg--thinking {
-        animation: none;
-    }
-    .chat-overlay,
-    .chat-container {
-        animation: none;
     }
 }
 

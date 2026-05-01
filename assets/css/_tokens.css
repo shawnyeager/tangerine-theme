@@ -134,7 +134,6 @@
     --space-lg: 1.5rem;          /* 24px - Section internal spacing (meta groups, subsection headers) */
     --space-xl: 2rem;            /* 32px - Section breaks (page titles, content footers, back links) */
     --space-2xl: 3rem;           /* 48px - Major separations (header-main, main-footer, homepage sections) */
-    --space-3xl: 4rem;           /* 64px - Page header element stacks (meta+title+first heading sequences) */
     --container-mobile-h-padding: 1.25rem;  /* 20px - Mobile horizontal edges */
     --icon-optical-adjust: 0.25rem;         /* 4px - SVG/icon alignment nudges */
 
@@ -159,7 +158,6 @@
     --brand-bar-height: 3px;
     --table-cell-padding: 0.75rem 1rem;
     --qr-size: 250px;
-    --touch-target-min: 44px;   /* WCAG 2.5.8 minimum touch target size */
     --play-button-size: 80px;
     --video-aspect-ratio: 56.25%;
     --border-width-emphasis: 2px;
@@ -170,13 +168,13 @@
     --z-modal: 10001;
 
     /* Transitions */
+    --transition-instant: 0.15s ease;  /* Tight UI feedback (hover color/transform shifts) */
     --transition-fast: 0.3s ease;
     --transition-base: 0.4s ease;
 
     /* Opacity Scale */
     --opacity-disabled: 0.4;
     --opacity-subtle: 0.5;
-    --opacity-medium: 0.6;
     --opacity-muted: 0.7;
     --opacity-high: 0.85;
 
@@ -236,13 +234,8 @@
     --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
     --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
 
-    /* Easter Egg: 3D Block face colors (mempool visualization) */
-    --block-face-top: color-mix(in srgb, var(--brand-orange), black 20%);
-    --block-face-left: color-mix(in srgb, var(--brand-orange), black 35%);
-
     /* Component-specific tokens */
     --home-square-size: 1.5rem;      /* 24px at 16px root, scales with root font-size */
-    --home-square-border-width: 3px;
     --focus-ring-width: 2px;
     --focus-ring-offset: 2px;
     --touch-target-min: 48px;
