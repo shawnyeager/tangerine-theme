@@ -20,12 +20,14 @@ Context Expected:
 {{- $blockEgg := resources.Get "css/_block-easter-egg.css" -}}
 {{- $readingProgress := resources.Get "css/_reading-progress.css" -}}
 {{- $chat := resources.Get "css/_chat.css" -}}
+{{- $v4v := resources.Get "css/_v4v.css" -}}
 {{- if and $tokens $main -}}
   {{- $sources := slice $tokens $main -}}
   {{- with $keyboardHelp }}{{ $sources = $sources | append . }}{{ end -}}
   {{- with $blockEgg }}{{ $sources = $sources | append . }}{{ end -}}
   {{- with $readingProgress }}{{ $sources = $sources | append . }}{{ end -}}
   {{- with $chat }}{{ $sources = $sources | append . }}{{ end -}}
+  {{- with $v4v }}{{ $sources = $sources | append . }}{{ end -}}
   {{- $combined := $sources | resources.Concat "css/bundle.css" -}}
   {{- $cssMinified := $combined | resources.Minify -}}
   {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}

@@ -11,6 +11,7 @@
  *   _block-easter-egg.css              - Mempool next-block visualization (type 'block')
  *   _reading-progress.css              - Brand bar as scroll progress indicator
  *   _chat.css                          - TUI-style AI chat overlay
+ *   _v4v.css                           - Value for Value Lightning payment page (.com only)
  *
  * Sections in this file:
  * 1.  RESET                            - Base styles, brand bar
@@ -28,7 +29,6 @@
  * 13. PRINT                            - Print styles
  * 14. MEDIA EMBEDS                     - YouTube, video captions
  * 15. MOBILE                           - Global responsive breakpoint adjustments
- * 16. V4V PAGE                         - Value for Value payment page
  * 17. ADVISORY PAGE                    - Service tiers, testimonials, credibility
  * 18. CONVERSION COMPONENTS            - Low-friction CTAs
  * 19. GHOST BUTTONS                    - Ghost button system and variants
@@ -245,7 +245,6 @@ figcaption,
 .related-item-title,
 .email-signup-intro,
 .featured-block p,
-.v4v-intro,
 .testimonial__quote,
 .service-tier__summary,
 .service-tier__fit {
@@ -2181,427 +2180,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 /* ==========================================================================
-   16. V4V PAGE - Value for Value Payment Page
-
-   Bitcoin Lightning payment page with amount selection, QR generation,
-   and payment status tracking.
-   ========================================================================== */
-
-.v4v-page {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-}
-
-.v4v-content {
-    margin-top: var(--space-md);
-}
-
-.v4v-intro {
-    font-size: var(--font-lg);
-    color: var(--text-secondary);
-    margin-bottom: var(--space-xl);
-    line-height: var(--line-height-body);
-}
-
-#share-essay {
-    color: var(--brand-orange);
-    text-decoration: none;
-    cursor: pointer;
-
-    &:hover {
-        text-decoration: underline;
-    }
-}
-
-.amount-selection {
-    margin-bottom: var(--space-xl);
-}
-
-.amount-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md);
-    margin-bottom: var(--space-md);
-}
-
-.amount-btn {
-    padding: var(--space-lg);
-    background: transparent;
-    border: var(--border-width-emphasis) solid var(--border-color);
-    border-radius: var(--border-radius-interactive);
-    cursor: pointer;
-    font-family: var(--font-system);
-    font-size: var(--font-xl);
-    font-weight: var(--font-weight-semibold);
-    font-variant-numeric: tabular-nums;
-    color: var(--text-primary);
-    transition: border-color var(--transition-fast), color var(--transition-fast);
-
-    &:hover {
-        border-color: var(--brand-orange);
-        color: var(--brand-orange);
-    }
-
-    &:active {
-        transform: translateY(1px);
-    }
-
-    &:disabled {
-        opacity: var(--opacity-disabled);
-        cursor: not-allowed;
-
-        &:hover {
-            border-color: var(--border-color);
-            color: var(--text-primary);
-        }
-    }
-}
-
-.amount-btn--suggested {
-    border-color: var(--brand-orange);
-    color: var(--brand-orange);
-
-    &:disabled {
-        border-color: var(--brand-orange);
-        color: var(--brand-orange);
-    }
-}
-
-.custom-amount-label {
-    display: block;
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-    margin-bottom: var(--space-sm);
-    font-weight: var(--font-weight-normal);
-}
-
-.custom-amount-field {
-    display: flex;
-    gap: var(--space-sm);
-    align-items: stretch;
-}
-
-.custom-amount-input {
-    padding: var(--space-xs) 0;
-    border: none;
-    border-bottom: var(--border-width) solid var(--border-color);
-    border-radius: 0;
-    font-family: var(--font-system);
-    font-size: var(--font-base);
-    background: var(--background-body);
-    color: var(--text-primary);
-    width: calc((100% - 3 * var(--space-sm)) / 4);
-    text-align: right;
-    transition: border-color var(--transition-fast);
-
-    &:focus {
-        outline: none;
-        border-bottom-color: var(--brand-orange);
-    }
-
-    &::placeholder {
-        color: var(--text-meta);
-        opacity: var(--opacity-subtle);
-    }
-
-    &:disabled {
-        opacity: var(--opacity-disabled);
-        cursor: not-allowed;
-    }
-}
-
-/* Note: .custom-amount-btn base styles consolidated in Button System section */
-
-.custom-amount-btn {
-    &:active {
-        transform: translateY(1px);
-    }
-
-    &:disabled {
-        opacity: var(--opacity-disabled);
-        cursor: not-allowed;
-
-        &:hover {
-            border-color: var(--text-meta);
-            color: var(--text-meta);
-        }
-    }
-}
-
-.validation-error {
-    color: var(--brand-orange);
-    font-size: var(--font-sm);
-    margin-top: var(--space-sm);
-    margin-bottom: 0;
-}
-
-.error-display {
-    text-align: center;
-    padding: var(--space-xl);
-    background: var(--background-card);
-    border-radius: var(--border-radius-md);
-    margin-bottom: var(--space-xl);
-    animation: v4v-fadeIn var(--transition-base) ease-out;
-
-    .error-message {
-        color: var(--brand-orange);
-        font-size: var(--font-base);
-        margin-bottom: var(--space-lg);
-    }
-}
-
-/* Note: .error-dismiss-btn base styles consolidated in Button System section */
-
-.qr-display {
-    text-align: center;
-    padding: var(--space-xl);
-    background: var(--background-card);
-    border-radius: var(--border-radius-md);
-    margin-bottom: var(--space-xl);
-    transition: background-color var(--transition-fast);
-    animation: v4v-fadeIn var(--transition-base) ease-out;
-    position: relative;
-}
-
-@keyframes v4v-fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.qr-code {
-    width: var(--qr-size);
-    height: var(--qr-size);
-    margin: 0 auto var(--space-lg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    canvas {
-        display: block;
-        margin: 0 auto;
-        box-shadow: var(--shadow-content-light);
-        transition: box-shadow var(--transition-fast);
-    }
-}
-
-/* Center loading text in full card during loading state */
-.qr-display:has(.qr-details--pending) .qr-loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/* Details always rendered, invisible until QR ready */
-.qr-details--pending {
-    visibility: hidden;
-    opacity: 0;
-}
-
-.qr-details:not(.qr-details--pending) {
-    animation: v4v-slideIn var(--transition-base) ease-out;
-}
-
-@keyframes v4v-slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(var(--space-sm));
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.qr-loading {
-    color: var(--text-meta);
-    font-size: var(--font-base);
-    margin: 0;
-    text-decoration: none;
-
-    &.polling {
-        animation: v4v-pulse 2s ease-in-out infinite;
-    }
-}
-
-@keyframes v4v-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: var(--opacity-subtle); }
-}
-
-.polling-status {
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-    margin-bottom: var(--space-md);
-    animation: v4v-pulse 2s ease-in-out infinite;
-}
-
-.qr-link {
-    cursor: pointer;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: none;
-
-        .qr-code canvas {
-            box-shadow: 0 0 0 3px var(--brand-orange);
-        }
-    }
-}
-
-.qr-hint {
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-    margin-bottom: var(--space-md);
-}
-
-.qr-hint--mobile {
-    display: inline;
-}
-
-.qr-hint--desktop {
-    display: none;
-}
-
-@media (min-width: 768px) {
-    .qr-hint--mobile {
-        display: none;
-    }
-    .qr-hint--desktop {
-        display: inline;
-    }
-}
-
-.qr-amount {
-    font-size: var(--font-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--text-primary);
-    margin-bottom: var(--space-xs);
-    letter-spacing: var(--letter-spacing-tight-md);
-}
-
-.qr-amount-value {
-    font-variant-numeric: tabular-nums;
-}
-
-.qr-copy-link {
-    background: none;
-    border: none;
-    color: var(--text-meta);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: var(--font-weight-normal);
-    text-decoration: underline;
-    padding: 0;
-    transition: color var(--transition-fast);
-
-    &:hover {
-        color: var(--brand-orange);
-    }
-}
-
-/* Note: .qr-cancel-btn base styles consolidated in Button System section */
-
-/* Payment Confirmation — celebration animations */
-@keyframes v4v-celebrate-in {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes v4v-checkmark-draw {
-    to { stroke-dashoffset: 0; }
-}
-
-.payment-status {
-    text-align: center;
-    padding: var(--space-2xl);
-    background: var(--background-card);
-    margin-bottom: var(--space-xl);
-    transition: background-color var(--transition-fast);
-}
-
-/* Entrance animation when payment is confirmed */
-.payment-status:not(.hidden) {
-    animation: v4v-celebrate-in 0.4s ease-out;
-}
-
-/* Checkmark SVG — draws itself on confirmation */
-.payment-checkmark {
-    display: block;
-    width: var(--space-xl);
-    height: var(--space-xl);
-    margin: 0 auto var(--space-md);
-}
-
-.payment-checkmark path {
-    stroke: var(--brand-orange);
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    fill: none;
-    stroke-dasharray: 24;
-    stroke-dashoffset: 24;
-    animation: v4v-checkmark-draw 0.5s ease-out 0.2s forwards;
-}
-
-.payment-check {
-    font-size: var(--font-2xl);
-    font-weight: var(--font-weight-semibold);
-    color: var(--brand-orange);
-    margin-bottom: var(--space-sm);
-    letter-spacing: var(--letter-spacing-tight-md);
-}
-
-.payment-thanks {
-    color: var(--text-secondary);
-    font-size: var(--font-base);
-    margin-bottom: 0;
-}
-
-.v4v-details {
-    margin-top: var(--space-lg);
-
-    summary {
-        cursor: pointer;
-        font-size: var(--font-base);
-        color: var(--text-meta);
-        font-weight: var(--font-weight-medium);
-        transition: color var(--transition-fast);
-        list-style-position: outside;
-        list-style: none;
-
-        &::marker {
-            display: none;
-        }
-
-        &:hover {
-            color: var(--brand-orange);
-        }
-    }
-
-    p {
-        margin-top: var(--space-md);
-        font-size: var(--font-base);
-        color: var(--text-secondary);
-        line-height: var(--line-height-body);
-    }
-}
-
-
-/* V4V mobile adjustments */
-@media (max-width: 600px) {
-    .custom-amount-input {
-        max-width: none;
-    }
-
-    .qr-display,
-    .payment-status {
-        padding: var(--space-xl);
-    }
-}
-
-/* ==========================================================================
    17. ADVISORY PAGE - Service tiers and credibility
    ========================================================================== */
 
@@ -2978,21 +2556,15 @@ picture.portrait img {
    - --lg: large size (font-xl, spacious padding)
    ========================================================================== */
 
-/* Shared base */
-.btn-ghost,
-.custom-amount-btn,
-.error-dismiss-btn,
-.qr-cancel-btn {
+/* Shared base — V4V buttons (.custom-amount-btn / .error-dismiss-btn /
+   .qr-cancel-btn) opt in by also applying .btn-ghost in the template. */
+.btn-ghost {
     display: inline-block;
     background: transparent;
     border: var(--border-width) solid;
     cursor: pointer;
     transition: border-color var(--transition-fast), color var(--transition-fast);
     text-decoration: none;
-}
-
-/* Ghost base defaults */
-.btn-ghost {
     font-family: var(--font-heading);
     border-radius: 0;
 }
@@ -3029,29 +2601,7 @@ picture.portrait img {
     transform: translateX(var(--arrow-nudge));
 }
 
-/* System font buttons (V4V page) */
-.custom-amount-btn,
-.error-dismiss-btn,
-.qr-cancel-btn {
-    font-family: var(--font-system);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--border-radius-interactive);
-    color: var(--text-meta);
-    border-color: var(--text-meta);
-}
-
-.custom-amount-btn {
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-/* Shared hover for muted buttons */
-.btn-ghost--muted:hover,
-.custom-amount-btn:hover,
-.error-dismiss-btn:hover,
-.qr-cancel-btn:hover {
+.btn-ghost--muted:hover {
     color: var(--brand-orange);
     border-color: var(--brand-orange);
 }

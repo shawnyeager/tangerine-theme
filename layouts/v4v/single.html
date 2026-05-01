@@ -46,7 +46,7 @@
             inputmode="numeric"
             aria-label="Custom satoshi amount"
           />
-          <button id="generate-custom" class="custom-amount-btn" type="button" aria-label="Generate invoice for custom amount">Pay</button>
+          <button id="generate-custom" class="btn-ghost custom-amount-btn" type="button" aria-label="Generate invoice for custom amount">Pay</button>
         </div>
         <p id="validation-error" class="validation-error hidden"></p>
       </div>
@@ -55,7 +55,7 @@
     <!-- Error Display (card style matching QR display) -->
     <div id="error-display" class="error-display hidden">
       <p id="error-message" class="error-message"></p>
-      <button id="error-dismiss-btn" class="error-dismiss-btn" type="button">Try again</button>
+      <button id="error-dismiss-btn" class="btn-ghost error-dismiss-btn" type="button">Try again</button>
     </div>
 
     <!-- QR Display (replaces amount selection) -->
@@ -72,7 +72,7 @@
           <span id="selected-amount" class="qr-amount-value"></span> sats
         </p>
         <p id="polling-status" class="polling-status">Waiting for payment...</p>
-        <button id="cancel-btn" class="qr-cancel-btn" type="button" aria-label="Cancel and return to amount selection">Cancel</button>
+        <button id="cancel-btn" class="btn-ghost qr-cancel-btn" type="button" aria-label="Cancel and return to amount selection">Cancel</button>
       </div>
     </div>
 
