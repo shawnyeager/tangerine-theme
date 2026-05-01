@@ -234,6 +234,12 @@
     --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
     --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
 
+    /* Easter Egg: 3D Block face colors (mempool visualization)
+       Read by assets/js/mempool.js via getPropertyValue() — keep even
+       if static analysis reports zero CSS consumers. */
+    --block-face-top: color-mix(in srgb, var(--brand-orange), black 20%);
+    --block-face-left: color-mix(in srgb, var(--brand-orange), black 35%);
+
     /* Component-specific tokens */
     --home-square-size: 1.5rem;      /* 24px at 16px root, scales with root font-size */
     --focus-ring-width: 2px;
