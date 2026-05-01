@@ -1,0 +1,40 @@
+/* ==========================================================================
+   READING PROGRESS - Brand bar as scroll progress indicator
+
+   On essay/note pages, the brand bar dims and a progress overlay fills
+   left-to-right as the reader scrolls through the content.
+   Activated by assets/js/reading-progress.js when .essay-body or
+   .note-body exists.
+   Bundled after main.css via layouts/partials/head/resources.html.
+   ========================================================================== */
+
+/* Dim the brand bar when reading progress is active */
+.has-reading-progress::before {
+    opacity: 0.3;
+    transition: opacity var(--transition-fast);
+}
+
+/* Progress overlay — scaleX with linear transition for fluid scroll tracking */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--brand-bar-height);
+    background: var(--brand-orange);
+    z-index: var(--z-brand-bar);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.15s linear;
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* Reduced motion: still functional, just no smoothing */
+.reading-progress--no-motion {
+    transition: none;
+}
+
+@media print {
+    .reading-progress { display: none !important; }
+}
