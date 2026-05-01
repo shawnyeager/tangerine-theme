@@ -159,24 +159,24 @@ h2 {
     font-size: var(--font-custom-24);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-heading);
-    margin-top: var(--heading-above-lg);
-    margin-bottom: var(--heading-below-lg);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-md);
 }
 
 h3 {
     font-size: var(--font-xl);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-heading);
-    margin-top: var(--heading-above-md);
-    margin-bottom: var(--heading-below-md);
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-sm);
 }
 
 h4 {
     font-size: var(--font-lg);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-heading);
-    margin-top: var(--heading-above-sm);
-    margin-bottom: var(--heading-below-sm);
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-xs);
 }
 
 h5, h6 {
@@ -522,7 +522,7 @@ body > .container > header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: var(--header-gap-below);
+    margin-bottom: var(--space-2xl);
 }
 
 .header-right {
@@ -612,9 +612,9 @@ nav a::after {
    ========================================================================== */
 
 body > .container > footer {
-    margin-top: var(--footer-gap-above);
-    padding-top: var(--footer-gap-tight);
-    padding-bottom: var(--footer-gap-below);
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-sm);
+    padding-bottom: var(--space-xl);
     /* 70% opacity: strong enough to anchor footer on short pages,
        soft enough to avoid visual heaviness (Material Design uses
        similar values for medium-emphasis elements) */
@@ -675,7 +675,7 @@ body > .container > footer {
 .email-form .btn-ghost:hover {
     color: var(--brand-orange-hover);
     border-color: var(--brand-orange-hover);
-    box-shadow: inset 0 0 0 var(--border-width) var(--brand-orange-hover);
+    box-shadow: var(--shadow-button-emphasis);
 }
 
 .footer-links {
@@ -858,7 +858,7 @@ body > .container > footer {
 .subscribe-cta button:hover {
     color: var(--brand-orange-hover);
     border-color: var(--brand-orange-hover);
-    box-shadow: inset 0 0 0 var(--border-width) var(--brand-orange-hover);
+    box-shadow: var(--shadow-button-emphasis);
 }
 
 @media (max-width: 600px) {
@@ -2939,7 +2939,7 @@ picture.portrait img {
 .diagnostic-cta {
     margin: var(--space-xl) 0;
     padding: var(--space-md) var(--space-lg);
-    background: var(--background-main);
+    background: var(--background-body);
     border: var(--border-width) solid var(--border-color);
     font-size: var(--font-base);
     color: var(--text-secondary);
@@ -3099,7 +3099,7 @@ picture.portrait img {
 .btn-ghost--primary:hover {
     color: var(--brand-orange-hover);
     border-color: var(--brand-orange-hover);
-    box-shadow: inset 0 0 0 var(--border-width) var(--brand-orange-hover);
+    box-shadow: var(--shadow-button-emphasis);
     text-decoration: none;
 }
 

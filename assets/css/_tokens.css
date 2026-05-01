@@ -94,7 +94,6 @@
     --highlight-bg: light-dark(#fef3cd, #24272b);  /* soft yellow / cool charcoal */
     --border-color: light-dark(#d5d5d5, #32363a);
     --background-body: light-dark(#FDFCFA, #181b1f);
-    --background-main: var(--background-body);
     --background-card: light-dark(#f5f5f5, #1e2126);
 
     /* Typography - Dual font system */
@@ -137,15 +136,9 @@
     --container-mobile-h-padding: 1.25rem;  /* 20px - Mobile horizontal edges */
     --icon-optical-adjust: 0.25rem;         /* 4px - SVG/icon alignment nudges */
 
-    /* Typography spacing - heading proximity ratios (don't scale with viewport)
-       Headings need more space above to associate with content below */
-    --para-gap-long-form: 1.25rem;  /* Long-form paragraph spacing (light mode default) */
-    --heading-above-lg: 1.5rem;   /* 24px - h2 section breaks */
-    --heading-below-lg: 1rem;     /* 16px - maintains 1.5:1 ratio */
-    --heading-above-md: 1rem;     /* 16px - h3 subsection breaks */
-    --heading-below-md: 0.75rem;  /* 12px - maintains 1.33:1 ratio */
-    --heading-above-sm: 0.75rem;  /* 12px - h4 minor breaks */
-    --heading-below-sm: 0.5rem;   /* 8px - maintains 1.5:1 ratio */
+    /* Long-form paragraph spacing (light mode default;
+       dark mode overrides to 1.375rem in main.css) */
+    --para-gap-long-form: 1.25rem;
 
     /* Component Sizing */
     --content-max-width: 43.75rem;  /* 700px at 16px root, scales with root font-size */
@@ -227,12 +220,12 @@
     --skip-link-max-width: 260px;   /* Fixed — accessibility, not content */
     --image-size-lg: 12.5rem;       /* 200px at 16px root */
 
-    /* Layout Spacing Shortcuts (referenced in layout section) */
+    /* Section break spacing — used by inline rules in main.css */
     --section-gap: var(--space-2xl);          /* 48px - Interior section breaks */
-    --header-gap-below: var(--section-gap);   /* 48px - matches section gaps */
-    --footer-gap-above: var(--section-gap);   /* 48px - matches section gaps */
-    --footer-gap-tight: var(--space-sm);      /* 12px - Tight coupling: HR to footer content */
-    --footer-gap-below: var(--space-xl);      /* 32px - Space between footer content and page bottom */
+
+    /* Button emphasis ring — hover/active state on ghost-style buttons.
+       Inset shadow gives a 1-pixel "thicken" effect that doesn't shift layout. */
+    --shadow-button-emphasis: inset 0 0 0 var(--border-width) var(--brand-orange-hover);
 
     /* Easter Egg: 3D Block face colors (mempool visualization)
        Read by assets/js/mempool.js via getPropertyValue() — keep even
