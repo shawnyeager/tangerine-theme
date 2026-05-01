@@ -19,11 +19,13 @@ Context Expected:
 {{- $keyboardHelp := resources.Get "css/_keyboard-help.css" -}}
 {{- $blockEgg := resources.Get "css/_block-easter-egg.css" -}}
 {{- $readingProgress := resources.Get "css/_reading-progress.css" -}}
+{{- $chat := resources.Get "css/_chat.css" -}}
 {{- if and $tokens $main -}}
   {{- $sources := slice $tokens $main -}}
   {{- with $keyboardHelp }}{{ $sources = $sources | append . }}{{ end -}}
   {{- with $blockEgg }}{{ $sources = $sources | append . }}{{ end -}}
   {{- with $readingProgress }}{{ $sources = $sources | append . }}{{ end -}}
+  {{- with $chat }}{{ $sources = $sources | append . }}{{ end -}}
   {{- $combined := $sources | resources.Concat "css/bundle.css" -}}
   {{- $cssMinified := $combined | resources.Minify -}}
   {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
