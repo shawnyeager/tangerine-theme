@@ -21,6 +21,7 @@ Context Expected:
 {{- $readingProgress := resources.Get "css/_reading-progress.css" -}}
 {{- $chat := resources.Get "css/_chat.css" -}}
 {{- $v4v := resources.Get "css/_v4v.css" -}}
+{{- $advisory := resources.Get "css/_advisory.css" -}}
 {{- if and $tokens $main -}}
   {{- $sources := slice $tokens $main -}}
   {{- with $keyboardHelp }}{{ $sources = $sources | append . }}{{ end -}}
@@ -28,6 +29,7 @@ Context Expected:
   {{- with $readingProgress }}{{ $sources = $sources | append . }}{{ end -}}
   {{- with $chat }}{{ $sources = $sources | append . }}{{ end -}}
   {{- with $v4v }}{{ $sources = $sources | append . }}{{ end -}}
+  {{- with $advisory }}{{ $sources = $sources | append . }}{{ end -}}
   {{- $combined := $sources | resources.Concat "css/bundle.css" -}}
   {{- $cssMinified := $combined | resources.Minify -}}
   {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}

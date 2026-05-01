@@ -1,0 +1,269 @@
+/* ==========================================================================
+   ADVISORY PAGE - Service tiers and testimonials
+
+   Used by content/work-with-me.md ("Work With Me" / advisory page).
+   Service tiers render as a stack of <details> accordions; testimonials
+   render as left-bordered pull-quotes with optional avatars.
+   Bundled after main.css via layouts/partials/head/resources.html.
+   ========================================================================== */
+
+/* Service Tiers Grid */
+.service-tiers {
+    display: grid;
+    gap: var(--space-lg);
+    margin: var(--space-xl) 0;
+}
+
+/* Individual Service Tier - Accordion */
+.service-tier {
+    background: var(--background-card);
+    border-left: var(--border-width-accent) solid var(--brand-orange);
+}
+
+.service-tier__header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    cursor: pointer;
+    list-style: none;
+}
+
+.service-tier__header::-webkit-details-marker {
+    display: none;
+}
+
+.service-tier__header::after {
+    content: '+';
+    font-size: var(--font-base);
+    color: var(--text-meta);
+    margin-left: auto;
+}
+
+.service-tier[open] .service-tier__header::after {
+    content: '−';
+}
+
+/* Smooth reveal when tier opens */
+@keyframes service-tier-reveal {
+    from { opacity: 0; transform: translateY(calc(-1 * var(--space-xs))); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.service-tier[open] > :not(summary) {
+    animation: service-tier-reveal var(--transition-fast);
+}
+
+.service-tier__name {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    flex: 0 0 13rem;  /* Fixed width so descriptions align across rows */
+}
+
+.service-tier__price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: var(--border-subtle);
+}
+
+.service-tier__anchor {
+    opacity: 0;
+    color: var(--text-meta);
+    text-decoration: none;
+    font-weight: var(--font-weight-normal);
+    padding: var(--space-md) var(--space-lg);
+    transition: opacity var(--transition-instant);
+}
+
+.service-tier__price-row:hover .service-tier__anchor {
+    opacity: 1;
+}
+
+.service-tier__anchor:hover {
+    color: var(--brand-orange);
+}
+
+@media (hover: none) {
+    .service-tier__anchor {
+        opacity: 1;
+    }
+}
+
+.service-tier__summary {
+    font-size: var(--font-base);
+    color: var(--text-meta);
+    text-wrap: balance;
+}
+
+.service-tier__price {
+    font-family: var(--font-heading);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--brand-orange);
+    padding: var(--space-md) var(--space-lg);
+    margin: 0;
+}
+
+.service-tier__details {
+    padding: 0 var(--space-lg);
+    color: var(--text-secondary);
+    font-size: var(--font-base);
+    line-height: var(--line-height-body);
+}
+
+.service-tier__details p {
+    margin: 0 0 var(--space-md) 0;
+}
+
+.service-tier__details p:last-child {
+    margin-bottom: 0;
+}
+
+.service-tier__details ul {
+    margin: 0 0 var(--space-md) 0;
+    padding-left: var(--space-lg);
+}
+
+.service-tier__details li {
+    margin-bottom: var(--space-xs);
+}
+
+.service-tier__fit {
+    font-size: var(--font-sm);
+    color: var(--text-meta);
+    font-style: italic;
+    margin: var(--space-lg) 0 0 0;
+    padding: var(--space-md) var(--space-lg) var(--space-lg) var(--space-lg);
+    border-top: var(--border-subtle);
+    text-wrap: balance;
+}
+
+/* Service tier mobile: stack header vertically */
+@media (max-width: 600px) {
+    .service-tiers {
+        gap: var(--space-md);
+    }
+
+    .service-tier__header {
+        position: relative;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+        padding-right: var(--space-2xl);
+    }
+
+    .service-tier__header::after {
+        position: absolute;
+        top: var(--space-lg);
+        right: var(--space-lg);
+        margin-left: 0;
+    }
+
+    .service-tier__name {
+        font-size: var(--font-base);
+        flex: 0 0 auto;  /* Reset fixed width for stacked layout */
+    }
+
+    .service-tier__summary {
+        font-size: var(--font-sm);
+    }
+
+    .service-tier__price {
+        font-size: var(--font-base);
+        padding: var(--space-sm) var(--space-md) 0 var(--space-md);
+    }
+
+    .service-tier__details {
+        padding: 0 var(--space-md);
+        font-size: var(--font-sm);
+    }
+
+    .service-tier__fit {
+        padding: var(--space-sm) var(--space-md) var(--space-md) var(--space-md);
+    }
+}
+
+/* Section headers for advisory page */
+.advisory-section-label {
+    font-family: var(--font-heading);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    margin: var(--space-2xl) 0 var(--space-lg) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.advisory-section-label::before {
+    content: '';
+    width: 1.5rem;
+    height: var(--border-width-emphasis);
+    background: var(--brand-orange);
+}
+
+.advisory-section-label:first-child {
+    margin-top: 0;
+}
+
+/* Testimonials */
+.testimonial {
+    overflow: hidden;
+    margin: var(--space-lg) 0;
+    padding: 0;
+    border: none;
+    border-left: var(--border-width-accent) solid var(--brand-orange);
+    padding-left: var(--space-lg);
+}
+
+/* First testimonial after section label needs no extra top margin */
+.advisory-section-label + .testimonial {
+    margin-top: var(--space-lg);
+}
+
+.testimonial__quote {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-body);
+    margin: 0 0 var(--space-sm) 0;
+    text-wrap: balance;
+}
+
+.testimonial__attribution {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.testimonial__avatar {
+    float: right;
+    width: var(--avatar-size-sm);
+    height: var(--avatar-size-sm);
+    margin: var(--float-cap-offset) 0 var(--space-xs) var(--space-md);
+    border-radius: var(--border-radius-interactive);
+    object-fit: cover;
+    filter: grayscale(1);
+}
+
+.testimonial__person {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.testimonial__name {
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    font-size: var(--font-sm);
+}
+
+.testimonial__title {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+}
