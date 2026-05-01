@@ -49,6 +49,7 @@ html {
     font-size: clamp(1rem, 0.965rem + 0.15vw, 1.09rem); /* 16px → 17.5px fluid */
     overflow-y: scroll; /* Prevent horizontal shift when scrollbar appears/disappears */
     scroll-behavior: smooth;
+    hanging-punctuation: first last; /* Safari only; silently ignored elsewhere */
 }
 
 body {
@@ -224,6 +225,44 @@ mark {
     color: var(--text-primary);
     padding: 0.2em 0.4em;
     border-radius: var(--border-radius-code);
+}
+
+/* Text-wrap defaults — editorial typography
+   --------------------------------------------------
+   Balance: short, headline-like text. Browser falls back silently
+   past Chrome's 6-line cap or on engines without support.
+
+   Pretty: prose paragraphs. Scoped to article-body containers so
+   nav, footer, and meta strings don't pay the layout cost. */
+
+h1, h2, h3, h4, h5, h6,
+blockquote,
+figcaption,
+.intro-tagline,
+.writing-item-title,
+.related-item-title,
+.email-signup-intro,
+.featured-block p,
+.v4v-intro,
+.testimonial__quote,
+.service-tier__summary,
+.service-tier__fit {
+    text-wrap: balance;
+}
+
+/* :where() keeps this as a zero-specificity default so class-level
+   overrides (e.g., .lead, .diagnostic-cta) win without specificity wars. */
+:where(.essay-body, .note-body, .page-body, .intro-body) :is(p, li),
+.writing-item-desc,
+.related-item-desc {
+    text-wrap: pretty;
+}
+
+/* Long inline tokens (URLs, identifiers) shouldn't overflow the
+   reading column when balance can't help. Already paired on
+   .essay-title-single / .note-title-single; extend to in-body subheads. */
+:is(.essay-body, .note-body) :is(h2, h3, h4, h5, h6) {
+    overflow-wrap: break-word;
 }
 
 /* ==========================================================================
@@ -973,7 +1012,6 @@ body > .container > footer {
     h3 {
         font-size: var(--font-2xl);
         font-weight: var(--font-weight-medium);
-        text-wrap: balance;
         margin-top: 0;
         margin-bottom: var(--space-sm);
 
@@ -1257,7 +1295,8 @@ body > .container > footer {
     line-height: 0;
 }
 
-/* Essay/note titles - medium weight, size provides hierarchy */
+/* Essay/note titles - medium weight, size provides hierarchy.
+   text-wrap: balance inherited from the global heading rule. */
 .essay-title-single,
 .note-title-single {
     font-size: var(--font-custom-32);
@@ -1265,7 +1304,6 @@ body > .container > footer {
     line-height: var(--line-height-title);
     margin-bottom: var(--space-xs);  /* Tight coupling to metadata below */
     letter-spacing: var(--letter-spacing-tight-xl);
-    text-wrap: balance;
     overflow-wrap: break-word;
 }
 
