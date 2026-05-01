@@ -1,0 +1,45 @@
+/* ==========================================================================
+   BLOCK EASTER EGG - Mempool next block visualization
+
+   Hidden feature: type 'block' to show live mempool.space data.
+   3D block flies from home-square to center with real-time fee info.
+   Block face colors come from --block-face-{top,left} in _tokens.css,
+   which assets/js/mempool.js reads via getPropertyValue() and applies
+   inline.
+   Bundled after main.css via layouts/partials/head/resources.html.
+   ========================================================================== */
+
+.mempool-block-fee {
+    font-size: var(--font-base);
+    margin-bottom: var(--space-label-gap);
+}
+
+.mempool-block-range {
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-normal);
+    opacity: var(--opacity-muted);
+    margin-bottom: var(--space-xs);
+}
+
+.mempool-block-total {
+    font-size: var(--font-2xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-xs);
+}
+
+.mempool-block-count {
+    font-size: var(--font-sm);
+    opacity: var(--opacity-high);
+    margin-bottom: var(--space-label-gap);
+}
+
+.mempool-block-time {
+    font-size: var(--font-sm);
+    opacity: var(--opacity-high);
+}
+
+.mempool-block-height {
+    font-size: var(--font-custom-32);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight-md);
+}

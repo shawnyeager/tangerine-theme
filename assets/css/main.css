@@ -5,6 +5,13 @@
  * TABLE OF CONTENTS
  * -----------------
  * _tokens.css         (separate file)  - Fonts + CSS custom properties (importable standalone)
+ *
+ * Feature files (separately bundled by resources.html):
+ *   _keyboard-help.css                 - Keyboard shortcuts modal (triggered by ?)
+ *   _block-easter-egg.css              - Mempool next-block visualization (type 'block')
+ *   _reading-progress.css              - Brand bar as scroll progress indicator
+ *
+ * Sections in this file:
  * 1.  RESET                            - Base styles, brand bar
  * 2.  TYPOGRAPHY                       - Heading hierarchy, body text, text-wrap defaults
  * 3.  LINKS                            - Link styles, focus states, link hierarchy
@@ -24,9 +31,6 @@
  * 17. ADVISORY PAGE                    - Service tiers, testimonials, credibility
  * 18. CONVERSION COMPONENTS            - Low-friction CTAs
  * 19. GHOST BUTTONS                    - Ghost button system and variants
- * 20. KEYBOARD HELP                    - Keyboard shortcuts modal
- * 21. BLOCK EASTER EGG                 - Mempool next block visualization
- * 22. READING PROGRESS                 - Brand bar as scroll progress indicator
  * 23. CHAT                             - TUI-style AI chat overlay
  */
 
@@ -2026,7 +2030,7 @@ html[data-theme="dark"] {
 @media print {
     /* Hide non-content elements */
     body::before, nav, footer, .topic-tags,
-    .skip-link, .keyboard-help-overlay {
+    .skip-link {
         display: none !important;
     }
 
@@ -3114,206 +3118,6 @@ picture.portrait img {
         padding: var(--space-sm) var(--space-lg);
         font-size: var(--font-base);
     }
-}
-
-/* ==========================================================================
-   20. KEYBOARD HELP - Accessible shortcut overlay
-
-   Triggered by pressing '?' key. Shows available keyboard shortcuts.
-   Dismissible via Escape key or clicking outside the card.
-   ========================================================================== */
-
-/* Overlay - semi-transparent backdrop */
-.keyboard-help-overlay {
-    position: fixed;
-    inset: 0;
-    background: light-dark(rgba(26, 26, 26, 0.5), rgba(0, 0, 0, 0.7));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: var(--z-modal);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity var(--transition-fast), visibility var(--transition-fast);
-}
-
-.keyboard-help-overlay[data-visible="true"] {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Card - centered content container */
-.keyboard-help-card {
-    position: relative;
-    background: var(--background-body);
-    border: var(--border-width) solid var(--border-color);
-    padding: var(--space-xl);
-    max-width: 320px;
-    width: calc(100% - var(--space-xl) * 2);
-    box-shadow: var(--shadow-content-light);
-    transform: translateY(var(--space-sm));
-    transition: transform var(--transition-fast);
-}
-
-.keyboard-help-card:focus {
-    outline: none;
-}
-
-.keyboard-help-overlay[data-visible="true"] .keyboard-help-card {
-    transform: translateY(0);
-}
-
-/* Heading */
-.keyboard-help-heading {
-    font-family: var(--font-heading);
-    font-size: var(--font-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    margin: 0 0 var(--space-lg) 0;
-    letter-spacing: var(--letter-spacing-tight-md);
-}
-
-/* Shortcut list */
-.keyboard-help-list {
-    margin: 0;
-    padding: 0;
-}
-
-.keyboard-help-item {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-md);
-    margin-bottom: var(--space-sm);
-}
-
-.keyboard-help-item:last-child {
-    margin-bottom: 0;
-}
-
-.keyboard-help-item dt {
-    flex-shrink: 0;
-}
-
-.keyboard-help-item dd {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: var(--font-base);
-}
-
-/* Keyboard key styling */
-.keyboard-help-card kbd {
-    display: inline-block;
-    min-width: var(--kbd-min-width);
-    padding: var(--space-label-gap) var(--space-xs);
-    font-family: var(--font-monospace);
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-medium);
-    text-align: center;
-    color: var(--text-primary);
-    background: var(--background-card);
-    border: var(--border-width) solid var(--border-color);
-    border-radius: var(--border-radius-interactive);
-}
-
-/* Dismiss hint */
-.keyboard-help-dismiss {
-    margin: var(--space-lg) 0 0 0;
-    padding-top: var(--space-md);
-    border-top: var(--border-width) solid var(--border-color);
-    font-size: var(--font-sm);
-    color: var(--text-meta);
-    text-align: center;
-}
-
-.keyboard-help-dismiss kbd {
-    font-size: var(--font-xs);
-    padding: var(--space-3xs) var(--space-label-gap);
-    min-width: auto;
-}
-
-
-/* ==========================================================================
-   21. BLOCK EASTER EGG - Mempool next block visualization
-
-   Hidden feature: type 'block' to show live mempool.space data.
-   3D block flies from home-square to center with real-time fee info.
-   ========================================================================== */
-
-/* Block face tokens defined in :root section above */
-
-.mempool-block-fee {
-    font-size: var(--font-base);
-    margin-bottom: var(--space-label-gap);
-}
-
-.mempool-block-range {
-    font-size: var(--font-sm);
-    font-weight: var(--font-weight-normal);
-    opacity: var(--opacity-muted);
-    margin-bottom: var(--space-xs);
-}
-
-.mempool-block-total {
-    font-size: var(--font-2xl);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--space-xs);
-}
-
-.mempool-block-count {
-    font-size: var(--font-sm);
-    opacity: var(--opacity-high);
-    margin-bottom: var(--space-label-gap);
-}
-
-.mempool-block-time {
-    font-size: var(--font-sm);
-    opacity: var(--opacity-high);
-}
-
-.mempool-block-height {
-    font-size: var(--font-custom-32);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: var(--letter-spacing-tight-md);
-}
-
-
-/* ==========================================================================
-   22. READING PROGRESS - Brand bar as scroll progress indicator
-
-   On essay/note pages, the brand bar dims and a progress overlay fills
-   left-to-right as the reader scrolls through the content.
-   Activated by reading-progress.js when .essay-body or .note-body exists.
-   ========================================================================== */
-
-/* Dim the brand bar when reading progress is active */
-.has-reading-progress::before {
-    opacity: 0.3;
-    transition: opacity var(--transition-fast);
-}
-
-/* Progress overlay — scaleX with linear transition for fluid scroll tracking */
-.reading-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--brand-bar-height);
-    background: var(--brand-orange);
-    z-index: var(--z-brand-bar);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.15s linear;
-    pointer-events: none;
-    will-change: transform;
-}
-
-/* Reduced motion: still functional, just no smoothing */
-.reading-progress--no-motion {
-    transition: none;
-}
-
-@media print {
-    .reading-progress { display: none !important; }
 }
 
 /* ==========================================================================

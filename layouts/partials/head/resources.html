@@ -11,11 +11,20 @@ Context Expected:
 <link rel="preload" href="{{ "fonts/Satoshi-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/Inter-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/Inter-Italic-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-{{/* Concatenate tokens + main CSS, then minify and fingerprint */}}
+{{/* Concatenate tokens + main + feature CSS files, then minify and fingerprint.
+     Order: tokens first (cascades down), main second, feature files last
+     so feature-scoped rules can override main if needed. */}}
 {{- $tokens := resources.Get "css/_tokens.css" -}}
 {{- $main := resources.Get "css/main.css" -}}
+{{- $keyboardHelp := resources.Get "css/_keyboard-help.css" -}}
+{{- $blockEgg := resources.Get "css/_block-easter-egg.css" -}}
+{{- $readingProgress := resources.Get "css/_reading-progress.css" -}}
 {{- if and $tokens $main -}}
-  {{- $combined := slice $tokens $main | resources.Concat "css/bundle.css" -}}
+  {{- $sources := slice $tokens $main -}}
+  {{- with $keyboardHelp }}{{ $sources = $sources | append . }}{{ end -}}
+  {{- with $blockEgg }}{{ $sources = $sources | append . }}{{ end -}}
+  {{- with $readingProgress }}{{ $sources = $sources | append . }}{{ end -}}
+  {{- $combined := $sources | resources.Concat "css/bundle.css" -}}
   {{- $cssMinified := $combined | resources.Minify -}}
   {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
   <link rel="preload" href="{{ $cssFingerprinted.RelPermalink }}" as="style" integrity="{{ $cssFingerprinted.Data.Integrity }}">
