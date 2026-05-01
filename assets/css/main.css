@@ -29,7 +29,7 @@
  * 12. DARK MODE                        - Theme toggle & system preference overrides
  * 13. PRINT                            - Print styles
  * 14. MEDIA EMBEDS                     - YouTube, video captions
- * 15. MOBILE                           - Global responsive breakpoint adjustments
+ * 15. GLOBAL MOBILE                    - Page-chrome adjustments below 600px (component breakpoints colocate)
  * 18. CONVERSION COMPONENTS            - Low-friction CTAs
  * 19. GHOST BUTTONS                    - Ghost button system and variants
  */
@@ -2147,10 +2147,15 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 }
 
 /* ==========================================================================
-   15. MOBILE - Responsive Breakpoints
+   15. GLOBAL MOBILE - Page-chrome adjustments below 600px
 
-   Mobile-first adjustments for screens < 600px.
-   Note: Breakpoint is hardcoded because CSS variables don't work in media queries.
+   Adjustments that apply to top-level chrome (html root, .container,
+   nav row, footer touch targets). Component-specific mobile rules live
+   inside their component's section using the colocation pattern —
+   keep concerns together rather than centralizing all media queries.
+
+   Note: 600px breakpoint is hardcoded because CSS custom properties
+   don't work inside @media queries.
    ========================================================================== */
 
 @media (max-width: 600px) {
