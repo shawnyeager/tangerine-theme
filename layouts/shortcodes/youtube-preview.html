@@ -33,6 +33,7 @@ Important Notes:
 
 {{- $id := .Get "id" | default (.Get 0) -}}
 {{- $title := .Get "title" | default "YouTube video" -}}
+{{- $uid := printf "yt-preview-%d" .Ordinal -}}
 {{- $thumbnail := printf "https://img.youtube.com/vi/%s/maxresdefault.jpg" $id -}}
 
 {{- $host := "www.youtube.com" -}}
@@ -42,11 +43,37 @@ Important Notes:
 
 {{- $embedUrl := printf "https://%s/embed/%s?autoplay=1" $host $id -}}
 
-<div class="youtube-preview-container" data-embed-url="{{ $embedUrl }}" data-title="{{ $title }}" onclick="(function(el){var iframe=document.createElement('iframe');iframe.src=el.dataset.embedUrl;iframe.title=el.dataset.title;iframe.loading='eager';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allowFullscreen=true;el.innerHTML='';el.appendChild(iframe);el.style.cursor='default';})(this)">
+<div id="{{ $uid }}" class="youtube-preview-container" data-embed-url="{{ $embedUrl }}" data-title="{{ $title }}" role="button" tabindex="0" aria-label="Play: {{ $title }}">
   <img src="{{ $thumbnail }}" alt="{{ $title }}" loading="lazy">
-  <div class="play-button-overlay">
+  <div class="play-button-overlay" aria-hidden="true">
     <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
       <path d="M8 5v14l11-7z"/>
     </svg>
   </div>
 </div>
+<script>
+  (function () {
+    var el = document.getElementById('{{ $uid }}');
+    if (!el) return;
+    function activate() {
+      var iframe = document.createElement('iframe');
+      iframe.src = el.dataset.embedUrl;
+      iframe.title = el.dataset.title;
+      iframe.loading = 'eager';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+      el.replaceChildren(iframe);
+      el.style.cursor = 'default';
+      el.removeAttribute('role');
+      el.removeAttribute('tabindex');
+    }
+    el.addEventListener('click', activate);
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate();
+      }
+    });
+  })();
+</script>
