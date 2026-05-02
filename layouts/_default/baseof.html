@@ -6,7 +6,7 @@ URL Helper Standards:
 - Use {{ .Permalink }} for canonical/absolute URLs
 - Never hardcode paths like "/essays/" or "/"
 */}}
-<html lang="{{ .Site.LanguageCode }}">
+<html lang="{{ .Site.Language.Locale }}">
 {{ partial "head.html" . }}
 <body{{ with .File }} class="{{ .TranslationBaseName }}-page"{{ end }}>
     <a href="#main-content" class="skip-link">Skip to main content</a>
