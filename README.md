@@ -323,7 +323,7 @@ See `.github/workflows/auto-theme-update-pr.yml` in site repos for implementatio
 ## Sites Using This Theme
 
 - [shawnyeager.com](https://shawnyeager.com) - The Gallery (finished work)
-- [share.shawnyeager.com](https://share.shawnyeager.com) - The Portal (private deliverables)
+- [s.shawnyeager.com](https://s.shawnyeager.com) - The Portal (private deliverables)
 
 ## License
 

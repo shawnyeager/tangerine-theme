@@ -52,7 +52,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # tangerine-theme
 
-**Shared Hugo theme module for shawnyeager.com and share.shawnyeager.com**
+**Shared Hugo theme module for shawnyeager.com and s.shawnyeager.com**
 
 ## Architecture Overview
 
