@@ -1,6 +1,6 @@
 /*
  * TANGERINE THEME - Main Stylesheet
- * Shared design system for shawnyeager.com and share.shawnyeager.com
+ * Shared design system for shawnyeager.com and s.shawnyeager.com
  *
  * TABLE OF CONTENTS
  * -----------------
@@ -137,6 +137,32 @@ h1 {
     background-color: var(--brand-orange);
 }
 
+/* Home square - dot in outlined square (share site).
+   DO NOT REMOVE: this is the home icon for s.shawnyeager.com when
+   favicon_style = "dot" is set in hugo.toml. The class is generated
+   dynamically by layouts/partials/header.html as
+   `home-square home-square--{{ favicon_style }}`, so grepping the theme
+   for `.home-square--dot` will return zero hits even though the rule is
+   live in production. Was deleted twice during cleanup passes; please don't
+   make it three. The `--outlined` variant lives elsewhere on the same
+   pattern, same rules apply if it returns. */
+.home-square--dot {
+    background-color: transparent;
+    border: var(--home-square-border-width) solid var(--brand-orange);
+    position: relative;
+}
+
+.home-square--dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: var(--brand-orange);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .home-link:hover .home-square {
     opacity: var(--opacity-high);

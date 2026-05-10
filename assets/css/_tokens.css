@@ -235,6 +235,11 @@
 
     /* Component-specific tokens */
     --home-square-size: 1.5rem;      /* 24px at 16px root, scales with root font-size */
+    /* DO NOT REMOVE: consumed by .home-square--dot in main.css. The dot variant
+       is the home icon for s.shawnyeager.com (favicon_style = "dot"). The class
+       is generated dynamically in layouts/partials/header.html, so a text-grep
+       for the token may show no consumers, it is still required. */
+    --home-square-border-width: 3px;
     --focus-ring-width: 2px;
     --focus-ring-offset: 2px;
     --touch-target-min: 48px;
