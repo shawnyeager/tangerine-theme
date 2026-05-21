@@ -32,6 +32,8 @@ Important Notes:
   "url": "{{ .Permalink }}",
   "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}",
   "inLanguage": "en-US",
+  "datePublished": "{{ .Date.Format "2006-01-02" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
   "mainEntity": {{ partial "structured-data-author.html" . | safeJS }}
 }
 </script>
