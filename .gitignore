@@ -13,3 +13,6 @@ resources/
 # OS files
 .DS_Store
 Thumbs.db
+
+# agent tool output (compound-engineering review runs, etc.)
+.context/
