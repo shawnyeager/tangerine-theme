@@ -9,30 +9,19 @@ User-agent: *
 Disallow: {{ . }}
 {{- end }}
 
-# AI assistants - allow for discovery and citations
-User-agent: GPTBot
-Allow: /
+# AI assistants - welcome for discovery and citation, subject to the same
+# path exclusions as every other crawler. Each bot needs its own group
+# because robots.txt groups are independent: a named group fully overrides
+# the wildcard "*" group, so the exclusions must be repeated here or these
+# bots would be free to fetch paths we hide from everyone else.
+{{- $aiBots := slice "GPTBot" "ChatGPT-User" "OAI-SearchBot" "ClaudeBot" "Claude-Web" "anthropic-ai" "PerplexityBot" "Perplexity-User" "Google-Extended" "Applebot-Extended" "Amazonbot" }}
+{{- range $aiBots }}
 
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Amazonbot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
+User-agent: {{ . }}
+{{- range $.Site.Params.robotsDisallow }}
+Disallow: {{ . }}
+{{- end }}
+{{- end }}
 
 Sitemap: {{ .Site.BaseURL }}sitemap.xml
 {{- end }}
