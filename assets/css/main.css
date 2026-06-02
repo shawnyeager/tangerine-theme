@@ -275,7 +275,7 @@ figcaption,
 }
 
 /* :where() keeps this as a zero-specificity default so class-level
-   overrides (e.g., .lead, .diagnostic-cta) win without specificity wars. */
+   overrides (e.g., .lead) win without specificity wars. */
 :where(.essay-body, .note-body, .page-body, .intro-body) :is(p, li),
 .writing-item-desc,
 .related-item-desc {
@@ -2238,39 +2238,8 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 /* ==========================================================================
    18. CONVERSION COMPONENTS - Low-friction CTAs
 
-   - diagnostic-cta: Low-commitment entry point
    - what-to-expect: Plain numbered steps
    ========================================================================== */
-
-/* Diagnostic CTA - Low-friction entry point */
-.diagnostic-cta {
-    margin: var(--space-xl) 0;
-    padding: var(--space-md) var(--space-lg);
-    background: var(--background-body);
-    border: var(--border-width) solid var(--border-color);
-    font-size: var(--font-base);
-    color: var(--text-secondary);
-    /* Short single-sentence callout, not flowing prose: balance the lines
-       rather than ragged pretty. markdownify renders the shortcode body as
-       inline text directly in this div (no inner <p>), so the wrap lives here. */
-    text-wrap: balance;
-}
-
-.diagnostic-cta p {
-    margin: 0;
-}
-
-.diagnostic-cta a {
-    color: var(--brand-orange);
-    font-weight: var(--font-weight-medium);
-    text-decoration: none;
-    border-bottom: var(--border-width) solid transparent;
-    transition: border-color var(--transition-fast);
-}
-
-.diagnostic-cta a:hover {
-    border-bottom-color: var(--brand-orange);
-}
 
 /* What to Expect - plain numbered list */
 .what-to-expect {
@@ -2287,12 +2256,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
 .what-to-expect li {
     margin-bottom: var(--space-xs);
     line-height: var(--line-height-body);
-}
-
-@media (max-width: 600px) {
-    .diagnostic-cta {
-        padding: var(--space-sm) var(--space-md);
-    }
 }
 
 /* ==========================================================================
