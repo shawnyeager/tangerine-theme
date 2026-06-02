@@ -1,0 +1,18 @@
+{
+  "name": "@shawnyeager/tangerine-theme",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Shared OG-image rendering core and design tokens for tangerine-theme consumers.",
+  "exports": {
+    "./og": "./scripts/og-core.mjs"
+  },
+  "files": [
+    "scripts/og-core.mjs"
+  ],
+  "peerDependencies": {
+    "@resvg/resvg-js": ">=2",
+    "satori": ">=0.10"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
