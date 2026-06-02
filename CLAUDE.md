@@ -97,20 +97,11 @@ tangerine-theme/
 
 ## Documentation
 
-**Documentation lives in the workspace:** `~/Work/shawnyeager/docs/`
+**Design system source of truth:** `~/Work/shawnyeager/shawnyeager-com/DESIGN.md`
 
-- **DESIGN_SYSTEM_SPECIFICATION.md** - Complete design system documentation including:
-  - Color system (light/dark mode)
-  - Typography scale and font specifications
-  - Spacing system
-  - Component styles
-  - WCAG compliance details
+This theme implements the design system; `shawnyeager-com/DESIGN.md` documents it (colors, typography, elevation, components, do's/don'ts, light/dark mode, WCAG). Token values live in `assets/css/_tokens.css`. Consuming sites (gtm-map, shawnyeager-share) keep their own `DESIGN.md`.
 
-- **PLAUSIBLE_SETUP.md** - Analytics setup guide including:
-  - Goal configuration for both sites
-  - Event tracking architecture
-  - Verification checklist
-  - Troubleshooting
+**Analytics:** `~/Work/shawnyeager/docs/PLAUSIBLE_SETUP.md` - goal configuration, event tracking, verification, troubleshooting.
 
 ## Design System
 
@@ -131,7 +122,7 @@ Complete CSS implementing the design system:
 - 700px max-width container
 - Perfect fourth typography scale (1.333 ratio)
 
-**For complete specifications:** See `~/Work/shawnyeager/docs/DESIGN_SYSTEM_SPECIFICATION.md`
+**For complete specifications:** See `~/Work/shawnyeager/shawnyeager-com/DESIGN.md`
 
 ## Shared Configuration (hugo.toml)
 
