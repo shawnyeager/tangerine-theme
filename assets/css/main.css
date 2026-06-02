@@ -2250,11 +2250,14 @@ div[style*="padding-bottom: 56.25%"] + p strong,
     border: var(--border-width) solid var(--border-color);
     font-size: var(--font-base);
     color: var(--text-secondary);
-    text-wrap: pretty;
 }
 
 .diagnostic-cta p {
     margin: 0;
+    /* Short single-sentence callout, not flowing prose: balance the lines
+       rather than inherit the .page-body pretty default. Set on the p so it
+       beats the zero-specificity :where(.page-body) p rule above. */
+    text-wrap: balance;
 }
 
 .diagnostic-cta a {
