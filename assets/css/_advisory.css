@@ -187,7 +187,7 @@
 }
 
 /* Section headers for advisory page */
-.advisory-section-label {
+.section-label {
     font-family: var(--font-heading);
     font-size: var(--font-sm);
     font-weight: var(--font-weight-semibold);
@@ -200,14 +200,14 @@
     gap: var(--space-sm);
 }
 
-.advisory-section-label::before {
+.section-label::before {
     content: '';
     width: 1.5rem;
     height: var(--border-width-emphasis);
     background: var(--brand-orange);
 }
 
-.advisory-section-label:first-child {
+.section-label:first-child {
     margin-top: 0;
 }
 
@@ -222,7 +222,7 @@
 }
 
 /* First testimonial after section label needs no extra top margin */
-.advisory-section-label + .testimonial {
+.section-label + .testimonial {
     margin-top: var(--space-lg);
 }
 
