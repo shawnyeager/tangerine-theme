@@ -1,7 +1,7 @@
 /* ==========================================================================
-   ADVISORY PAGE - Service tiers and testimonials
+   CONSULTING PAGE - Service tiers and testimonials
 
-   Used by content/work-with-me.md ("Work With Me" / advisory page).
+   Used by content/work-with-me.md (the "Work With Me" consulting page).
    Service tiers render as a stack of <details> accordions; testimonials
    render as left-bordered pull-quotes with optional avatars.
    Bundled after main.css via layouts/partials/head/resources.html.
@@ -186,7 +186,7 @@
     }
 }
 
-/* Section headers for advisory page */
+/* Section headers for the consulting page */
 .section-label {
     font-family: var(--font-heading);
     font-size: var(--font-sm);

@@ -30,11 +30,11 @@ Features:
     "@type": "Person",
     "@id": "{{ .Site.BaseURL }}#person"
   },
-  "serviceType": {{ default "Advisory" $s.type | jsonify | safeJS }},
+  "serviceType": {{ default "Consulting" $s.type | jsonify | safeJS }},
   "areaServed": {{ default "Worldwide" $s.areaServed | jsonify | safeJS }},
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "Advisory Engagements",
+    "name": "Consulting Engagements",
     "itemListElement": [
       {{- range $i, $offer := $offers -}}
       {{ if $i }},{{ end }}

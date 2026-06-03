@@ -7,7 +7,7 @@ Context Expected:
 - .IsHome - Only renders on homepage
 - .Site.BaseURL - Service URL and Person @id reference
 - .Site.Params.service.name - Service offering name
-- .Site.Params.service.type - Service type (e.g. "Go-to-Market Advisory")
+- .Site.Params.service.type - Service type (e.g. "Go-to-Market Consulting")
 - .Site.Params.service.description - Service description
 - .Site.Params.service.priceRange - Price range string (e.g. "$3,000–$30,000")
 - .Site.Params.service.areaServed - Geographic scope (e.g. "Worldwide")
@@ -35,7 +35,7 @@ Important Notes:
     "@type": "Person",
     "@id": "{{ .Site.BaseURL }}#person"
   },
-  "serviceType": {{ default "Advisory" $s.type | jsonify | safeJS }},
+  "serviceType": {{ default "Consulting" $s.type | jsonify | safeJS }},
   "areaServed": {{ default "Worldwide" $s.areaServed | jsonify | safeJS }}{{ with $s.image }},
   "image": "{{ . | absURL }}"{{ end }}{{ with $s.address }},
   "address": {
