@@ -8,14 +8,21 @@ Pages: Conditional visibility via show_title frontmatter flag
   - show_title: true → visible (for feature pages like /now, /about)
 
 Supports sites with multiple content types (essays + notes on same domain)
+
+H1 text: defaults to .Title, but a page can set seo_h1 in frontmatter to give
+the heading a more descriptive, keyword-rich value without changing the .Title
+used in nav, breadcrumbs, and the browser tab. Useful for utility pages whose
+H1 is sr-only (e.g. /about/), where a generic one-word title wastes the page's
+strongest heading.
 */}}
+{{ $h1 := .Params.seo_h1 | default .Title }}
 {{ if and (or (eq .Type "essays") (eq .Type "notes")) (ne .Kind "section") }}
     {{/* Individual content pages (essays or notes) */}}
-    <h1 class="page-title">{{ .Title }}</h1>
+    <h1 class="page-title">{{ $h1 }}</h1>
 {{ else if .Params.show_title }}
     {{/* Pages explicitly flagged to show title */}}
-    <h1 class="page-title">{{ .Title }}</h1>
+    <h1 class="page-title">{{ $h1 }}</h1>
 {{ else }}
     {{/* Default: hide title (section listings, utility pages, etc) */}}
-    <h1 class="sr-only">{{ .Title }}</h1>
+    <h1 class="sr-only">{{ $h1 }}</h1>
 {{ end }}

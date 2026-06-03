@@ -11,7 +11,7 @@ Context Expected:
 */}}
 <article class="related-item">
     <a href="{{ .RelPermalink }}">
-        <span class="related-item-title">{{ .Title }}</span>
+        <h3 class="related-item-title">{{ .Title }}</h3>
         {{- with .Description }}<span class="related-item-desc">{{ . }}</span>{{ end }}
     </a>
 </article>

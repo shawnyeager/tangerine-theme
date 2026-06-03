@@ -39,10 +39,13 @@ Important Notes:
     </section>
     {{ end }}
 
-    {{/* Footer links - Order: Now, Notes, Email, Nostr, GitHub, V4V */}}
+    {{/* Footer links - Order: Now, Work With Me, Notes, Email, Nostr, GitHub, V4V */}}
     <div class="footer-links">
         {{ if .Site.Params.show_now_footer }}
             <a href="/now/">Now</a>
+        {{ end }}
+        {{ with .Site.Params.work_with_me_url }}
+            <a href="{{ . }}">Work With Me</a>
         {{ end }}
         {{ with .Site.Params.secondary_site_url }}
             <a href="{{ . }}"{{ with $.Site.Params.plausible_events.cross_site_nav }} class="plausible-event-name={{ . }}"{{ end }}><span class="link-text">{{ $.Site.Params.secondary_site_name }}</span><span class="arrow" aria-hidden="true">→</span></a>

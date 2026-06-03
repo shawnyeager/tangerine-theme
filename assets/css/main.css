@@ -906,6 +906,11 @@ body > .container > footer {
 
 .related-item-title {
     display: block;
+    /* Rendered as <h3>; neutralize UA heading size/margins so the card title
+       keeps inheriting the surrounding type scale. */
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
     font-weight: var(--font-weight-list-title);
 }
 
@@ -1236,6 +1241,9 @@ body > .container > footer {
     font-size: var(--font-xl);
     font-weight: var(--font-weight-list-title);
     color: var(--text-primary);
+    /* Rendered as <h2>; clear the UA top margin so item spacing stays
+       driven by .writing-item, not the heading default. */
+    margin-top: 0;
     margin-bottom: var(--space-xs);
 }
 

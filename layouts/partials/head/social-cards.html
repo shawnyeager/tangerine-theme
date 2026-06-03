@@ -18,8 +18,19 @@ Context Expected:
 {{- $metaTitle := .Params.seo_title | default .Title -}}
 <meta property="og:title" content="{{ if $metaTitle }}{{ $metaTitle }}{{ else }}{{ .Site.Title }}{{ end }}">
 <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else if eq .Kind "term" }}{{ printf "Essays and notes on %s — go-to-market strategy, AI, Bitcoin, and what changes when technology outgrows the market." .Title }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-<meta property="og:type" content="{{ if and .IsPage (or (eq .Type "essays") (eq .Type "notes")) }}article{{ else }}website{{ end }}">
+{{- /* Profile pages (about / now / explicit flag) map to the OG "profile" type,
+       matching where ProfilePage schema renders in structured-data-dispatch. */ -}}
+{{- $isProfile := or (eq .Layout "now") (eq .Slug "about") .Params.is_profile_page -}}
+<meta property="og:type" content="{{ if and .IsPage (or (eq .Type "essays") (eq .Type "notes")) }}article{{ else if $isProfile }}profile{{ else }}website{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
+{{- if $isProfile }}
+{{- $nameParts := split .Site.Params.author.name " " }}
+<meta property="og:profile:first_name" content="{{ index $nameParts 0 }}">
+<meta property="og:profile:last_name" content="{{ index $nameParts (sub (len $nameParts) 1) }}">
+{{- with .Site.Params.twitter_handle }}
+<meta property="og:profile:username" content="{{ . }}">
+{{- end }}
+{{- end }}
 {{- $ogImageURL := partial "functions/get-og-image.html" . -}}
 {{- $ogImageSquareURL := replace $ogImageURL ".png" "-square.png" -}}
 {{ if $ogImageURL }}
