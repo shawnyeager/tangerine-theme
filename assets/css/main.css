@@ -1129,7 +1129,11 @@ body > .container > footer {
     margin-bottom: var(--space-md);
 
     p {
-        margin: 0;
+        margin-bottom: var(--space-sm);
+    }
+
+    p:last-child {
+        margin-bottom: 0;
     }
 }
 

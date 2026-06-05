@@ -13,6 +13,11 @@ Editorial index matching /writing/ — type label, title, description.
     {{/* Page title */}}
     <h1 class="page-title">{{ .Title }}</h1>
 
+    {{/* Render intro/body content from _index.md when present (for topic hubs etc.) */}}
+    {{ with .Content }}
+    <div class="page-intro">{{ . | safeHTML }}</div>
+    {{ end }}
+
     <section class="writing-stream">
         {{ range $pages }}
         <article class="writing-item">
