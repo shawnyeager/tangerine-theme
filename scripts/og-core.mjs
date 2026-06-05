@@ -13,9 +13,9 @@ import { Resvg } from '@resvg/resvg-js';
 // OG cards render on the site's dark-mode surface.
 export const OG_COLORS = {
   bg: '#151b23', // --background-body (dark)
-  title: '#f2f2f2', // --text-primary (dark)
+  title: '#f0f2f6', // --text-primary (dark)
   accent: '#FF5733', // --brand-orange (dark)
-  domain: '#a5a5a5', // --text-meta (dark)
+  domain: '#a2a6ad', // --text-meta (dark)
 };
 
 // Reference geometry. Sites may pass their own `layouts` to override.

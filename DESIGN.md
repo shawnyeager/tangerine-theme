@@ -4,11 +4,11 @@ description: Shared design-system foundation for shawnyeager.com, shawnyeager-sh
 colors:
   trust-revolution-orange: "light-dark(#d63900, #FF5733)"
   trust-revolution-orange-hover: "light-dark(#bf3300, #FF6B47)"
-  text-primary: "light-dark(#1a1a1a, #f2f2f2)"
-  text-secondary: "light-dark(#444444, #dadada)"
-  text-meta: "light-dark(#666666, #a5a5a5)"
+  text-primary: "light-dark(#1a1a1a, #f0f2f6)"
+  text-secondary: "light-dark(#444444, #d7dae0)"
+  text-meta: "light-dark(#666666, #a2a6ad)"
   text-subtle: "light-dark(#767676, #737b85)"
-  text-bold: "light-dark(#1a1a1a, #ffffff)"
+  text-bold: "light-dark(#1a1a1a, #f5f8fc)"
   text-on-brand: "light-dark(#ffffff, #151b23)"
   highlight-bg: "light-dark(#fef3cd, #232932)"
   border-color: "light-dark(#d5d5d5, #32363a)"
@@ -123,11 +123,11 @@ A tinted-neutral palette anchored by a single accent.
 
 ### Neutral
 
-- **Reading Body / Primary** (`#1a1a1a` light / `#f2f2f2` dark): Headings, lead text, the canonical foreground.
-- **Reading Secondary** (`#444444` light / `#dadada` dark): Body paragraphs, descriptions, secondary information. The default body color.
-- **Reading Meta** (`#666666` light / `#a5a5a5` dark): Dates, timestamps, footer nav. Carries information without competing with the writing.
+- **Reading Body / Primary** (`#1a1a1a` light / `#f0f2f6` dark): Headings, lead text, the canonical foreground. The dark value carries a whisper of the surface's cool hue so it reads as the same family as the blue-charcoal background, not warm grey on blue.
+- **Reading Secondary** (`#444444` light / `#d7dae0` dark): Body paragraphs, descriptions, secondary information. The default body color.
+- **Reading Meta** (`#666666` light / `#a2a6ad` dark): Dates, timestamps, footer nav. Carries information without competing with the writing.
 - **Reading Subtle** (`#767676` light / `#737b85` dark): Placeholder text, disabled states.
-- **Bold/Strong** (`#1a1a1a` light / `#ffffff` dark): Bold/strong emphasis. Shifts to pure white in dark for extra emphasis on a darker surface.
+- **Bold/Strong** (`#1a1a1a` light / `#f5f8fc` dark): Bold/strong emphasis. The dark value matches the heading near-white: cool rather than pure white, which avoids halation on the darker surface while still reading as the brightest text.
 - **Manuscript Cream** (`#fdfcfa` light): Page background in light mode. A warm off-white tinted toward the brand hue. Pure white feels clinical; this feels like paper.
 - **Press Charcoal** (`#151b23` dark): Page background in dark mode. A cool blue-charcoal in the GitHub-dark family (hue ~256°, chroma committed, not washed out). Body weight lifts to 325 (from 300) in dark mode to compensate for the lower-contrast surface.
 - **Card Surface** (`#f5f5f5` light / `#1d232c` dark): The only secondary surface in the system. Used sparingly. The dark value sits one lightness step above the page background in the same blue-charcoal hue.
