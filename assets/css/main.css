@@ -1008,6 +1008,7 @@ body > .container > footer {
     h3 {
         font-size: var(--font-2xl);
         font-weight: var(--font-weight-medium);
+        line-height: var(--line-height-title);  /* Display-prominent title, match single-page essay titles */
         margin-top: 0;
         margin-bottom: var(--space-sm);
 
@@ -1244,6 +1245,7 @@ body > .container > footer {
     font-family: var(--font-heading);
     font-size: var(--font-xl);
     font-weight: var(--font-weight-list-title);
+    line-height: var(--line-height-title);  /* Match single-page title leading; was inheriting 1.3 */
     color: var(--text-primary);
     /* Rendered as <h2>; clear the UA top margin so item spacing stays
        driven by .writing-item, not the heading default. */
