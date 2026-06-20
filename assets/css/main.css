@@ -906,10 +906,13 @@ body > .container > footer {
 
 .related-item-title {
     display: block;
-    /* Rendered as <h3>; neutralize UA heading size/margins so the card title
-       keeps inheriting the surrounding type scale. */
-    font-size: inherit;
-    line-height: inherit;
+    /* Rendered as <h3> (heading font inherited from the global h1–h6 rule);
+       neutralize UA heading margins and give it an explicit step on the
+       homepage scale so it reads as a title and doesn't collapse to body
+       size. One step below body's neighbours, well under the --font-2xl
+       featured title above it. */
+    font-size: var(--font-lg);
+    line-height: var(--line-height-title);
     margin: 0;
     font-weight: var(--font-weight-list-title);
 }
