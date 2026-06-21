@@ -625,48 +625,47 @@ body > .container > footer {
     border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 70%, transparent);
 }
 
-/* Desktop footer layout: the email field and the link row share a max-content
-   column, so the field renders at the link-row's intrinsic width with no
-   hand-tuned value; the Subscribe button is in column 2 and sits beyond. The
-   email section/form are display:contents so the input, button, and links
-   become direct grid items. Scoped to >600px: on mobile the form stays an
-   inline flex row (a links-width field plus an inline button would overflow
-   narrow phones). Scoped to the footer, so the essay post-article form and the
-   inline-signup shortcode are untouched. */
-@media (min-width: 601px) {
-    body > .container > footer {
-        display: grid;
-        grid-template-columns: max-content auto;
-        column-gap: var(--space-sm);
-        row-gap: var(--space-md);
-        align-items: center;
-    }
+/* Footer layout: the email field and the link row share column 1, so the
+   field's underline and the link row always render at the same width. Column 1
+   sizes to the links when there's room (field = links) and shrinks on narrow
+   phones, where the links wrap to the field width. The Subscribe button is in
+   column 2 and stays inline beside the field. The email section/form are
+   display:contents so the input, button, and links become direct grid items.
+   Scoped to the footer, so the essay post-article form and the inline-signup
+   shortcode are untouched. */
+body > .container > footer {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) auto;
+    column-gap: var(--space-sm);
+    row-gap: var(--space-md);
+    align-items: center;
+}
 
-    body > .container > footer .email-subscription,
-    body > .container > footer .email-form {
-        display: contents;
-    }
+body > .container > footer .email-subscription,
+body > .container > footer .email-form {
+    display: contents;
+}
 
-    body > .container > footer .email-signup-intro {
-        grid-column: 1 / -1;
-        margin-bottom: 0;
-    }
+body > .container > footer .email-signup-intro {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
 
-    body > .container > footer .email-form input[type="email"] {
-        grid-column: 1;
-        width: 100%;
-        min-width: 0;
-        max-width: none;
-    }
+body > .container > footer .email-form input[type="email"] {
+    grid-column: 1;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+}
 
-    body > .container > footer .email-form .btn-ghost {
-        grid-column: 2;
-        justify-self: start;
-    }
+body > .container > footer .email-form .btn-ghost {
+    grid-column: 2;
+    justify-self: start;
+}
 
-    body > .container > footer .footer-links {
-        grid-column: 1;
-    }
+body > .container > footer .footer-links {
+    grid-column: 1;
+    min-width: 0;
 }
 
 .email-signup-intro {
@@ -2255,6 +2254,13 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         background: transparent;
         padding-top: var(--space-lg);
         margin-top: calc(var(--space-xs) - var(--space-lg));
+    }
+
+    /* In the footer grid the input is a grid item, so drop the inline-form
+       tap-target offset that would otherwise pull it out of its row. */
+    body > .container > footer .email-form input[type="email"] {
+        padding-top: var(--space-xs);
+        margin-top: 0;
     }
 
     /* Section header spacing - match inter-item spacing */
