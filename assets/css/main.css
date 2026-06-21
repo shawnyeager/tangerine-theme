@@ -638,7 +638,8 @@ body > .container > footer {
     align-items: stretch;
     margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
-    max-width: var(--email-form-max-width);
+    /* No max-width on the form itself: the input is capped at --footer-block-width
+       and the Subscribe button sits beyond that shared block. */
 }
 
 .email-form input[type="email"] {
@@ -651,6 +652,7 @@ body > .container > footer {
     background: var(--background-body);
     color: var(--text-primary);
     flex: 1;
+    max-width: var(--footer-block-width);  /* Field renders at the footer link row width */
     transition: border-color var(--transition-fast);
 }
 
@@ -686,9 +688,10 @@ body > .container > footer {
     gap: var(--space-md);
     flex-wrap: wrap;
     align-items: center;
-    /* Align footer links to the email form above; keeps the row from
-       running the full container width on wide screens */
-    max-width: var(--email-form-max-width);
+    /* Share one width with the email field above and fill it (space-between),
+       so the field and the link row sit on the same left and right edges */
+    max-width: var(--footer-block-width);
+    justify-content: space-between;
 }
 
 .footer-links a {
@@ -2228,6 +2231,9 @@ div[style*="padding-bottom: 56.25%"] + p strong,
        Uses padding to expand tap area + negative margin to preserve visual spacing */
     .footer-links {
         margin-top: calc(-1 * var(--footer-touch-compensation));  /* Compensate for taller tap targets */
+        /* Mobile: form goes full-width, so let links wrap naturally left-aligned */
+        max-width: none;
+        justify-content: flex-start;
     }
     .footer-links a {
         padding: var(--space-sm) var(--space-md);
