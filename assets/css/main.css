@@ -651,7 +651,6 @@ body > .container > footer {
     background: var(--background-body);
     color: var(--text-primary);
     flex: 1;
-    max-width: var(--skip-link-max-width);
     transition: border-color var(--transition-fast);
 }
 
