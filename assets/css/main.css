@@ -623,6 +623,44 @@ body > .container > footer {
        soft enough to avoid visual heaviness (Material Design uses
        similar values for medium-emphasis elements) */
     border-top: var(--border-width) solid color-mix(in srgb, var(--border-color) 70%, transparent);
+
+    /* Footer layout: the email field and the link row share a max-content
+       column, so the field renders at the link-row's intrinsic width on any
+       screen. The Subscribe button lives in column 2 and sits beyond. The
+       email section/form are display:contents so the input, button, and links
+       become direct grid items. Scoped to the footer only, so the essay
+       post-article form and the inline-signup shortcode are untouched. */
+    display: grid;
+    grid-template-columns: max-content auto;
+    column-gap: var(--space-sm);
+    row-gap: var(--space-md);
+    align-items: center;
+}
+
+body > .container > footer .email-subscription,
+body > .container > footer .email-form {
+    display: contents;
+}
+
+body > .container > footer .email-signup-intro {
+    grid-column: 1 / -1;
+    margin-bottom: 0;  /* row-gap handles spacing now */
+}
+
+body > .container > footer .email-form input[type="email"] {
+    grid-column: 1;
+    width: 100%;
+    min-width: 0;
+    max-width: none;  /* the grid column derives the width from the link row */
+}
+
+body > .container > footer .email-form .btn-ghost {
+    grid-column: 2;
+    justify-self: start;
+}
+
+body > .container > footer .footer-links {
+    grid-column: 1;
 }
 
 .email-signup-intro {
@@ -638,8 +676,7 @@ body > .container > footer {
     align-items: stretch;
     margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
-    /* No max-width on the form itself: the input is capped at --footer-block-width
-       and the Subscribe button sits beyond that shared block. */
+    max-width: 22rem;
 }
 
 .email-form input[type="email"] {
@@ -652,7 +689,7 @@ body > .container > footer {
     background: var(--background-body);
     color: var(--text-primary);
     flex: 1;
-    max-width: var(--footer-block-width);  /* Field renders at the footer link row width */
+    max-width: var(--skip-link-max-width);
     transition: border-color var(--transition-fast);
 }
 
@@ -688,10 +725,6 @@ body > .container > footer {
     gap: var(--space-md);
     flex-wrap: wrap;
     align-items: center;
-    /* Share one width with the email field above and fill it (space-between),
-       so the field and the link row sit on the same left and right edges */
-    max-width: var(--footer-block-width);
-    justify-content: space-between;
 }
 
 .footer-links a {
@@ -2218,6 +2251,14 @@ div[style*="padding-bottom: 56.25%"] + p strong,
         margin-top: calc(var(--space-xs) - var(--space-lg));
     }
 
+    /* Footer: stack Subscribe below the field. A links-width field plus an
+       inline button would overflow narrow phones, so the button drops into
+       column 1 beneath the input. */
+    body > .container > footer .email-form .btn-ghost {
+        grid-column: 1;
+        justify-self: start;
+    }
+
     /* Section header spacing - match inter-item spacing */
     .section-label-small {
         margin-bottom: var(--space-md);
@@ -2231,9 +2272,6 @@ div[style*="padding-bottom: 56.25%"] + p strong,
        Uses padding to expand tap area + negative margin to preserve visual spacing */
     .footer-links {
         margin-top: calc(-1 * var(--footer-touch-compensation));  /* Compensate for taller tap targets */
-        /* Mobile: form goes full-width, so let links wrap naturally left-aligned */
-        max-width: none;
-        justify-content: flex-start;
     }
     .footer-links a {
         padding: var(--space-sm) var(--space-md);
