@@ -142,6 +142,7 @@
 
     /* Component Sizing */
     --content-max-width: 43.75rem;  /* 700px at 16px root, scales with root font-size */
+    --email-form-max-width: 22rem;  /* Footer signup form; footer links align to this width */
     --border-radius-sm: 2px;
     --border-radius-interactive: 4px;
     --border-radius-code: 4px;

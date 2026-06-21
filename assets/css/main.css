@@ -638,7 +638,7 @@ body > .container > footer {
     align-items: stretch;
     margin-bottom: var(--space-md);  /* 16px to footer links */
     flex-wrap: nowrap;
-    max-width: 22rem;
+    max-width: var(--email-form-max-width);
 }
 
 .email-form input[type="email"] {
@@ -687,6 +687,9 @@ body > .container > footer {
     gap: var(--space-md);
     flex-wrap: wrap;
     align-items: center;
+    /* Align footer links to the email form above; keeps the row from
+       running the full container width on wide screens */
+    max-width: var(--email-form-max-width);
 }
 
 .footer-links a {

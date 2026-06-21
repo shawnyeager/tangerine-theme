@@ -39,7 +39,9 @@ Important Notes:
     </section>
     {{ end }}
 
-    {{/* Footer links - Order: Now, Consulting, Email, GitHub */}}
+    {{/* Footer links - Order: Now, Consulting, Email, Nostr, GitHub
+         On-site links first (keep readers near the signup form above),
+         off-site exits last (Nostr before GitHub by audience relevance) */}}
     <div class="footer-links">
         {{ if .Site.Params.show_now_footer }}
             <a href="/now/">Now</a>
@@ -53,6 +55,7 @@ Important Notes:
         {{ with .Site.Params.author.email }}
             <a href="mailto:{{ . }}"{{ with $.Site.Params.plausible_events.contact_email }} class="plausible-event-name={{ . }}"{{ end }}>Email</a>
         {{ end }}
+        {{ with .Site.Params.nostr }}<a href="{{ . }}">Nostr</a>{{ end }}
         {{ with .Site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
     </div>
 </footer>
