@@ -960,6 +960,8 @@ body > .container > footer .footer-links {
     font-weight: var(--font-weight-list-title);
 }
 
+/* Homepage recent list is muted relative to the brighter related-reading
+   block; the reading measure and title gap below are shared by both. */
 .recent-essays .related-item-desc {
     color: var(--text-meta);
 }
@@ -969,7 +971,15 @@ body > .container > footer .footer-links {
     font-size: var(--font-sm);
     color: var(--text-secondary);
     line-height: var(--line-height-body);
-    margin-top: var(--space-3xs);
+    /* Clearly tighter than the inter-item gap (--space-md) so each title
+       pairs with its description, but not the near-zero --space-3xs that
+       had them almost touching. */
+    margin-top: var(--space-xs);
+    /* --font-sm at the full column runs ~100ch, past the readability limit,
+       which over-fills line 1 and drops a short stub on line 2. Cap at a
+       proper reading measure so every excerpt shares one right edge. Shared
+       by recent writing and the related-reading ("Keep reading") footer. */
+    max-width: 64ch;
     transition: color var(--transition-fast);
 }
 
