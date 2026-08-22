@@ -24,11 +24,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **THEME CHANGES DEPLOY VIA MASTER BRANCH**
 
-- CSS changes committed to theme master branch trigger GitHub Actions to update consuming sites
 - Sites track master branch via Hugo Modules (no version tags required)
 - When making CSS fixes: commit to master → push to GitHub
 - "Ship it" for theme repo means: commit + push
-- After pushing, manually update consuming sites (create branch, `go get`, PR)
+- Pushing does NOT update consuming sites — there is no automation
+- After pushing, manually update each site: create branch, `go get @<hash>`, PR
 
 **ALWAYS USE DESIGN TOKENS - NEVER HARDCODE VALUES**
 
@@ -292,20 +292,26 @@ cd ~/Work/shawnyeager/tangerine-theme
 git push origin master
 ```
 
-**Then trigger site updates manually:**
+**Then update consuming sites manually (PR-based):**
+
+There is no automation for this — site PRs are created by hand:
 
 ```bash
-# Trigger in both sites (or wait for daily cron at 9am UTC)
-gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
+# In each site repo (shawnyeager-com, shawnyeager-share):
+git checkout master && git pull
+git checkout -b theme/description
+hugo mod clean
+GOPROXY=direct go get github.com/shawnyeager/tangerine-theme@<commit-hash>
+git add go.mod go.sum
+git commit -m "chore: update theme - description"
+git push -u origin theme/description
+# Then open a PR (gh pr create)
 ```
 
-**GitHub Actions workflow:**
-1. Detects theme updates in go.mod
-2. Creates Pull Request (not direct commit to master)
-3. Netlify builds FREE deploy preview
-4. You review preview URL in PR
-5. Manually merge PR when satisfied
-6. Netlify builds production (15 credits per site)
+**Why PRs instead of direct commits to master:**
+1. Netlify builds FREE deploy preview on the PR
+2. Review the preview URL before merging
+3. Merge when satisfied; Netlify then builds production (15 credits per site)
 
 **Cost savings:**
 - Deploy previews: FREE (0 credits)
@@ -315,25 +321,12 @@ gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
 **Verification:**
 
 ```bash
-# Check workflow created PRs
-gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
+# Check for open theme-update PRs
+gh pr list --repo shawnyeager/shawnyeager-com
 
 # After merging PRs, verify production updated
 cd ~/Work/shawnyeager/shawnyeager-com && git pull && grep tangerine-theme go.mod
 ```
-
-**Updating consuming sites after theme push:**
-
-In each site repo:
-```bash
-git checkout -b theme/description
-hugo mod clean
-GOPROXY=direct go get github.com/shawnyeager/tangerine-theme@<commit-hash>
-git add go.mod go.sum
-git commit -m "chore: update theme - description"
-git push -u origin theme/description
-```
-Then create PR via MCP.
 
 ### Version Management
 
@@ -353,16 +346,15 @@ cd ~/Work/shawnyeager/tangerine-theme
 git reset --hard <commit-hash>
 git push --force origin master
 
-# 2. Trigger PR workflows to update sites
-gh workflow run auto-theme-update-pr.yml --repo shawnyeager/shawnyeager-com
+# 2. Update each site to the reverted commit (same manual PR process:
+#    branch, go get @<reverted-hash>, commit, push, open PR)
 
-# 3. Review PRs with reverted theme
+# 3. Review PRs with reverted theme (Netlify deploy preview)
 # 4. Merge when satisfied
 ```
 
 **Why this works:**
-- Workflow detects go.mod changes (theme commit hash changed)
-- Creates PR with reverted theme version
+- Site PRs pin an explicit theme commit hash, so reverts are just another hash bump
 - Deploy preview shows reverted state
 - Merge to deploy revert to production
 

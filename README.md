@@ -295,30 +295,35 @@ Sites use PR-based workflow: preview builds for testing, production builds at me
    git push origin master
    ```
 
-3. **Wait for PRs** (~3 min):
+3. **Update consuming sites (manual PRs)**:
 
-   Theme repo automatically triggers site workflows. PRs appear with deploy previews.
+   There is no automation — create the theme-update PR in each site repo by hand:
    ```bash
-   gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
+   cd ~/Work/shawnyeager/<site>
+   git checkout master && git pull
+   git checkout -b theme/description
+   hugo mod clean
+   GOPROXY=direct go get github.com/shawnyeager/tangerine-theme@<commit-hash>
+   git add go.mod go.sum
+   git commit -m "chore: update theme - description"
+   git push -u origin theme/description
+   gh pr create --fill
    ```
 
 4. **Review and merge PRs**:
-   - GitHub Actions creates PR in each site
-   - Netlify builds FREE deploy preview
+   - Netlify builds FREE deploy preview on the PR
    - Review preview URL
    - Merge PR when satisfied
    - Production deploys (15 credits per site)
 
 **Verification:**
 ```bash
-# Check PRs created
-gh pr list --repo shawnyeager/shawnyeager-com --label theme-update
+# Check for open theme-update PRs
+gh pr list --repo shawnyeager/shawnyeager-com
 
 # After merging, verify site updated
 cd ~/Work/shawnyeager/shawnyeager-com && git pull && grep tangerine-theme go.mod
 ```
-
-See `.github/workflows/auto-theme-update-pr.yml` in site repos for implementation details.
 
 ## Sites Using This Theme
 
