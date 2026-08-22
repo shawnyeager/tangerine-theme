@@ -62,6 +62,7 @@ generate_pwa_icon() {
         magick -size "${size}x${size}" xc:none \
             -fill "$ORANGE" \
             -draw "rectangle $padding,$padding $end,$end" \
+            -depth 8 -strip \
             "$output"
     else
         local half_stroke=$((stroke_width / 2))
@@ -73,6 +74,7 @@ generate_pwa_icon() {
             -stroke "$ORANGE" \
             -strokewidth "$stroke_width" \
             -draw "rectangle $inner_padding,$inner_padding $inner_end,$inner_end" \
+            -depth 8 -strip \
             "$output"
     fi
 
@@ -94,6 +96,7 @@ generate_maskable_icon() {
         magick -size "${size}x${size}" xc:white \
             -fill "$ORANGE" \
             -draw "rectangle $padding,$padding $end,$end" \
+            -depth 8 -strip \
             "$output"
     else
         local half_stroke=$((stroke_width / 2))
@@ -105,6 +108,7 @@ generate_maskable_icon() {
             -stroke "$ORANGE" \
             -strokewidth "$stroke_width" \
             -draw "rectangle $inner_padding,$inner_padding $inner_end,$inner_end" \
+            -depth 8 -strip \
             "$output"
     fi
 
@@ -134,6 +138,7 @@ generate_favicon() {
         magick -size "${size}x${size}" xc:none \
             -fill "$ORANGE" \
             -draw "rectangle $padding,$padding $end,$end" \
+            -depth 8 -strip \
             "$output"
     else
         local half_stroke=$((stroke_width / 2))
@@ -145,6 +150,7 @@ generate_favicon() {
             -stroke "$ORANGE" \
             -strokewidth "$stroke_width" \
             -draw "rectangle $inner_padding,$inner_padding $inner_end,$inner_end" \
+            -depth 8 -strip \
             "$output"
     fi
 

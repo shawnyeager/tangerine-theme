@@ -2,42 +2,36 @@
 Purpose: CSS, fonts, RSS, sitemap, and favicon resources
 
 Context Expected:
-- .Site.Params.favicon_style - Favicon style ("solid" or "outlined")
+- .Site.Params.favicon_style - Favicon style ("solid", "outlined", or "dot")
 - .Site.Title - Site title for RSS feed
 - .OutputFormats - Available output formats (for RSS link)
+*/}}
+
+Feature CSS:
+- All feature files bundled globally: _keyboard-help (? modal), _block-easter-egg
+  ("block" anywhere), _reading-progress, _chat (header trigger), _v4v (payment
+  page), _consulting (work-with-me page)
 */}}
 
 <!-- Preload critical resources -->
 <link rel="preload" href="{{ "fonts/Satoshi-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/Inter-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ "fonts/Inter-Italic-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 {{/* Concatenate tokens + main + feature CSS files, then minify and fingerprint.
      Order: tokens first (cascades down), main second, feature files last
      so feature-scoped rules can override main if needed. */}}
 {{- $tokens := resources.Get "css/_tokens.css" -}}
 {{- $main := resources.Get "css/main.css" -}}
-{{- $keyboardHelp := resources.Get "css/_keyboard-help.css" -}}
-{{- $blockEgg := resources.Get "css/_block-easter-egg.css" -}}
-{{- $readingProgress := resources.Get "css/_reading-progress.css" -}}
-{{- $chat := resources.Get "css/_chat.css" -}}
-{{- $v4v := resources.Get "css/_v4v.css" -}}
-{{- $consulting := resources.Get "css/_consulting.css" -}}
 {{- if and $tokens $main -}}
   {{- $sources := slice $tokens $main -}}
-  {{- with $keyboardHelp }}{{ $sources = $sources | append . }}{{ end -}}
-  {{- with $blockEgg }}{{ $sources = $sources | append . }}{{ end -}}
-  {{- with $readingProgress }}{{ $sources = $sources | append . }}{{ end -}}
-  {{- with $chat }}{{ $sources = $sources | append . }}{{ end -}}
-  {{- with $v4v }}{{ $sources = $sources | append . }}{{ end -}}
-  {{- with $consulting }}{{ $sources = $sources | append . }}{{ end -}}
+  {{/* Feature CSS: keyboard-help (? modal), block easter egg ("block" anywhere),
+       reading progress, chat (header trigger), V4V payment page (.com only),
+       consulting page (work-with-me) */}}
+  {{- range slice "_keyboard-help" "_block-easter-egg" "_reading-progress" "_chat" "_v4v" "_consulting" -}}
+    {{- with resources.Get (printf "css/%s.css" .) }}{{ $sources = $sources | append . }}{{ end -}}
+  {{- end -}}
   {{- $combined := $sources | resources.Concat "css/bundle.css" -}}
-  {{- $cssMinified := $combined | resources.Minify -}}
-  {{- $cssFingerprinted := $cssMinified | resources.Fingerprint -}}
-  <link rel="preload" href="{{ $cssFingerprinted.RelPermalink }}" as="style" integrity="{{ $cssFingerprinted.Data.Integrity }}">
+  {{- $cssFingerprinted := $combined | resources.Minify | resources.Fingerprint -}}
   <link rel="stylesheet" href="{{ $cssFingerprinted.RelPermalink }}" integrity="{{ $cssFingerprinted.Data.Integrity }}">
-{{- else -}}
-  <link rel="preload" href="{{ "css/main.css" | relURL }}" as="style">
-  <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
 {{- end -}}
 
 <!-- RSS Feed -->
@@ -53,50 +47,29 @@ Context Expected:
 <!-- Favicons -->
 {{- $faviconStyle := .Site.Params.favicon_style | default "solid" -}}
 {{- $faviconPath := printf "favicons/%s" $faviconStyle -}}
-<!-- High-res PNG for Google Search (full-bleed orange for circular crop on mobile) -->
-{{- with resources.Get (printf "%s/icon-192.png" $faviconPath) }}
-  {{- with resources.Copy "icon-192.png" . }}
-<link rel="icon" type="image/png" sizes="192x192" href="{{ .RelPermalink }}">
-  {{- end }}
-{{- end }}
-<!-- SVG favicon for modern browsers (best quality, scalable) -->
-{{- with resources.Get (printf "%s/favicon.svg" $faviconPath) }}
-  {{- with resources.Copy "favicon.svg" . }}
-<link rel="icon" type="image/svg+xml" href="{{ .RelPermalink }}">
-  {{- end }}
-{{- end }}
-<!-- PNG favicons for browser tabs -->
-{{- with resources.Get (printf "%s/favicon-96x96.png" $faviconPath) }}
-  {{- with resources.Copy "favicon-96x96.png" . }}
-<link rel="icon" type="image/png" sizes="96x96" href="{{ .RelPermalink }}">
-  {{- end }}
-{{- end }}
-{{- with resources.Get (printf "%s/favicon-32x32.png" $faviconPath) }}
-  {{- with resources.Copy "favicon-32x32.png" . }}
-<link rel="icon" type="image/png" sizes="32x32" href="{{ .RelPermalink }}">
-  {{- end }}
-{{- end }}
-{{- with resources.Get (printf "%s/favicon-16x16.png" $faviconPath) }}
-  {{- with resources.Copy "favicon-16x16.png" . }}
-<link rel="icon" type="image/png" sizes="16x16" href="{{ .RelPermalink }}">
-  {{- end }}
-{{- end }}
-<!-- ICO fallback for legacy browsers -->
-{{- with resources.Get (printf "%s/favicon.ico" $faviconPath) }}
-  {{- with resources.Copy "favicon.ico" . }}
-<link rel="icon" type="image/x-icon" href="{{ .RelPermalink }}">
-  {{- end }}
-{{- end }}
-{{- with resources.Get (printf "%s/apple-touch-icon.png" $faviconPath) }}
-  {{- with resources.Copy "apple-touch-icon.png" . }}
-<link rel="apple-touch-icon" sizes="180x180" href="{{ .RelPermalink }}">
+<!-- Linked icons: high-res PNG (Google Search), SVG (modern browsers),
+     PNG tabs sizes, ICO fallback, apple-touch-icon -->
+{{- range $name := slice "icon-192.png" "favicon.svg" "favicon-96x96.png" "favicon-32x32.png" "favicon-16x16.png" "favicon.ico" "apple-touch-icon.png" }}
+  {{- with resources.Get (printf "%s/%s" $faviconPath $name) }}
+    {{- with resources.Copy $name . }}
+      {{- $rel := .RelPermalink -}}
+      {{- if eq $name "favicon.svg" }}
+<link rel="icon" type="image/svg+xml" href="{{ $rel }}">
+      {{- else if eq $name "favicon.ico" }}
+<link rel="icon" type="image/x-icon" href="{{ $rel }}">
+      {{- else if eq $name "apple-touch-icon.png" }}
+<link rel="apple-touch-icon" sizes="180x180" href="{{ $rel }}">
+      {{- else }}
+        {{- $px := replaceRE `^.*?(\d+)\.png$` "$1" $name }}
+<link rel="icon" type="image/png" sizes="{{ $px }}x{{ $px }}" href="{{ $rel }}">
+      {{- end }}
+    {{- end }}
   {{- end }}
 {{- end }}
 <!-- Publish webmanifest icons (no link tags, just publish to root) -->
-{{- with resources.Get (printf "%s/icon-512.png" $faviconPath) }}
-  {{- $_ := (resources.Copy "icon-512.png" .).RelPermalink }}
-{{- end }}
-{{- with resources.Get (printf "%s/icon-maskable.png" $faviconPath) }}
-  {{- $_ := (resources.Copy "icon-maskable.png" .).RelPermalink }}
+{{- range $name := slice "icon-512.png" "icon-maskable.png" }}
+  {{- with resources.Get (printf "%s/%s" $faviconPath $name) }}
+    {{- $_ := (resources.Copy $name .).RelPermalink }}
+  {{- end }}
 {{- end }}
 <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">

@@ -12,12 +12,6 @@
  * Note: FOUC prevention script runs earlier in <head> to apply theme before render
  */
 (function() {
-    // Console greeting for curious devs
-    console.log(
-        '%cYou look under the hood. I like that.\nTry typing "block" on any page.',
-        'font-size: 14px; font-weight: bold; color: #d63900;'
-    );
-
     // Cache system preference queries
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');

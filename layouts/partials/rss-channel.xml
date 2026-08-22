@@ -1,0 +1,66 @@
+{{/*
+Purpose: Shared RSS 2.0 channel renderer
+
+Context Expected (dict):
+- .ctx - Page or Site context (for Title, Permalink, OutputFormats, params)
+- .pages - Pages to render as <item> elements (already filtered/limited)
+- .fullContent - true to include full content via <content:encoded> (home feed)
+- .siteLevel - true for the site-wide feed (plain site title/description);
+  false for section feeds ("Section on Site Title" pattern)
+
+Used by layouts/index.xml (home feed) and layouts/_default/list.xml (section feeds).
+*/}}
+{{- $ctx := .ctx -}}
+{{- $pages := .pages -}}
+{{- $fullContent := .fullContent -}}
+{{- /* Process feed.css through Hugo pipes for fingerprinting */ -}}
+{{- $feedCSS := resources.Get "css/feed.css" | minify | fingerprint -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+{{ printf "<?xml-stylesheet href=%q type=\"text/css\"?>" $feedCSS.Permalink | safeHTML }}
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+{{- if .siteLevel }}
+    <title>{{ $ctx.Site.Title }}</title>
+    <link>{{ $ctx.Permalink }}</link>
+    <description>{{ $ctx.Site.Params.description }}</description>
+{{- else }}
+    <title>{{ if eq $ctx.Title $ctx.Site.Title }}{{ $ctx.Site.Title }}{{ else }}{{ with $ctx.Title }}{{.}} on {{ end }}{{ $ctx.Site.Title }}{{ end }}</title>
+    <link>{{ $ctx.Permalink }}</link>
+    <description>{{ if eq $ctx.Title $ctx.Site.Title }}{{ $ctx.Site.Params.description }}{{ else }}{{ with $ctx.Title }}{{.}}{{ end }} on {{ $ctx.Site.Title }}{{ end }}</description>
+{{- end }}
+    <generator>Hugo -- gohugo.io</generator>
+    <docs>https://www.rssboard.org/rss-specification</docs>{{ with $ctx.Site.Language.Locale }}
+    <language>{{.}}</language>{{end}}{{ with $ctx.Site.Params.author.email }}
+    <managingEditor>{{.}}{{ with $ctx.Site.Params.author.name }} ({{.}}){{end}}</managingEditor>{{end}}{{ with $ctx.Site.Params.author.email }}
+    <webMaster>{{.}}{{ with $ctx.Site.Params.author.name }} ({{.}}){{end}}</webMaster>{{end}}{{ with $ctx.Site.Params.copyright }}
+    <copyright>{{.}}</copyright>{{end}}{{ with index $pages 0 }}
+    <lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{- with $ctx.OutputFormats.Get "RSS" -}}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end -}}
+    <ttl>1440</ttl>{{ with $ctx.Site.Params.og_image }}
+    <image>
+      <url>{{ . | absURL }}</url>
+      <title>{{ $ctx.Site.Title }}</title>
+      <link>{{ $ctx.Site.BaseURL }}</link>
+    </image>{{ end }}
+    {{ range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid isPermaLink="true">{{ .Permalink }}</guid>
+      <description>{{ .Summary | html }}</description>
+      {{- if $fullContent }}
+      {{- $content := .Content | replaceRE `href="#` (printf `href="%s#` .Permalink) -}}
+      <content:encoded>{{ printf "<![CDATA[%s]]>" $content | safeHTML }}</content:encoded>
+      {{- end }}
+      {{ with $.ctx.Site.Params.author.email }}<author>{{.}}{{ with $.ctx.Site.Params.author.name }} ({{.}}){{end}}</author>{{end}}
+      {{- range .Params.topics }}<category>{{ . }}</category>{{ end -}}
+      {{- range .Params.tags }}<category>{{ . }}</category>{{ end -}}
+    </item>
+    {{ end }}
+  </channel>
+</rss>
