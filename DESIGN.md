@@ -201,6 +201,9 @@ Two voices: a single filled primary (loud) and a small set of ghost variants (qu
 ### Email Input
 Underline-only (no box): `border-bottom` hairline, padding 8px 0, body font at the small label size. On focus the bottom border switches to orange. Used in the footer signup where enabled (`show_email_signup`).
 
+### Prose Inline Links
+Body links in essays, notes, pages, and intros inherit the surrounding text color. At rest they carry a hairline underline of that same ink (`--underline-thickness-hairline`, `--underline-color-prose`: `currentColor` at 50% in light and 40% in dark). The line is findable on a scan and recedes during reading because it matches the letters, not because it is a third grey. Hover shifts the text and underline to Trust Revolution Orange. Never orange at rest in prose. Footnote and aside links use the same hairline so the reading column has one underline voice.
+
 ## 6. Do's and Don'ts (universal)
 
 These apply to every consumer. Sites add register-specific rules in their own doc.

@@ -1689,8 +1689,8 @@ body > .container > footer .footer-links {
         a:not(.footnote-backref) {
             color: var(--text-meta);
             text-decoration: underline;
-            text-decoration-color: var(--underline-color-muted);
-            text-decoration-thickness: var(--underline-thickness);
+            text-decoration-color: var(--underline-color-prose);
+            text-decoration-thickness: var(--underline-thickness-hairline);
             text-underline-offset: var(--underline-offset);
 
             &:hover {
@@ -1750,20 +1750,16 @@ body > .container > footer .footer-links {
     }
 }
 
-/* Prose content inline links — underline at rest for WCAG link distinguishability.
-   Underline present at rest, removed on hover (inverse of nav links).
-   Covers all content containers: essays, notes, pages, homepage intro.
-   Uses text-primary color so links blend with prose; underline provides affordance. */
+/* Prose content inline links — hairline underline at rest for WCAG
+   distinguishability. The line recedes during reading; orange is hover
+   confirmation only. Covers essays, notes, pages, homepage intro. */
 :is(.essay-body, .note-body, .page-body, .intro-body) > :not(.footnotes) a:not(.action-link):not(.back-link):not(.btn-primary) {
     color: inherit;
     text-decoration: underline;
-    text-decoration-color: light-dark(
-        color-mix(in srgb, var(--text-meta) 70%, transparent),
-        var(--text-meta)
-    );
-    text-decoration-thickness: var(--underline-thickness);
+    text-decoration-color: var(--underline-color-prose);
+    text-decoration-thickness: var(--underline-thickness-hairline);
     text-underline-offset: var(--underline-offset);
-    transition: color var(--transition-fast);
+    transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
 
     &:hover {
         color: var(--brand-orange);
@@ -1782,8 +1778,8 @@ body > .container > footer .footer-links {
     a {
         color: var(--text-secondary);
         text-decoration: underline;
-        text-decoration-color: var(--underline-color-muted);
-        text-decoration-thickness: var(--underline-thickness);
+        text-decoration-color: var(--underline-color-prose);
+        text-decoration-thickness: var(--underline-thickness-hairline);
         text-underline-offset: var(--underline-offset);
 
         &:hover {
