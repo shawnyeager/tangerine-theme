@@ -133,7 +133,6 @@ The theme provides shared parameters that are automatically merged into consumin
 ```toml
 [params]
   copyright = "Copyright © 2025, Shawn Yeager"
-  nostr = "https://primal.net/shawn"
   github = "https://github.com/shawnyeager"
   twitter_handle = "shawnyeager"
 
@@ -190,7 +189,6 @@ Sites using this theme must configure these parameters in their `hugo.toml`:
   email_signup_action = "https://buttondown.com/api/emails/embed-subscribe/username"
 
   # Social links (optional)
-  nostr = "https://nostr.example.com"
   github = "https://github.com/username"
   email = "hello@example.com"
 

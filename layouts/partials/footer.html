@@ -12,7 +12,7 @@ Context Expected:
 - .Site.Params.email_signup_action - Form submission URL (e.g., Buttondown API endpoint)
 - .Site.Params.plausible_form_event - Analytics event name for form submission
 - .Site.Params.plausible_events.* - Event names for link tracking
-- .Site.Params.nostr, .github, .author.email - Social/contact links
+- .Site.Params.twitter_handle, .github, .author.email - Social/contact links
 - .Site.Params.secondary_site_url/name - Cross-site navigation (.com ↔ .notes)
 - .Site.Params.v4v_url - V4V page URL (defaults to /v4v/, can be external)
 - .Site.Params.show_v4v_footer - Toggle V4V link in footer (defaults to true)
@@ -39,9 +39,9 @@ Important Notes:
     </section>
     {{ end }}
 
-    {{/* Footer links - Order: Now, Advisory, Email, Nostr, GitHub
+    {{/* Footer links - Order: Now, Advisory, Email, X, GitHub
          On-site links first (keep readers near the signup form above),
-         off-site exits last (Nostr before GitHub by audience relevance) */}}
+         off-site exits last (X before GitHub) */}}
     <div class="footer-links">
         {{ if .Site.Params.show_now_footer }}
             <a href="/now/">Now</a>
@@ -55,7 +55,7 @@ Important Notes:
         {{ with .Site.Params.author.email }}
             <a href="mailto:{{ . }}"{{ with $.Site.Params.plausible_events.contact_email }} class="plausible-event-name={{ . }}"{{ end }}>Email</a>
         {{ end }}
-        {{ with .Site.Params.nostr }}<a href="{{ . }}">Nostr</a>{{ end }}
+        {{ with .Site.Params.twitter_handle }}<a href="https://x.com/{{ . }}">X</a>{{ end }}
         {{ with .Site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
     </div>
 </footer>

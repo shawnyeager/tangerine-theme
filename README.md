@@ -79,7 +79,6 @@ Add these parameters to your site's `hugo.toml`:
   email_signup_action = "https://buttondown.com/api/emails/embed-subscribe/username"
 
   # Social links (optional)
-  nostr = "https://nostr.example.com"
   github = "https://github.com/username"
   email = "hello@example.com"
 
@@ -103,7 +102,7 @@ Add these parameters to your site's `hugo.toml`:
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `copyright` | string | Copyright notice. Used in structured data. |
-| `twitter_handle` | string | Twitter handle without @ symbol. Used for Twitter Card attribution. |
+| `twitter_handle` | string | X handle without @ symbol. Used for X Card attribution and the footer X link. |
 | `params.author.name` | string | Author full name. Used in RSS, structured data, meta tags. |
 | `params.author.email` | string | Author email. Used in RSS feed. |
 | `params.author.description` | string | Short professional description. Used in structured data. |
@@ -111,7 +110,7 @@ Add these parameters to your site's `hugo.toml`:
 | `params.author.image` | string | Path to author image. Used in structured data. |
 | `params.author.sameAs.linkedin` | string | LinkedIn profile URL. Used in structured data. |
 | `params.author.sameAs.github` | string | GitHub profile URL. Used in structured data and footer. |
-| `params.author.sameAs.nostr` | string | Nostr profile URL. Used in structured data and footer. |
+| `params.author.sameAs.nostr` | string | Nostr profile URL. Used in structured data. |
 | `params.author.sameAs.podcast` | string | Podcast URL (optional). Used in structured data. |
 
 ### Email Signup (Optional)
@@ -126,7 +125,6 @@ Add these parameters to your site's `hugo.toml`:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `nostr` | string | Nostr profile URL (shows in footer). |
 | `github` | string | GitHub profile URL (shows in footer). |
 | `email` | string | Contact email (shows in footer). |
 | `secondary_site_url` | string | Cross-linked site URL (e.g., notes from essays). |
@@ -210,7 +208,6 @@ your-site/
 
   show_email_signup = true
   email_signup_action = "https://buttondown.com/api/emails/embed-subscribe/username"
-  nostr = "https://nostr.example.com"
   github = "https://github.com/username"
   email = "hello@example.com"
   secondary_site_url = "https://notes.example.com"
