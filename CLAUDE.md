@@ -101,7 +101,7 @@ tangerine-theme/
 
 This theme implements the design system; `shawnyeager-com/DESIGN.md` documents it (colors, typography, elevation, components, do's/don'ts, light/dark mode, WCAG). Token values live in `assets/css/_tokens.css`. Consuming sites (gtm-map, shawnyeager-share) keep their own `DESIGN.md`.
 
-**Analytics:** `~/Work/shawnyeager/docs/PLAUSIBLE_SETUP.md` - goal configuration, event tracking, verification, troubleshooting.
+**Analytics:** Event names live in each site's `hugo.toml` under `params.plausible_events`.
 
 ## Design System
 
