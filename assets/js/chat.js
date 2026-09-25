@@ -1,26 +1,28 @@
 /**
- * AI Chat — Go-to-Market Advisor powered by Claude
+ * AI Chat — Go-to-Market Advisor
  *
- * TUI-style overlay triggered by header icon or typing "chat".
- * Calls /api/chat edge function (Claude proxy with GTM Map context).
- * Rate limited to 5 messages per session via sessionStorage.
+ * Overlay triggered by header icon or typing "chat".
+ * Calls /api/chat with GTM Map context.
+ * Rate limited per session via cookie (server) and sessionStorage (client).
  *
  * Mobile: Full-viewport layout, visualViewport API for iOS keyboard,
  * interactive-widget=resizes-content handles Android. Back button
  * closes chat via history.pushState/popstate.
  *
  * Accessibility: Modal dialog with focus trap, aria-modal, aria-live.
- * Reduced motion: disables character-by-character streaming.
+ * Replies render in full when they arrive. Reduced motion is handled in CSS.
  *
  * Security: URLs are linkified using safe DOM methods (createElement),
  * not innerHTML with untrusted content. All user input rendered via
  * textContent only.
  */
 
+var SESSION_END_COPY =
+  "That's all for this session. The full GTM diagnostic is at https://gtm.shawnyeager.com. It takes 10 minutes.";
+
 export function showChat() {
   if (document.querySelector('.chat-overlay')) return;
 
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var chatHistory = [];
   var busy = false;
   var isMobile = window.matchMedia('(max-width: 600px)').matches;
@@ -29,16 +31,9 @@ export function showChat() {
   var savedScrollY = 0;
   var inertTargets = [];
   var sendBtn = null;
+  var abortCtl = null;
   var triggerElement = document.activeElement;
-
-  if (sessionStorage.getItem('chat_done') === '1') {
-    console.log(
-      '%cChat session limit reached.\n%cTake the full assessment: gtm.shawnyeager.com',
-      'font-size: 14px; font-weight: bold; color: #d63900;',
-      'font-size: 12px; color: #888;'
-    );
-    return;
-  }
+  var sessionEnded = sessionStorage.getItem('chat_done') === '1';
 
   // --- Analytics ---
   if (typeof plausible === 'function') plausible('chat-open');
@@ -61,20 +56,14 @@ export function showChat() {
   titleEl.textContent = 'Go-to-Market Advisor';
   overlay.setAttribute('aria-labelledby', 'chat-dialog-title');
 
-  var hintEl = document.createElement('span');
-  hintEl.className = 'chat-hint';
-  if (isMobile) {
-    var closeBtn = document.createElement('button');
-    closeBtn.className = 'chat-close';
-    closeBtn.textContent = '\u00d7';
-    closeBtn.setAttribute('aria-label', 'Close chat');
-    closeBtn.addEventListener('click', function() { dismiss(); });
-    hintEl.appendChild(closeBtn);
-  } else {
-    hintEl.textContent = 'Esc to close';
-  }
+  var closeBtn = document.createElement('button');
+  closeBtn.className = 'chat-close';
+  closeBtn.type = 'button';
+  closeBtn.textContent = '\u00d7';
+  closeBtn.setAttribute('aria-label', 'Close chat');
+  closeBtn.addEventListener('click', function() { dismiss(); });
   hdr.appendChild(titleEl);
-  hdr.appendChild(hintEl);
+  hdr.appendChild(closeBtn);
 
   var msgArea = document.createElement('div');
   msgArea.className = 'chat-messages';
@@ -83,25 +72,22 @@ export function showChat() {
 
   var inputRow = document.createElement('div');
   inputRow.className = 'chat-input-row';
-  var promptEl = document.createElement('span');
-  promptEl.className = 'chat-prompt';
-  promptEl.textContent = '>';
   var inputEl = document.createElement('input');
   inputEl.className = 'chat-input';
   inputEl.type = 'text';
   inputEl.placeholder = 'Positioning, pricing, pipeline...';
   inputEl.maxLength = 500;
   inputEl.setAttribute('autocomplete', 'off');
-  inputEl.setAttribute('spellcheck', 'false');
+  inputEl.setAttribute('spellcheck', 'true');
   inputEl.setAttribute('aria-label', 'Type your message');
 
-  inputRow.appendChild(promptEl);
   inputRow.appendChild(inputEl);
 
   // Send button — mobile only
   if (isMobile) {
     sendBtn = document.createElement('button');
     sendBtn.className = 'chat-send';
+    sendBtn.type = 'button';
     sendBtn.textContent = '\u2192';
     sendBtn.setAttribute('aria-label', 'Send message');
     sendBtn.disabled = true;
@@ -116,7 +102,7 @@ export function showChat() {
     inputRow.appendChild(sendBtn);
 
     inputEl.addEventListener('input', function() {
-      sendBtn.disabled = !inputEl.value.trim();
+      sendBtn.disabled = !inputEl.value.trim() || busy || inputEl.disabled;
     });
   }
 
@@ -165,14 +151,17 @@ export function showChat() {
     }
   });
 
-  // --- Initial message + focus ---
-  addMsg('assistant', 'Hey. I know go-to-market. What are you working on?');
-  requestAnimationFrame(function() { inputEl.focus(); });
+  if (sessionEnded) {
+    addMsg('assistant', SESSION_END_COPY);
+    endSession(false);
+    requestAnimationFrame(function() { closeBtn.focus(); });
+  } else {
+    addMsg('assistant', 'Hey. I know go-to-market. What are you working on?');
+    requestAnimationFrame(function() { inputEl.focus(); });
+    fetch('/api/chat', { method: 'HEAD' }).catch(function() {});
+  }
 
-  // Warm up edge function so first real message is fast
-  fetch('/api/chat', { method: 'HEAD' }).catch(function() {});
-
-  // --- Mobile: visualViewport keyboard handler (deferred after animation) ---
+  // --- Mobile: visualViewport keyboard handler ---
   if (isMobile && window.visualViewport) {
     var vv = window.visualViewport;
     var pendingVVUpdate = false;
@@ -195,12 +184,8 @@ export function showChat() {
       });
     }
 
-    // Defer listener attachment until after the 300ms slide-up animation
-    setTimeout(function() {
-      if (dismissed) return;
-      vv.addEventListener('resize', adjustForKeyboard);
-      vv.addEventListener('scroll', adjustForKeyboard);
-    }, 350);
+    vv.addEventListener('resize', adjustForKeyboard);
+    vv.addEventListener('scroll', adjustForKeyboard);
 
     cleanupVV = function() {
       vv.removeEventListener('resize', adjustForKeyboard);
@@ -221,7 +206,7 @@ export function showChat() {
 
   // --- Input: Enter to send ---
   inputEl.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !busy) {
+    if (e.key === 'Enter' && !busy && !inputEl.disabled) {
       var text = inputEl.value.trim();
       if (!text) return;
       inputEl.value = '';
@@ -234,28 +219,25 @@ export function showChat() {
   function dismiss() {
     if (dismissed) return;
     dismissed = true;
+    if (abortCtl) abortCtl.abort();
     overlay.remove();
     document.removeEventListener('keydown', onEsc);
     window.removeEventListener('popstate', onPopState);
     if (cleanupVV) cleanupVV();
 
-    // Restore body scroll
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
     window.scrollTo(0, savedScrollY);
 
-    // Remove inert from background content
     for (var i = 0; i < inertTargets.length; i++) {
       inertTargets[i].removeAttribute('inert');
     }
 
-    // Return focus to trigger element
     if (triggerElement && triggerElement.focus) {
       triggerElement.focus();
     }
 
-    // Clean up history entry if dismissed via X/Esc (not via back button)
     if (history.state && history.state.chatOpen) {
       history.replaceState(null, '');
     }
@@ -264,6 +246,30 @@ export function showChat() {
   function onEsc(e) { if (e.key === 'Escape') dismiss(); }
   document.addEventListener('keydown', onEsc);
   overlay.addEventListener('click', function(e) { if (e.target === overlay) dismiss(); });
+
+  function endSession(appendCta) {
+    sessionEnded = true;
+    sessionStorage.setItem('chat_done', '1');
+    if (appendCta) addMsg('assistant', SESSION_END_COPY);
+    inputEl.disabled = true;
+    inputEl.placeholder = '';
+    inputRow.hidden = true;
+    overlay.removeAttribute('aria-busy');
+    if (sendBtn) sendBtn.disabled = true;
+  }
+
+  function errorCopy(status) {
+    if (status === 400) {
+      return 'That message could not be sent. Try shortening it. It is still in the field.';
+    }
+    if (status === 429) {
+      return 'This session is out of messages. The full diagnostic is at https://gtm.shawnyeager.com.';
+    }
+    if (status === 502 || status === 500) {
+      return 'The advisor is unavailable right now. Your message is still in the field. Press Enter to try again.';
+    }
+    return 'Could not connect. Your message is still in the field. Press Enter to try again.';
+  }
 
   // --- Markdown rendering ---
 
@@ -338,39 +344,17 @@ export function showChat() {
   function addMsg(role, text) {
     var el = document.createElement('div');
     el.className = 'chat-msg chat-msg--' + role;
-    if (role === 'assistant' && !reducedMotion) {
-      msgArea.appendChild(el);
-      msgArea.scrollTop = msgArea.scrollHeight;
-      typeOut(el, text, 0);
-    } else {
-      if (role === 'assistant') { renderMarkdown(el, text); }
-      else { el.textContent = text; }
-      msgArea.appendChild(el);
-      msgArea.scrollTop = msgArea.scrollHeight;
-    }
-  }
-
-  function typeOut(el, text, i) {
-    if (i >= text.length || dismissed) return;
-    // Advance multiple characters per frame for longer responses
-    var charsPerFrame = text.length > 200 ? 3 : 1;
-    var next = Math.min(i + charsPerFrame, text.length);
-
-    while (el.firstChild) el.removeChild(el.firstChild);
-    renderMarkdown(el, text.slice(0, next));
-
-    // Throttle scroll reflow to every 4th frame
-    if (next % 4 === 0 || next === text.length) {
-      msgArea.scrollTop = msgArea.scrollHeight;
-    }
-
-    requestAnimationFrame(function() { typeOut(el, text, next); });
+    if (role === 'assistant') { renderMarkdown(el, text); }
+    else { el.textContent = text; }
+    msgArea.appendChild(el);
+    msgArea.scrollTop = msgArea.scrollHeight;
   }
 
   // --- Send message ---
 
   function send(text) {
     busy = true;
+    overlay.setAttribute('aria-busy', 'true');
     addMsg('user', text);
     chatHistory.push({ role: 'user', content: text });
 
@@ -382,37 +366,46 @@ export function showChat() {
     msgArea.appendChild(dots);
     msgArea.scrollTop = msgArea.scrollHeight;
 
+    if (abortCtl) abortCtl.abort();
+    abortCtl = new AbortController();
+
     fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'same-origin',
+      signal: abortCtl.signal,
       body: JSON.stringify({ message: text, history: chatHistory.slice(-8) }),
     })
       .then(function(res) {
-        if (!res.ok) throw new Error(res.status);
+        if (!res.ok) {
+          var err = new Error(String(res.status));
+          err.status = res.status;
+          throw err;
+        }
         return res.json();
       })
       .then(function(data) {
+        if (dismissed) return;
         dots.remove();
-        var reply = data.response || 'Something went wrong.';
+        var reply = data.response || 'The advisor sent an empty reply. Press Enter to try again.';
         addMsg('assistant', reply);
         chatHistory.push({ role: 'assistant', content: reply });
         if (data.done) {
-          sessionStorage.setItem('chat_done', '1');
-          addMsg('assistant', 'That\'s all for this session. Want a full GTM diagnostic? It takes 5 minutes: https://gtm.shawnyeager.com');
-          inputEl.disabled = true;
-          inputEl.placeholder = '';
-          promptEl.textContent = '\u25A0';
-          if (sendBtn) sendBtn.disabled = true;
+          // Remaining is only present after a real turn. Already-limited
+          // responses include the CTA in `response` and must not duplicate it.
+          endSession(typeof data.remaining === 'number');
         }
         busy = false;
+        overlay.removeAttribute('aria-busy');
       })
-      .catch(function() {
+      .catch(function(err) {
+        if (dismissed || (err && err.name === 'AbortError')) return;
         dots.remove();
-        addMsg('assistant', 'Couldn\'t connect. Your message is still in the input — hit send to retry.');
+        addMsg('assistant', errorCopy(err && err.status));
         inputEl.value = text;
         if (sendBtn) sendBtn.disabled = false;
         busy = false;
+        overlay.removeAttribute('aria-busy');
       });
   }
 }

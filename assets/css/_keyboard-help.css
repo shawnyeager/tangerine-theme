@@ -10,7 +10,7 @@
 .keyboard-help-overlay {
     position: fixed;
     inset: 0;
-    background: light-dark(rgba(26, 26, 26, 0.5), rgba(0, 0, 0, 0.7));
+    background: var(--overlay-scrim);
     display: flex;
     align-items: center;
     justify-content: center;
