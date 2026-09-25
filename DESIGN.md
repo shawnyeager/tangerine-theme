@@ -14,6 +14,7 @@ colors:
   border-color: "light-dark(#d5d5d5, #32363a)"
   background-body: "light-dark(#fdfcfa, #151b23)"
   background-card: "light-dark(#f5f5f5, #1d232c)"
+  overlay-scrim: "light-dark(color-mix(in srgb, var(--text-primary) 50%, transparent), color-mix(in srgb, var(--background-body) 85%, transparent))"
 typography:
   display:
     fontFamily: "Satoshi, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
@@ -134,6 +135,7 @@ A tinted-neutral palette anchored by a single accent.
 - **Hairline Border** (`#d5d5d5` light / `#32363a` dark): The single border color. A half-opacity variant (`--border-subtle`) is the default for dividers.
 - **Highlight Mark** (`#fef3cd` light / `#232932` dark): The `<mark>` background. Soft yellow in light, cool charcoal in dark.
 - **On-Brand Text** (`#ffffff` light / `#151b23` dark): Text on top of a Trust Revolution Orange background (the filled primary button). The dark value tracks `--background-body` so the label reads as the page color punched out of the orange.
+- **Overlay Scrim** (`--overlay-scrim`): Dim behind modal dialogs. Light is `--text-primary` at 50%; dark is `--background-body` at 85%. Never a raw black overlay.
 
 ### Named Rules
 
@@ -203,6 +205,12 @@ Underline-only (no box): `border-bottom` hairline, padding 8px 0, body font at t
 
 ### Prose Inline Links
 Body links in essays, notes, pages, and intros inherit the surrounding text color. At rest they carry a hairline underline of that same ink (`--underline-thickness-hairline`, `--underline-color-prose`: `currentColor` at 50% in light and 40% in dark). The line is findable on a scan and recedes during reading because it matches the letters, not because it is a third grey. Hover shifts the text and underline to Trust Revolution Orange. Never orange at rest in prose. Footnote and aside links use the same hairline so the reading column has one underline voice.
+
+### Overlay scrim
+`--overlay-scrim` is the dim behind modal dialogs (chat, keyboard help). It is tinted from `--text-primary` in light and `--background-body` in dark. Never a raw black overlay.
+
+### Chat overlay
+A task dialog, not a terminal. Satoshi header, Inter conversation, hairline chrome, `--overlay-scrim` backdrop. Opens from the header trigger or typing `chat`. Esc, the close control, backdrop click, and the back button dismiss it. Replies render in full when they arrive. Session-limit and error states stay inside the dialog.
 
 ## 6. Do's and Don'ts (universal)
 
